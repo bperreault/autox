@@ -94,7 +94,7 @@ public class Cipher {
     }
 
     public static String decrypt(String data,String publicKey) throws Exception {
-        return Base64.encode(decrypt(Base64.decode(data),getPublicKeyFromString(publicKey),ALGORITHM));
+        return getFromBASE64(Base64.encode(decrypt(Base64.decode(data),getPublicKeyFromString(publicKey),ALGORITHM)));
     }
 
     public static String decrypt(String data) throws Exception {

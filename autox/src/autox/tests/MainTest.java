@@ -22,13 +22,15 @@ public class MainTest {
         String privateKeyString = Configuration.getInstance().get("key.private", "");
 
 
-        String target =   String.valueOf("Jien Huang is a good QA. He is doing 中文测试！      adfadsadfasdfasdfasdfasdf           asdfasdf".hashCode());
+        String target =   String.valueOf("Jien Huang is a good QA. He is doing 中文测试！".hashCode());
 
         Log.debug("our target is:"+target);
 
         String encBytes = Cipher.encrypt( target);
         Log.debug("after encrypt:"+encBytes);
-        String decBytes = Cipher.getFromBASE64(Base64.encode(Cipher.decrypt(Base64.decode(encBytes), Cipher.getPrivateKeyFromString(privateKeyString),Cipher.ALGORITHM)));
+        byte[] result =Cipher.decrypt(Base64.decode(encBytes), Cipher.getPrivateKeyFromString(privateKeyString),Cipher.ALGORITHM);
+        Log.debug("middle result:"+String.valueOf(result));
+        String decBytes = Cipher.getFromBASE64(Base64.encode(result));
         Log.debug("after decrypt:"+ decBytes );
 
         boolean expected = decBytes.equals(target)   ;
@@ -37,8 +39,8 @@ public class MainTest {
 
         encBytes = Base64.encode(Cipher.encrypt(target.getBytes(),Cipher.getPrivateKeyFromString(privateKeyString),Cipher.ALGORITHM));
         Log.debug("after encrypt:"+encBytes);
-        decBytes = Cipher.getFromBASE64(Cipher.decrypt(encBytes));
-        //decBytes = Cipher.getFromBASE64(Base64.encode(Cipher.decrypt(encBytes).getBytes()));
+        decBytes = Cipher.decrypt(encBytes);
+
         Log.debug("after decrypt:"+ decBytes );
         expected = decBytes.equals(target)   ;
 

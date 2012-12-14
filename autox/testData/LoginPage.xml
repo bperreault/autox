@@ -1,0 +1,5 @@
+<UIObject Type="Browser" Name="Browser">
+    <UIObject type="text" XPath="//input[@name='userName'  and @type='text' ]" Name="userName" />
+    <UIObject type="password" XPath="//input[@name='password'  and @type='password' ]" Name="password" />
+    <UIObject type="image" value="Login" XPath="//input[@name='login'  and @type='image'  and @value='Login' ]" Name="login" />
+</UIObject>
