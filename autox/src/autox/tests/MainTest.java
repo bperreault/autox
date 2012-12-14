@@ -1,56 +1,50 @@
 package autox.tests;
 
+import autox.config.Configuration;
 import autox.log.Log;
+import autox.utils.Cipher;
 import org.apache.axis.encoding.Base64;
-
-import javax.crypto.Cipher;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.PrivateKey;
-import java.security.PublicKey;
+import org.openqa.selenium.internal.Base64Encoder;
+import org.yaml.snakeyaml.util.Base64Coder;
+import sun.misc.BASE64Decoder;
 
 
 public class MainTest {
 
-    private static byte[] encrypt(byte[] inpBytes, PublicKey key,
-                                  String xForm) throws Exception {
-        Cipher cipher = Cipher.getInstance(xForm);
-        cipher.init(Cipher.ENCRYPT_MODE, key);
-        return cipher.doFinal(inpBytes);
-    }
-
-    private static byte[] decrypt(byte[] inpBytes, PrivateKey key,
-                                  String xForm) throws Exception {
-        Cipher cipher = Cipher.getInstance(xForm);
-        cipher.init(Cipher.DECRYPT_MODE, key);
-        return cipher.doFinal(inpBytes);
-    }
-
     public static void main(String[] unused) throws Exception {
-        String xForm = "RSA";
 
         // Generate a key-pair
         Log.debug("Before generate key pair");
 
-        KeyPairGenerator kpg = KeyPairGenerator.getInstance(xForm);
-        kpg.initialize(512); // 512 is the key size.
-        KeyPair kp = kpg.generateKeyPair();
-        PublicKey publicKey = kp.getPublic();
-        PrivateKey privateKey = kp.getPrivate();
+        Cipher.Keys keys = new Cipher.Keys().generateKeyPair();
 
-        System.out.println("public key:" + publicKey.toString());
-        System.out.println("private key:" + privateKey.toString());
+        String publicKeyString = Configuration.getInstance().get("key.public","");
+        String privateKeyString = Configuration.getInstance().get("key.private", "");
 
-        byte[] dataBytes =
-                "Jien Huang is a good father and husband.".getBytes();
-        Log.debug("before encrypt");
-        byte[] encBytes = encrypt(dataBytes, publicKey, xForm);
-        Log.debug("before decrypt");
-        byte[] decBytes = decrypt(encBytes, privateKey, xForm);
-        Log.debug("end of decrypt");
-        boolean expected = java.util.Arrays.equals(dataBytes, decBytes);
-        System.out.println(Base64.encode(encBytes));
-        System.out.println("Test " + (expected ? "SUCCEEDED!" : "FAILED!"));
+
+        String target =   String.valueOf("Jien Huang is a good QA. He is doing 中文测试！      adfadsadfasdfasdfasdfasdf           asdfasdf".hashCode());
+
+        Log.debug("our target is:"+target);
+
+        String encBytes = Cipher.encrypt( target);
+        Log.debug("after encrypt:"+encBytes);
+        String decBytes = Cipher.getFromBASE64(Base64.encode(Cipher.decrypt(Base64.decode(encBytes), Cipher.getPrivateKeyFromString(privateKeyString),Cipher.ALGORITHM)));
+        Log.debug("after decrypt:"+ decBytes );
+
+        boolean expected = decBytes.equals(target)   ;
+
+        Log.debug("Test1 " + (expected ? "SUCCEEDED!" : "FAILED!"));
+
+        encBytes = Base64.encode(Cipher.encrypt(target.getBytes(),Cipher.getPrivateKeyFromString(privateKeyString),Cipher.ALGORITHM));
+        Log.debug("after encrypt:"+encBytes);
+        decBytes = Cipher.getFromBASE64(Cipher.decrypt(encBytes));
+        //decBytes = Cipher.getFromBASE64(Base64.encode(Cipher.decrypt(encBytes).getBytes()));
+        Log.debug("after decrypt:"+ decBytes );
+        expected = decBytes.equals(target)   ;
+
+        Log.debug("Test1 " + (expected ? "SUCCEEDED!" : "FAILED!"));
+
     }
+
 
 }
