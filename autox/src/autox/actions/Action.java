@@ -26,7 +26,8 @@ public abstract class Action {
     protected Result result;
 
     public abstract Object findTestObject();
-    public void deal(){
+
+    public void deal() {
         Object testObject = findTestObject();
         handle(testObject);
     }

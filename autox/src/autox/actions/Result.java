@@ -3,9 +3,6 @@ package autox.actions;
 import autox.log.Log;
 import autox.utils.XML;
 import org.jdom.Element;
-import org.jdom.JDOMException;
-
-import java.io.IOException;
 
 /**
  * Created with AutoX project.
@@ -21,11 +18,13 @@ public class Result {
     Element result = new Element(RESULT);
 
     public Result(Element element) {
+
         if (element != null) {
             Element original = new Element(ORIGINAL);
             original.addContent(element);
             result.addContent(original);
         }
+        this.Success();
     }
 
     public static String failed(String s) {
@@ -39,21 +38,22 @@ public class Result {
         return failedResult;
     }
 
-    public boolean isSuccess(){
-        return result.getAttributeValue("Result").equalsIgnoreCase("Success");
+    public boolean isSuccess() {
+        return result.getAttributeValue(RESULT).equalsIgnoreCase(SUCCESS);
     }
-    public static Result fromString(String resultString){
+
+    public static Result fromString(String resultString) {
         try {
             Element stringResult = new XML(resultString).getRoot();
-            if(!stringResult.getName().equalsIgnoreCase("Result")){
+            if (!stringResult.getName().equalsIgnoreCase(RESULT)) {
                 return failedResult("Return is not a result");
-            }   else{
+            } else {
                 Result newResult = new Result(null);
                 newResult.result = stringResult;
                 return newResult;
             }
         } catch (Exception e) {
-            Log.fatal(e.getMessage(),e);
+            Log.fatal(e.getMessage(), e);
             return failedResult(e.getMessage());
         }
 
@@ -62,7 +62,7 @@ public class Result {
     public void Error(String s) {
         result.setAttribute(RESULT, FAILED);
         Element reason = new Element(REASON);
-        reason.setAttribute(REASON,s);
+        reason.setAttribute(REASON, s);
         result.addContent(reason);
     }
 
@@ -71,6 +71,7 @@ public class Result {
     }
 
     public void Success() {
-        result.setAttribute(RESULT, SUCCESS);
+        if (isSuccess())
+            result.setAttribute(RESULT, SUCCESS);
     }
 }

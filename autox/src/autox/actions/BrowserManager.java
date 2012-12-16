@@ -17,15 +17,15 @@ public class BrowserManager {
     private BrowserManager() {
     }
 
-    public Browser getLatestBrowser(){
+    public Browser getLatestBrowser() {
         return null;
     }
 
-    public Browser getBrowser(String browserTitle){
-        return  null;
+    public Browser getBrowser(String browserTitle) {
+        return null;
     }
 
-    public Browser getBrowser(Element element){
+    public Browser getBrowser(Element element) {
         return null;
     }
 }

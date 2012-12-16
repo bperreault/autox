@@ -1,7 +1,5 @@
 package autox.actions;
 
-import org.jdom.Element;
-
 /**
  * Created with AutoX project.
  * User: jien.huang
