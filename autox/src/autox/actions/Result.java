@@ -1,6 +1,11 @@
 package autox.actions;
 
+import autox.log.Log;
+import autox.utils.XML;
 import org.jdom.Element;
+import org.jdom.JDOMException;
+
+import java.io.IOException;
 
 /**
  * Created with AutoX project.
@@ -8,14 +13,64 @@ import org.jdom.Element;
  * Date: 12/14/12
  */
 public class Result {
-    public Result(Element element){
-        //TODO save the original element
+    public static final String RESULT = "Result";
+    public static final String SUCCESS = "Success";
+    public static final String FAILED = "Failed";
+    public static final String REASON = "Reason";
+    public static final String ORIGINAL = "Original";
+    Element result = new Element(RESULT);
+
+    public Result(Element element) {
+        if (element != null) {
+            Element original = new Element(ORIGINAL);
+            original.addContent(element);
+            result.addContent(original);
+        }
     }
+
+    public static String failed(String s) {
+        Result failedResult = failedResult(s);
+        return failedResult.toString();
+    }
+
+    private static Result failedResult(String s) {
+        Result failedResult = new Result(null);
+        failedResult.Error(s);
+        return failedResult;
+    }
+
+    public boolean isSuccess(){
+        return result.getAttributeValue("Result").equalsIgnoreCase("Success");
+    }
+    public static Result fromString(String resultString){
+        try {
+            Element stringResult = new XML(resultString).getRoot();
+            if(!stringResult.getName().equalsIgnoreCase("Result")){
+                return failedResult("Return is not a result");
+            }   else{
+                Result newResult = new Result(null);
+                newResult.result = stringResult;
+                return newResult;
+            }
+        } catch (Exception e) {
+            Log.fatal(e.getMessage(),e);
+            return failedResult(e.getMessage());
+        }
+
+    }
+
     public void Error(String s) {
-        //TODO set result to error
+        result.setAttribute(RESULT, FAILED);
+        Element reason = new Element(REASON);
+        reason.setAttribute(REASON,s);
+        result.addContent(reason);
     }
 
     public Element toElement() {
-        return null;  //TODO return XML format result
+        return result;
+    }
+
+    public void Success() {
+        result.setAttribute(RESULT, SUCCESS);
     }
 }

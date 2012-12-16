@@ -14,17 +14,24 @@ public abstract class Action {
 
     public void setOriginal(Element original) {
         this.original = original;
+        result = new Result(original);
     }
 
     private Element original;
-    public abstract Object findTestObject();
-    public Result deal(){
-        Object testObject = findTestObject();
-        Result result = handle(testObject);
+
+    public Result getResult() {
         return result;
     }
 
-    protected abstract Result handle(Object testObject);
+    protected Result result;
+
+    public abstract Object findTestObject();
+    public void deal(){
+        Object testObject = findTestObject();
+        handle(testObject);
+    }
+
+    protected abstract void handle(Object testObject);
 
 
 }
