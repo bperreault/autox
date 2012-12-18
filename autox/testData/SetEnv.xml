@@ -1,8 +1,8 @@
 <AutoX.Steps>
     <Step Action="autox.actions.SetEnv" >
-        <Env host='sauce' />
-        <Env sauce.os='mac' />
-        <Env test.url="http://newtours.demoaut.com/" />
+        <Env browser.host='sauce' />
+        <Env sauce.os='WINDOWS' />
+        <Env test.url='http://newtours.demoaut.com/' />
     </Step>
 
 </AutoX.Steps>

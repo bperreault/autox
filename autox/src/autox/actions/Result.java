@@ -21,12 +21,20 @@ public class Result {
 
     public Result(Element element) {
 
+        //setOriginal(element);
+        this.Success();
+    }
+    public void addSubResult(Result subResult){
+        if(subResult.result!=null){
+            result.addContent((Content)subResult.result.clone());
+        }
+    }
+    public void setOriginal(Element element) {
         if (element != null) {
             Element original = new Element(ORIGINAL);
             original.addContent((Content) element.clone());
             result.addContent(original);
         }
-        this.Success();
     }
 
     public static String failed(String s) {

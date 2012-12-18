@@ -32,7 +32,8 @@ public class ActionFactory {
     }
 
     public static String handle(Element element) {
-        Element result = new Element(RESULT_TAG);
+        Result result = new Result(null);
+        result.setOriginal(element);
         List<Element> children = element.getChildren();
         for (Element step : children) {
             Action action = getAction(step);
@@ -41,10 +42,10 @@ public class ActionFactory {
             //TODO handle the result & test.level here
 
             //action.getResult().isSuccess() && ... by default: continue on error
-            result.addContent(action.getResult().toElement());
+            result.addSubResult(action.getResult());
         }
 
-        return XML.toString(result);
+        return result.toString();
     }
 
     private static Action getAction(Element element) {
