@@ -36,10 +36,15 @@ public class ActionFactory {
         List<Element> children = element.getChildren();
         for (Element step : children) {
             Action action = getAction(step);
+            action.setOriginal(step);
             action.deal();
+            //TODO handle the result & test.level here
+
+            //action.getResult().isSuccess() && ... by default: continue on error
             result.addContent(action.getResult().toElement());
         }
-        return result.toString();
+
+        return XML.toString(result);
     }
 
     private static Action getAction(Element element) {

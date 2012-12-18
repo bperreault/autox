@@ -1,0 +1,3 @@
+<Step Action="autox.actions.VerifyValue" value="test">
+    <UIObject XPath="//input[@name='userName'  and @type='text' ]"/>
+</Step>

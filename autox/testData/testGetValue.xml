@@ -1,0 +1,9 @@
+<AutoX.Steps>
+    <Step Action="autox.actions.GetValue" Variable="userName">
+        <UIObject XPath="//input[@name='userName'  and @type='text' ]"/>
+    </Step>
+    <Step Action="autox.actions.GetValue" Variable="password">
+        <UIObject Name="password"/>
+    </Step>
+
+</AutoX.Steps>

@@ -12,7 +12,7 @@ import java.io.InputStreamReader;
  * User: jien.huang
  * Date: 12/15/12
  * Command string sample:
- * <Command Action="autox.actions.Command" Script="(batch/script file or script)" />
+ * <Step Action="autox.actions.Command" Script="(batch/script file or script)" />
  */
 public class Command extends Action {
     @Override

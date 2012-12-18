@@ -1,0 +1,5 @@
+<AutoX.Steps>
+    <Step Action="autox.actions.Click">
+        <UIObject XPath="//input[@name='login'  and @type='image'  and @value='Login' ]"/>
+    </Step>
+</AutoX.Steps>

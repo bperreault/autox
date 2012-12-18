@@ -10,7 +10,7 @@ import org.apache.commons.lang.StringUtils;
  * Date: 12/15/12
  * <p/>
  * Command string sample
- * <Command Action="autox.actions.Wait" Data="10" />
+ * <Step Action="autox.actions.Wait" Data="10" />
  */
 
 public class Wait extends Action {

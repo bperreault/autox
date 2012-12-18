@@ -2,6 +2,8 @@ package autox.actions;
 
 import autox.log.Log;
 import autox.utils.XML;
+import org.apache.axis.utils.StringUtils;
+import org.jdom.Content;
 import org.jdom.Element;
 
 /**
@@ -21,7 +23,7 @@ public class Result {
 
         if (element != null) {
             Element original = new Element(ORIGINAL);
-            original.addContent(element);
+            original.addContent((Content) element.clone());
             result.addContent(original);
         }
         this.Success();
@@ -39,7 +41,10 @@ public class Result {
     }
 
     public boolean isSuccess() {
-        return result.getAttributeValue(RESULT).equalsIgnoreCase(SUCCESS);
+        String resultString = result.getAttributeValue(RESULT);
+        if(StringUtils.isEmpty(resultString))
+            return true;
+        return resultString.equalsIgnoreCase(SUCCESS);
     }
 
     public static Result fromString(String resultString) {
@@ -68,6 +73,10 @@ public class Result {
 
     public Element toElement() {
         return result;
+    }
+
+    public String toString(){
+        return XML.toString(result);
     }
 
     public void Success() {

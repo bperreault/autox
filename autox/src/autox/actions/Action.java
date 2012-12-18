@@ -28,6 +28,7 @@ public abstract class Action {
     public abstract Object findTestObject();
 
     public void deal() {
+
         Object testObject = findTestObject();
         handle(testObject);
     }

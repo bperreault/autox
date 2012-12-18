@@ -1,0 +1,3 @@
+<AutoX.Steps>
+    <Step Action="autox.actions.Wrong" Data="10" />
+</AutoX.Steps>

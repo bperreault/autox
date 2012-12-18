@@ -1,0 +1,4 @@
+<AutoX.Steps>
+    <Step Action="autox.actions.Command" Script="dir"/>
+
+</AutoX.Steps>

@@ -1,0 +1,3 @@
+<AutoX.Steps>
+    <Step Action="autox.actions.Wait" Data="10" />
+</AutoX.Steps>

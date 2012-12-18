@@ -30,6 +30,7 @@ public class Configuration {
         props.setProperty(key, value);
         try {
             props.store(new FileWriter(env), new Date().toString());
+
         } catch (IOException e) {
             Log.fatal(e.getMessage(), e);
         }
@@ -62,8 +63,8 @@ public class Configuration {
     }
 
     private void setClientProperties() {
-        set("os.name", System.getProperty("os.name"));
-        set("os.version", System.getProperty("os.version"));
+        set("local.os.name", System.getProperty("os.name"));
+        set("local.os.version", System.getProperty("os.version"));
 
     }
 

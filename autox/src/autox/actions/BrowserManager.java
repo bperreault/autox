@@ -28,4 +28,12 @@ public class BrowserManager {
     public Browser getBrowser(Element element) {
         return null;
     }
+
+    public void start() {
+        //TODO read config.properties, start a browser
+    }
+
+    public void close(){
+        //TODO read config.properties, close the opened browser
+    }
 }

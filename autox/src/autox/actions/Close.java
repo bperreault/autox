@@ -3,11 +3,11 @@ package autox.actions;
 /**
  * Created with AutoX project.
  * User: jien.huang
- * Date: 12/15/12
+ * Date: 12/17/12
  *
- * <Step Action="autox.actions.Start" />
+ * <Step Action="autox.actions.Close" />
  */
-public class Start extends Action {
+public class Close extends Action {
     @Override
     public Object findTestObject() {
         return null;
@@ -15,7 +15,6 @@ public class Start extends Action {
 
     @Override
     protected void handle(Object testObject) {
-
-        BrowserManager.getInstance().start();
+        BrowserManager.getInstance().close();
     }
 }

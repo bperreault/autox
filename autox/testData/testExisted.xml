@@ -1,0 +1,7 @@
+<AutoX.Steps>
+    <Step Action="autox.actions.Existed">
+        <UIObject XPath="//input[@name='userName'  and @type='text' ]"/>
+        <UIObject Name="password"/>
+    </Step>
+
+</AutoX.Steps>
