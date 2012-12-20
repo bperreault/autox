@@ -20,12 +20,10 @@ public class Start {
         if (mode.equalsIgnoreCase("test")) {
             test();
         } else {
-            // TODO read the configuration, connect to autox server, read command and run command
-            while (true) {
 
-                String commandInfo = Communication.readCommand();
-                String resultInfo = ActionFactory.handle(commandInfo);
-                Communication.setResult(resultInfo);
+            while (true) {
+                register();
+                readRunReturnOneCommand();
             }
         }
 
@@ -40,6 +38,12 @@ public class Start {
                     return;
                 case 1:
                     runXMLTestFile();
+                    break;
+                case 2:
+                    register();
+                    break;
+                case 3:
+                    readRunReturnOneCommand();
                     break;
                 case 101:
                     testSetEnv();
@@ -88,6 +92,17 @@ public class Start {
                     break;
             }
         }
+    }
+
+    private static void readRunReturnOneCommand() {
+        //TODO add some error handling make it stronger
+        String command = Communication.readCommand();
+        String result = ActionFactory.handle(command);
+        Communication.setResult(result);
+    }
+
+    private static void register() {
+        Communication.register();
     }
 
     private static void testVerifyValue() {

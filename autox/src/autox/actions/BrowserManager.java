@@ -59,8 +59,8 @@ public class BrowserManager {
 
         String browserName = Configuration.getInstance().get("local.browser", "firefox");
         DesiredCapabilities capabilities = null;
-        if(browserName.equals("chrome")) {
-            System.setProperty("webdriver.chrome.driver", "c:/temp/chromedriver.exe");
+        if (browserName.equalsIgnoreCase("chrome")) {
+            System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "/autox/chromedriver");
             DesiredCapabilities chromeCapabilities = DesiredCapabilities.chrome();
             ChromeOptions options = new ChromeOptions();
             chromeCapabilities.setCapability(ChromeOptions.CAPABILITY, options);
@@ -69,32 +69,34 @@ public class BrowserManager {
 
         }
 
-        if(browserName.equals("firefox")) {
+        if (browserName.equalsIgnoreCase("firefox")) {
             capabilities = DesiredCapabilities.firefox();
             driver = new FirefoxDriver(capabilities);
         }
 
-        if(browserName.equals("iexplorer")){
+        if (browserName.equalsIgnoreCase("iexplorer")) {
             capabilities = DesiredCapabilities.internetExplorer();
             capabilities.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
             driver = new InternetExplorerDriver(capabilities);
         }
-        if(capabilities==null)
-            throw new RuntimeException(String.format("Do not this local browser: %s", browserName));
+        if (capabilities == null)
+            throw new RuntimeException(String.format("Do not support this local browser: %s", browserName));
         String url = Configuration.getInstance().get("test.url", "about:blank");
         driver.get(url);
     }
 
     private void startSauceBrowser() {
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setBrowserName(Configuration.getInstance().get("sauce.browser","firefox"));
+        capabilities.setBrowserName(Configuration.getInstance().get("sauce.browser", "firefox"));
         capabilities.setCapability("version", Configuration.getInstance().get("sauce.browser.version", "17"));
 
         capabilities.setCapability("platform", Platform.valueOf(Configuration.getInstance().get("sauce.os", "WINDOWS")));
         capabilities.setCapability("name", "autox");
         try {
             driver = new RemoteWebDriver(
-                    new URL("http://" + Configuration.getInstance().get("sauce.user", "No User") + ":" + Configuration.getInstance().get("sauce.key", "No key") + "@ondemand.saucelabs.com:80/wd/hub"),
+                    new URL("http://" + Configuration.getInstance().get("sauce.user", "No User")
+                            + ":" + Configuration.getInstance().get("sauce.key", "No key")
+                            + "@ondemand.saucelabs.com:80/wd/hub"),
                     capabilities);
         } catch (MalformedURLException e) {
             Log.fatal(e.getMessage(), e);
