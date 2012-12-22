@@ -17,5 +17,6 @@ public class Start extends Action {
     protected void handle(Object testObject) {
 
         BrowserManager.getInstance().start();
+
     }
 }

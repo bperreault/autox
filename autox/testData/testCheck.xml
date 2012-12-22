@@ -1,5 +1,5 @@
 <AutoX.Steps>
-    <Step Action="autox.actions.Check">
-        <UIObject XPath="//input[@name='tripType'  and @type='radio'  and @value='roundTrip' ]"/>
+    <Step Action="autox.actions.Check" Data="True">
+        <UIObject XPath="//input[@name='tripType'  and @type='radio'  and @value='roundtrip' ]"/>
     </Step>
 </AutoX.Steps>

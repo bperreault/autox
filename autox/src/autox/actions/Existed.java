@@ -1,5 +1,8 @@
 package autox.actions;
 
+import org.apache.axis.utils.StringUtils;
+import org.openqa.selenium.WebElement;
+
 /**
  * Created with AutoX project.
  * User: jien.huang
@@ -8,11 +11,15 @@ package autox.actions;
 public class Existed extends Action {
     @Override
     public Object findTestObject() {
-        return null;  //TODO implement it!
+        return findUIObject();
     }
 
     @Override
     protected void handle(Object testObject) {
-        //TODO implement it!
+        if(testObject==null){
+            getResult().Error("The expected object is not existed!");
+            return;
+        }
+
     }
 }

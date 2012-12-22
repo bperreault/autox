@@ -1,5 +1,7 @@
 package autox.actions;
 
+import org.openqa.selenium.WebElement;
+
 /**
  * Created with AutoX project.
  * User: jien.huang
@@ -8,11 +10,18 @@ package autox.actions;
 public class Enter extends Action {
     @Override
     public Object findTestObject() {
-        return null;  //TODO implement it!
+        return findUIObject();
     }
 
     @Override
     protected void handle(Object testObject) {
-        //TODO implement it!
+        if(testObject==null){
+            getResult().Error("The target want to set text to not found!");
+        }
+        String data = getAttributeData();
+        //TODO need to handle file upload field, it cannot be cleared.
+        ((WebElement)testObject).clear();
+        ((WebElement)testObject).sendKeys(data);
     }
+
 }

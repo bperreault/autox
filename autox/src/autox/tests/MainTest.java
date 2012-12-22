@@ -4,9 +4,7 @@ import autox.config.Configuration;
 import autox.log.Log;
 import autox.utils.Cipher;
 import org.apache.axis.encoding.Base64;
-import org.openqa.selenium.internal.Base64Encoder;
-import org.yaml.snakeyaml.util.Base64Coder;
-import sun.misc.BASE64Decoder;
+
 
 
 public class MainTest {

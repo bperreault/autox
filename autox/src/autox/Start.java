@@ -3,6 +3,7 @@ package autox;
 import autox.actions.ActionFactory;
 import autox.communication.Communication;
 import autox.config.Configuration;
+import autox.log.Log;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
 
@@ -17,6 +18,8 @@ public class Start {
     public static void main(String[] args) {
         // if run.mode = test , start command line mode to test
         String mode = Configuration.getInstance().get("run.mode", "run");
+        Log.debug("Current Mode is:"+mode);
+        Log.debug("Current Path is:"+System.getProperty("user.dir"));
         if (mode.equalsIgnoreCase("test")) {
             test();
         } else {

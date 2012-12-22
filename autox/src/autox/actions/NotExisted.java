@@ -8,11 +8,15 @@ package autox.actions;
 public class NotExisted extends Action {
     @Override
     public Object findTestObject() {
-        return null;  //TODO implement it!
+        return NotExpectedFindUIObject();
     }
 
     @Override
     protected void handle(Object testObject) {
-        //TODO implement it!
+        if(testObject!=null){
+            getResult().Error("The not expected object is existed!");
+            return;
+        }
+
     }
 }

@@ -70,5 +70,5 @@ public class Configuration {
 
     private static Properties props = new Properties();
     private static Configuration Instance = new Configuration();
-    private String env = System.getProperty("user.dir") + "/autox/config.properties";
+    private String env = System.getProperty("user.dir") + "/config.properties";
 }

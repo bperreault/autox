@@ -2,7 +2,6 @@ package autox.log;
 
 
 import autox.config.Configuration;
-import org.apache.commons.io.FileUtils;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -16,13 +15,14 @@ import java.io.IOException;
 public class LoggerInstance {
 
 	private static LoggerInstance instance = new LoggerInstance();
-	private Logger log = Logger.getLogger("");
+	private Logger log;
 	private LoggerInstance(){
         File logPath = new File("./logs");
         if(!logPath.exists()){
             logPath.mkdir();
         }
-        String env = System.getProperty("user.dir")+"/autox/log4j.properties";
+        log = Logger.getLogger("");
+        String env = System.getProperty("user.dir")+"/log4j.properties";
         File properties = new File(env);
         if(!properties.exists()||properties.length()<64){
             try {
@@ -38,15 +38,14 @@ public class LoggerInstance {
                         "log4j.appender.ATStandOut.layout = org.apache.log4j.PatternLayout\n" +
                         "log4j.appender.ATStandOut.layout.ConversionPattern =  [%d{yyyy-MM-dd HH:mm:ss,SSS}]%L %m%n\n" +
                         "\n" +
-
                         "log4j.appender.ATDailyFileOut=org.apache.log4j.DailyRollingFileAppender\n" +
                         "log4j.appender.ATDailyFileOut.file=./logs/AT_Daily.Log\n" +
                         "log4j.appender.ATDailyFileOut.Append = true\n" +
-                        "log4j.appender.ATDailyFileOut.Threshold = INFO\n" +
+                        "log4j.appender.ATDailyFileOut.Threshold = DEBUG\n" +
                         "log4j.appender.ATDailyFileOut.layout=org.apache.log4j.PatternLayout\n" +
                         "log4j.appender.ATDailyFileOut.layout.ConversionPattern=[%d{yyyy-MM-dd HH:mm:ss,SSS}]%L    %m%n");
                 fileWriter.close();
-                //FileUtils.copyFile(new File(this.getClass().getProtectionDomain().getCodeSource().getLocation()+"/log4j.properties"),new File(env));
+
             } catch (IOException e) {
                 Log.warn("properties file copy failed!",e);
                 BasicConfigurator.configure();

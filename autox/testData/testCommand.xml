@@ -1,4 +1,4 @@
 <AutoX.Steps>
-    <Step Action="autox.actions.Command" Script="dir"/>
+    <Step Action="autox.actions.Command" Script="echo hello"/>
 
 </AutoX.Steps>

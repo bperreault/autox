@@ -79,6 +79,7 @@ public class BrowserManager {
             capabilities.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
             driver = new InternetExplorerDriver(capabilities);
         }
+
         if (capabilities == null)
             throw new RuntimeException(String.format("Do not support this local browser: %s", browserName));
         String url = Configuration.getInstance().get("test.url", "about:blank");
@@ -91,13 +92,16 @@ public class BrowserManager {
         capabilities.setCapability("version", Configuration.getInstance().get("sauce.browser.version", "17"));
 
         capabilities.setCapability("platform", Platform.valueOf(Configuration.getInstance().get("sauce.os", "WINDOWS")));
-        capabilities.setCapability("name", "autox");
+        capabilities.setCapability("name", Configuration.getInstance().get("sauce.test.name", "AutoX"));
+        capabilities.setCapability("record-screenshots",true);
+        capabilities.setCapability("public",Configuration.getInstance().get("sauce.public","true").equalsIgnoreCase("true"));
         try {
             driver = new RemoteWebDriver(
                     new URL("http://" + Configuration.getInstance().get("sauce.user", "No User")
                             + ":" + Configuration.getInstance().get("sauce.key", "No key")
                             + "@ondemand.saucelabs.com:80/wd/hub"),
                     capabilities);
+
         } catch (MalformedURLException e) {
             Log.fatal(e.getMessage(), e);
         }

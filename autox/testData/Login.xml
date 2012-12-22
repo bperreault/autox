@@ -1,4 +1,19 @@
 <AutoX.Steps>
+    <Step Action="autox.actions.SetEnv" >
+        <Env browser.host='sauce' />
+        <Env sauce.os='MAC' />
+        <Env log.level='INFO' />
+        <Env sauce.test.name='autox.java' />
+        <Env test.url='http://newtours.demoaut.com/' />
+    </Step>
+    <Step Action="autox.actions.Start" />
+    <Step Action="autox.actions.Existed">
+        <UIObject XPath="//input[@name='userName'  and @type='text' ]"/>
+        <UIObject Name="password"/>
+    </Step>
+    <Step Action="autox.actions.NotExisted">
+        <UIObject XPath="//input[@name='tripType'  and @type='radio'  and @value='roundTrip' ]"/>
+    </Step>
     <Step Action="autox.actions.Enter" Data="test">
         <UIObject XPath="//input[@name='userName'  and @type='text' ]"/>
     </Step>
@@ -8,4 +23,8 @@
     <Step Action="autox.actions.Click">
         <UIObject XPath="//input[@name='login'  and @type='image'  and @value='Login' ]"/>
     </Step>
+    <Step Action="autox.actions.Check" Data="True">
+        <UIObject XPath="//input[@name='tripType'  and @type='radio'  and @value='roundtrip' ]"/>
+    </Step>
+    <Step Action="autox.actions.Close" />
 </AutoX.Steps>

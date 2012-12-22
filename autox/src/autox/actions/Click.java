@@ -13,12 +13,7 @@ import org.openqa.selenium.WebElement;
 public class Click extends Action {
     @Override
     public Object findTestObject() {
-        Element uiObject = getOriginal().getChild("UIObject");
-        if(uiObject==null){
-            Log.warn("No UIObject element in the command, don't know how to find the target!");
-            return null;
-        }
-        return Browser.findTestObject(uiObject);
+        return findUIObject();
     }
 
     @Override

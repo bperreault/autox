@@ -1,5 +1,8 @@
 package autox.actions;
 
+import org.apache.axis.utils.StringUtils;
+import org.openqa.selenium.WebElement;
+
 /**
  * Created with AutoX project.
  * User: jien.huang
@@ -8,11 +11,21 @@ package autox.actions;
 public class Check extends Action {
     @Override
     public Object findTestObject() {
-        return null;  //TODO implement it!
+        return findUIObject();
     }
 
     @Override
     protected void handle(Object testObject) {
-        //TODO implement it!
+        if(testObject==null){
+            getResult().Error("The target want to set text to not found!");
+            return;
+        }
+        String data = getAttributeData();
+        boolean toBe = false;
+        if(StringUtils.isEmpty(data)||data.equalsIgnoreCase("true")||data.equalsIgnoreCase("yes")||data.equalsIgnoreCase("y")||data.equalsIgnoreCase("on"))
+            toBe = true;
+
+        if(((WebElement)testObject).isSelected()!=toBe)
+            ((WebElement)testObject).click();
     }
 }
