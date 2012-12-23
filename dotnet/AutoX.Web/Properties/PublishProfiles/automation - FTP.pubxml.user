@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit http://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <LastUsedBuildConfiguration>Release</LastUsedBuildConfiguration>
+    <LastUsedPlatform>Any CPU</LastUsedPlatform>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA72H1VdTdWEqnaIzV3CsVpgAAAAACAAAAAAADZgAAwAAAABAAAACDuLmnfxJTbcys8HsxDic9AAAAAASAAACgAAAAEAAAAOJOhYnlgSpe9kkvmvxdlhaAAAAAOQieOnZk1IKrHGhcemvgn7q4JeTptBZer4kErZ/lifCAOLb6gqYh283rmWamU8rb4z9IR8LvLnstCfW7q6OGoh+cW1IWbWe/vk3rWwWoWrMRvdFtmc+ezbUDtgz1UHznR/FgVAiWpssYMJqpxnkybABTRl23Mo9s1UG0k5q66XMUAAAAqSMDcs5ZFosiV2aEZXqV1ADD5Hs=</EncryptedPassword>
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="bin/AutoX.Activities.dll">
+      <publishTime>10/04/2012 12:04:43</publishTime>
+    </File>
+    <File Include="bin/AutoX.Basic.dll">
+      <publishTime>10/04/2012 12:04:39</publishTime>
+    </File>
+    <File Include="bin/AutoX.Database.dll">
+      <publishTime>10/04/2012 12:04:41</publishTime>
+    </File>
+    <File Include="bin/AutoX.Web.dll">
+      <publishTime>10/04/2012 12:10:43</publishTime>
+    </File>
+    <File Include="bin/log4net.dll">
+      <publishTime>08/24/2012 09:25:56</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Web.Infrastructure.dll">
+      <publishTime>07/19/2012 10:59:52</publishTime>
+    </File>
+    <File Include="bin/System.Net.Http.dll">
+      <publishTime>07/10/2012 21:52:12</publishTime>
+    </File>
+    <File Include="bin/System.Net.Http.Formatting.dll">
+      <publishTime>07/10/2012 21:51:54</publishTime>
+    </File>
+    <File Include="bin/System.Net.Http.WebRequest.dll">
+      <publishTime>07/10/2012 21:52:12</publishTime>
+    </File>
+    <File Include="bin/System.Web.Helpers.dll">
+      <publishTime>07/10/2012 12:03:34</publishTime>
+    </File>
+    <File Include="bin/System.Web.Http.dll">
+      <publishTime>07/10/2012 21:51:54</publishTime>
+    </File>
+    <File Include="bin/System.Web.Http.WebHost.dll">
+      <publishTime>07/10/2012 21:51:54</publishTime>
+    </File>
+    <File Include="bin/System.Web.Mvc.dll">
+      <publishTime>07/10/2012 21:51:54</publishTime>
+    </File>
+    <File Include="bin/System.Web.Razor.dll">
+      <publishTime>08/17/2012 11:22:26</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.Deployment.dll">
+      <publishTime>07/10/2012 12:03:34</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.dll">
+      <publishTime>07/10/2012 12:03:34</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.Razor.dll">
+      <publishTime>07/10/2012 12:03:34</publishTime>
+    </File>
+    <File Include="Global.asax">
+      <publishTime>08/24/2012 09:25:54</publishTime>
+    </File>
+    <File Include="Service.asmx">
+      <publishTime>08/24/2012 09:25:54</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>10/04/2012 12:12:00</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

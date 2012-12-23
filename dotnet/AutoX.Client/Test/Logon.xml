@@ -1,0 +1,20 @@
+<AutoX.Steps>
+	<Step Action="Enter" Data="test">
+		<Browser>
+			<UIObject type="text" XPath="//input[@name='userName'  and @type='text' ]" Name="userName" />
+		</Browser>
+	</Step>
+	<Step Action="Enter" Data="test">
+		<Browser>
+			<UIObject type="password" XPath="//input[@name='password'  and @type='password' ]" Name="password" />
+		</Browser>
+	</Step>
+	<Step Action="Click" >
+		<Browser>
+			<UIObject type="image" value="Login" XPath="//input[@name='login'  and @type='image'  and @value='Login' ]" Name="login" />
+		</Browser>
+	</Step>
+</AutoX.Steps>
+
+  
+  

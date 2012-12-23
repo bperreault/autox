@@ -1,0 +1,282 @@
+﻿// Hapa Project, CC
+// Created @2012 08 24 09:25
+// Last Updated  by Huang, Jien @2012 08 24 09:25
+
+#region
+
+using System;
+using System.Activities;
+using System.Activities.Presentation.Model;
+using System.Activities.XamlIntegration;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Xml.Linq;
+using AutoX.Activities.AutoActivities;
+using AutoX.Basic;
+using AutoX.Basic.Model;
+
+#endregion
+
+namespace AutoX.Activities
+{
+    public enum OnError
+    {
+        [Description("Always Return Success, Ignore All Errors")] AlwaysReturnTrue,
+        [Description("Only Show Warning in Result, Even Error")] JustShowWarning,
+        [Description("Mark Error in Result, but Continue Next Step")] Continue,
+        [Description("Stop Current Script, Mark it Failed")] StopCurrentScript,
+        [Description("Terminate this Test Instance")] Terminate
+    }
+
+    public static class Utilities
+    {
+        public const string Filter = "Name;Type;Description;Type;GUID;";
+
+        public static string GetEnumDescription(Enum value)
+        {
+            FieldInfo fi = value.GetType().GetField(value.ToString());
+
+            var attributes =
+                (DescriptionAttribute[]) fi.GetCustomAttributes(
+                    typeof (DescriptionAttribute),
+                    false);
+
+            return attributes.Length > 0 ? attributes[0].Description : value.ToString();
+        }
+
+        public static void DropXElementToDesigner(XElement data, string dropData, ModelItem navtiveModelItem)
+        {
+            string guid = data.GetAttributeValue("GUID");
+            string tag = data.Name.ToString();
+            ModelProperty modelProperty = navtiveModelItem.Properties[dropData];
+            if (modelProperty == null) return;
+            if (modelProperty.Value == null) return;
+            string userData = modelProperty.Value.GetCurrentValue() as string ?? "";
+
+            if (tag.Equals("Datum"))
+            {
+                if (userData.Contains(guid))
+                {
+                    userData = userData.Replace(guid, "");
+                }
+                userData += guid + ";";
+            }
+            if (tag.Equals("UIObject"))
+            {
+                XElement xSteps = XElement.Parse(userData);
+
+                var xStep = new XElement("Step");
+                xStep.SetAttributeValue("UIId", data.GetAttributeValue("GUID"));
+                xStep.SetAttributeValue("UIObject", data.GetAttributeValue("Name"));
+                xStep.SetAttributeValue("Enable", "True");
+                xStep.SetAttributeValue("Data", "");
+                xStep.SetAttributeValue("DefaultData", "");
+                xStep.SetAttributeValue("Action", "");
+                xSteps.Add(xStep);
+                userData = xSteps.ToString();
+            }
+            modelProperty.SetValue(userData);
+        }
+
+        public static bool CheckValidDrop(XElement data, params string[] types)
+        {
+            if (data == null)
+                return false;
+            string type = data.Name.ToString();
+            return !String.IsNullOrEmpty(type) && types.Any(s => s.Equals(type));
+        }
+
+        public static Activity GetActivityFromContentString(string content)
+        {
+            return ActivityXamlServices.Load(new StringReader(content));
+        }
+
+        public static Activity GetActivityFromXElement(XElement data)
+        {
+            string scriptType = data.GetAttributeValue("ScriptType");
+            if (!String.IsNullOrEmpty(scriptType))
+            {
+                IHost host = HostManager.GetInstance().GetHost();
+                if (scriptType.Equals("TestCase"))
+                {
+                    var activity = new CallTestCaseActivity
+                                       {
+                                           TestCaseId = data.GetAttributeValue("GUID"),
+                                           TestCaseName = data.GetAttributeValue("Name"),
+                                           DisplayName = "Call Test Case: " + data.GetAttributeValue("Name")
+                                       };
+                    activity.SetHost(host);
+                    return activity;
+                }
+                if (scriptType.Equals("TestScreen"))
+                {
+                    var activity = new CallTestScreenActivity
+                                       {
+                                           TestSreenId = data.GetAttributeValue("GUID"),
+                                           TestSreenName = data.GetAttributeValue("Name"),
+                                           DisplayName = "Call Test Screen: " + data.GetAttributeValue("Name")
+                                       };
+                    activity.SetHost(host);
+                    return activity;
+                }
+                if (scriptType.Equals("TestSuite"))
+                {
+                    var activity = new CallTestSuiteActivity
+                                       {
+                                           TestSuiteId = data.GetAttributeValue("GUID"),
+                                           TestSuiteName = data.GetAttributeValue("Name"),
+                                           TestSuiteDescription = data.GetAttributeValue("Description"),
+                                           DisplayName = "Call Test Suite: " + data.GetAttributeValue("Name")
+                                       };
+                    activity.SetHost(host);
+                    return activity;
+                }
+            }
+            return null;
+        }
+
+        public static List<UserData> GetUserData(string rawData, IHost host)
+        {
+            Dictionary<string, UserData> dic = GetRawUserData(rawData, host);
+            return dic.Values.ToList();
+        }
+
+        public static Dictionary<string, UserData> GetRawUserData(string rawData, IHost host)
+        {
+            var dic = new Dictionary<string, UserData>();
+            if (!String.IsNullOrEmpty(rawData))
+            {
+                string[] dataStrings = rawData.Split(';');
+                foreach (string dataString in dataStrings)
+                {
+                    if (String.IsNullOrEmpty(dataString))
+                        continue;
+                    IDataObject sData = host.GetDataObject(dataString);
+                    if (sData == null) continue;
+                    XElement xData = sData.GetXElementFromDataObject();
+                    string dataSetName = xData.GetAttributeValue("Name");
+                    string xExtra = xData.GetAttributeValue("EXTRA");
+                    if (!string.IsNullOrEmpty(xExtra))
+                    {
+                        XElement xEe = XElement.Parse(xExtra);
+
+                        foreach (XAttribute xAttribute in xEe.Attributes())
+                        {
+                            string name = xAttribute.Name.ToString();
+                            if (Filter.Contains(name)) continue;
+                            string dataValue = xAttribute.Value;
+                            var data = new UserData
+                                           {
+                                               DataSet = dataSetName,
+                                               Name = name,
+                                               Value = dataValue,
+                                               DataSetId = dataString
+                                           };
+                            //remove the duplicate value
+                            if (dic.ContainsKey(name))
+                                dic[name] = data;
+                            else
+                            {
+                                dic.Add(name, data);
+                            }
+                        }
+                    }
+                }
+            }
+            return dic;
+        }
+
+        public static Dictionary<string, string> GetActualUserData(string rawData, IHost host)
+        {
+            var dic = new Dictionary<string, string>();
+            if (!String.IsNullOrEmpty(rawData))
+            {
+                string[] dataStrings = rawData.Split(';');
+                foreach (string dataString in dataStrings)
+                {
+                    if (String.IsNullOrEmpty(dataString))
+                        continue;
+                    string sData = host.GetDataObject(dataString).EXTRA;
+                    if (String.IsNullOrEmpty(sData)) continue;
+                    XElement xData = XElement.Parse(sData);
+
+                    foreach (XAttribute xAttribute in xData.Attributes())
+                    {
+                        string name = xAttribute.Name.ToString();
+                        if (Filter.Contains(name)) continue;
+                        string dataValue = xAttribute.Value;
+                        string data = dataValue;
+                        //remove the duplicate value
+                        if (dic.ContainsKey(name))
+                            dic[name] = data;
+                        else
+                        {
+                            dic.Add(name, data);
+                        }
+                    }
+                }
+            }
+            return dic;
+        }
+
+        public static void PrintDictionary(Dictionary<string, string> dict)
+        {
+            string pS = dict.Aggregate("\n",
+                                       (current, variable) => current + (variable.Key + "=" + variable.Value + "\n"));
+            Logger.GetInstance().Log().Debug(pS);
+        }
+
+
+        public static ArrayList GetStepsList(string textValue, ArrayList possibleAction, IHost host)
+        {
+            var ret = new ArrayList();
+            if (textValue != null)
+            {
+                XElement xSteps = XElement.Parse(textValue);
+                foreach (XElement element in xSteps.Descendants("Step"))
+                {
+                    string uiId = element.GetAttributeValue("UIId");
+                    if (String.IsNullOrEmpty(uiId)) continue;
+
+                    IDataObject sData = host.GetDataObject(uiId);
+                    if (sData == null) continue;
+                    //var xData = sData.GetXElementFromDataObject();
+                    string uiObject = element.GetAttributeValue("UIObject");
+                    if (String.IsNullOrEmpty(uiObject)) continue;
+                    bool enable = Boolean.Parse(element.GetAttributeValue("Enable"));
+                    string defaultDataValue = element.GetAttributeValue("DefaultData");
+                    string dataName = element.GetAttributeValue("Data");
+                    string action = element.GetAttributeValue("Action") ?? "";
+                    var step = new Step
+                                   {
+                                       Action = action,
+                                       UIId = uiId,
+                                       UIObject = uiObject,
+                                       Enable = enable,
+                                       DefaultData = defaultDataValue,
+                                       Data = dataName,
+                                       PossibleAction = possibleAction
+                                   };
+                    ret.Add(step);
+                }
+            }
+            return ret;
+        }
+
+        public static string PassData(string outerData, string userData, bool ownDataFirst)
+        {
+            string finalRet;
+            if (!ownDataFirst)
+                finalRet = userData + ";" + outerData;
+            else
+            {
+                finalRet = outerData + ";" + userData;
+            }
+            return finalRet;
+        }
+    }
+}

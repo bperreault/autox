@@ -1,0 +1,9 @@
+<Validation>
+
+	<Rule Action='CreateFolder' Type='Folder' Object='Project' />
+	<Rule Action='CreateSuite' Type='Folder' Object='Project' />
+	<Rule Action='CreateCase' Type='Folder' Object='Project' />
+	<Rule Action='CreateScreen' Type='Folder' Object='Project' />
+	<Rule Action='CreateFolder' Type='Folder' Object='Data' />
+	<Rule Action='CreateFolder' Type='Folder' Object='UI' />
+</Validation>

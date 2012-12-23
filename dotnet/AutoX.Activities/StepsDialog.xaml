@@ -1,0 +1,80 @@
+﻿<Window x:Class="AutoX.Activities.StepsDialog" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" mc:Ignorable="d" d:DesignHeight="480" d:DesignWidth="640">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="32" />
+        </Grid.RowDefinitions>
+        <DataGrid Grid.Row="0" AutoGenerateColumns="False" CanUserAddRows="False" Name="StepsTable"
+                  RowDetailsVisibilityMode="VisibleWhenSelected" SelectionMode="Extended" SelectionUnit="FullRow"
+                  CanUserSortColumns="False" ScrollViewer.VerticalScrollBarVisibility="Visible" IsEnabled="True" CanUserDeleteRows="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="2*" Binding="{Binding UIObject}" Header="UI Object" IsReadOnly="True" />
+                <DataGridComboBoxColumn Width="1*" SelectedItemBinding="{Binding Action}" Header="Action">
+                    <DataGridComboBoxColumn.ElementStyle>
+                        <Style TargetType="ComboBox">
+                            <Setter Property="ItemsSource" Value="{Binding PossibleAction}" />
+                            <Setter Property="IsReadOnly" Value="True" />
+
+                        </Style>
+                    </DataGridComboBoxColumn.ElementStyle>
+                    <DataGridComboBoxColumn.EditingElementStyle>
+                        <Style TargetType="ComboBox">
+                            <Setter Property="ItemsSource" Value="{Binding PossibleAction}" />
+                        </Style>
+                    </DataGridComboBoxColumn.EditingElementStyle>
+
+                </DataGridComboBoxColumn>
+                <DataGridTemplateColumn Width="2*" Header="Data Name" ToolTipService.ToolTip="Data's Name">
+
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Data}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ComboBox IsEditable="True" ItemsSource="{Binding PossibleData}"
+                                      SelectedItem="{Binding Data}" Text="{Binding Data}" IsSynchronizedWithCurrentItem="False" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <!--<DataGridComboBoxColumn Width="2*" TextBinding="{Binding Data}" SelectedItemBinding="{Binding Data}" Header="Data Name"
+                                        ToolTipService.ToolTip="Data's Name">
+                    <DataGridComboBoxColumn.ElementStyle>
+                        <Style TargetType="ComboBox">
+                            <Setter Property="ItemsSource" Value="{Binding PossibleData}" />
+                            <Setter Property="IsReadOnly" Value="False" />
+                        </Style>
+                    </DataGridComboBoxColumn.ElementStyle>
+                    <DataGridComboBoxColumn.EditingElementStyle>
+                        <Style TargetType="ComboBox">
+                            <Setter Property="IsEditable" Value="True" />
+                            <Setter Property="ItemsSource" Value="{Binding PossibleData}" />
+                        </Style>
+                    </DataGridComboBoxColumn.EditingElementStyle>
+                </DataGridComboBoxColumn>-->
+                <DataGridTextColumn Width="3*" Binding="{Binding DefaultData}" Header="Default Data" IsReadOnly="False"
+                                    ToolTipService.ToolTip="When Data is not provided, use this as default input data." />
+                <DataGridCheckBoxColumn Width="0.7*" Binding="{Binding Enable}" Header="Enable" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Content="Up" Margin="2" Click="ButtonUpClick" />
+            <Button Grid.Column="1" Content="Down" Margin="2" Click="ButtonDownClick" />
+            <Button Grid.Column="2" Content="Delete" Margin="2" Click="ButtonDeleteClick" />
+            <Button Grid.Column="3" Content="OK" Margin="2" Click="ButtonOKClick" />
+            <Button Grid.Column="4" Content="Cancel" Margin="2" Click="ButtonCancelClick" />
+        </Grid>
+
+    </Grid>
+</Window>
