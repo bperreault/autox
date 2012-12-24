@@ -11,6 +11,7 @@ using System.ComponentModel;
 using System.Web.Services;
 using System.Xml.Linq;
 using AutoX.Basic;
+using System.Web.Script.Services;
 
 #endregion
 
@@ -23,9 +24,22 @@ namespace AutoX.Web
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [ToolboxItem(false)]
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
-        // [System.Web.Script.Services.ScriptService]
+    [System.Web.Script.Services.ScriptService]
     public class Service : WebService
     {
+        public Service()
+        {
+            //TODO do initialization here
+        }
+
+        [WebMethod]
+        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
+
+        public string Action(string input)
+        {
+            throw new NotImplementedException();
+        }
+
         [WebMethod]
         public string Hello(string input)
         {
