@@ -2,7 +2,7 @@ package autox.actions;
 
 import autox.log.Log;
 import autox.utils.XML;
-import org.apache.axis.utils.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.jdom.Content;
 import org.jdom.Element;
 

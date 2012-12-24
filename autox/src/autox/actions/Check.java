@@ -1,6 +1,6 @@
 package autox.actions;
 
-import org.apache.axis.utils.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.openqa.selenium.WebElement;
 
 /**

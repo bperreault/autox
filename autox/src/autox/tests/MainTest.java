@@ -3,8 +3,7 @@ package autox.tests;
 import autox.config.Configuration;
 import autox.log.Log;
 import autox.utils.Cipher;
-import org.apache.axis.encoding.Base64;
-
+import org.apache.xerces.impl.dv.util.Base64;
 
 
 public class MainTest {
