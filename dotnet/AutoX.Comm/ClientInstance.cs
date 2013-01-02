@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using AutoX.Basic;
-using AutoX.Comm;
-using System.Threading;
+using AutoX.Client.Core;
 
-namespace AutoX.Client.Core
+namespace AutoX.Comm
 {
     public class ClientInstance
     {

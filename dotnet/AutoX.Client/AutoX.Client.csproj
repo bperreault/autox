@@ -152,8 +152,12 @@
       <Name>AutoX.Basic</Name>
     </ProjectReference>
     <ProjectReference Include="..\AutoX.Client.Core\AutoX.Client.Core.csproj">
-      <Project>{4C838B4A-F1C7-4B78-B6C4-EB65EAD3FBE0}</Project>
+      <Project>{4c838b4a-f1c7-4b78-b6c4-eb65ead3fbe0}</Project>
       <Name>AutoX.Client.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AutoX.Comm\AutoX.Comm.csproj">
+      <Project>{ea1d75aa-b145-4b6b-84e5-9933a5d537f0}</Project>
+      <Name>AutoX.Comm</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

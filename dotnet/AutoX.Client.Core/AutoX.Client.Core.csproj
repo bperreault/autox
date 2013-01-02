@@ -57,7 +57,6 @@
     <Compile Include="Browser.cs" />
     <Compile Include="Check.cs" />
     <Compile Include="Click.cs" />
-    <Compile Include="ClientInstance.cs" />
     <Compile Include="Close.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="Enter.cs" />
@@ -74,10 +73,6 @@
     <ProjectReference Include="..\AutoX.Basic\AutoX.Basic.csproj">
       <Project>{bb39bdb6-d9a0-4b29-98c5-977069b8d575}</Project>
       <Name>AutoX.Basic</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\AutoX.Comm\AutoX.Comm.csproj">
-      <Project>{ea1d75aa-b145-4b6b-84e5-9933a5d537f0}</Project>
-      <Name>AutoX.Comm</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

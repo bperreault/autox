@@ -7,13 +7,12 @@
 using System;
 using System.ComponentModel;
 using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Xml.Linq;
 using AutoX.Basic;
 using AutoX.Client.Core;
+using AutoX.Comm;
 using Microsoft.Win32;
 
 #endregion
@@ -26,10 +25,9 @@ namespace AutoX.Client
     public partial class MainWindow
     {
         private WindowState _lastWindowState;
-        private volatile bool _registered;
-        private volatile bool _runFlag;
+        
         private bool _shouldClose;
-        private ClientInstance _defaultClientInstance = new ClientInstance();
+        private readonly ClientInstance _defaultClientInstance = new ClientInstance();
 
         public MainWindow()
         {
@@ -37,25 +35,6 @@ namespace AutoX.Client
             Hide();
             //Task.Factory.StartNew(DoWhileWork);
             //Dispatcher.Invoke(new Action(DoWhileWork));
-        }
-
-        private void DoWhileWork()
-        {
-            while (true)
-            {
-                if (_runFlag)
-                {
-                    if (!_registered)
-                    {
-                        Register();
-                    }
-                    RequestCommand();
-                }
-                else
-                {
-                    Thread.Sleep(11*1000);
-                }
-            }
         }
 
         private void MenuItemExit(object sender, RoutedEventArgs e)
@@ -80,7 +59,7 @@ namespace AutoX.Client
 
         private void Register()
         {
-            _registered = _defaultClientInstance.Register();
+            _defaultClientInstance.Register();
            
         }
 
@@ -212,24 +191,16 @@ namespace AutoX.Client
 
         private void OnMenuItemStartClick(object sender, EventArgs e)
         {
-            //if (_commadThread != null)
-            //    _commadThread.Abort();
-
-            //_threadState = ThreadState.Running;
-            //_commadThread = new Thread(CommandReader);
-            //// add this line, or the WatiN would show Error message!
-            //_commadThread.SetApartmentState(ApartmentState.STA);
-            //_commadThread.Start();
-            _runFlag = true;
-            _registered = false;
+            
+            _defaultClientInstance.Start();
+            
         }
 
         private void OnMenuItemStopClick(object sender, EventArgs e)
         {
-            //if (_commadThread != null)
-            //    _threadState = ThreadState.Stopped;
-            _runFlag = false;
-            _registered = false;
+            
+            _defaultClientInstance.Stop();
+            
         }
 
         private void OnMenuItemRegisterClick(object sender, EventArgs e)
