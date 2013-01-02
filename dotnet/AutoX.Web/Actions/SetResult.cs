@@ -17,14 +17,14 @@ namespace AutoX.Web.Actions
     {
         protected override void Execute(NativeActivityContext context)
         {
-            string commandStr = Utils.GetContextValue(context, "command");
+            var commandStr = Utils.GetContextValue(context, "command");
 
             try
             {
                 //put result to instance, the instance will trigger the workflow things
-                XElement content = XElement.Parse(commandStr);
-                XElement node = XElement.Parse(content.FirstNode.ToString());
-                string instanceId = node.GetAttributeValue("InstanceId");
+                var content = XElement.Parse(commandStr);
+                var node = XElement.Parse(content.FirstNode.ToString());
+                var instanceId = node.GetAttributeValue("InstanceId");
                 InstanceManager.GetInstance().GetTestInstance(instanceId).SetResult(node);
 
                 Utils.SetSuccessReturnMessage(context);
@@ -32,7 +32,7 @@ namespace AutoX.Web.Actions
             }
             catch (Exception ex)
             {
-                Logger.GetInstance().Log().Debug("we receive invalid command string:\n" + commandStr + "\n" + ex.Message);
+                Log.Debug("we receive invalid command string:\n" + commandStr + "\n" + ex.Message);
                 Utils.SetFailedReturnMessage(context, "SetResult failed.\n" + ex.Message);
                 return;
             }

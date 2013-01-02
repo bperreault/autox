@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Xml.Linq;
 using AutoX.Basic.Model;
 using AutoX.Comm;
+using IDataObject = AutoX.Basic.Model.IDataObject;
 
 #endregion
 
@@ -27,7 +28,7 @@ namespace AutoX
 
         private void RefreshClientTable(object sender, RoutedEventArgs e)
         {
-            string ret = Communication.GetInstance().GetComputersInfo();
+            var ret = Communication.GetInstance().GetComputersInfo();
             _clientSource.Clear();
             foreach (XElement computer in XElement.Parse(ret).Descendants())
             {
@@ -39,7 +40,7 @@ namespace AutoX
         private void ClientTableEnterFilter(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.Enter) return;
-            string filter = filterClient.Text;
+            var filter = filterClient.Text;
             ClientTable.ItemsSource = _clientSource.GetMatched(filter);
             e.Handled = true;
         }
@@ -47,7 +48,7 @@ namespace AutoX
         private void InstanceTableEnterFilter(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.Enter) return;
-            string filter = filterInstance.Text;
+            var filter = filterInstance.Text;
             InstanceTable.ItemsSource = _instanceSource.GetMatched(filter);
             e.Handled = true;
         }
@@ -55,7 +56,7 @@ namespace AutoX
         private void TestCaseTableEnterFilter(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.Enter) return;
-            string filter = filterTestCaseResult.Text;
+            var filter = filterTestCaseResult.Text;
             TestCaseResultTable.ItemsSource = _testCaseResultSource.GetMatched(filter);
             e.Handled = true;
         }
@@ -63,7 +64,7 @@ namespace AutoX
         private void TestStepTableEnterFilter(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.Enter) return;
-            string filter = filterTestCaseResult.Text;
+            var filter = filterTestCaseResult.Text;
             TestCaseResultTable.ItemsSource = _testCaseResultSource.GetMatched(filter);
             e.Handled = true;
         }
@@ -71,7 +72,7 @@ namespace AutoX
         private void TranslationEnterFilter(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.Enter) return;
-            string filter = filterTranslation.Text;
+            var filter = filterTranslation.Text;
             TranslationTable.ItemsSource = _translationSource.GetMatched(filter);
             e.Handled = true;
         }
@@ -80,29 +81,29 @@ namespace AutoX
         {
             var table = sender as DataGrid;
             if (table == null) return;
-            object selected = table.SelectedItem;
+            var selected = table.SelectedItem;
             if (selected == null) return;
-            XElement element = selected.GetXElementFromObject();
+            var element = ((IDataObject) selected).GetXElementFromObject();
             var source = table.ItemsSource as Collection<object>;
             if (source == null) return;
-            int index = source.IndexOf(selected);
+            var index = source.IndexOf(selected);
             var dialog = new XElementDialog(element, false);
             dialog.ShowDialog();
             if (dialog.DialogResult != true) return;
-            object updated = dialog.GetElement().GetObjectFromXElement();
+            var updated = dialog.GetElement().GetObjectFromXElement();
             source[index] = updated;
             table.ItemsSource = source;
         }
 
-        private void TestCaseResultTableSelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        private void TestCaseResultTableSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (TestCaseResultTable == null) return;
             var selected = TestCaseResultTable.SelectedItem as Result;
             if (selected == null) return;
 
-            string sRoot = Communication.GetInstance().GetChildren(selected.GUID);
+            var sRoot = Communication.GetInstance().GetChildren(selected.GUID);
             var xRoot = XElement.Parse(sRoot);
-            if(xRoot.HasElements)
+            if (xRoot.HasElements)
             {
                 _testStepSource.Clear();
                 foreach (XElement kid in xRoot.Descendants())

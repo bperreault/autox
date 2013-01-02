@@ -18,23 +18,22 @@ namespace AutoX.Database
     public class DBManager
     {
         //put this string to your web.config, you can change this string to connect to another database
-        private static readonly string DataBaseString =Configuration.ConnectionString();
-        
+        private static readonly string DataBaseString = Configuration.ConnectionString();
+
         private static readonly DB AutoDB = new DB(DataBaseString);
         private static DBManager _instance;
 
         private DBManager()
         {
-            
             if (!AutoDB.DatabaseExists())
             {
                 AutoDB.CreateDatabase();
 
                 //insert project, data, ui, result
-                string projectId = Configuration.Settings("ProjectRoot", "0010010000001");
-                string dataId = Configuration.Settings("DataRoot", "0030030000003");
-                string uiId = Configuration.Settings("ObjectPool", "0040040000004");
-                string resultId = Configuration.Settings("ResultsRoot", "0020020000002");
+                var projectId = Configuration.Settings("ProjectRoot", "0010010000001");
+                var dataId = Configuration.Settings("DataRoot", "0030030000003");
+                var uiId = Configuration.Settings("ObjectPool", "0040040000004");
+                var resultId = Configuration.Settings("ResultsRoot", "0020020000002");
                 //DataObjectExt.GetDataObjectFromXElement(@"<Project GUID='"+projectId+"' ParentId='' Type='Project' />");
                 var project = new Folder {GUID = projectId, Name = "Project"};
                 var data = new Folder {GUID = dataId, Name = "Data"};
@@ -64,14 +63,14 @@ namespace AutoX.Database
         public List<IDataObject> FindDataFromDB(string parentId)
         {
             var list = new List<IDataObject>();
-            IQueryable<Index> query = from o in AutoDB.Indexes
-                                      where o.ParentId.Equals(parentId)
-                                      select o;
+            var query = from o in AutoDB.Indexes
+                        where o.ParentId.Equals(parentId)
+                        select o;
             foreach (Index index in query)
             {
-                string guid = index.GUID;
-                string type = index.Type;
-                ITable table = GetTable(type);
+                var guid = index.GUID;
+                var type = index.Type;
+                var table = GetTable(type);
                 if (table == null)
                     continue;
                 var tQueryable = table as IQueryable<IDataObject>;
@@ -81,7 +80,7 @@ namespace AutoX.Database
                 {
                     continue;
                 }
-                IDataObject dataObject = tQueryable.First(c => c.GUID.Equals(guid));
+                var dataObject = tQueryable.First(c => c.GUID.Equals(guid));
                 if (dataObject != null) list.Add(dataObject);
             }
             return list;
@@ -108,13 +107,13 @@ namespace AutoX.Database
 
         public IDataObject FindOneDataFromDB(string GUID)
         {
-            IQueryable<Index> query = from o in AutoDB.Indexes
-                                      where o.GUID.Equals(GUID)
-                                      select o;
+            var query = from o in AutoDB.Indexes
+                        where o.GUID.Equals(GUID)
+                        select o;
             if (!query.Any())
                 return null;
-            string type = query.First().Type;
-            ITable table = GetTable(type);
+            var type = query.First().Type;
+            var table = GetTable(type);
             if (table == null)
                 return null;
             var tQueryable = table as IQueryable<IDataObject>;
@@ -127,23 +126,23 @@ namespace AutoX.Database
 
         public void DeleteOneDataFromDB(string guid)
         {
-            IQueryable<Index> q = from o in AutoDB.Indexes
-                                  where o.GUID.Equals(guid)
-                                  select o;
-            Index itself = q.First();
+            var q = from o in AutoDB.Indexes
+                    where o.GUID.Equals(guid)
+                    select o;
+            var itself = q.First();
             if (itself == null)
                 return;
             //recursive deletion   
             // delete all its children
-            IQueryable<Index> query = from o in AutoDB.Indexes
-                                      where o.ParentId.Equals(guid)
-                                      select o;
+            var query = from o in AutoDB.Indexes
+                        where o.ParentId.Equals(guid)
+                        select o;
             foreach (Index index in query)
             {
                 DeleteOneDataFromDB(index.GUID);
             }
             // then delete itself
-            string type = itself.Type;
+            var type = itself.Type;
             AutoDB.Indexes.DeleteOnSubmit(itself);
             DeleteOneItemInEntityTableFromDB(guid, type);
             AutoDB.SubmitChanges();
@@ -151,7 +150,7 @@ namespace AutoX.Database
 
         public void DeleteOneItemInEntityTableFromDB(string guid, string type)
         {
-            ITable table = GetTable(type);
+            var table = GetTable(type);
             if (table == null)
                 return;
             var tQueryable = table as IQueryable<IDataObject>;
@@ -159,7 +158,7 @@ namespace AutoX.Database
             {
                 return;
             }
-            IDataObject data = tQueryable.First(c => c.GUID.Equals(guid));
+            var data = tQueryable.First(c => c.GUID.Equals(guid));
             if (data != null)
             {
                 table.DeleteOnSubmit(data);
@@ -171,18 +170,18 @@ namespace AutoX.Database
         {
             //check 2 places: 1. index 2. entity table
             //if existed, update it.
-            string type = iDataObject.GetType().Name;
+            var type = iDataObject.GetType().Name;
             var index = new Index
-                            {
-                                GUID = guid,
-                                ParentId = parentId,
-                                Type = type,
-                                Created = DateTime.UtcNow,
-                                Updated = DateTime.UtcNow
-                            };
-            IQueryable<Index> q = from o in AutoDB.Indexes
-                                  where o.GUID.Equals(guid)
-                                  select o;
+                {
+                    GUID = guid,
+                    ParentId = parentId,
+                    Type = type,
+                    Created = DateTime.UtcNow,
+                    Updated = DateTime.UtcNow
+                };
+            var q = from o in AutoDB.Indexes
+                    where o.GUID.Equals(guid)
+                    select o;
             if (iDataObject.Created <= DateTime.MinValue)
                 iDataObject.Created = DateTime.UtcNow;
             iDataObject.Updated = DateTime.UtcNow;
@@ -197,10 +196,10 @@ namespace AutoX.Database
             {
                 AutoDB.Indexes.DeleteOnSubmit(q.First());
                 AutoDB.Indexes.InsertOnSubmit(index);
-                ITable table = GetTable(type);
+                var table = GetTable(type);
                 if (table == null)
                 {
-                    Logger.GetInstance().Log().Error("Type[" + type + "] of table does not existed!");
+                    Log.Error("Type[" + type + "] of table does not existed!");
                     return;
                 }
                 AddOrUpdateEntity(guid, iDataObject, table);
@@ -220,7 +219,7 @@ namespace AutoX.Database
             }
             else
             {
-                IDataObject data = tQueryable.First(c => c.GUID.Equals(guid));
+                var data = tQueryable.First(c => c.GUID.Equals(guid));
                 if (data == null)
                 {
                     //not existed, need to insert

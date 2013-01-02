@@ -53,7 +53,7 @@ namespace AutoX
             XName.Tag = element.Name.ToString();
             XName.TextChanged += XNameTextChanged;
 
-            int count = ContentGrid.Children.Count;
+            var count = ContentGrid.Children.Count;
             ContentGrid.Children.RemoveRange(0, count);
 
             //ContentGrid.Rows = element.Attributes().Count();
@@ -79,11 +79,11 @@ namespace AutoX
             var sent = sender as TextBox;
             if (sent == null) return;
 
-            string nameX = sent.Tag.ToString();
-            string valueX = sent.Text;
+            var nameX = sent.Tag.ToString();
+            var valueX = sent.Text;
             if (string.IsNullOrWhiteSpace(valueX))
             {
-                MessageBoxResult choice = MessageBox.Show(
+                var choice = MessageBox.Show(
                     "Set element name means you want to delete it.\nAre you sure?", "Delete an Element",
                     MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (choice == MessageBoxResult.Yes)
@@ -110,11 +110,11 @@ namespace AutoX
                 )
             {
                 var label = new TextBlock
-                                {
-                                    Text = a.Name.ToString(),
-                                    TextWrapping = TextWrapping.Wrap,
-                                    FontWeight = FontWeights.Bold
-                                };
+                    {
+                        Text = a.Name.ToString(),
+                        TextWrapping = TextWrapping.Wrap,
+                        FontWeight = FontWeights.Bold
+                    };
                 var value = new TextBlock {Text = a.Value, TextWrapping = TextWrapping.Wrap};
                 ContentGrid.Children.Add(label);
                 ContentGrid.Children.Add(value);
@@ -133,16 +133,16 @@ namespace AutoX
                 ContentGrid.Children.Add(label);
 
                 var value = new TextBox
-                                {
-                                    Text = a.Value,
-                                    Tag = a.Name.ToString(),
-                                    MaxWidth = 768,
-                                    MaxHeight = 256,
-                                    TextWrapping = TextWrapping.WrapWithOverflow,
-                                    VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
-                                    HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
-                                    AcceptsReturn = true
-                                };
+                    {
+                        Text = a.Value,
+                        Tag = a.Name.ToString(),
+                        MaxWidth = 768,
+                        MaxHeight = 256,
+                        TextWrapping = TextWrapping.WrapWithOverflow,
+                        VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+                        HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+                        AcceptsReturn = true
+                    };
                 value.TextChanged += ValueTextChanged;
                 ContentGrid.Children.Add(value);
             }
@@ -151,8 +151,8 @@ namespace AutoX
 
         private void ValueTextChanged(object sender, TextChangedEventArgs e)
         {
-            string nameX = ((TextBox) sender).Tag.ToString();
-            string valueX = ((TextBox) sender).Text;
+            var nameX = ((TextBox) sender).Tag.ToString();
+            var valueX = ((TextBox) sender).Text;
             _content.SetAttributeValue(nameX, valueX);
         }
 
@@ -175,9 +175,9 @@ namespace AutoX
 
         private void ButtonNewClick(object sender, RoutedEventArgs e)
         {
-            string newAttrName = "NewAttribute";
+            var newAttrName = "NewAttribute";
 
-            int i = 1;
+            var i = 1;
             while (_content.Attribute(newAttrName) != null)
             {
                 newAttrName = "NewAttribute" + i.ToString(CultureInfo.InvariantCulture).Trim();
@@ -201,7 +201,7 @@ namespace AutoX
             //valid first
             try
             {
-                XElement newNode = XElement.Parse(SrcEdit.Text);
+                var newNode = XElement.Parse(SrcEdit.Text);
 
                 _content.ReplaceAll(newNode.Elements());
                 _content.ReplaceAttributes(newNode.Attributes());
@@ -244,7 +244,7 @@ namespace AutoX
             //valid first
             try
             {
-                XElement newNode = XElement.Parse(SrcEdit.Text);
+                var newNode = XElement.Parse(SrcEdit.Text);
 
                 _content.ReplaceAll(newNode.Elements());
                 _content.ReplaceAttributes(newNode.Attributes());

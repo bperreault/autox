@@ -16,12 +16,12 @@ namespace AutoX.Web.Actions
     {
         protected override void Execute(NativeActivityContext context)
         {
-            string commandStr = Utils.GetContextValue(context, "command");
+            var commandStr = Utils.GetContextValue(context, "command");
 
             try
             {
-                XElement content = XElement.Parse(commandStr);
-                XElement first = content.Element("AutoX.Basic.Model.Instance");
+                var content = XElement.Parse(commandStr);
+                var first = content.Element("AutoX.Basic.Model.Instance");
 
                 if (InstanceManager.GetInstance().UpdateInstance(first))
                 {

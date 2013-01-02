@@ -46,9 +46,9 @@ namespace AutoX.Activities
             var converter = new ModelPropertyEntryToOwnerActivityConverter();
             var modelItem = (ModelItem) converter.Convert(propertyValue.ParentProperty, typeof (ModelItem), false, null);
             if (modelItem == null) return;
-            ModelProperty property = modelItem.Properties["UserData"];
+            var property = modelItem.Properties["UserData"];
             if (property == null) return;
-            string userData = "";
+            var userData = "";
             if (property.Value != null) userData = property.Value.ToString();
 
             var stepsDialog = new StepsDialog();

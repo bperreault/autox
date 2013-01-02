@@ -1,4 +1,4 @@
-﻿// Hapa Project, CC
+// Hapa Project, CC
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
@@ -10,7 +10,7 @@ using AutoX.Basic;
 
 #endregion
 
-namespace AutoX.Client
+namespace AutoX.Client.Core
 {
     public class StepResult
     {
@@ -41,10 +41,10 @@ namespace AutoX.Client
 
         private void SnapOn(string config)
         {
-            string snapshotOnError = Configuration.Settings(config, "false");
+            var snapshotOnError = Configuration.Settings(config, "false");
             if (Convert.ToBoolean(snapshotOnError))
             {
-                string content = Browser.GetInstance().Snapshot();
+                var content = Browser.GetInstance().Snapshot();
                 var snap = new XElement("Snapshot");
                 snap.SetAttributeValue("Snapshot", content);
                 _result.Add(snap);
@@ -53,12 +53,12 @@ namespace AutoX.Client
 
         public void Warning(string reason)
         {
-            XAttribute xResult = _result.Attribute("Result");
+            var xResult = _result.Attribute("Result");
             if (xResult == null)
                 _result.SetAttributeValue("Result", "Warning");
             else
             {
-                string value = xResult.Value;
+                var value = xResult.Value;
                 if (!value.Equals("Error"))
                     _result.SetAttributeValue("Result", "Warning");
             }
@@ -73,7 +73,7 @@ namespace AutoX.Client
                 return;
             }
 
-            XAttribute xReason = _result.Attribute("Reason");
+            var xReason = _result.Attribute("Reason");
             if (xReason == null)
                 _result.SetAttributeValue("Reason", reason);
             else

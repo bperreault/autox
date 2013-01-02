@@ -17,23 +17,23 @@ namespace AutoX.Web.Actions
     {
         protected override void Execute(NativeActivityContext context)
         {
-            string commandStr = Utils.GetContextValue(context, "command");
-            Logger.GetInstance().Log().Debug(commandStr);
+            var commandStr = Utils.GetContextValue(context, "command");
+            Log.Debug(commandStr);
             try
             {
-                XElement content = XElement.Parse(commandStr);
-                XAttribute xAttribute = content.Attribute("ComputerName");
+                var content = XElement.Parse(commandStr);
+                var xAttribute = content.Attribute("ComputerName");
                 if (xAttribute != null)
                 {
-                    string computerName = xAttribute.Value;
-                    string retMessage = ComputersManager.GetInstance().GetComputer(computerName).GetCommand();
+                    var computerName = xAttribute.Value;
+                    var retMessage = ComputersManager.GetInstance().GetComputer(computerName).GetCommand();
                     Utils.SetReturnMessage(context, retMessage);
                     return;
                 }
             }
             catch (Exception ex)
             {
-                Logger.GetInstance().Log().Debug("we receive invalid command string or ComputerName is NULL:\n" +
+                Log.Debug("we receive invalid command string or ComputerName is NULL:\n" +
                                                  commandStr + "\n" + ex.Message);
             }
             Utils.SetIdleReturnMessage(context);

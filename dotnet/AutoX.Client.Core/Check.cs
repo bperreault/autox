@@ -1,17 +1,17 @@
-﻿// Hapa Project, CC
+// Hapa Project, CC
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
 #region
 
+using System;
 using System.Xml.Linq;
-using OpenQA.Selenium;
 
 #endregion
 
-namespace AutoX.Client
+namespace AutoX.Client.Core
 {
-    internal class Enter : AbstractAction
+    public class Check : AbstractAction
     {
         public override XElement Act()
         {
@@ -22,11 +22,14 @@ namespace AutoX.Client
             }
             else
             {
-                IWebElement text = UIObject[0];
-                text.Clear();
-                if (!string.IsNullOrEmpty(Data))
+                if (string.IsNullOrEmpty(Data))
+                    UIObject[0].Click();
+                else
                 {
-                    text.SendKeys(Data);
+                    var toCheck = Convert.ToBoolean(Data);
+                    var checkStatus = UIObject[0].Selected;
+                    if (toCheck && !checkStatus || !toCheck && checkStatus)
+                        UIObject[0].Click();
                 }
             }
             return sr.GetResult();

@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AutoX.Client</RootNamespace>
     <AssemblyName>AutoX.Client</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -42,6 +42,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -51,6 +52,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>D1E6591FE50F82DA92C92B7DE5E284CDBC825602</ManifestCertificateThumbprint>
@@ -101,27 +103,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Check.cs" />
-    <Compile Include="Close.cs" />
-    <Compile Include="Command.cs" />
     <Compile Include="NotificationAreaIcon.cs" />
-    <Compile Include="Start.cs" />
-    <Compile Include="StepResult.cs" />
-    <Compile Include="Wait.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="AbstractAction.cs" />
-    <Compile Include="ActionsFactory.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Browser.cs" />
-    <Compile Include="Click.cs" />
-    <Compile Include="Enter.cs" />
-    <Compile Include="IAction.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -161,9 +151,9 @@
       <Project>{bb39bdb6-d9a0-4b29-98c5-977069b8d575}</Project>
       <Name>AutoX.Basic</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AutoX.Comm\AutoX.Comm.csproj">
-      <Project>{ea1d75aa-b145-4b6b-84e5-9933a5d537f0}</Project>
-      <Name>AutoX.Comm</Name>
+    <ProjectReference Include="..\AutoX.Client.Core\AutoX.Client.Core.csproj">
+      <Project>{4C838B4A-F1C7-4B78-B6C4-EB65EAD3FBE0}</Project>
+      <Name>AutoX.Client.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -41,9 +41,6 @@ namespace AutoX.Activities.AutoActivities
         [DisplayName("Description")]
         public string TestSuiteDescription { get; set; }
 
-        // If your activity returns a value, derive from CodeActivity<TResult>
-        // and return the value from the Execute method.
-
         #region IPassData Members
 
         public void PassData(string instanceId, string outerData)
@@ -58,16 +55,19 @@ namespace AutoX.Activities.AutoActivities
 
         #endregion
 
+        // If your activity returns a value, derive from CodeActivity<TResult>
+        // and return the value from the Execute method.
+
         protected override void Execute(NativeActivityContext context)
         {
             // Obtain the runtime value of the Text input argument
 
             //TODO implement it!!!
             //invoke a test suite here
-            Logger.GetInstance().Log().Debug("in CallTestSuite, before Executing Test Suite: " + TestSuiteName);
+            Log.Debug("in CallTestSuite, before Executing Test Suite: " + TestSuiteName);
             var screen = Host.GetDataObject(TestSuiteId) as Script;
             if (screen == null) return;
-            Activity activity = ActivityXamlServices.Load(new StringReader(screen.Content));
+            var activity = ActivityXamlServices.Load(new StringReader(screen.Content));
 
             WorkflowInvoker.Invoke(activity);
             _result = ((IPassData) activity).GetResult();

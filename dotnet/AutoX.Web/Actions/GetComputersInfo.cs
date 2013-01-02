@@ -16,17 +16,17 @@ namespace AutoX.Web.Actions
     {
         protected override void Execute(NativeActivityContext context)
         {
-            string commandStr = Utils.GetContextValue(context, "command");
+            var commandStr = Utils.GetContextValue(context, "command");
 
             try
             {
-                string ret = ComputersManager.GetInstance().ToString();
+                var ret = ComputersManager.GetInstance().ToString();
                 Utils.SetReturnMessage(context, ret);
                 return;
             }
             catch (Exception ex)
             {
-                Logger.GetInstance().Log().Debug("we receive invalid command string:\n" + commandStr + "\n" + ex.Message);
+                Log.Debug("we receive invalid command string:\n" + commandStr + "\n" + ex.Message);
             }
             Utils.SetFailedReturnMessage(context, "<ComputerList />");
         }

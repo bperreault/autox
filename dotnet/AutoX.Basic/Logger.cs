@@ -44,7 +44,7 @@ namespace AutoX.Basic
     ///   <example>
     ///   </example>
     /// </summary>
-    public class Logger
+    internal class Logger
     {
         private static Logger _instance;
 

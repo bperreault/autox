@@ -15,12 +15,12 @@ namespace AutoX.Basic
     {
         public static void DealExtra(this XElement rElement)
         {
-            XAttribute xAttribute = rElement.Attribute("EXTRA");
+            var xAttribute = rElement.Attribute("EXTRA");
             if (xAttribute == null) return;
-            string eData = xAttribute.Value;
+            var eData = xAttribute.Value;
             if (!string.IsNullOrEmpty(eData))
             {
-                XElement xExtra = XElement.Parse(eData);
+                var xExtra = XElement.Parse(eData);
                 foreach (XAttribute attribute in xExtra.Attributes())
                 {
                     rElement.SetAttributeValue(attribute.Name, attribute.Value);
@@ -41,25 +41,25 @@ namespace AutoX.Basic
 
         public static string GenerateXPathFromXElement(this XElement xUi)
         {
-            string original = xUi.GetAttributeValue("XPath");
+            var original = xUi.GetAttributeValue("XPath");
             if (!string.IsNullOrEmpty(original))
                 return original;
-            string tag = "//*";
-            XAttribute xTag = xUi.Attribute("tag");
+            var tag = "//*";
+            var xTag = xUi.Attribute("tag");
             if (xTag != null)
             {
                 tag = "//" + xTag.Value;
                 xTag.Remove();
             }
-            string xpath = tag;
+            var xpath = tag;
             if (xUi.Attributes().Any())
             {
                 xpath = xpath + "[";
-                int count = 0;
+                var count = 0;
                 foreach (XAttribute xa in xUi.Attributes())
                 {
-                    string key = xa.Name.ToString();
-                    string value = xa.Value;
+                    var key = xa.Name.ToString();
+                    var value = xa.Value;
                     if (count > 0)
                         xpath = xpath + " and ";
                     if (key.Equals("text"))
@@ -87,7 +87,7 @@ namespace AutoX.Basic
                 return null;
             if (string.IsNullOrEmpty(attrName))
                 return null;
-            XAttribute xa = e.Attribute(attrName) ?? e.Attribute(attrName.ToLower());
+            var xa = e.Attribute(attrName) ?? e.Attribute(attrName.ToLower());
             return xa == null ? null : xa.Value;
         }
 
@@ -95,15 +95,16 @@ namespace AutoX.Basic
         {
             if (e == null)
                 return "<Result Result='Error' Reason='XElement is NULL' />";
-            string retString = e.Name + "\n";
+            var retString = e.Name + "\n";
             if (!string.IsNullOrWhiteSpace(e.Value))
                 retString += e.Value + "\n";
-            return e.Attributes().Aggregate(retString, (current, a) => current + (" " + a.Name + " : " + a.Value + "\n"));
+            return e.Attributes()
+                    .Aggregate(retString, (current, a) => current + (" " + a.Name + " : " + a.Value + "\n"));
         }
 
         public static XElement GetRootElement(this XElement current)
         {
-            XElement parent = current;
+            var parent = current;
             while (true)
             {
                 if (parent == null)

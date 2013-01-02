@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Xml.Linq;
 using AutoX.Activities.AutoActivities;
 using AutoX.Basic;
@@ -38,7 +37,7 @@ namespace AutoX.Activities
 
         public static string GetEnumDescription(Enum value)
         {
-            FieldInfo fi = value.GetType().GetField(value.ToString());
+            var fi = value.GetType().GetField(value.ToString());
 
             var attributes =
                 (DescriptionAttribute[]) fi.GetCustomAttributes(
@@ -50,12 +49,12 @@ namespace AutoX.Activities
 
         public static void DropXElementToDesigner(XElement data, string dropData, ModelItem navtiveModelItem)
         {
-            string guid = data.GetAttributeValue("GUID");
-            string tag = data.Name.ToString();
-            ModelProperty modelProperty = navtiveModelItem.Properties[dropData];
+            var guid = data.GetAttributeValue("GUID");
+            var tag = data.Name.ToString();
+            var modelProperty = navtiveModelItem.Properties[dropData];
             if (modelProperty == null) return;
             if (modelProperty.Value == null) return;
-            string userData = modelProperty.Value.GetCurrentValue() as string ?? "";
+            var userData = modelProperty.Value.GetCurrentValue() as string ?? "";
 
             if (tag.Equals("Datum"))
             {
@@ -67,7 +66,7 @@ namespace AutoX.Activities
             }
             if (tag.Equals("UIObject"))
             {
-                XElement xSteps = XElement.Parse(userData);
+                var xSteps = XElement.Parse(userData);
 
                 var xStep = new XElement("Step");
                 xStep.SetAttributeValue("UIId", data.GetAttributeValue("GUID"));
@@ -86,7 +85,7 @@ namespace AutoX.Activities
         {
             if (data == null)
                 return false;
-            string type = data.Name.ToString();
+            var type = data.Name.ToString();
             return !String.IsNullOrEmpty(type) && types.Any(s => s.Equals(type));
         }
 
@@ -97,41 +96,41 @@ namespace AutoX.Activities
 
         public static Activity GetActivityFromXElement(XElement data)
         {
-            string scriptType = data.GetAttributeValue("ScriptType");
+            var scriptType = data.GetAttributeValue("ScriptType");
             if (!String.IsNullOrEmpty(scriptType))
             {
-                IHost host = HostManager.GetInstance().GetHost();
+                var host = HostManager.GetInstance().GetHost();
                 if (scriptType.Equals("TestCase"))
                 {
                     var activity = new CallTestCaseActivity
-                                       {
-                                           TestCaseId = data.GetAttributeValue("GUID"),
-                                           TestCaseName = data.GetAttributeValue("Name"),
-                                           DisplayName = "Call Test Case: " + data.GetAttributeValue("Name")
-                                       };
+                        {
+                            TestCaseId = data.GetAttributeValue("GUID"),
+                            TestCaseName = data.GetAttributeValue("Name"),
+                            DisplayName = "Call Test Case: " + data.GetAttributeValue("Name")
+                        };
                     activity.SetHost(host);
                     return activity;
                 }
                 if (scriptType.Equals("TestScreen"))
                 {
                     var activity = new CallTestScreenActivity
-                                       {
-                                           TestSreenId = data.GetAttributeValue("GUID"),
-                                           TestSreenName = data.GetAttributeValue("Name"),
-                                           DisplayName = "Call Test Screen: " + data.GetAttributeValue("Name")
-                                       };
+                        {
+                            TestSreenId = data.GetAttributeValue("GUID"),
+                            TestSreenName = data.GetAttributeValue("Name"),
+                            DisplayName = "Call Test Screen: " + data.GetAttributeValue("Name")
+                        };
                     activity.SetHost(host);
                     return activity;
                 }
                 if (scriptType.Equals("TestSuite"))
                 {
                     var activity = new CallTestSuiteActivity
-                                       {
-                                           TestSuiteId = data.GetAttributeValue("GUID"),
-                                           TestSuiteName = data.GetAttributeValue("Name"),
-                                           TestSuiteDescription = data.GetAttributeValue("Description"),
-                                           DisplayName = "Call Test Suite: " + data.GetAttributeValue("Name")
-                                       };
+                        {
+                            TestSuiteId = data.GetAttributeValue("GUID"),
+                            TestSuiteName = data.GetAttributeValue("Name"),
+                            TestSuiteDescription = data.GetAttributeValue("Description"),
+                            DisplayName = "Call Test Suite: " + data.GetAttributeValue("Name")
+                        };
                     activity.SetHost(host);
                     return activity;
                 }
@@ -141,7 +140,7 @@ namespace AutoX.Activities
 
         public static List<UserData> GetUserData(string rawData, IHost host)
         {
-            Dictionary<string, UserData> dic = GetRawUserData(rawData, host);
+            var dic = GetRawUserData(rawData, host);
             return dic.Values.ToList();
         }
 
@@ -150,32 +149,32 @@ namespace AutoX.Activities
             var dic = new Dictionary<string, UserData>();
             if (!String.IsNullOrEmpty(rawData))
             {
-                string[] dataStrings = rawData.Split(';');
+                var dataStrings = rawData.Split(';');
                 foreach (string dataString in dataStrings)
                 {
                     if (String.IsNullOrEmpty(dataString))
                         continue;
-                    IDataObject sData = host.GetDataObject(dataString);
+                    var sData = host.GetDataObject(dataString);
                     if (sData == null) continue;
-                    XElement xData = sData.GetXElementFromDataObject();
-                    string dataSetName = xData.GetAttributeValue("Name");
-                    string xExtra = xData.GetAttributeValue("EXTRA");
+                    var xData = sData.GetXElementFromDataObject();
+                    var dataSetName = xData.GetAttributeValue("Name");
+                    var xExtra = xData.GetAttributeValue("EXTRA");
                     if (!string.IsNullOrEmpty(xExtra))
                     {
-                        XElement xEe = XElement.Parse(xExtra);
+                        var xEe = XElement.Parse(xExtra);
 
                         foreach (XAttribute xAttribute in xEe.Attributes())
                         {
-                            string name = xAttribute.Name.ToString();
+                            var name = xAttribute.Name.ToString();
                             if (Filter.Contains(name)) continue;
-                            string dataValue = xAttribute.Value;
+                            var dataValue = xAttribute.Value;
                             var data = new UserData
-                                           {
-                                               DataSet = dataSetName,
-                                               Name = name,
-                                               Value = dataValue,
-                                               DataSetId = dataString
-                                           };
+                                {
+                                    DataSet = dataSetName,
+                                    Name = name,
+                                    Value = dataValue,
+                                    DataSetId = dataString
+                                };
                             //remove the duplicate value
                             if (dic.ContainsKey(name))
                                 dic[name] = data;
@@ -195,21 +194,21 @@ namespace AutoX.Activities
             var dic = new Dictionary<string, string>();
             if (!String.IsNullOrEmpty(rawData))
             {
-                string[] dataStrings = rawData.Split(';');
+                var dataStrings = rawData.Split(';');
                 foreach (string dataString in dataStrings)
                 {
                     if (String.IsNullOrEmpty(dataString))
                         continue;
-                    string sData = host.GetDataObject(dataString).EXTRA;
+                    var sData = host.GetDataObject(dataString).EXTRA;
                     if (String.IsNullOrEmpty(sData)) continue;
-                    XElement xData = XElement.Parse(sData);
+                    var xData = XElement.Parse(sData);
 
                     foreach (XAttribute xAttribute in xData.Attributes())
                     {
-                        string name = xAttribute.Name.ToString();
+                        var name = xAttribute.Name.ToString();
                         if (Filter.Contains(name)) continue;
-                        string dataValue = xAttribute.Value;
-                        string data = dataValue;
+                        var dataValue = xAttribute.Value;
+                        var data = dataValue;
                         //remove the duplicate value
                         if (dic.ContainsKey(name))
                             dic[name] = data;
@@ -225,9 +224,9 @@ namespace AutoX.Activities
 
         public static void PrintDictionary(Dictionary<string, string> dict)
         {
-            string pS = dict.Aggregate("\n",
-                                       (current, variable) => current + (variable.Key + "=" + variable.Value + "\n"));
-            Logger.GetInstance().Log().Debug(pS);
+            var pS = dict.Aggregate("\n",
+                                    (current, variable) => current + (variable.Key + "=" + variable.Value + "\n"));
+            Log.Debug(pS);
         }
 
 
@@ -236,31 +235,31 @@ namespace AutoX.Activities
             var ret = new ArrayList();
             if (textValue != null)
             {
-                XElement xSteps = XElement.Parse(textValue);
+                var xSteps = XElement.Parse(textValue);
                 foreach (XElement element in xSteps.Descendants("Step"))
                 {
-                    string uiId = element.GetAttributeValue("UIId");
+                    var uiId = element.GetAttributeValue("UIId");
                     if (String.IsNullOrEmpty(uiId)) continue;
 
-                    IDataObject sData = host.GetDataObject(uiId);
+                    var sData = host.GetDataObject(uiId);
                     if (sData == null) continue;
                     //var xData = sData.GetXElementFromDataObject();
-                    string uiObject = element.GetAttributeValue("UIObject");
+                    var uiObject = element.GetAttributeValue("UIObject");
                     if (String.IsNullOrEmpty(uiObject)) continue;
-                    bool enable = Boolean.Parse(element.GetAttributeValue("Enable"));
-                    string defaultDataValue = element.GetAttributeValue("DefaultData");
-                    string dataName = element.GetAttributeValue("Data");
-                    string action = element.GetAttributeValue("Action") ?? "";
+                    var enable = Boolean.Parse(element.GetAttributeValue("Enable"));
+                    var defaultDataValue = element.GetAttributeValue("DefaultData");
+                    var dataName = element.GetAttributeValue("Data");
+                    var action = element.GetAttributeValue("Action") ?? "";
                     var step = new Step
-                                   {
-                                       Action = action,
-                                       UIId = uiId,
-                                       UIObject = uiObject,
-                                       Enable = enable,
-                                       DefaultData = defaultDataValue,
-                                       Data = dataName,
-                                       PossibleAction = possibleAction
-                                   };
+                        {
+                            Action = action,
+                            UIId = uiId,
+                            UIObject = uiObject,
+                            Enable = enable,
+                            DefaultData = defaultDataValue,
+                            Data = dataName,
+                            PossibleAction = possibleAction
+                        };
                     ret.Add(step);
                 }
             }

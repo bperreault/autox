@@ -97,7 +97,7 @@ namespace AutoX.Activities.AutoActivities
         private void InternalExecute(NativeActivityContext context, ActivityInstance instance)
         {
             //grab the index of the current Activity
-            int currentActivityIndex = _currentIndex.Get(context);
+            var currentActivityIndex = _currentIndex.Get(context);
             if (currentActivityIndex == children.Count)
             {
                 //if the currentActivityIndex is equal to the count of MySequence's Activities
@@ -112,7 +112,7 @@ namespace AutoX.Activities.AutoActivities
             }
 
             //grab the next Activity in MySequence.Activities and schedule it
-            Activity nextChild = children[currentActivityIndex];
+            var nextChild = children[currentActivityIndex];
             ((IPassData) nextChild).PassData(InstanceId, UserData);
             context.ScheduleActivity(nextChild, _onChildComplete);
             //Get result here, it is sync or async????

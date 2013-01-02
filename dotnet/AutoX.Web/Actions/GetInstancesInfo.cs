@@ -16,16 +16,16 @@ namespace AutoX.Web.Actions
     {
         protected override void Execute(NativeActivityContext context)
         {
-            string commandStr = Utils.GetContextValue(context, "command");
+            var commandStr = Utils.GetContextValue(context, "command");
 
             try
             {
-                string instances = InstanceManager.GetInstance().GetInstances();
+                var instances = InstanceManager.GetInstance().GetInstances();
                 Utils.SetReturnMessage(context, instances);
             }
             catch (Exception ex)
             {
-                Logger.GetInstance().Log().Debug("we receive invalid command string:\n" + commandStr + "\n" + ex.Message);
+                Log.Debug("we receive invalid command string:\n" + commandStr + "\n" + ex.Message);
                 Utils.SetFailedReturnMessage(context, "Exception:\n" + ex.Message);
             }
         }

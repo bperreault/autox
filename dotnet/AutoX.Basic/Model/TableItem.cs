@@ -4,6 +4,7 @@
 
 #region
 
+using System;
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -12,7 +13,7 @@ using System.Linq;
 
 namespace AutoX.Basic.Model
 {
-    public class TableItem : IEnumerable
+    public class TableItem : IEnumerable, IDataObject
     {
         private ObservableCollection<object> _list = new ObservableCollection<object>();
 
@@ -24,6 +25,30 @@ namespace AutoX.Basic.Model
         }
 
         #endregion
+
+        public string GUID
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
+
+        public string EXTRA
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
+
+        public DateTime Created
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
+
+        public DateTime Updated
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
 
         public ObservableCollection<object> Get()
         {
@@ -51,7 +76,8 @@ namespace AutoX.Basic.Model
                 return _list;
             var ret = new ObservableCollection<object>();
             foreach (
-                object rowItem in _list.Where(rowItem => rowItem.GetXElementFromObject().ToString().Contains(filter)))
+                IDataObject rowItem in
+                    _list.Where(rowItem => ((IDataObject) rowItem).GetXElementFromObject().ToString().Contains(filter)))
             {
                 ret.Add(rowItem);
             }

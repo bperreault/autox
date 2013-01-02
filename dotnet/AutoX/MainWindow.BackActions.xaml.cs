@@ -5,14 +5,13 @@
 #region
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml.Linq;
 using AutoX.Basic;
-using AutoX.Comm;
 using AutoX.Basic.Model;
+using AutoX.Comm;
 
 #endregion
 
@@ -31,12 +30,12 @@ namespace AutoX
             var selected = (TreeViewItem) treeView.SelectedItem;
             if (selected != null)
             {
-                string type = ((XElement) selected.DataContext).GetAttributeValue("Type");
-                IEnumerable<XElement> query = from o in _xValidation.Descendants()
-                                              where o.GetAttributeValue("Action").Equals(action)
-                                                    && o.GetAttributeValue("Type").Equals(type)
-                                                    && o.GetAttributeValue("Object").Equals(objName)
-                                              select o;
+                var type = ((XElement) selected.DataContext).GetAttributeValue("Type");
+                var query = from o in _xValidation.Descendants()
+                            where o.GetAttributeValue("Action").Equals(action)
+                                  && o.GetAttributeValue("Type").Equals(type)
+                                  && o.GetAttributeValue("Object").Equals(objName)
+                            select o;
                 return (query.Any());
             }
 
@@ -45,18 +44,18 @@ namespace AutoX
 
         public static TreeViewItem GetItemFromXElement(XElement element, string parentId)
         {
-            string guid = element.GetAttributeValue("GUID");
+            var guid = element.GetAttributeValue("GUID");
             if (string.IsNullOrEmpty(guid))
             {
                 guid = Guid.NewGuid().ToString();
                 element.SetAttributeValue("GUID", guid);
             }
-            XElement rootPart = element.GetRootPartElement();
+            var rootPart = element.GetRootPartElement();
             rootPart.SetAttributeValue("ParentId", parentId);
 
-            string sRoot = Communication.GetInstance().SetById(rootPart);
-            XElement xRoot = XElement.Parse(sRoot);
-            string result = xRoot.GetAttributeValue("Result");
+            var sRoot = Communication.GetInstance().SetById(rootPart);
+            var xRoot = XElement.Parse(sRoot);
+            var result = xRoot.GetAttributeValue("Result");
             if (!string.IsNullOrEmpty(result))
             {
                 if (result.Equals("Failed"))
@@ -66,7 +65,7 @@ namespace AutoX
                 }
                 else
                 {
-                    TreeViewItem itself = rootPart.GetTreeViewItemFromXElement();
+                    var itself = rootPart.GetTreeViewItemFromXElement();
 
                     foreach (XElement kid in element.Descendants())
                     {
@@ -87,7 +86,7 @@ namespace AutoX
             {
                 return;
             }
-            MessageBoxResult messageBoxResult = MessageBox.Show(
+            var messageBoxResult = MessageBox.Show(
                 "Do you really want to delete this item? Cannot be recover!", "Delete Item",
                 MessageBoxButton.YesNo);
 
@@ -106,9 +105,9 @@ namespace AutoX
                 return;
             }
             xElement.SetAttributeValue("ParentId", "Deleted");
-            string sRoot = Communication.GetInstance().SetById(xElement);
-            XElement xRoot = XElement.Parse(sRoot);
-            string result = xRoot.GetAttributeValue("Result");
+            var sRoot = Communication.GetInstance().SetById(xElement);
+            var xRoot = XElement.Parse(sRoot);
+            var result = xRoot.GetAttributeValue("Result");
             if (!string.IsNullOrEmpty(result))
             {
                 if (result.Equals("Failed"))
@@ -128,16 +127,16 @@ namespace AutoX
             var dialog = new XElementDialog(xElement, false);
             dialog.ShowDialog();
             if (!dialog.DialogResult.HasValue || !dialog.DialogResult.Value) return null;
-            XElement xE = dialog.GetElement();
+            var xE = dialog.GetElement();
             var selected = (TreeViewItem) tree.SelectedItem;
             var xParent = (XElement) selected.DataContext;
-            string parentId = xParent.GetAttributeValue("GUID");
+            var parentId = xParent.GetAttributeValue("GUID");
 
 
             xE.SetAttributeValue("ParentId", parentId);
-            string sRoot = Communication.GetInstance().SetById(xE);
-            XElement xRoot = XElement.Parse(sRoot);
-            string result = xRoot.GetAttributeValue("Result");
+            var sRoot = Communication.GetInstance().SetById(xE);
+            var xRoot = XElement.Parse(sRoot);
+            var result = xRoot.GetAttributeValue("Result");
             if (!string.IsNullOrEmpty(result))
             {
                 if (result.Equals("Failed"))
@@ -146,7 +145,7 @@ namespace AutoX
                                     xRoot.GetAttributeValue("Reason"));
                     return null;
                 }
-                TreeViewItem ret = xE.GetTreeViewItemFromXElement();
+                var ret = xE.GetTreeViewItemFromXElement();
                 selected.Items.Add(ret);
                 return ret;
             }
@@ -179,16 +178,16 @@ namespace AutoX
             }
             var parent = selected.DataContext as XElement;
             if (parent == null) return;
-            string parentId = parent.GetAttributeValue("GUID");
+            var parentId = parent.GetAttributeValue("GUID");
 
             if (parent.Name.ToString().Equals("Script"))
             {
                 AddTestDesigner(selected);
                 return;
             }
-            string sRoot = Communication.GetInstance().GetChildren(parentId);
-            XElement xRoot = XElement.Parse(sRoot);
-            string result = xRoot.GetAttributeValue("Result");
+            var sRoot = Communication.GetInstance().GetChildren(parentId);
+            var xRoot = XElement.Parse(sRoot);
+            var result = xRoot.GetAttributeValue("Result");
             if (!string.IsNullOrEmpty(result))
             {
                 if (result.Equals("Failed"))
@@ -199,7 +198,7 @@ namespace AutoX
             }
             else
             {
-                if(parent.Name.ToString().Equals("Result"))
+                if (parent.Name.ToString().Equals("Result"))
                 {
                     //load its children to TestCaseResultTable
                     _testCaseResultSource.Clear();
@@ -230,11 +229,11 @@ namespace AutoX
             var dialog = new XElementDialog(((XElement) selected.DataContext), false);
             dialog.ShowDialog();
             if (!dialog.DialogResult.HasValue || !dialog.DialogResult.Value) return;
-            XElement xElement = dialog.GetElement();
+            var xElement = dialog.GetElement();
 
-            string sRoot = Communication.GetInstance().SetById(xElement);
-            XElement xRoot = XElement.Parse(sRoot);
-            string result = xRoot.GetAttributeValue("Result");
+            var sRoot = Communication.GetInstance().SetById(xElement);
+            var xRoot = XElement.Parse(sRoot);
+            var result = xRoot.GetAttributeValue("Result");
             if (!string.IsNullOrEmpty(result))
             {
                 if (result.Equals("Failed"))
@@ -249,12 +248,12 @@ namespace AutoX
 
         private TreeViewItem GetInitScriptXElement(string type)
         {
-            XElement xElement =
+            var xElement =
                 XElement.Parse(
                     @"<Script Name='New Test " + type + "' ScriptType='Test" + type +
                     "' Description='Please add description here' Content='' GUID='" +
                     Guid.NewGuid() + "' />");
-            TreeViewItem ret = AddNewItemToTree(ProjectTreeView, xElement);
+            var ret = AddNewItemToTree(ProjectTreeView, xElement);
             return ret;
         }
     }

@@ -13,7 +13,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Xml.Linq;
 using AutoX.Basic;
-using AutoX.Comm;
+using AutoX.Client.Core;
 using Microsoft.Win32;
 
 #endregion
@@ -29,12 +29,13 @@ namespace AutoX.Client
         private volatile bool _registered;
         private volatile bool _runFlag;
         private bool _shouldClose;
+        private ClientInstance _defaultClientInstance = new ClientInstance();
 
         public MainWindow()
         {
             InitializeComponent();
             Hide();
-            Task.Factory.StartNew(DoWhileWork);
+            //Task.Factory.StartNew(DoWhileWork);
             //Dispatcher.Invoke(new Action(DoWhileWork));
         }
 
@@ -79,10 +80,8 @@ namespace AutoX.Client
 
         private void Register()
         {
-            string ret = Communication.GetInstance().Register();
-            Logger.GetInstance().Log().Debug(ret);
-            _registered = true;
-            Communication.GetInstance().SetResult(ActionsFactory.Execute(XElement.Parse(ret)));
+            _registered = _defaultClientInstance.Register();
+           
         }
 
         private void RequestCommand(object sender, RoutedEventArgs e)
@@ -92,10 +91,7 @@ namespace AutoX.Client
 
         private void RequestCommand()
         {
-            string ret = Communication.GetInstance().RequestCommand();
-            Logger.GetInstance().Log().Debug(ret);
-            XElement steps = XElement.Parse(ret);
-            XElement result = ActionsFactory.Execute(steps);
+            var result = _defaultClientInstance.RequestCommand();
 
             SetPanel(result.ToString());
         }
@@ -103,14 +99,14 @@ namespace AutoX.Client
         private void DoActions(object sender, RoutedEventArgs e)
         {
             //read the selected text in logpanel, turn it to xelement
-            string content = ReadSelectedOrWholeText();
+            var content = ReadSelectedOrWholeText();
             if (string.IsNullOrEmpty(content))
             {
                 MessageBox.Show("No selected text.");
                 return;
             }
-            XElement steps = XElement.Parse(content);
-            XElement result = ActionsFactory.Execute(steps);
+            var steps = XElement.Parse(content);
+            var result = ActionsFactory.Execute(steps);
 
             SetPanel(result.ToString());
         }
@@ -123,15 +119,15 @@ namespace AutoX.Client
         private void SendResult(object sender, RoutedEventArgs e)
         {
             //read the selected text in logpanel, turn it to xelement
-            string content = ReadSelectedOrWholeText();
+            var content = ReadSelectedOrWholeText();
             if (string.IsNullOrEmpty(content))
             {
                 MessageBox.Show("No selected text.");
                 return;
             }
-            XElement steps = XElement.Parse(content);
-            string ret = Communication.GetInstance().SetResult(steps);
-            Logger.GetInstance().Log().Debug(ret);
+            var steps = XElement.Parse(content);
+            var ret = _defaultClientInstance.SendResult(steps);
+            Log.Debug(ret);
             SetPanel(ret);
         }
 
@@ -140,8 +136,8 @@ namespace AutoX.Client
             var openFile = new OpenFileDialog();
             if (openFile.ShowDialog().Value)
             {
-                string fileName = openFile.FileName;
-                string content = File.ReadAllText(fileName);
+                var fileName = openFile.FileName;
+                var content = File.ReadAllText(fileName);
                 SetPanel(content);
             }
         }
@@ -151,8 +147,8 @@ namespace AutoX.Client
             var openFile = new SaveFileDialog();
             if (openFile.ShowDialog().Value)
             {
-                string fileName = openFile.FileName;
-                string content = ReadSelectedOrWholeText();
+                var fileName = openFile.FileName;
+                var content = ReadSelectedOrWholeText();
                 //File.CreateText(fileName);
                 //File.AppendAllText(fileName, content);
                 File.WriteAllText(fileName, content);
@@ -161,7 +157,7 @@ namespace AutoX.Client
 
         private string ReadSelectedOrWholeText()
         {
-            string content = LogPanel.SelectedText;
+            var content = LogPanel.SelectedText;
             if (string.IsNullOrWhiteSpace(content))
                 content = LogPanel.Text;
             return content;
@@ -238,8 +234,8 @@ namespace AutoX.Client
 
         private void OnMenuItemRegisterClick(object sender, EventArgs e)
         {
-            string ret = Communication.GetInstance().Register();
-            Logger.GetInstance().Log().Debug(ret);
+            var ret = _defaultClientInstance.Register();
+            Log.Debug(ret.ToString());
         }
 
         #endregion UI things

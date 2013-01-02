@@ -48,7 +48,7 @@ namespace AutoX.Activities
             var data = e.Data.GetData("DataFormat") as XElement;
             if (data != null)
             {
-                string tag = data.Name.ToString();
+                var tag = data.Name.ToString();
                 if (tag.Equals("Datum"))
                     Utilities.DropXElementToDesigner(data, "UserData", ModelItem);
 

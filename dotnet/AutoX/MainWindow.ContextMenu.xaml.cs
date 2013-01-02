@@ -47,8 +47,8 @@ namespace AutoX
             //set settings back to configuration, to memory and disk
             foreach (XAttribute attr in config.Attributes())
             {
-                string name = attr.Name.ToString();
-                string value = attr.Value;
+                var name = attr.Name.ToString();
+                var value = attr.Value;
                 Configuration.Set(name, value);
             }
             Configuration.SaveSettings();
@@ -61,7 +61,7 @@ namespace AutoX
                 MessageBox.Show("Not Valid Operation");
                 return;
             }
-            TreeViewItem treeViewItem = GetInitScriptXElement("Suite");
+            var treeViewItem = GetInitScriptXElement("Suite");
             if (treeViewItem != null)
                 AddTestDesigner(treeViewItem);
         }
@@ -78,7 +78,7 @@ namespace AutoX
                 MessageBox.Show("Not Valid Operation");
                 return;
             }
-            TreeViewItem treeViewItem = GetInitScriptXElement("Case");
+            var treeViewItem = GetInitScriptXElement("Case");
             if (treeViewItem != null)
                 AddTestDesigner(treeViewItem);
         }
@@ -90,7 +90,7 @@ namespace AutoX
                 MessageBox.Show("Not Valid Operation");
                 return;
             }
-            TreeViewItem treeViewItem = GetInitScriptXElement("Screen");
+            var treeViewItem = GetInitScriptXElement("Screen");
             if (treeViewItem != null)
                 AddTestDesigner(treeViewItem);
         }
@@ -117,7 +117,7 @@ namespace AutoX
                 MessageBox.Show("Not Valid Operation");
                 return;
             }
-            XElement xElement =
+            var xElement =
                 XElement.Parse(
                     @"<Folder Name='NewFolder' Type='Folder' Description='Please add description here' GUID='" +
                     Guid.NewGuid() + "' />");
@@ -152,33 +152,33 @@ namespace AutoX
 
         private void ReloadOnProjectTree(object sender, RoutedEventArgs e)
         {
-            string projectId = Configuration.Settings("ProjectRoot", "0010010000001");
+            var projectId = Configuration.Settings("ProjectRoot", "0010010000001");
             InitTree(ProjectTreeView, projectId);
         }
 
         private void ReloadOnSuiteTree(object sender, RoutedEventArgs e)
         {
-            string projectId = Configuration.Settings("ProjectRoot", "0010010000001");
+            var projectId = Configuration.Settings("ProjectRoot", "0010010000001");
             InitTree(SuiteTree, projectId);
         }
 
 
         private void ReloadOnResultTree(object sender, RoutedEventArgs e)
         {
-            string resultId = Configuration.Settings("ResultsRoot", "0020020000002");
+            var resultId = Configuration.Settings("ResultsRoot", "0020020000002");
             InitTree(TestResultTree, resultId);
         }
 
 
         private void ReloadOnUITree(object sender, RoutedEventArgs e)
         {
-            string uiId = Configuration.Settings("ObjectPool", "0040040000004");
+            var uiId = Configuration.Settings("ObjectPool", "0040040000004");
             InitTree(GuiObjectTree, uiId);
         }
 
         private void ReloadOnDataTree(object sender, RoutedEventArgs e)
         {
-            string dataId = Configuration.Settings("DataRoot", "0030030000003");
+            var dataId = Configuration.Settings("DataRoot", "0030030000003");
             InitTree(DataTree, dataId);
         }
 
@@ -262,29 +262,29 @@ namespace AutoX
             }
             var xParent = selected.DataContext as XElement;
             var dialog = new OpenFileDialog
-                             {
-                                 Filter = "Screen GUI File (.xml)|*.xml|All Files (*.*)|*.*",
-                                 FilterIndex = 1,
-                                 Multiselect = false
-                             };
+                {
+                    Filter = "Screen GUI File (.xml)|*.xml|All Files (*.*)|*.*",
+                    FilterIndex = 1,
+                    Multiselect = false
+                };
             // Set filter options and filter index.
 
-            bool? dialogResult = dialog.ShowDialog(this);
+            var dialogResult = dialog.ShowDialog(this);
             if (dialogResult == true)
             {
-                string content = File.ReadAllText(dialog.FileName);
-                XElement page = XElement.Parse(content);
-                TreeViewItem newItem = GetItemFromXElement(page, xParent.GetAttributeValue("GUID"));
+                var content = File.ReadAllText(dialog.FileName);
+                var page = XElement.Parse(content);
+                var newItem = GetItemFromXElement(page, xParent.GetAttributeValue("GUID"));
                 if (newItem != null) selected.Items.Add(newItem);
             }
         }
 
         private static void InitTree(ItemsControl tree, string rootId)
         {
-            string sRoot = Communication.GetInstance().GetById(rootId);
+            var sRoot = Communication.GetInstance().GetById(rootId);
 
-            XElement xRoot = XElement.Parse(sRoot);
-            string result = xRoot.GetAttributeValue("Result");
+            var xRoot = XElement.Parse(sRoot);
+            var result = xRoot.GetAttributeValue("Result");
             if (!string.IsNullOrEmpty(result))
             {
                 MessageBox.Show("Get Tree Root Failed. id=" + rootId + "\nReason:" + xRoot.GetAttributeValue("Reason"));
@@ -331,9 +331,9 @@ namespace AutoX
 
         private static void DoFilterOnTree(ItemsControl tree, TextBox filterBox)
         {
-            string filterString = filterBox.Text;
+            var filterString = filterBox.Text;
 
-            object root = tree.Items.GetItemAt(0);
+            var root = tree.Items.GetItemAt(0);
             (root as TreeViewItem).FilterTreeItem(filterString);
         }
 
@@ -341,9 +341,9 @@ namespace AutoX
         {
             var selected = InstanceTable.SelectedItem as Instance;
             if (selected == null) return;
-            string sRoot = Communication.GetInstance().StartInstance(selected.GUID);
-            XElement xRoot = XElement.Parse(sRoot);
-            string result = xRoot.GetAttributeValue("Result");
+            var sRoot = Communication.GetInstance().StartInstance(selected.GUID);
+            var xRoot = XElement.Parse(sRoot);
+            var result = xRoot.GetAttributeValue("Result");
             if (string.IsNullOrEmpty(result)) return;
             if (result.Equals("Failed"))
             {
@@ -361,9 +361,9 @@ namespace AutoX
         {
             var selected = InstanceTable.SelectedItem as Instance;
             if (selected == null) return;
-            string sRoot = Communication.GetInstance().StopInstance(selected.GUID);
-            XElement xRoot = XElement.Parse(sRoot);
-            string result = xRoot.GetAttributeValue("Result");
+            var sRoot = Communication.GetInstance().StopInstance(selected.GUID);
+            var xRoot = XElement.Parse(sRoot);
+            var result = xRoot.GetAttributeValue("Result");
             if (string.IsNullOrEmpty(result)) return;
             if (result.Equals("Failed"))
             {
@@ -376,7 +376,7 @@ namespace AutoX
                 var source = InstanceTable.ItemsSource as List<Instance>;
                 if (source != null)
                 {
-                    int index = source.IndexOf(selected);
+                    var index = source.IndexOf(selected);
                     (source[index]).Status = "Stop";
                 }
                 InstanceTable.ItemsSource = source;
@@ -387,8 +387,8 @@ namespace AutoX
         private void RefreshSuite(object sender, RoutedEventArgs e)
         {
             e.Handled = true;
-            string sRoot = Communication.GetInstance().GetInstancesInfo();
-            XElement xRoot = XElement.Parse(sRoot);
+            var sRoot = Communication.GetInstance().GetInstancesInfo();
+            var xRoot = XElement.Parse(sRoot);
 
             //update the table
             var instances = new List<Instance>();
@@ -406,9 +406,9 @@ namespace AutoX
         {
             var selected = InstanceTable.SelectedItem as Instance;
             if (selected == null) return;
-            string sRoot = Communication.GetInstance().SetInstanceInfo(selected.GetXElementFromObject());
-            XElement xRoot = XElement.Parse(sRoot);
-            string result = xRoot.GetAttributeValue("Result");
+            var sRoot = Communication.GetInstance().SetInstanceInfo(selected.GetXElementFromObject());
+            var xRoot = XElement.Parse(sRoot);
+            var result = xRoot.GetAttributeValue("Result");
             if (string.IsNullOrEmpty(result)) return;
             if (result.Equals("Failed"))
             {
@@ -421,9 +421,9 @@ namespace AutoX
         {
             var selected = InstanceTable.SelectedItem as Instance;
             if (selected == null) return;
-            string sRoot = Communication.GetInstance().DeleteInstance(selected.GUID);
-            XElement xRoot = XElement.Parse(sRoot);
-            string result = xRoot.GetAttributeValue("Result");
+            var sRoot = Communication.GetInstance().DeleteInstance(selected.GUID);
+            var xRoot = XElement.Parse(sRoot);
+            var result = xRoot.GetAttributeValue("Result");
             if (string.IsNullOrEmpty(result)) return;
             if (result.Equals("Failed"))
             {

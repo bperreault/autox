@@ -97,10 +97,5 @@ namespace AutoX
         }
 
         #endregion Progress bar
-
-        
-
-
-        
     }
 }

@@ -7,6 +7,7 @@
 using System;
 using System.Reflection;
 using System.Xml.Linq;
+using Newtonsoft.Json;
 
 #endregion
 
@@ -16,13 +17,13 @@ namespace AutoX.Basic.Model
     {
         public static string GetAttributeValue(this IDataObject dataObject, string attributeName)
         {
-            FieldInfo field = dataObject.GetType().GetField(attributeName);
+            var field = dataObject.GetType().GetField(attributeName);
             if (field == null)
             {
-                PropertyInfo prop = dataObject.GetType().GetProperty(attributeName);
+                var prop = dataObject.GetType().GetProperty(attributeName);
                 if (prop == null)
                 {
-                    string extra = dataObject.EXTRA;
+                    var extra = dataObject.EXTRA;
                     return extra == null ? null : XElement.Parse(extra).GetAttributeValue(attributeName);
                 }
                 return prop.GetValue(dataObject, null).ToString();
@@ -34,13 +35,13 @@ namespace AutoX.Basic.Model
         {
             if (attributeName.Equals("Type") || attributeName.Equals("ParentId"))
                 return;
-            FieldInfo field = dataObject.GetType().GetField(attributeName);
+            var field = dataObject.GetType().GetField(attributeName);
             if (field == null)
             {
-                PropertyInfo prop = dataObject.GetType().GetProperty(attributeName);
+                var prop = dataObject.GetType().GetProperty(attributeName);
                 if (prop == null)
                 {
-                    string extra = dataObject.EXTRA;
+                    var extra = dataObject.EXTRA;
                     if (extra == null)
                     {
                         var xExtra = new XElement("Extra");
@@ -49,7 +50,7 @@ namespace AutoX.Basic.Model
                     }
                     else
                     {
-                        XElement xExtra = XElement.Parse(extra);
+                        var xExtra = XElement.Parse(extra);
                         xExtra.SetAttributeValue(attributeName, value);
                         dataObject.EXTRA = xExtra.ToString();
                     }
@@ -72,20 +73,20 @@ namespace AutoX.Basic.Model
 
         public static object GetObjectFromXElement(this XElement element)
         {
-            string name = element.Name.ToString();
+            var name = element.Name.ToString();
             if (!name.Contains("."))
                 name = "AutoX.Basic.Model." + name;
-            Type type = Type.GetType(name);
+            var type = Type.GetType(name);
             if (type != null)
             {
-                ConstructorInfo constructor = type.GetConstructor(Type.EmptyTypes);
+                var constructor = type.GetConstructor(Type.EmptyTypes);
                 if (constructor != null)
                 {
-                    object entity = constructor.Invoke(new Object[0]);
+                    var entity = constructor.Invoke(new Object[0]);
 
                     foreach (XAttribute xa in element.Attributes())
                     {
-                        PropertyInfo prop = entity.GetType().GetProperty(xa.Name.ToString());
+                        var prop = entity.GetType().GetProperty(xa.Name.ToString());
                         if (prop != null)
                             prop.SetValue(entity, xa.Value, null);
                     }
@@ -95,16 +96,22 @@ namespace AutoX.Basic.Model
             return null;
         }
 
+
+        public static IDataObject JsonDeserialize(string jsonString, Type type)
+        {
+            return JsonConvert.DeserializeObject(jsonString, type) as IDataObject;
+        }
+
         public static IDataObject GetDataObjectFromXElement(this XElement element)
         {
-            string name = element.Name.ToString();
-            Type type = Type.GetType("AutoX.Basic.Model." + name);
+            var name = element.Name.ToString();
+            var type = Type.GetType("AutoX.Basic.Model." + name);
             if (type != null)
             {
-                ConstructorInfo constructor = type.GetConstructor(Type.EmptyTypes);
+                var constructor = type.GetConstructor(Type.EmptyTypes);
                 if (constructor != null)
                 {
-                    object entity = constructor.Invoke(new Object[0]);
+                    var entity = constructor.Invoke(new Object[0]);
                     var ido = (IDataObject) entity;
                     foreach (XAttribute xa in element.Attributes())
                     {
@@ -116,12 +123,18 @@ namespace AutoX.Basic.Model
             return null;
         }
 
-        public static XElement GetXElementFromObject(this object dataObject)
+        public static string JsonSerialize(this object dataObject)
+        {
+            return JsonConvert.SerializeObject(dataObject);
+        }
+
+
+        public static XElement GetXElementFromObject(this IDataObject dataObject)
         {
             if (dataObject == null)
                 return null;
-            Type type = dataObject.GetType();
-            string tag = type.FullName;
+            var type = dataObject.GetType();
+            var tag = type.FullName;
             if (tag == null)
             {
                 return null;
@@ -130,7 +143,7 @@ namespace AutoX.Basic.Model
 
             foreach (PropertyInfo prop in type.GetProperties())
             {
-                string name = prop.Name;
+                var name = prop.Name;
                 var value = (prop.GetValue(dataObject, null) ?? "") as string;
                 ret.SetAttributeValue(name, value);
             }
@@ -139,19 +152,19 @@ namespace AutoX.Basic.Model
 
         public static XElement GetXElementFromDataObject(this IDataObject dataObject)
         {
-            Type type = dataObject.GetType();
-            string tag = type.Name;
+            var type = dataObject.GetType();
+            var tag = type.Name;
             var ret = new XElement(tag);
             ret.SetAttributeValue("Type", tag);
             foreach (FieldInfo field in type.GetFields())
             {
-                string name = field.Name;
+                var name = field.Name;
                 var value = (field.GetValue(dataObject) ?? "") as string;
                 ret.SetAttributeValue(name, value);
             }
             foreach (PropertyInfo prop in type.GetProperties())
             {
-                string name = prop.Name;
+                var name = prop.Name;
                 var value = (prop.GetValue(dataObject, null) ?? "") as string;
                 if (name.Equals("Extra"))
                 {

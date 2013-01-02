@@ -5,7 +5,6 @@
 #region
 
 using System.Collections;
-using System.Collections.Generic;
 using System.Windows;
 using System.Xml.Linq;
 using AutoX.Basic;
@@ -62,9 +61,9 @@ namespace AutoX.Activities
             var source = StepsTable.ItemsSource as ArrayList;
             if (source != null)
             {
-                int count = source.Count;
+                var count = source.Count;
                 if (count < 2) return;
-                int index = source.IndexOf(selected);
+                var index = source.IndexOf(selected);
                 if (index == count - 1) return; //last one, cannot move down anymore
                 var temp = source[index + 1] as Step;
                 source[index + 1] = selected;
@@ -87,9 +86,9 @@ namespace AutoX.Activities
             var source = StepsTable.ItemsSource as ArrayList;
             if (source != null)
             {
-                int count = source.Count;
+                var count = source.Count;
                 if (count < 2) return;
-                int index = source.IndexOf(selected);
+                var index = source.IndexOf(selected);
                 if (index == 0) return; //first one, cannot move up anymore
                 var temp = source[index - 1] as Step;
                 source[index - 1] = selected;
@@ -100,7 +99,7 @@ namespace AutoX.Activities
 
         internal object Get()
         {
-            XElement xSteps = XElement.Parse("<Steps />");
+            var xSteps = XElement.Parse("<Steps />");
             var list = StepsTable.ItemsSource as ArrayList;
             if (list != null)
                 foreach (Step step in list)
@@ -112,12 +111,12 @@ namespace AutoX.Activities
 
         internal void Set(string p, string userData)
         {
-            Dictionary<string, UserData>.KeyCollection ds = Utilities.GetRawUserData(userData, Host).Keys;
+            var ds = Utilities.GetRawUserData(userData, Host).Keys;
             foreach (string d in ds)
             {
                 UserData.Add(d);
             }
-            ArrayList steps = Utilities.GetStepsList(p, Actions, Host);
+            var steps = Utilities.GetStepsList(p, Actions, Host);
             foreach (Step step in steps)
             {
                 step.PossibleData = UserData;

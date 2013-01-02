@@ -58,7 +58,7 @@ namespace AutoX
 
         private static Image GetImage(string binary64)
         {
-            byte[] buffer = Convert.FromBase64String(binary64);
+            var buffer = Convert.FromBase64String(binary64);
             return GetImage(buffer);
         }
 

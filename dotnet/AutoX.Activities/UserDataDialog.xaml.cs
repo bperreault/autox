@@ -57,13 +57,13 @@ namespace AutoX.Activities
                 MessageBox.Show("Please select a row to delete.");
                 return;
             }
-            string selectedId = selected.DataSetId;
+            var selectedId = selected.DataSetId;
             var userDatas = UserDataTable.ItemsSource as List<UserData>;
             if (userDatas != null)
             {
-                for (int i = userDatas.Count - 1; i > -1; i--)
+                for (var i = userDatas.Count - 1; i > -1; i--)
                 {
-                    UserData ud = userDatas[i];
+                    var ud = userDatas[i];
                     if (ud == null)
                         continue;
                     if (ud.DataSetId.Equals(selectedId))
@@ -71,7 +71,7 @@ namespace AutoX.Activities
                 }
                 UserDataTable.ItemsSource = userDatas;
             }
-            string ids = Get();
+            var ids = Get();
             Set(ids);
             UserDataTable.Items.Refresh();
         }

@@ -5,7 +5,6 @@
 #region
 
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Data;
 using AutoX.Basic;
@@ -21,7 +20,7 @@ namespace AutoX.Activities
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var rawData = value as string;
-            List<UserData> ret = Utilities.GetUserData(rawData, HostManager.GetInstance().GetHost());
+            var ret = Utilities.GetUserData(rawData, HostManager.GetInstance().GetHost());
 
             return ret;
         }

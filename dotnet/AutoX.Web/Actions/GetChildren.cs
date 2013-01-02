@@ -6,7 +6,6 @@
 
 using System;
 using System.Activities;
-using System.Collections.Generic;
 using System.Xml.Linq;
 using AutoX.Basic;
 using AutoX.Basic.Model;
@@ -20,18 +19,18 @@ namespace AutoX.Web.Actions
     {
         protected override void Execute(NativeActivityContext context)
         {
-            string commandStr = Utils.GetContextValue(context, "command");
+            var commandStr = Utils.GetContextValue(context, "command");
 
             try
             {
-                XElement content = XElement.Parse(commandStr);
-                string guid = content.GetAttributeValue("GUID");
-                List<IDataObject> list = DBManager.GetInstance().FindDataFromDB(guid);
+                var content = XElement.Parse(commandStr);
+                var guid = content.GetAttributeValue("GUID");
+                var list = DBManager.GetInstance().FindDataFromDB(guid);
 
-                XElement rElement = XElement.Parse("<Children />");
+                var rElement = XElement.Parse("<Children />");
                 foreach (IDataObject dataObject in list)
                 {
-                    XElement element = dataObject.GetXElementFromDataObject();
+                    var element = dataObject.GetXElementFromDataObject();
 
                     if (element != null)
                     {
@@ -46,7 +45,7 @@ namespace AutoX.Web.Actions
             }
             catch (Exception ex)
             {
-                Logger.GetInstance().Log().Debug("we receive invalid command string:\n" + commandStr + "\n" + ex.Message);
+                Log.Debug("we receive invalid command string:\n" + commandStr + "\n" + ex.Message);
             }
             Utils.SetFailedReturnMessage(context, "Unknown reason, please check GetById.cs");
         }

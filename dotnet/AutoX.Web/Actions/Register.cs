@@ -16,8 +16,8 @@ namespace AutoX.Web.Actions
     {
         protected override void Execute(NativeActivityContext context)
         {
-            string commandStr = Utils.GetContextValue(context, "command");
-            Logger.GetInstance().Log().Debug(commandStr);
+            var commandStr = Utils.GetContextValue(context, "command");
+            Log.Debug(commandStr);
             try
             {
                 //Computer computer = new Computer(content);
@@ -25,7 +25,7 @@ namespace AutoX.Web.Actions
             }
             catch (Exception ex)
             {
-                Logger.GetInstance().Log().Debug("we receive invalid command string:\n" + commandStr + "\n" + ex.Message);
+                Log.Debug("we receive invalid command string:\n" + commandStr + "\n" + ex.Message);
             }
             Utils.SetEmptyReturnMessage(context);
         }

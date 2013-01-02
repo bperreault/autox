@@ -51,16 +51,16 @@ namespace AutoX.Web
 
         public bool UpdateInstance(XElement instanceInfo)
         {
-            string name = instanceInfo.GetAttributeValue("TestName");
-            string scriptGuid = instanceInfo.GetAttributeValue("ScriptGUID");
-            string computer = instanceInfo.GetAttributeValue("ClientName");
-            string guid = instanceInfo.GetAttributeValue("GUID");
-            string status = instanceInfo.GetAttributeValue("Status");
-            string language = instanceInfo.GetAttributeValue("Language");
-            string suiteName = instanceInfo.GetAttributeValue("SuiteName");
+            var name = instanceInfo.GetAttributeValue("TestName");
+            var scriptGuid = instanceInfo.GetAttributeValue("ScriptGUID");
+            var computer = instanceInfo.GetAttributeValue("ClientName");
+            var guid = instanceInfo.GetAttributeValue("GUID");
+            var status = instanceInfo.GetAttributeValue("Status");
+            var language = instanceInfo.GetAttributeValue("Language");
+            var suiteName = instanceInfo.GetAttributeValue("SuiteName");
             if (_instanceList.ContainsKey(guid))
             {
-                TestInstance instance = _instanceList[guid];
+                var instance = _instanceList[guid];
                 instance.ClientName = computer;
                 instance.Status = status;
                 instance.TestName = name;
@@ -85,7 +85,7 @@ namespace AutoX.Web
             var list = new XElement("Instances");
             foreach (TestInstance ti in _instanceList.Values)
             {
-                list.Add(ti.GetXElementFromObject());
+                list.Add(((IDataObject) ti).GetXElementFromObject());
             }
             return list.ToString();
         }

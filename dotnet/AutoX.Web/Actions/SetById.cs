@@ -19,15 +19,15 @@ namespace AutoX.Web.Actions
     {
         protected override void Execute(NativeActivityContext context)
         {
-            string commandStr = Utils.GetContextValue(context, "command");
+            var commandStr = Utils.GetContextValue(context, "command");
 
             try
             {
-                XElement content = XElement.Parse(commandStr);
-                XElement node = XElement.Parse(content.FirstNode.ToString());
-                IDataObject iDataObject = node.GetDataObjectFromXElement();
-                string parentId = node.GetAttributeValue("ParentId");
-                string guid = node.GetAttributeValue("GUID");
+                var content = XElement.Parse(commandStr);
+                var node = XElement.Parse(content.FirstNode.ToString());
+                var iDataObject = node.GetDataObjectFromXElement();
+                var parentId = node.GetAttributeValue("ParentId");
+                var guid = node.GetAttributeValue("GUID");
                 if (parentId != null && parentId.Equals("Deleted"))
                 {
                     if (guid.StartsWith("00"))
@@ -50,7 +50,7 @@ namespace AutoX.Web.Actions
             }
             catch (Exception ex)
             {
-                Logger.GetInstance().Log().Error("we receive invalid command string:\n" + commandStr + "\n" + ex.Message);
+                Log.Error("we receive invalid command string:\n" + commandStr + "\n" + ex.Message);
                 Utils.SetFailedReturnMessage(context, "SetById failed.\n" + ex.Message);
                 return;
             }

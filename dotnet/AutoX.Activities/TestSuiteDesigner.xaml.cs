@@ -38,11 +38,11 @@ namespace AutoX.Activities
                 var data = e.Data.GetData("DataFormat") as XElement;
                 if (Utilities.CheckValidDrop(data, "Script"))
                 {
-                    Activity activity = Utilities.GetActivityFromXElement(data);
+                    var activity = Utilities.GetActivityFromXElement(data);
                     if (activity != null)
                     {
-                        ModelItem mi = Context.Services.GetService<ModelTreeManager>().CreateModelItem(ModelItem,
-                                                                                                       activity);
+                        var mi = Context.Services.GetService<ModelTreeManager>().CreateModelItem(ModelItem,
+                                                                                                 activity);
                         var dO = new DataObject(DragDropHelper.ModelItemDataFormat, mi);
                         try
                         {
@@ -85,8 +85,8 @@ namespace AutoX.Activities
         {
             e.Handled = true;
             //TODO not a graceful implementation, think about change it.
-            object droppedItem = DragDropHelper.GetDroppedObject(this, e, Context);
-            ModelItem canvasActivity = ModelItem;
+            var droppedItem = DragDropHelper.GetDroppedObject(this, e, Context);
+            var canvasActivity = ModelItem;
             canvasActivity.Properties["children"].Collection.Add(droppedItem);
 
             DragDropHelper.SetDragDropCompletedEffects(e, DragDropEffects.Move);

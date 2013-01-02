@@ -19,19 +19,19 @@ namespace AutoX.Web.Actions
     {
         protected override void Execute(NativeActivityContext context)
         {
-            string commandStr = Utils.GetContextValue(context, "command");
+            var commandStr = Utils.GetContextValue(context, "command");
 
             try
             {
-                XElement content = XElement.Parse(commandStr);
-                string guid = content.GetAttributeValue("GUID");
+                var content = XElement.Parse(commandStr);
+                var guid = content.GetAttributeValue("GUID");
 
 
-                IDataObject dataObject = DBManager.GetInstance().FindOneDataFromDB(guid);
+                var dataObject = DBManager.GetInstance().FindOneDataFromDB(guid);
 
                 if (dataObject != null)
                 {
-                    XElement rElement = dataObject.GetXElementFromDataObject();
+                    var rElement = dataObject.GetXElementFromDataObject();
                     //rElement.DealExtra();
                     Utils.SetReturnMessage(context, rElement.ToString());
                     return;
@@ -39,7 +39,7 @@ namespace AutoX.Web.Actions
             }
             catch (Exception ex)
             {
-                Logger.GetInstance().Log().Debug("we receive invalid command string:\n" + commandStr + "\n" + ex.Message);
+                Log.Debug("we receive invalid command string:\n" + commandStr + "\n" + ex.Message);
             }
             Utils.SetFailedReturnMessage(context, "Unknown reason, please check GetById.cs");
         }

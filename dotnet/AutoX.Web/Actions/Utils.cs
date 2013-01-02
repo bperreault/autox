@@ -17,7 +17,7 @@ namespace AutoX.Web.Actions
     {
         public static string GetContextValue(NativeActivityContext context, string name)
         {
-            WorkflowDataContext dc = context.DataContext;
+            var dc = context.DataContext;
             return (from object p in dc.GetProperties()
                     where ((PropertyDescriptor) p).Name.Equals(name)
                     select ((PropertyDescriptor) p).GetValue(dc)
@@ -26,7 +26,7 @@ namespace AutoX.Web.Actions
 
         public static bool SetContextValue(NativeActivityContext context, string name, string value)
         {
-            WorkflowDataContext dc = context.DataContext;
+            var dc = context.DataContext;
             foreach (object p in dc.GetProperties())
             {
                 if (!((PropertyDescriptor) p).Name.Equals(name)) continue;
@@ -49,7 +49,7 @@ namespace AutoX.Web.Actions
         //RULE: feed back raw message
         public static void SetIdleReturnMessage(NativeActivityContext context)
         {
-            XElement r = XElement.Parse(@"<Steps> <Step Data='17' Action='AutoX.Client.Wait' /> </Steps>");
+            var r = XElement.Parse(@"<Steps> <Step Data='17' Action='AutoX.Client.Wait' /> </Steps>");
             SetContextValue(context, "returnMessage", r.ToString());
         }
 
@@ -65,7 +65,7 @@ namespace AutoX.Web.Actions
 
         public static void SetEmptyReturnMessage(NativeActivityContext context)
         {
-            XElement r = XElement.Parse(@"<Steps> <Step Data='1' Action='AutoX.Client.Wait' /> </Steps>");
+            var r = XElement.Parse(@"<Steps> <Step Data='1' Action='AutoX.Client.Wait' /> </Steps>");
             SetContextValue(context, "returnMessage", r.ToString());
         }
     }

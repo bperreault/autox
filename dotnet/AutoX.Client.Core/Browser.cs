@@ -1,4 +1,4 @@
-﻿// Hapa Project, CC
+// Hapa Project, CC
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
@@ -20,7 +20,7 @@ using OpenQA.Selenium.Remote;
 
 #endregion
 
-namespace AutoX.Client
+namespace AutoX.Client.Core
 {
     public sealed class Browser : IDisposable
     {
@@ -61,7 +61,7 @@ namespace AutoX.Client
             DismissUnexpectedAlert();
             if (_browser != null)
             {
-                ReadOnlyCollection<string> bs = _browser.WindowHandles;
+                var bs = _browser.WindowHandles;
                 _browser.SwitchTo().Window(bs.Count == 1 ? bs[0] : bs[bs.Count - 1]);
             }
 
@@ -73,20 +73,20 @@ namespace AutoX.Client
             var xBrowser = new XElement("UIObject");
             xBrowser.SetAttributeValue("Type", "Browser");
             xBrowser.SetAttributeValue("Name", "Browser");
-            ReadOnlyCollection<IWebElement> valueObjects = GetCurrentBrowser().FindElements(By.XPath(_cssxPath));
+            var valueObjects = GetCurrentBrowser().FindElements(By.XPath(_cssxPath));
 
             foreach (IWebElement webElement in valueObjects)
             {
                 xBrowser.Add(GetXFromElement(webElement));
             }
-            ReadOnlyCollection<IWebElement> frames = GetCurrentBrowser().FindElements(By.XPath("//frame"));
+            var frames = GetCurrentBrowser().FindElements(By.XPath("//frame"));
             if (frames.Count > 0)
             {
                 var framesNames = new string[frames.Count];
-                int indexer = 0;
+                var indexer = 0;
                 foreach (IWebElement webElement in frames)
                 {
-                    string frameName = webElement.GetAttribute("name");
+                    var frameName = webElement.GetAttribute("name");
                     framesNames[indexer] = frameName;
                     indexer++;
                 }
@@ -107,7 +107,7 @@ namespace AutoX.Client
         {
             //XElement xParent = GetXFromElement(parent);
 
-            ReadOnlyCollection<IWebElement> valueObjects = _browser.FindElements(By.XPath(_cssxPath));
+            var valueObjects = _browser.FindElements(By.XPath(_cssxPath));
             foreach (IWebElement webElement in valueObjects)
             {
                 parent.Add(GetXFromElement(webElement));
@@ -121,9 +121,9 @@ namespace AutoX.Client
                 return null;
 
             var xe = new XElement("UIObject");
-            string eTag = webElement.TagName;
+            var eTag = webElement.TagName;
             xe.SetAttributeValue("Type", !string.IsNullOrEmpty(eTag) ? eTag : "*");
-            string eText = webElement.Text;
+            var eText = webElement.Text;
             if (!string.IsNullOrEmpty(eText))
             {
                 xe.SetAttributeValue("text", eText);
@@ -137,24 +137,24 @@ namespace AutoX.Client
             WebAttrToAttr(webElement, xe, "value");
             WebAttrToAttr(webElement, xe, "class");
 
-            string eSrc = webElement.GetAttribute("src");
+            var eSrc = webElement.GetAttribute("src");
             if ((eTag.Equals("img") || eTag.Equals("img")) && !string.IsNullOrEmpty(eSrc))
                 xe.SetAttributeValue("src", eSrc);
-            string eHref = webElement.GetAttribute("href");
+            var eHref = webElement.GetAttribute("href");
             if (eTag.Equals("a") && !string.IsNullOrEmpty(eHref))
                 xe.SetAttributeValue("href", eHref);
-            string xpath = xe.GenerateXPathFromXElement();
+            var xpath = xe.GenerateXPathFromXElement();
             xe.SetAttributeValue("XPath", xpath);
-            XAttribute nAttribute = xe.Attribute("name");
+            var nAttribute = xe.Attribute("name");
             if (nAttribute != null)
             {
-                string value = nAttribute.Value;
+                var value = nAttribute.Value;
                 nAttribute.Remove();
                 xe.SetAttributeValue("Name", value);
             }
             else
             {
-                string id = xe.GetAttributeValue("id");
+                var id = xe.GetAttributeValue("id");
                 if (string.IsNullOrEmpty(id))
                 {
                     xe.SetAttributeValue("Name", "EmptyName");
@@ -169,7 +169,7 @@ namespace AutoX.Client
 
         private static void WebAttrToAttr(IWebElement webElement, XElement xe, string attrName)
         {
-            string eId = webElement.GetAttribute(attrName);
+            var eId = webElement.GetAttribute(attrName);
             if (!string.IsNullOrEmpty(eId))
                 xe.SetAttributeValue(attrName, eId);
         }
@@ -184,13 +184,13 @@ namespace AutoX.Client
             DismissUnexpectedAlert();
             if (_browser != null)
             {
-                ReadOnlyCollection<string> bs = _browser.WindowHandles;
+                var bs = _browser.WindowHandles;
                 if (bs.Count == 1)
                 {
                     _browser.SwitchTo().Window(bs[0]);
                     return _browser;
                 }
-                string currentHandle = _browser.CurrentWindowHandle;
+                var currentHandle = _browser.CurrentWindowHandle;
                 foreach (string handle in bs)
                 {
                     if (!currentHandle.Equals(handle))
@@ -224,7 +224,7 @@ namespace AutoX.Client
 
         public ReadOnlyCollection<IWebElement> GetWebElement(XElement xPage)
         {
-            string xParent = xPage.Name.ToString();
+            var xParent = xPage.Name.ToString();
             XElement xUI;
             if (xParent.Equals("Browser") || xParent.Equals("frame"))
             {
@@ -232,10 +232,10 @@ namespace AutoX.Client
                 GetInstance().GetCurrentBrowser().SwitchTo().DefaultContent();
                 if (xParent.Equals("frame"))
                 {
-                    XAttribute frame = xPage.Attribute("name");
+                    var frame = xPage.Attribute("name");
                     if (frame != null)
                     {
-                        string frameName = frame.Value;
+                        var frameName = frame.Value;
                         GetInstance().GetCurrentBrowser().SwitchTo().Frame(frameName);
                     }
                 }
@@ -243,7 +243,7 @@ namespace AutoX.Client
             else
                 xUI = xPage;
 
-            string xpath = xUI.GenerateXPathFromXElement();
+            var xpath = xUI.GenerateXPathFromXElement();
 
 
             return GetCurrentBrowser().FindElements(By.XPath(xpath));
@@ -259,11 +259,11 @@ namespace AutoX.Client
 
         private void DismissUnexpectedAlert()
         {
-            IAlert alert = GetAlert();
+            var alert = GetAlert();
             if (alert != null)
             {
                 alert.Dismiss();
-                Logger.GetInstance().Log().Warn("Close an unexpected dialog, please check.");
+                Log.Warn("Close an unexpected dialog, please check.");
             }
         }
 
@@ -276,17 +276,17 @@ namespace AutoX.Client
             }
             catch (Exception)
             {
-                Logger.GetInstance().Log().Debug("Suppress get alert");
+                Log.Debug("Suppress get alert");
             }
             return alert;
         }
 
         private void StartBrowser()
         {
-            string browserType = Configuration.Settings("BrowserType", "IE");
+            var browserType = Configuration.Settings("BrowserType", "IE");
             if (browserType.Equals("IE"))
             {
-                string processor = Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE");
+                var processor = Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE");
                 if (processor != null && !processor.Contains("x86"))
                 {
                     Environment.SetEnvironmentVariable("webdriver.ie.driver",
@@ -302,7 +302,7 @@ namespace AutoX.Client
                     File.Copy(Directory.GetCurrentDirectory() + "\\IEDriverServer32.exe",
                               Directory.GetCurrentDirectory() + "\\IEDriverServer.exe");
                 }
-                DesiredCapabilities capabilities = DesiredCapabilities.InternetExplorer();
+                var capabilities = DesiredCapabilities.InternetExplorer();
 
                 _browser = new InternetExplorerDriver();
             }
@@ -336,7 +336,7 @@ namespace AutoX.Client
 
             //browser = null;
 
-            string browserType = Configuration.Settings("BrowserType", "IE");
+            var browserType = Configuration.Settings("BrowserType", "IE");
             if (browserType.Equals("IE"))
 
                 DosCommand(Environment.SystemDirectory + "\\taskkill.exe", " /IM iexplore.exe");
@@ -349,18 +349,18 @@ namespace AutoX.Client
         private static void DosCommand(string cmd, string param)
         {
             var proc = new Process
-                           {
-                               StartInfo =
-                                   {
-                                       UseShellExecute = false,
-                                       CreateNoWindow = true,
-                                       WindowStyle = ProcessWindowStyle.Hidden,
-                                       FileName = cmd,
-                                       Arguments = param,
-                                       RedirectStandardError = false,
-                                       RedirectStandardOutput = false
-                                   }
-                           };
+                {
+                    StartInfo =
+                        {
+                            UseShellExecute = false,
+                            CreateNoWindow = true,
+                            WindowStyle = ProcessWindowStyle.Hidden,
+                            FileName = cmd,
+                            Arguments = param,
+                            RedirectStandardError = false,
+                            RedirectStandardOutput = false
+                        }
+                };
             proc.StartInfo.UseShellExecute = false;
             proc.StartInfo.CreateNoWindow = true;
             proc.Start();

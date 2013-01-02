@@ -6,7 +6,6 @@
 
 using System.Activities;
 using System.Activities.Presentation.PropertyEditing;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Xml.Linq;
@@ -104,7 +103,7 @@ namespace AutoX.Activities.AutoActivities
             {
                 _onChildComplete = InternalExecute;
             }
-            Logger.GetInstance().Log().Info("in TestScreenActivity internalexecute");
+            Log.Info("in TestScreenActivity internalexecute");
             var steps = GetSteps();
             Host.SetCommand(InstanceId, steps);
             var rElement = Host.GetResult(InstanceId, GUID);
@@ -120,8 +119,8 @@ namespace AutoX.Activities.AutoActivities
             var steps = XElement.Parse("<AutoX.Steps />");
             steps.SetAttributeValue("OnError", ErrorLevel.ToString());
             steps.SetAttributeValue("InstanceId", InstanceId);
-            steps.SetAttributeValue("GUID",GUID);
-            foreach (var descendant in XElement.Parse(_steps).Descendants("Step"))
+            steps.SetAttributeValue("GUID", GUID);
+            foreach (XElement descendant in XElement.Parse(_steps).Descendants("Step"))
             {
                 var enable = descendant.GetAttributeValue("Enable");
                 if (string.IsNullOrEmpty(enable))
@@ -133,7 +132,7 @@ namespace AutoX.Activities.AutoActivities
                 var action = descendant.GetAttributeValue("Action");
                 if (string.IsNullOrEmpty(action))
                 {
-                    Logger.GetInstance().Log().Error("Action is empty, please check!");
+                    Log.Error("Action is empty, please check!");
                     continue;
                 }
                 var step = XElement.Parse("<Step />");

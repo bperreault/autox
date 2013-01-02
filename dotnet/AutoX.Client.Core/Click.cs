@@ -1,28 +1,28 @@
-﻿// Hapa Project, CC
+// Hapa Project, CC
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
 #region
 
-using System;
-using System.Threading;
 using System.Xml.Linq;
 
 #endregion
 
-namespace AutoX.Client
+namespace AutoX.Client.Core
 {
-    public class Wait : AbstractAction
+    internal class Click : AbstractAction
     {
         public override XElement Act()
         {
             var sr = new StepResult(this);
-            int time = 17;
-            if (!string.IsNullOrEmpty(Data))
+            if (UIObject.Count == 0)
             {
-                time = Convert.ToInt32(Data);
+                sr.Error("Expected UI Object is not found!");
             }
-            Thread.Sleep(time*1000);
+            else
+            {
+                UIObject[0].Click();
+            }
             return sr.GetResult();
         }
     }

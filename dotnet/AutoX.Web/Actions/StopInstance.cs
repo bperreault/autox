@@ -17,19 +17,19 @@ namespace AutoX.Web.Actions
     {
         protected override void Execute(NativeActivityContext context)
         {
-            string commandStr = Utils.GetContextValue(context, "command");
+            var commandStr = Utils.GetContextValue(context, "command");
 
             try
             {
-                XElement content = XElement.Parse(commandStr);
+                var content = XElement.Parse(commandStr);
 
-                string guid = content.GetAttributeValue("GUID");
+                var guid = content.GetAttributeValue("GUID");
                 InstanceManager.GetInstance().GetTestInstance(guid).Stop();
-                Logger.GetInstance().Log().Debug(commandStr);
+                Log.Debug(commandStr);
             }
             catch (Exception ex)
             {
-                Logger.GetInstance().Log().Debug("we receive invalid command string:\n" + commandStr + "\n" + ex.Message);
+                Log.Debug("we receive invalid command string:\n" + commandStr + "\n" + ex.Message);
                 Utils.SetFailedReturnMessage(context, ex.Message);
                 return;
             }

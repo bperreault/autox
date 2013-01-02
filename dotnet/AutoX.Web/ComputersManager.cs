@@ -28,26 +28,26 @@ namespace AutoX.Web
         {
             // check the computers every 5 minutes, if it is not accessed for 1 hour, then remove it. we guess it is dead
             var cancell = new CancellationTokenSource();
-            CancellationToken token = cancell.Token;
+            var token = cancell.Token;
             _task = new Task(() =>
-                                 {
-                                     while (true)
-                                     {
-                                         bool cancelled = token.WaitHandle.WaitOne(5*60*1000);
-                                         DateTime now = DateTime.Now;
-                                         foreach (string nameOfComputer in _computerList.Keys)
-                                         {
-                                             Computer computer = _computerList[nameOfComputer];
-                                             TimeSpan lostMessage = now - computer.LastAccess;
-                                             if (lostMessage.Hours >= 1)
-                                                 _computerList.Remove(nameOfComputer);
-                                         }
-                                         if (cancelled)
-                                         {
-                                             throw new OperationCanceledException(token);
-                                         }
-                                     }
-                                 }, token);
+                {
+                    while (true)
+                    {
+                        var cancelled = token.WaitHandle.WaitOne(5*60*1000);
+                        var now = DateTime.Now;
+                        foreach (string nameOfComputer in _computerList.Keys)
+                        {
+                            var computer = _computerList[nameOfComputer];
+                            var lostMessage = now - computer.LastAccess;
+                            if (lostMessage.Hours >= 1)
+                                _computerList.Remove(nameOfComputer);
+                        }
+                        if (cancelled)
+                        {
+                            throw new OperationCanceledException(token);
+                        }
+                    }
+                }, token);
             _task.Start();
         }
 
@@ -66,8 +66,8 @@ namespace AutoX.Web
 
         public void Register(string xComputerInfo)
         {
-            XElement xElement = XElement.Parse(xComputerInfo);
-            XAttribute xAction = xElement.Attribute("Action");
+            var xElement = XElement.Parse(xComputerInfo);
+            var xAction = xElement.Attribute("Action");
             if (xAction != null) xAction.Remove();
             var computer = new Computer(xElement);
 
@@ -111,7 +111,7 @@ namespace AutoX.Web
         {
             _element = info;
             _element.Name = "Computer";
-            XAttribute xAttribute = info.Attribute("ComputerName");
+            var xAttribute = info.Attribute("ComputerName");
             if (xAttribute != null) Name = xAttribute.Value;
             xAttribute = info.Attribute("IPAddress");
             if (xAttribute != null) IPAddress = xAttribute.Value;

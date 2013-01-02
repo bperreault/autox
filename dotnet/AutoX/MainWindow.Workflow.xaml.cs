@@ -11,7 +11,6 @@ using System.Activities.Presentation;
 using System.Activities.Presentation.Metadata;
 using System.Activities.Presentation.Toolbox;
 using System.Activities.Presentation.View;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -41,11 +40,11 @@ namespace AutoX
         private void AddTestDesigner(TreeViewItem treeViewItem)
         {
             var xElement = treeViewItem.DataContext as XElement;
-            string type = xElement.GetAttributeValue("ScriptType");
-            string name = xElement.GetAttributeValue("Name");
-            string guid = xElement.GetAttributeValue("GUID");
-            string description = xElement.GetAttributeValue("Description");
-            string content = xElement.GetAttributeValue("Content");
+            var type = xElement.GetAttributeValue("ScriptType");
+            var name = xElement.GetAttributeValue("Name");
+            var guid = xElement.GetAttributeValue("GUID");
+            var description = xElement.GetAttributeValue("Description");
+            var content = xElement.GetAttributeValue("Content");
 
             Activity newActivity = null;
 
@@ -84,7 +83,7 @@ namespace AutoX
             }
             else
             {
-                Activity activity = Utilities.GetActivityFromContentString(content);
+                var activity = Utilities.GetActivityFromContentString(content);
                 AddDesigner(activity, treeViewItem);
                 //Dispatcher.Invoke(() => AddDesigner(activity, treeViewItem));
             }
@@ -93,12 +92,12 @@ namespace AutoX
         protected void LoadToolBox()
         {
             var tbc = new ToolboxControl
-                          {
-                              CategoryItemStyle = new Style(typeof (TreeViewItem))
-                                                      {
-                                                          Setters = {new Setter(TreeViewItem.IsExpandedProperty, false)}
-                                                      }
-                          };
+                {
+                    CategoryItemStyle = new Style(typeof (TreeViewItem))
+                        {
+                            Setters = {new Setter(TreeViewItem.IsExpandedProperty, false)}
+                        }
+                };
 
             Dispatcher.BeginInvoke(new Action(() => ToolboxBorder.Child = tbc));
             Dispatcher.BeginInvoke(new Action(() => LoadDefaultActivities(tbc)));
@@ -108,10 +107,10 @@ namespace AutoX
             //LoadCustomActivities(tbc, customAss, categoryTitle);
 
             //support the users create there own automation activities, just add the dll name to appsettings
-            string ass = Configuration.Settings("Assemmblies", "");
+            var ass = Configuration.Settings("Assemmblies", "");
             if (string.IsNullOrEmpty(ass)) return;
             var split = new[] {';'};
-            string[] asses = ass.Split(split);
+            var asses = ass.Split(split);
             foreach (string a in asses)
             {
                 if (!string.IsNullOrWhiteSpace(a))
@@ -125,10 +124,11 @@ namespace AutoX
 
         private static void LoadCustomActivities(ToolboxControl tbc, Assembly customAss, string categoryTitle)
         {
-            IEnumerable<Type> types = customAss.GetTypes().
-                Where(t => (typeof (Activity).IsAssignableFrom(t) ||
-                            typeof (IActivityTemplateFactory).IsAssignableFrom(t)) && !t.IsAbstract && t.IsPublic &&
-                           !t.IsNested);
+            var types = customAss.GetTypes().
+                                  Where(t => (typeof (Activity).IsAssignableFrom(t) ||
+                                              typeof (IActivityTemplateFactory).IsAssignableFrom(t)) &&
+                                             !t.IsAbstract && t.IsPublic &&
+                                             !t.IsNested);
             var cat = new ToolboxCategory(categoryTitle);
             foreach (Type type in types.OrderBy(t => t.Name))
             {
@@ -147,17 +147,19 @@ namespace AutoX
         private void LoadDefaultActivities(ToolboxControl tbc)
         {
             var dict = new ResourceDictionary
-                           {
-                               Source =
-                                   new Uri(
-                                   "pack://application:,,,/System.Activities.Presentation;component/themes/icons.xaml")
-                           };
+                {
+                    Source =
+                        new Uri(
+                            "pack://application:,,,/System.Activities.Presentation;component/themes/icons.xaml")
+                };
             Resources.MergedDictionaries.Add(dict);
 
-            IEnumerable<Type> standtypes = typeof (Activity).Assembly.GetTypes().
-                Where(t => (typeof (Activity).IsAssignableFrom(t) ||
-                            typeof (IActivityTemplateFactory).IsAssignableFrom(t)) && !t.IsAbstract && t.IsPublic &&
-                           !t.IsNested && HasDefaultConstructor(t));
+            var standtypes = typeof (Activity).Assembly.GetTypes().
+                                               Where(t => (typeof (Activity).IsAssignableFrom(t) ||
+                                                           typeof (IActivityTemplateFactory)
+                                                               .IsAssignableFrom(t)) && !t.IsAbstract &&
+                                                          t.IsPublic &&
+                                                          !t.IsNested && HasDefaultConstructor(t));
 
             var primary = new ToolboxCategory("Native Activities");
 
@@ -180,15 +182,15 @@ namespace AutoX
 
         protected bool AddIcon(Type type, AttributeTableBuilder builder)
         {
-            bool secondary = false;
+            var secondary = false;
 
-            Type tbaType = typeof (ToolboxBitmapAttribute);
-            Type imageType = typeof (Image);
-            ConstructorInfo constructor = tbaType.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null,
-                                                                 new[] {imageType, imageType}, null);
+            var tbaType = typeof (ToolboxBitmapAttribute);
+            var imageType = typeof (Image);
+            var constructor = tbaType.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null,
+                                                     new[] {imageType, imageType}, null);
 
-            string resourceKey = type.IsGenericType ? type.GetGenericTypeDefinition().Name : type.Name;
-            int index = resourceKey.IndexOf('`');
+            var resourceKey = type.IsGenericType ? type.GetGenericTypeDefinition().Name : type.Name;
+            var index = resourceKey.IndexOf('`');
             if (index > 0)
             {
                 resourceKey = resourceKey.Remove(index);
@@ -199,14 +201,14 @@ namespace AutoX
             }
             resourceKey += "Icon";
             Bitmap small, large;
-            object resource = TryFindResource(resourceKey);
+            var resource = TryFindResource(resourceKey);
             if (!(resource is DrawingBrush))
             {
                 resource = FindResource("GenericLeafActivityIcon");
                 secondary = true;
             }
             var dv = new DrawingVisual();
-            using (DrawingContext context = dv.RenderOpen())
+            using (var context = dv.RenderOpen())
             {
                 context.DrawRectangle(((DrawingBrush) resource), null, new Rect(0, 0, 32, 32));
                 context.DrawRectangle(((DrawingBrush) resource), null, new Rect(32, 32, 16, 16));
@@ -243,10 +245,10 @@ namespace AutoX
             if (!t.IsGenericType)
                 return t.Name;
 
-            string genericTypeName = t.GetGenericTypeDefinition().Name;
+            var genericTypeName = t.GetGenericTypeDefinition().Name;
             genericTypeName = genericTypeName.Substring(0, genericTypeName.IndexOf('`'));
 
-            string genericArgs = string.Join(",", t.GetGenericArguments().Select(ToGenericTypeString));
+            var genericArgs = string.Join(",", t.GetGenericArguments().Select(ToGenericTypeString));
             return genericTypeName + "<" + genericArgs + ">";
         }
 
@@ -294,7 +296,7 @@ namespace AutoX
             //grid1.Children.Add(this.workflowDesigner.View);
 
             // Add the Property Inspector
-            UIElement propertyView = _workflowDesigner.PropertyInspectorView;
+            var propertyView = _workflowDesigner.PropertyInspectorView;
 
             PropertyBorder.Child = propertyView;
         }
@@ -322,7 +324,7 @@ namespace AutoX
         private void WorkflowSourceChanged(TreeViewItem treeViewItem)
         {
             _workflowDesigner.Flush();
-            string content = _workflowDesigner.Text;
+            var content = _workflowDesigner.Text;
             debugInfo.Text = content;
 
             var xElement = treeViewItem.DataContext as XElement;
@@ -331,7 +333,7 @@ namespace AutoX
                 MessageBox.Show("Related treeview item does not contain xml format data.");
                 return;
             }
-            Activity activity = Utilities.GetActivityFromContentString(content);
+            var activity = Utilities.GetActivityFromContentString(content);
             var name = activity.GetType().GetProperty("Name").GetValue(activity, null) as string;
             var description = activity.GetType().GetProperty("Description").GetValue(activity, null) as string;
             if (!string.IsNullOrEmpty(name))
@@ -341,9 +343,9 @@ namespace AutoX
 
             xElement.SetAttributeValue("Content", content);
 
-            string sRoot = Communication.GetInstance().SetById(xElement);
-            XElement xRoot = XElement.Parse(sRoot);
-            string result = xRoot.GetAttributeValue("Result");
+            var sRoot = Communication.GetInstance().SetById(xElement);
+            var xRoot = XElement.Parse(sRoot);
+            var result = xRoot.GetAttributeValue("Result");
             if (string.IsNullOrEmpty(result)) return;
             if (result.Equals("Failed"))
             {

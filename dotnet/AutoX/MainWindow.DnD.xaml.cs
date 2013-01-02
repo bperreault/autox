@@ -25,8 +25,8 @@ namespace AutoX
         private void PreviewMouseMoveOnTree(object sender, MouseEventArgs e)
         {
             // Get the current mouse position
-            Point mousePos = e.GetPosition(sender as IInputElement);
-            Vector diff = _startPoint - mousePos;
+            var mousePos = e.GetPosition(sender as IInputElement);
+            var diff = _startPoint - mousePos;
 
             DragTreeviewItem(e, diff);
         }
@@ -36,12 +36,12 @@ namespace AutoX
             if (sender == null) return;
             var s = sender as IInputElement;
             if (s == null) return;
-            Point currentPosition = e.GetPosition(s);
-            Vector diff = _startPoint - currentPosition;
+            var currentPosition = e.GetPosition(s);
+            var diff = _startPoint - currentPosition;
 
             if (!(Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance) ||
                 !(Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance)) return;
-            TreeViewItem item = GetNearestContainer(e.OriginalSource as UIElement);
+            var item = GetNearestContainer(e.OriginalSource as UIElement);
             var data = e.Data.GetData("DataFormat") as XElement;
             e.Effects = CheckValidDrop(item, data) ? DragDropEffects.Copy : DragDropEffects.None;
         }
@@ -53,9 +53,9 @@ namespace AutoX
             {
                 e.Effects = DragDropEffects.None;
                 e.Handled = true;
-                TreeViewItem item = GetNearestContainer(e.OriginalSource as UIElement);
+                var item = GetNearestContainer(e.OriginalSource as UIElement);
                 var data = e.Data.GetData("DataFormat") as XElement;
-                if(data==null) return;
+                if (data == null) return;
                 if (!CheckValidDrop(item, data)) return;
                 var xTarget = item.DataContext as XElement;
                 var parentId = xTarget.GetAttributeValue("GUID");
@@ -73,7 +73,7 @@ namespace AutoX
                 {
                     //sender to find the source item, then delete it
                     var toDelete = FindItemOnTree((sender as TreeView), "GUID",
-                                                           data.GetAttributeValue("GUID"));
+                                                  data.GetAttributeValue("GUID"));
                     if (toDelete != null)
                     {
                         var parent = toDelete.Parent as TreeViewItem;
@@ -82,7 +82,6 @@ namespace AutoX
 
                     item.Items.Add(data.GetTreeViewItemFromXElement());
                 }
-
             }
             catch (Exception ex)
             {
@@ -111,7 +110,7 @@ namespace AutoX
             {
                 var k = kid as TreeViewItem;
                 if (k == null) continue;
-                TreeViewItem answer = FindItemOnTreeViewItem(k, name, value);
+                var answer = FindItemOnTreeViewItem(k, name, value);
                 if (answer != null) return answer;
             }
             return null;
@@ -126,10 +125,10 @@ namespace AutoX
             //rule 1: only folder accept drop
             var xTarget = item.DataContext as XElement;
             if (xTarget == null) return false;
-            string tag = xTarget.Name.ToString();
+            var tag = xTarget.Name.ToString();
             if (!tag.Equals("Folder")) return false;
             //rule 2: don't waste your time move to your parent
-            string parentId = xTarget.GetAttributeValue("GUID");
+            var parentId = xTarget.GetAttributeValue("GUID");
             if (parentId.Equals(data.GetAttributeValue("ParentId")))
                 return false;
             return true;
@@ -171,7 +170,7 @@ namespace AutoX
                 }
                 catch (Exception exception)
                 {
-                    Logger.GetInstance().Log().Debug("need to improve here:" + exception.Message);
+                    Log.Debug("need to improve here:" + exception.Message);
                 }
             }
         }
@@ -227,18 +226,18 @@ namespace AutoX
             if (client == null) return;
 
             var newInstance = new Instance
-                                  {
-                                      ClientName = client.ComputerName,
-                                      Language = "Default",
-                                      GUID = Guid.NewGuid().ToString(),
-                                      ScriptGUID = data.GetAttributeValue("GUID"),
-                                      SuiteName = data.GetAttributeValue("Name"),
-                                      Status = "STOP",
-                                      TestName = "New Test"
-                                  };
-            string sRoot = Communication.GetInstance().SetInstanceInfo(newInstance.GetXElementFromObject());
-            XElement xRoot = XElement.Parse(sRoot);
-            string result = xRoot.GetAttributeValue("Result");
+                {
+                    ClientName = client.ComputerName,
+                    Language = "Default",
+                    GUID = Guid.NewGuid().ToString(),
+                    ScriptGUID = data.GetAttributeValue("GUID"),
+                    SuiteName = data.GetAttributeValue("Name"),
+                    Status = "STOP",
+                    TestName = "New Test"
+                };
+            var sRoot = Communication.GetInstance().SetInstanceInfo(newInstance.GetXElementFromObject());
+            var xRoot = XElement.Parse(sRoot);
+            var result = xRoot.GetAttributeValue("Result");
             if (string.IsNullOrEmpty(result)) return;
             if (result.Equals("Failed"))
             {

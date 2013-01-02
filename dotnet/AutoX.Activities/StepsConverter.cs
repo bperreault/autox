@@ -23,7 +23,7 @@ namespace AutoX.Activities
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var textValue = value as string;
-            ArrayList ret = Utilities.GetStepsList(textValue, _options, HostManager.GetInstance().GetHost());
+            var ret = Utilities.GetStepsList(textValue, _options, HostManager.GetInstance().GetHost());
 
             return ret;
         }

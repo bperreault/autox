@@ -8,10 +8,10 @@ using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Web.Script.Services;
 using System.Web.Services;
 using System.Xml.Linq;
 using AutoX.Basic;
-using System.Web.Script.Services;
 
 #endregion
 
@@ -24,17 +24,11 @@ namespace AutoX.Web
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [ToolboxItem(false)]
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
-    [System.Web.Script.Services.ScriptService]
+    [ScriptService]
     public class Service : WebService
     {
-        public Service()
-        {
-            //TODO do initialization here
-        }
-
         [WebMethod]
         [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-
         public string Action(string input)
         {
             throw new NotImplementedException();
@@ -54,9 +48,9 @@ namespace AutoX.Web
         [WebMethod]
         public string Command(string xmlFormatCommand)
         {
-            Logger.GetInstance().Log().Debug(xmlFormatCommand);
-            XElement xe = XElement.Parse(xmlFormatCommand);
-            string name = xe.GetAttributeValue("Action");
+            Log.Debug(xmlFormatCommand);
+            var xe = XElement.Parse(xmlFormatCommand);
+            var name = xe.GetAttributeValue("Action");
 
             var wf = new ServiceFlow();
             //ActivityLib.MainWorkflow wf = new ActivityLib.MainWorkflow();
@@ -66,10 +60,10 @@ namespace AutoX.Web
             if (name != null)
                 input.Add("name", name);
 
-            IDictionary<string, object> result = WorkflowInvoker.Invoke(wf, input, new TimeSpan(0, 10, 10));
+            var result = WorkflowInvoker.Invoke(wf, input, new TimeSpan(0, 10, 10));
 
             var outValue = (string) result["returnMessage"];
-            Logger.GetInstance().Log("Return:").Debug(outValue);
+            Log.Debug(outValue);
             return outValue;
         }
     }

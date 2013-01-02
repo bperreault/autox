@@ -9,7 +9,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Xml.Linq;
 using AutoX.Basic;
@@ -33,57 +32,57 @@ namespace AutoX
             var head = new StackPanel {Orientation = Orientation.Horizontal};
             Image image = null;
             var text = new TextBlock();
-            string type = xElement.GetAttributeValue("Type");
-            string name = xElement.GetAttributeValue("Name");
+            var type = xElement.GetAttributeValue("Type");
+            var name = xElement.GetAttributeValue("Name");
 
             if (!string.IsNullOrWhiteSpace(type))
             {
-                BitmapImage bitmap = ImageList.GetInstance().Get(type);
+                var bitmap = ImageList.GetInstance().Get(type);
                 if (bitmap != null)
                 {
                     // this is important, remove it, the tree will be 20 times slower
                     Dispatcher.CurrentDispatcher.BeginInvoke((DispatcherPriority.Normal), (Action) (() =>
-                                                                                                        {
-                                                                                                            image = new Image
-                                                                                                                        {
-                                                                                                                            Source
-                                                                                                                                =
-                                                                                                                                bitmap,
-                                                                                                                            Stretch
-                                                                                                                                =
-                                                                                                                                Stretch
-                                                                                                                                .
-                                                                                                                                Uniform,
-                                                                                                                            Width
-                                                                                                                                =
-                                                                                                                                text
-                                                                                                                                .
-                                                                                                                                FontSize,
-                                                                                                                            Height
-                                                                                                                                =
-                                                                                                                                text
-                                                                                                                                .
-                                                                                                                                FontSize,
-                                                                                                                            MinHeight
-                                                                                                                                =
-                                                                                                                                16,
-                                                                                                                            MinWidth
-                                                                                                                                =
-                                                                                                                                16,
-                                                                                                                            ToolTip
-                                                                                                                                =
-                                                                                                                                xElement
-                                                                                                                                .
-                                                                                                                                GetAttributeValue
-                                                                                                                                ("Description")
-                                                                                                                        };
-                                                                                                            //head.Children.Add(image);
-                                                                                                            head.
-                                                                                                                Children
-                                                                                                                .Insert
-                                                                                                                (0,
-                                                                                                                 image);
-                                                                                                        }
+                        {
+                            image = new Image
+                                {
+                                    Source
+                                        =
+                                        bitmap,
+                                    Stretch
+                                        =
+                                        Stretch
+                                            .
+                                            Uniform,
+                                    Width
+                                        =
+                                        text
+                                            .
+                                            FontSize,
+                                    Height
+                                        =
+                                        text
+                                            .
+                                            FontSize,
+                                    MinHeight
+                                        =
+                                        16,
+                                    MinWidth
+                                        =
+                                        16,
+                                    ToolTip
+                                        =
+                                        xElement
+                                            .
+                                            GetAttributeValue
+                                            ("Description")
+                                };
+                            //head.Children.Add(image);
+                            head.
+                                Children
+                                .Insert
+                                (0,
+                                 image);
+                        }
                                                                                                    ));
                 }
             }
@@ -102,7 +101,7 @@ namespace AutoX
         public static bool FilterTreeItem(this TreeViewItem tree, string value)
         {
             if (tree == null) return false;
-            bool visible = false;
+            var visible = false;
 
             foreach (object kid in tree.Items)
             {
@@ -128,8 +127,8 @@ namespace AutoX
 
         private static string GetNTab(int n)
         {
-            string tab = "";
-            for (int i = 0; i < n; i++)
+            var tab = "";
+            for (var i = 0; i < n; i++)
             {
                 tab += "\t";
             }
@@ -145,7 +144,7 @@ namespace AutoX
         {
             if (element == null)
                 return "element is null!";
-            string result = "";
+            var result = "";
             result += GetNTab(level) + element.Name;
             if (!String.IsNullOrEmpty(element.Value))
             {
@@ -172,7 +171,7 @@ namespace AutoX
         {
             if (element == null)
                 return "Element is NULL";
-            string retString = element.Name + "\n";
+            var retString = element.Name + "\n";
             if (!string.IsNullOrWhiteSpace(element.Value))
                 retString += element.Value + "\n";
             return element.Attributes().Aggregate(retString,

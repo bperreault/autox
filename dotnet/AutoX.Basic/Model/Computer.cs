@@ -12,27 +12,51 @@ using System.Xml.Linq;
 
 namespace AutoX.Basic.Model
 {
-    public class Computer
+    public class Computer : IDataObject
     {
         public string ComputerName { get; set; }
         public string IPAddress { get; set; }
         public string Version { get; set; }
 
+        public string GUID
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
+
+        public string EXTRA
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
+
+        public DateTime Created
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
+
+        public DateTime Updated
+        {
+            get { throw new NotImplementedException(); }
+            set { throw new NotImplementedException(); }
+        }
+
         public static Computer GetLocalHost()
         {
             var computer = new Computer
-                               {
-                                   ComputerName = Dns.GetHostName(),
-                                   Version = Environment.OSVersion.VersionString,
-                                   IPAddress = LocalIPAddress()
-                               };
+                {
+                    ComputerName = Dns.GetHostName(),
+                    Version = Environment.OSVersion.VersionString,
+                    IPAddress = LocalIPAddress()
+                };
             return computer;
         }
 
         private static string LocalIPAddress()
         {
-            string localIP = "";
-            IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
+            var localIP = "";
+            var host = Dns.GetHostEntry(Dns.GetHostName());
             foreach (IPAddress ip in host.AddressList)
             {
                 if (ip.AddressFamily.ToString() == "InterNetwork")
@@ -66,11 +90,11 @@ namespace AutoX.Basic.Model
         {
             //return xComputer.GetObjectFromXElement() as Computer;
             var computer = new Computer
-                               {
-                                   ComputerName = xComputer.GetAttributeValue("ComputerName"),
-                                   IPAddress = xComputer.GetAttributeValue("IPAddress"),
-                                   Version = xComputer.GetAttributeValue("Version")
-                               };
+                {
+                    ComputerName = xComputer.GetAttributeValue("ComputerName"),
+                    IPAddress = xComputer.GetAttributeValue("IPAddress"),
+                    Version = xComputer.GetAttributeValue("Version")
+                };
 
             return computer;
         }

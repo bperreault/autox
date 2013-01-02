@@ -1,4 +1,4 @@
-﻿// Hapa Project, CC
+// Hapa Project, CC
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
@@ -8,9 +8,9 @@ using System.Xml.Linq;
 
 #endregion
 
-namespace AutoX.Client
+namespace AutoX.Client.Core
 {
-    internal class Click : AbstractAction
+    internal class Enter : AbstractAction
     {
         public override XElement Act()
         {
@@ -21,7 +21,12 @@ namespace AutoX.Client
             }
             else
             {
-                UIObject[0].Click();
+                var text = UIObject[0];
+                text.Clear();
+                if (!string.IsNullOrEmpty(Data))
+                {
+                    text.SendKeys(Data);
+                }
             }
             return sr.GetResult();
         }

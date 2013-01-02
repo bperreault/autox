@@ -25,8 +25,9 @@ namespace AutoX.Web
         private const string ExitStatus = "Completed;Aborted;Canceled;Terminated;Invalid";
         private readonly Dictionary<string, XElement> _results = new Dictionary<string, XElement>();
         private readonly WorkflowApplication _workflowApplication;
-        private volatile string _status;
         private volatile string _currentStepGuid;
+        private volatile string _status;
+
         public TestInstance(string guid, string scriptGuid, string name, string computer, string suiteName,
                             string language)
         {
@@ -48,49 +49,48 @@ namespace AutoX.Web
                 activity.SetHost(InstanceManager.GetInstance());
                 //var idleEvent = new AutoResetEvent(false);
                 //TODO write log in workflow!!!
-                
+
                 _workflowApplication = new WorkflowApplication(activity)
-                                           {
-                                               Completed = delegate(WorkflowApplicationCompletedEventArgs e)
-                                                               {
-                                                                   switch (e.CompletionState)
-                                                                   {
-                                                                       case ActivityInstanceState.Faulted:
-                                                                           //Logger.GetInstance().Log().Error("workflow " +
-                                                                           //                                 scriptGuid +
-                                                                           //                                 " stopped! Error Message:\n"
-                                                                           //                                 +
-                                                                           //                                 e.TerminationException.
-                                                                           //                                     GetType().FullName +
-                                                                           //                                 "\n"
-                                                                           //                                 +
-                                                                           //                                 e.TerminationException.
-                                                                           //                                     Message);
-                                                                           Status = "Terminated";
-                                                                           break;
-                                                                       case ActivityInstanceState.Canceled:
-                                                                           //Logger.GetInstance().Log().Warn("workflow " + scriptGuid +
-                                                                           //                                " Cancel.");
-                                                                           Status = "Canceled";
-                                                                           break;
-                                                                       default:
-                                                                           //Logger.GetInstance().Log().Info("workflow " + scriptGuid +
-                                                                           //                                " Completed.");
-                                                                           Status = "Completed";
-                                                                           break;
-                                                                   }
-                                                               },
-                                                               
-                                               Aborted = delegate
-                                                             {
-                                                                 //Logger.GetInstance().Log().Error("workflow " +
-                                                                 //                                 scriptGuid
-                                                                 //                                 + " aborted! Error Message:\n"
-                                                                 //                                 + e.Reason.GetType().FullName + "\n" +
-                                                                 //                                 e.Reason.Message);
-                                                                 Status = "Aborted";
-                                                             }
-                                           };
+                    {
+                        Completed = delegate(WorkflowApplicationCompletedEventArgs e)
+                            {
+                                switch (e.CompletionState)
+                                {
+                                    case ActivityInstanceState.Faulted:
+                                        //Logger.GetInstance().Log().Error("workflow " +
+                                        //                                 scriptGuid +
+                                        //                                 " stopped! Error Message:\n"
+                                        //                                 +
+                                        //                                 e.TerminationException.
+                                        //                                     GetType().FullName +
+                                        //                                 "\n"
+                                        //                                 +
+                                        //                                 e.TerminationException.
+                                        //                                     Message);
+                                        Status = "Terminated";
+                                        break;
+                                    case ActivityInstanceState.Canceled:
+                                        //Logger.GetInstance().Log().Warn("workflow " + scriptGuid +
+                                        //                                " Cancel.");
+                                        Status = "Canceled";
+                                        break;
+                                    default:
+                                        //Logger.GetInstance().Log().Info("workflow " + scriptGuid +
+                                        //                                " Completed.");
+                                        Status = "Completed";
+                                        break;
+                                }
+                            },
+                        Aborted = delegate
+                            {
+                                //Logger.GetInstance().Log().Error("workflow " +
+                                //                                 scriptGuid
+                                //                                 + " aborted! Error Message:\n"
+                                //                                 + e.Reason.GetType().FullName + "\n" +
+                                //                                 e.Reason.Message);
+                                Status = "Aborted";
+                            }
+                    };
             }
 
             //workflowApplication.Idle = delegate(WorkflowApplicationIdleEventArgs e)
@@ -110,19 +110,17 @@ namespace AutoX.Web
             Status = "STOP";
 
             //create log entry here
-            string logRootId = Configuration.Settings("ResultsRoot", "0020020000002");
-            XElement xElement =
+            var logRootId = Configuration.Settings("ResultsRoot", "0020020000002");
+            var xElement =
                 XElement.Parse(
                     @"<Result Name='" + name + "' Type='Result' Description='Automation Result' GUID='" +
                     GUID + "' ParentId='" + logRootId + "' />");
             var iDataObject = xElement.GetDataObjectFromXElement() as Result;
             if (iDataObject == null) return;
             iDataObject.StopTime = DateTime.UtcNow;
-            InsertResultToDB(guid,logRootId,iDataObject);
+            InsertResultToDB(guid, logRootId, iDataObject);
             //DBManager.GetInstance().AddOrUpdateOneDataToDB(guid, logRootId, iDataObject);
         }
-        
-
 
 
         public string GUID { get; set; }
@@ -185,11 +183,11 @@ namespace AutoX.Web
             //if it is Test case, write it to db
         }
 
-        private void InsertResultToDB(string guid, string parentId, Result result )
+        private void InsertResultToDB(string guid, string parentId, Result result)
         {
-            DBManager.GetInstance().AddOrUpdateOneDataToDB(guid,parentId,result);
+            DBManager.GetInstance().AddOrUpdateOneDataToDB(guid, parentId, result);
         }
-        
+
         public void SetCommand(XElement steps)
         {
             if (ExitStatus.Contains(Status))
@@ -205,11 +203,11 @@ namespace AutoX.Web
                 if (Status.Equals("Start"))
                 {
                     //we use runtime id to match results
-                    string runtimeId = Guid.NewGuid().ToString();
+                    var runtimeId = Guid.NewGuid().ToString();
                     steps.SetAttributeValue("RunTimeId", runtimeId);
                     _currentStepGuid = steps.GetAttributeValue("GUID");
                     _results.Add(runtimeId, null);
-                    Computer computer = ComputersManager.GetInstance().GetComputer(ClientName);
+                    var computer = ComputersManager.GetInstance().GetComputer(ClientName);
                     computer.SetCommand(steps.ToString());
                 }
                 return;
@@ -236,16 +234,16 @@ namespace AutoX.Web
                 }
                 if (!stepsId.Equals(_currentStepGuid))
                 {
-                    Logger.GetInstance().Log().Error("current GUID("+_currentStepGuid+") not equal the steps GUID("+stepsId+")");
+                    Log.Error("current GUID(" + _currentStepGuid + ") not equal the steps GUID(" + stepsId + ")");
                     return null;
                 }
-                    
+
                 if (_results.ContainsKey(stepsId))
                 {
-                    if (_results[stepsId]!=null)
+                    if (_results[stepsId] != null)
                         return _results[stepsId];
                 }
-                    
+
                 Thread.Sleep(1000);
             }
         }

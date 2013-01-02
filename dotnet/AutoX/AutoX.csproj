@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AutoX</RootNamespace>
     <AssemblyName>AutoX</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -40,6 +40,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -49,6 +50,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>3C8D17B97263F47B0ED873AA7AF97D987CBD5C20</ManifestCertificateThumbprint>
@@ -191,6 +193,10 @@
     <ProjectReference Include="..\AutoX.Comm\AutoX.Comm.csproj">
       <Project>{ea1d75aa-b145-4b6b-84e5-9933a5d537f0}</Project>
       <Name>AutoX.Comm</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AutoX.Database\AutoX.Database.csproj">
+      <Project>{1fa42233-e195-42cb-a15f-a63a6a6a774d}</Project>
+      <Name>AutoX.Database</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
