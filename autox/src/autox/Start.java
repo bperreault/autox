@@ -6,9 +6,11 @@ import autox.config.Configuration;
 import autox.log.Log;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.tempuri.Service;
 
-import java.io.*;
-import java.nio.file.Files;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
 
 public class Start {
 
@@ -81,6 +83,9 @@ public class Start {
                 case 111:
                     testGetValue();
                     break;
+                case 112:
+                    testHelloWebService();
+                    break;
                 case 113:
                     testNotExisted();
                     break;
@@ -90,11 +95,20 @@ public class Start {
                 case 115:
                     testLogin();
                     break;
+
                 default:
                     Write("\nPlease input a valid choice\n");
                     break;
             }
         }
+    }
+
+
+
+    private static void testHelloWebService() {
+        Service service = new Service();
+        String message = service.getServiceSoap().hello("world");
+        ReadInput(message);
     }
 
     private static void readRunReturnOneCommand() {
@@ -137,7 +151,7 @@ public class Start {
         Write("0. Exit\t\t1. Run XML Test\t\t2. Get All Objects");
         Write("101. Test Set Env\t\t102. Test Wait\t\t103. Test Start\t\t104. Test Close\t\t105. Test Check");
         Write("106. Test Click\t\t107. Test Command\t\t108. Test Enter\t\t109. Test Exist\t\t110. Test Unknown");
-        Write("111. Test GetValue\t\t112. Test TBD\t\t113. Test NotExisted\t\t114. Test VerifyValue\t\t115. Test Login");
+        Write("111. Test GetValue\t\t112. Test Hello Web Service\t\t113. Test NotExisted\t\t114. Test VerifyValue\t\t115. Test Login");
         Write("Please input your choice:");
         try {
             return Integer.parseInt(ReadInput());

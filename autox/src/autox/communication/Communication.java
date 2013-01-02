@@ -7,16 +7,15 @@ import org.apache.commons.lang.StringUtils;
 import org.tempuri.Service;
 
 public class Communication {
-    public static final String AUTOMATION_SERVICE_NAME = "CRM_Auto/";
-    public static final String CENTER_SERVER_IP = Configuration.getInstance().get("center.service.ip", "localhost");
+
+//    public static final String CENTER_SERVER_IP = Configuration.getInstance().get("center.service.ip", "localhost");
 
 
     public static String callWebService(String parameter, String methodName) {
         Service service = new Service();
+
         return service.getServiceSoap().command(readCommand());
 
-
-        //return Result.failed("Call Web Service Failed, please check the parameters you sent:\n" + parameter);
     }
 
     public static String readCommand() {
