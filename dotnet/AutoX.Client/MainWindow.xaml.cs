@@ -33,8 +33,7 @@ namespace AutoX.Client
         {
             InitializeComponent();
             Hide();
-            //Task.Factory.StartNew(DoWhileWork);
-            //Dispatcher.Invoke(new Action(DoWhileWork));
+            
         }
 
         private void MenuItemExit(object sender, RoutedEventArgs e)

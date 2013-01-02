@@ -1,8 +1,9 @@
 ﻿#region
 
 using System;
-using AutoX.Basic.Model;
-using Newtonsoft.Json;
+using System.Xml.Linq;
+using MongoDB.Bson;
+
 
 #endregion
 
@@ -10,12 +11,34 @@ namespace AutoX.DB
 {
     public static class Data
     {
-        public static IDataObject GetDataObject(Type type, string id)
+        public static bool Create(XElement xElement)
         {
-            var bsonStr = DBManager.GetInstance().find(type, id);
-            if (bsonStr == null)
-                return null;
-            return (IDataObject) JsonConvert.DeserializeObject(bsonStr, type);
+            throw new NotImplementedException();
+        }
+
+        public static XElement Read(string id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static bool Update(XElement xElement)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static bool Delete(string id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static XElement BsonToXElement(this BsonDocument bsonDocument)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static BsonDocument XElementToBson(this XElement xElement)
+        {
+            throw new NotImplementedException();
         }
     }
 }
