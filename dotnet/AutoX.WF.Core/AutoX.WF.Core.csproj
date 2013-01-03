@@ -4,17 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6D5028A1-2646-4D2A-8AA5-21CEE9581B2A}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{6A598CBB-A54F-4272-82AA-0DD64428E3C6}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AutoX.Test</RootNamespace>
-    <AssemblyName>AutoX.Test</AssemblyName>
+    <RootNamespace>AutoX.WF.Core</RootNamespace>
+    <AssemblyName>AutoX.WF.Core</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,24 +20,20 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.ServiceModel" />
-    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -48,13 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="ActionsFactory.cs" />
+    <Compile Include="Actions\IAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
+    <Compile Include="Service.cs">
+      <SubType>Component</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AutoX.Activities\AutoX.Activities.csproj">
@@ -62,20 +55,12 @@
       <Name>AutoX.Activities</Name>
     </ProjectReference>
     <ProjectReference Include="..\AutoX.Basic\AutoX.Basic.csproj">
-      <Project>{bb39bdb6-d9a0-4b29-98c5-977069b8d575}</Project>
+      <Project>{BB39BDB6-D9A0-4B29-98C5-977069B8D575}</Project>
       <Name>AutoX.Basic</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\AutoX.Comm\AutoX.Comm.csproj">
-      <Project>{ea1d75aa-b145-4b6b-84e5-9933a5d537f0}</Project>
-      <Name>AutoX.Comm</Name>
     </ProjectReference>
     <ProjectReference Include="..\AutoX.DB\AutoX.DB.csproj">
       <Project>{7d09a7d8-2a35-49cb-936e-58919bb4a5f9}</Project>
       <Name>AutoX.DB</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\AutoX.WF.Core\AutoX.WF.Core.csproj">
-      <Project>{6a598cbb-a54f-4272-82aa-0dd64428e3c6}</Project>
-      <Name>AutoX.WF.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

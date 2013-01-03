@@ -27,12 +27,6 @@ namespace AutoX.Web
     [ScriptService]
     public class Service : WebService
     {
-        [WebMethod]
-        [ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-        public string Action(string input)
-        {
-            throw new NotImplementedException();
-        }
 
         [WebMethod]
         public string Hello(string input)
