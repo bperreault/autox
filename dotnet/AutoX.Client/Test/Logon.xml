@@ -14,9 +14,7 @@
 			<UIObject type="image" value="Login" XPath="//input[@name='login'  and @type='image'  and @value='Login' ]" Name="login" />
 		</Browser>
 	</Step>
-	<Step Action="Close" >
-		
-	</Step>
+	<Step Action="Close" />
 </AutoX.Steps>
 
   

@@ -112,5 +112,19 @@ namespace AutoX.Basic
             //AppSettingsSection app = config.AppSettings;
             config.Save(ConfigurationSaveMode.Modified);
         }
+
+        public static Config Clone()
+        {
+            var cfg = new Config();
+            var config =
+                ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            
+            foreach (object key in ConfigurationManager.AppSettings.Keys)
+            {
+                cfg.Set(key.ToString(),Settings(key.ToString(),key.ToString()));
+                
+            }
+            return cfg;
+        }
     }
 }
