@@ -283,8 +283,52 @@ namespace AutoX.Client.Core
 
         private void StartBrowser()
         {
-            var browserType = Configuration.Settings("BrowserType", "IE");
+            var clientType = Configuration.Settings("ClientType", "Sauce");
+            if(String.Compare(clientType, "Sauce", System.StringComparison.OrdinalIgnoreCase)==0)
+                StartSauceBrowser();
+            else
+                StartLocalBrowser();
+        }
+
+        private void StartSauceBrowser()
+        {
+            DesiredCapabilities capabillities;
+            var browserType = Configuration.Settings("BrowserType", "Firefox");
             if (browserType.Equals("IE"))
+                capabillities = DesiredCapabilities.InternetExplorer();
+            else if (browserType.Equals("Chrome"))
+                capabillities = DesiredCapabilities.Chrome();
+            else if (browserType.Equals("Android"))
+                capabillities = DesiredCapabilities.Android();
+            else if (browserType.Equals("IPad"))
+                capabillities = DesiredCapabilities.IPad();
+            else if (browserType.Equals("IPhone"))
+                capabillities = DesiredCapabilities.IPhone();
+            else if (browserType.Equals("Opera"))
+                capabillities = DesiredCapabilities.Opera();
+//            else if (browserType.Equals("Safari"))
+//                capabillities = DesiredCapabilities.Safari();
+            else if (browserType.Equals("InternetExplorer"))
+                capabillities = DesiredCapabilities.InternetExplorer();
+            else
+                capabillities = DesiredCapabilities.Firefox();
+
+            capabillities.SetCapability(CapabilityType.Version, Configuration.Settings("Sauce.Version","10"));
+            capabillities.SetCapability(CapabilityType.Platform, new Platform(PlatformType.XP));
+            capabillities.SetCapability("name", Configuration.Settings("Sauce.Name","Testing Selenium 2 with C# on Sauce"));
+            capabillities.SetCapability("username", Configuration.Settings("Sauce.UserName","autox"));
+            capabillities.SetCapability("accessKey", Configuration.Settings("Sauce.AccessKey","b3842073-5a7a-4782-abbc-e7234e09f8ac"));
+
+            _browser = new RemoteWebDriver(
+                      new Uri("http://ondemand.saucelabs.com:80/wd/hub"), capabillities);
+            _browser.Navigate().GoToUrl(Configuration.Settings("DefaultURL", "about:blank"));
+            MaximiseBrowser();
+        }
+
+        private void StartLocalBrowser()
+        {
+            var browserType = Configuration.Settings("BrowserType", "InternetExplorer");
+            if (browserType.Equals("IE") || browserType.Equals("InternetExplorer"))
             {
                 var processor = Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE");
                 if (processor != null && !processor.Contains("x86"))
@@ -331,45 +375,29 @@ namespace AutoX.Client.Core
             if (_browser != null)
             {
                 _browser.Quit();
-                _browser.Dispose();
+                
             }
 
             //browser = null;
+            var clientType = Configuration.Settings("ClientType", "Sauce");
+            if (String.Compare(clientType, "Sauce", System.StringComparison.OrdinalIgnoreCase) != 0)
+            {
+                _browser.Dispose();
+                CloseLocalBrowser();
+            }
+                
+        }
 
+        private static void CloseLocalBrowser()
+        {
             var browserType = Configuration.Settings("BrowserType", "IE");
             if (browserType.Equals("IE"))
 
-                DosCommand(Environment.SystemDirectory + "\\taskkill.exe", " /IM iexplore.exe");
+                Command.DosCommand(Environment.SystemDirectory + "\\taskkill.exe", " /IM iexplore.exe");
             if (browserType.Equals("Firefox"))
-                DosCommand(Environment.SystemDirectory + "\\taskkill.exe", " /IM firefox.exe");
+                Command.DosCommand(Environment.SystemDirectory + "\\taskkill.exe", " /IM firefox.exe");
             if (browserType.Equals("Chrome"))
-                DosCommand(Environment.SystemDirectory + "\\taskkill.exe", " /IM chrome.exe");
-        }
-
-        private static void DosCommand(string cmd, string param)
-        {
-            var proc = new Process
-                {
-                    StartInfo =
-                        {
-                            UseShellExecute = false,
-                            CreateNoWindow = true,
-                            WindowStyle = ProcessWindowStyle.Hidden,
-                            FileName = cmd,
-                            Arguments = param,
-                            RedirectStandardError = false,
-                            RedirectStandardOutput = false
-                        }
-                };
-            proc.StartInfo.UseShellExecute = false;
-            proc.StartInfo.CreateNoWindow = true;
-            proc.Start();
-            proc.WaitForExit();
-        }
-
-        public static void DosCommand(string param)
-        {
-            DosCommand("cmd", " /c " + param);
+                Command.DosCommand(Environment.SystemDirectory + "\\taskkill.exe", " /IM chrome.exe");
         }
     }
 }

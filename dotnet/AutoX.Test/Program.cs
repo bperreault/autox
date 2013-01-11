@@ -18,6 +18,7 @@ using System.Web.Services;
 
 #endregion
 
+
 namespace AutoX.Test
 {
     internal class Program
@@ -31,21 +32,7 @@ namespace AutoX.Test
 
         private static void ServiceTest()
         {
-            Uri address = new System.Uri("http://localhost/TestService");
-            ServiceHost serviceHost = new ServiceHost(typeof(AutoX.WF.Core.Service),address);
-            //serviceHost.AddServiceEndpoint(typeof(IService), new BasicHttpBinding(), "Soap");
-            ServiceMetadataBehavior smb = new ServiceMetadataBehavior();
-            smb.HttpGetEnabled = true;
-            serviceHost.Description.Behaviors.Add(smb);
-            serviceHost.Open();
-
-            // The service can now be accessed.
-            Console.WriteLine("The service is ready.");
-            Console.WriteLine("Press <ENTER> to terminate service.");
-            Console.ReadLine();
-
-            // Close the ServiceHost.
-            serviceHost.Close();
+            
         }
 
         private static void JsonTest()
