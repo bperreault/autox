@@ -4,11 +4,8 @@
 
 #region
 
-using System.Collections;
-using System.Collections.Specialized;
-using System.Configuration;
-using System.Linq;
-using System.Xml.Linq;
+using System;
+using System.Collections.Generic;
 
 #endregion
 
@@ -16,20 +13,26 @@ namespace AutoX.Basic
 {
     public class Config
     {
-        string Id {get;}
-        private readonly Dictionary<string, string> variables = new Dictionary<string,string>();
+        string Id { get; set; }
+        private readonly Dictionary<string, string> _variables = new Dictionary<string,string>();
         public Config(){
             Id = Guid.NewGuid().ToString();
+            _variables.Add("_id",Id);
         }
 
         public void Set(string key, string value){
-            if(variables.Contains(key))
-                variables[key] = value;
+            if(_variables.ContainsKey(key))
+                _variables[key] = value;
             else
-                variables.Add(key,value);
+                _variables.Add(key,value);
         }
         public string Get(string key){
-            return variables[key];
+            return _variables[key];
         }
+        public Dictionary<string, string> GetList()
+        {
+            return _variables;
+        } 
+
     }
 }

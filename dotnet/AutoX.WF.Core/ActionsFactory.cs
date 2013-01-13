@@ -10,7 +10,7 @@ namespace AutoX.WF.Core
 {
     public class ActionsFactory
     {
-        public static string Handle(string commandString)
+        public static XElement Handle(string commandString)
         {
             var command = XElement.Parse(commandString);
             var action = GetActionName(command);
@@ -23,8 +23,8 @@ namespace AutoX.WF.Core
                 dynamic actDyn = Activator.CreateInstance(act);
                 return actDyn.Do(command);
             }
-            var r = (@"<Result='Failed' Reason='Encounter UnKnown Action["+action+"]' />");
-            return r;
+            var r = (@"<Result Result='Failed' Reason='Encounter UnKnown Action[" + action + "]' />");
+            return XElement.Parse(r);
             
         }
         private static string GetActionName(XElement command)

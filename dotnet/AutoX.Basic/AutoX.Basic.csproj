@@ -53,6 +53,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsymmetricEncryption.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="HostManager.cs" />
     <Compile Include="IHost.cs" />

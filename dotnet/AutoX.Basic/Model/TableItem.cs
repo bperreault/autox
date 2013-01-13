@@ -26,7 +26,7 @@ namespace AutoX.Basic.Model
 
         #endregion
 
-        public string GUID
+        public string _id
         {
             get { throw new NotImplementedException(); }
             set { throw new NotImplementedException(); }

@@ -18,29 +18,13 @@ namespace AutoX.Basic.Model
         public string IPAddress { get; set; }
         public string Version { get; set; }
 
-        public string GUID
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
+        public string _id { get; set; }
 
-        public string EXTRA
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
 
-        public DateTime Created
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
 
-        public DateTime Updated
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
+        public DateTime Created { get; set; }
+
+        public DateTime Updated { get; set; }
 
         public static Computer GetLocalHost()
         {
@@ -91,6 +75,9 @@ namespace AutoX.Basic.Model
             //return xComputer.GetObjectFromXElement() as Computer;
             var computer = new Computer
                 {
+                    _id = xComputer.GetAttributeValue("_id"),
+                    Created = DateTime.Parse(xComputer.GetAttributeValue("Created")),
+                    Updated = DateTime.Parse(xComputer.GetAttributeValue("Updated")),
                     ComputerName = xComputer.GetAttributeValue("ComputerName"),
                     IPAddress = xComputer.GetAttributeValue("IPAddress"),
                     Version = xComputer.GetAttributeValue("Version")

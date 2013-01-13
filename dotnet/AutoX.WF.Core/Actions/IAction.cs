@@ -37,7 +37,7 @@ namespace AutoX.WF.Core.Actions
 
         public XElement Do(XElement action)
         {
-            throw new System.NotImplementedException();
+            return ClientInstancesManager.GetInstance().ToXElement();
         }
     }
     class GetInstancesInfo : IAction
@@ -53,7 +53,8 @@ namespace AutoX.WF.Core.Actions
 
         public XElement Do(XElement action)
         {
-            throw new System.NotImplementedException();
+            ClientInstancesManager.GetInstance().Register(action);
+            return XElement.Parse("<Result Result='Success' />");
         }
     }
     class RequestCommand : IAction

@@ -46,10 +46,8 @@
   <ItemGroup>
     <Compile Include="ActionsFactory.cs" />
     <Compile Include="Actions\IAction.cs" />
+    <Compile Include="ClientInstancesManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service.cs">
-      <SubType>Component</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AutoX.Activities\AutoX.Activities.csproj">

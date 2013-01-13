@@ -106,7 +106,7 @@ namespace AutoX
                 || a.Name.ToString().Equals("Type")
                 || a.Name.ToString().Equals("ParentId")
                 || a.Name.ToString().Equals("ScriptType")
-                || a.Name.ToString().Equals("GUID")
+                || a.Name.ToString().Equals("_id")
                 )
             {
                 var label = new TextBlock

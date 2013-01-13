@@ -33,6 +33,21 @@ namespace AutoX
     <Rule Action='CreateData' Type='Folder' Object='Data' />
 </Validation>"
             );
+        private void GenerateKeyFile(object sender, RoutedEventArgs e)
+        {
+            
+            if (AsymmetricEncryption.GenerateRegisterFile())
+            {
+                MessageBox.Show(
+                    "Create Register File Successfully! \nCopy and send the *.pem file to the Service Provider!",
+                    "Congratulation!");
+            }
+            else
+            {
+                MessageBox.Show("Please add your user name to the config file, remove entry of \"PublicKey\"",
+                                "Failed, Check and Do Again");
+            }
+        }
 
         private void Settings(object sender, RoutedEventArgs e)
         {
@@ -119,7 +134,7 @@ namespace AutoX
             }
             var xElement =
                 XElement.Parse(
-                    @"<Folder Name='NewFolder' Type='Folder' Description='Please add description here' GUID='" +
+                    @"<Folder Name='NewFolder' Type='Folder' Description='Please add description here' _id='" +
                     Guid.NewGuid() + "' />");
 
             AddNewItemToTree(tree, xElement);
@@ -248,7 +263,7 @@ namespace AutoX
             xData.SetAttributeValue("Name", "New Data");
             xData.SetAttributeValue("Description", "New Data");
             xData.SetAttributeValue("Type", "Datum");
-            xData.SetAttributeValue("GUID", Guid.NewGuid().ToString());
+            xData.SetAttributeValue("_id", Guid.NewGuid().ToString());
             AddNewItemToTree(DataTree, xData);
         }
 
@@ -274,7 +289,7 @@ namespace AutoX
             {
                 var content = File.ReadAllText(dialog.FileName);
                 var page = XElement.Parse(content);
-                var newItem = GetItemFromXElement(page, xParent.GetAttributeValue("GUID"));
+                var newItem = GetItemFromXElement(page, xParent.GetAttributeValue("_id"));
                 if (newItem != null) selected.Items.Add(newItem);
             }
         }
@@ -341,7 +356,7 @@ namespace AutoX
         {
             var selected = InstanceTable.SelectedItem as Instance;
             if (selected == null) return;
-            var sRoot = Communication.GetInstance().StartInstance(selected.GUID);
+            var sRoot = Communication.GetInstance().StartInstance(selected._id);
             var xRoot = XElement.Parse(sRoot);
             var result = xRoot.GetAttributeValue("Result");
             if (string.IsNullOrEmpty(result)) return;
@@ -361,7 +376,7 @@ namespace AutoX
         {
             var selected = InstanceTable.SelectedItem as Instance;
             if (selected == null) return;
-            var sRoot = Communication.GetInstance().StopInstance(selected.GUID);
+            var sRoot = Communication.GetInstance().StopInstance(selected._id);
             var xRoot = XElement.Parse(sRoot);
             var result = xRoot.GetAttributeValue("Result");
             if (string.IsNullOrEmpty(result)) return;
@@ -421,7 +436,7 @@ namespace AutoX
         {
             var selected = InstanceTable.SelectedItem as Instance;
             if (selected == null) return;
-            var sRoot = Communication.GetInstance().DeleteInstance(selected.GUID);
+            var sRoot = Communication.GetInstance().DeleteInstance(selected._id);
             var xRoot = XElement.Parse(sRoot);
             var result = xRoot.GetAttributeValue("Result");
             if (string.IsNullOrEmpty(result)) return;

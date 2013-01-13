@@ -12,6 +12,7 @@ using System.Web.Script.Services;
 using System.Web.Services;
 using System.Xml.Linq;
 using AutoX.Basic;
+using AutoX.WF.Core;
 
 #endregion
 
@@ -43,22 +44,8 @@ namespace AutoX.Web
         public string Command(string xmlFormatCommand)
         {
             Log.Debug(xmlFormatCommand);
-            var xe = XElement.Parse(xmlFormatCommand);
-            var name = xe.GetAttributeValue("Action");
 
-            var wf = new ServiceFlow();
-            //ActivityLib.MainWorkflow wf = new ActivityLib.MainWorkflow();
-            IDictionary<string, object> input = new Dictionary<string, object>();
-            input.Add("command", xmlFormatCommand);
-
-            if (name != null)
-                input.Add("name", name);
-
-            var result = WorkflowInvoker.Invoke(wf, input, new TimeSpan(0, 10, 10));
-
-            var outValue = (string) result["returnMessage"];
-            Log.Debug(outValue);
-            return outValue;
+            return ActionsFactory.Handle(xmlFormatCommand).ToString(SaveOptions.None);
         }
     }
 }

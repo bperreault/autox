@@ -19,7 +19,7 @@ namespace AutoX.Basic.Model
         public string ClientName { get; set; }
         public string Language { get; set; }
         public string ScriptGUID { get; set; }
-        public string GUID { get; set; }
+        public string _id { get; set; }
 
 
         public string EXTRA

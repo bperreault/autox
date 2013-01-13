@@ -9,15 +9,25 @@ namespace AutoX.Comm
 {
     public class ClientInstance
     {
-        private readonly string _clientId = Guid.NewGuid().ToString();
-        public string Id { get { return _clientId; } }
+        
         private volatile bool _registered;
-        Task task = null;
+        private readonly Config _config = Configuration.Clone();
+        public string _id { get { return _config.Get("_id"); } }
+        public Config Config
+        {
+            get
+            {
+                
+                return _config;
+            }
+        }
+
+        Task _task;
 
         
         public void Start()
         {
-            task = Task.Factory.StartNew(DoWhile);
+            _task = Task.Factory.StartNew(DoWhile);
             //task.Start();
         }
 
@@ -42,24 +52,24 @@ namespace AutoX.Comm
 
         public void Stop()
         {
-            if (task == null)
+            if (_task == null)
                 return;
-            if (task.IsCompleted || task.IsCanceled)
+            if (_task.IsCompleted || _task.IsCanceled)
                 return;
-            task.Dispose();
+            _task.Dispose();
         }
 
         public XElement RequestCommand()
         {
-            return RequestCommand(Id);
+            return RequestCommand(Config.Get("_id"));
         }
 
         public bool Register()
         {
-            var ret = Communication.GetInstance().Register(Id);
+            var ret = Communication.GetInstance().Register(Config);
             Log.Debug(ret);
             
-            Communication.GetInstance().SetResult(Id, ActionsFactory.Execute(XElement.Parse(ret)));
+            //Communication.GetInstance().SetResult(Id, ActionsFactory.Execute(XElement.Parse(ret)));
             //TODO it may be false, just for now
             return true;
         }
@@ -76,7 +86,7 @@ namespace AutoX.Comm
 
         public string SendResult(XElement stepResult)
         {
-            return Communication.GetInstance().SetResult(Id,stepResult);
+            return Communication.GetInstance().SetResult(Config.Get("_id"),stepResult);
         }
 
         

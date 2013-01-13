@@ -23,7 +23,7 @@ using System.Xml.Linq;
 using AutoX.Activities;
 using AutoX.Activities.AutoActivities;
 using AutoX.Basic;
-using AutoX.Comm;
+using AutoX.DB;
 using Image = System.Drawing.Image;
 
 #endregion
@@ -42,7 +42,7 @@ namespace AutoX
             var xElement = treeViewItem.DataContext as XElement;
             var type = xElement.GetAttributeValue("ScriptType");
             var name = xElement.GetAttributeValue("Name");
-            var guid = xElement.GetAttributeValue("GUID");
+            var guid = xElement.GetAttributeValue("_id");
             var description = xElement.GetAttributeValue("Description");
             var content = xElement.GetAttributeValue("Content");
 
@@ -343,14 +343,11 @@ namespace AutoX
 
             xElement.SetAttributeValue("Content", content);
 
-            var sRoot = Communication.GetInstance().SetById(xElement);
-            var xRoot = XElement.Parse(sRoot);
-            var result = xRoot.GetAttributeValue("Result");
-            if (string.IsNullOrEmpty(result)) return;
-            if (result.Equals("Failed"))
+            var sRoot = Data.Update(xElement);
+            
+            if (!sRoot)
             {
-                MessageBox.Show("update Tree item Failed. item=\n" + xRoot + "\nReason:" +
-                                xRoot.GetAttributeValue("Reason"));
+                MessageBox.Show("update Tree item Failed. ");
                 return;
             }
             Dispatcher.BeginInvoke(new Action(() => UpdateRelatedTreeViewItem(treeViewItem, xElement)));

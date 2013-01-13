@@ -119,7 +119,7 @@ namespace AutoX.Activities.AutoActivities
             var steps = XElement.Parse("<AutoX.Steps />");
             steps.SetAttributeValue("OnError", ErrorLevel.ToString());
             steps.SetAttributeValue("InstanceId", InstanceId);
-            steps.SetAttributeValue("GUID", GUID);
+            steps.SetAttributeValue("_id", GUID);
             foreach (XElement descendant in XElement.Parse(_steps).Descendants("Step"))
             {
                 var enable = descendant.GetAttributeValue("Enable");

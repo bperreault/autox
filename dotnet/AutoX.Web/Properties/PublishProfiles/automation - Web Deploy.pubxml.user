@@ -10,4 +10,93 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA72H1VdTdWEqnaIzV3CsVpgAAAAACAAAAAAADZgAAwAAAABAAAABX0pNKVYx4+YQkR+jcYak7AAAAAASAAACgAAAAEAAAAEdsbeTX7yD0FTor13lFnR6AAAAAGmX6InJxvqKa2vvR4Xpq28bN0E9WrTFF0TB+oso6BB8q0l3qCkQhUPvSSXmNeE1OrBQxMUD4XQuHzqT2ECY8j1CM/Q/g9cymV6E66QJ4aEGRKkH+p1UCrPHSxzETu6C/9PDLgsR2Tk1E/E0w671GVJvuDxXTjjkIZ88o/2XMB1oUAAAALZXbAaf99GH+eK6oMP6vkUGXp90=</EncryptedPassword>
   </PropertyGroup>
+  <ItemGroup>
+    <File Include="AutoX.zip">
+      <publishTime>12/24/2012 10:06:28</publishTime>
+    </File>
+    <File Include="bin/AutoX.Activities.dll">
+      <publishTime>01/11/2013 15:33:49</publishTime>
+    </File>
+    <File Include="bin/AutoX.Basic.dll">
+      <publishTime>01/11/2013 15:33:46</publishTime>
+    </File>
+    <File Include="bin/AutoX.DB.dll">
+      <publishTime>01/11/2013 15:33:50</publishTime>
+    </File>
+    <File Include="bin/AutoX.Web.dll">
+      <publishTime>01/11/2013 15:33:50</publishTime>
+    </File>
+    <File Include="bin/AutoX.WF.Core.dll">
+      <publishTime>01/11/2013 15:33:50</publishTime>
+    </File>
+    <File Include="bin/log4net.dll">
+      <publishTime>12/24/2012 10:06:29</publishTime>
+    </File>
+    <File Include="bin/Microsoft.Web.Infrastructure.dll">
+      <publishTime>03/08/2012 09:20:10</publishTime>
+    </File>
+    <File Include="bin/MongoDB.Bson.dll">
+      <publishTime>12/24/2012 10:06:29</publishTime>
+    </File>
+    <File Include="bin/MongoDB.Driver.dll">
+      <publishTime>12/24/2012 10:06:29</publishTime>
+    </File>
+    <File Include="bin/Newtonsoft.Json.dll">
+      <publishTime>12/31/2012 07:14:49</publishTime>
+    </File>
+    <File Include="bin/System.Net.Http.dll">
+      <publishTime>07/09/2012 01:40:10</publishTime>
+    </File>
+    <File Include="bin/System.Net.Http.Formatting.dll">
+      <publishTime>01/10/2013 14:02:44</publishTime>
+    </File>
+    <File Include="bin/System.Net.Http.WebRequest.dll">
+      <publishTime>07/09/2012 01:40:10</publishTime>
+    </File>
+    <File Include="bin/System.Web.Helpers.dll">
+      <publishTime>07/10/2012 22:53:02</publishTime>
+    </File>
+    <File Include="bin/System.Web.Http.dll">
+      <publishTime>01/10/2013 14:02:44</publishTime>
+    </File>
+    <File Include="bin/System.Web.Http.SelfHost.dll">
+      <publishTime>01/10/2013 14:02:44</publishTime>
+    </File>
+    <File Include="bin/System.Web.Http.WebHost.dll">
+      <publishTime>07/10/2012 22:51:54</publishTime>
+    </File>
+    <File Include="bin/System.Web.Mvc.dll">
+      <publishTime>07/10/2012 22:51:54</publishTime>
+    </File>
+    <File Include="bin/System.Web.Razor.dll">
+      <publishTime>07/10/2012 22:53:02</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.Deployment.dll">
+      <publishTime>07/10/2012 22:53:02</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.dll">
+      <publishTime>07/10/2012 22:53:02</publishTime>
+    </File>
+    <File Include="bin/System.Web.WebPages.Razor.dll">
+      <publishTime>07/10/2012 22:53:02</publishTime>
+    </File>
+    <File Include="Client.zip">
+      <publishTime>12/24/2012 10:06:28</publishTime>
+    </File>
+    <File Include="Default.html">
+      <publishTime>12/24/2012 10:06:28</publishTime>
+    </File>
+    <File Include="favicon.ico">
+      <publishTime>12/24/2012 10:06:28</publishTime>
+    </File>
+    <File Include="Global.asax">
+      <publishTime>12/24/2012 10:06:28</publishTime>
+    </File>
+    <File Include="Service.asmx">
+      <publishTime>12/24/2012 10:06:28</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>01/10/2013 14:27:35</publishTime>
+    </File>
+  </ItemGroup>
 </Project>

@@ -25,7 +25,7 @@ namespace AutoX.Basic.Model
         #region IDataObject Members
 
         [Column(IsPrimaryKey = true)]
-        public string GUID { get; set; }
+        public string _id { get; set; }
 
         [Column]
         public string EXTRA { get; set; }

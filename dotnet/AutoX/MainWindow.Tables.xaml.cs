@@ -10,8 +10,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Xml.Linq;
 using AutoX.Basic.Model;
-using AutoX.Comm;
 using IDataObject = AutoX.Basic.Model.IDataObject;
+using AutoX.Comm;
 
 #endregion
 
@@ -101,7 +101,7 @@ namespace AutoX
             var selected = TestCaseResultTable.SelectedItem as Result;
             if (selected == null) return;
 
-            var sRoot = Communication.GetInstance().GetChildren(selected.GUID);
+            var sRoot = Communication.GetInstance().GetChildren(selected._id);
             var xRoot = XElement.Parse(sRoot);
             if (xRoot.HasElements)
             {

@@ -58,7 +58,7 @@ namespace AutoX
                 if (data == null) return;
                 if (!CheckValidDrop(item, data)) return;
                 var xTarget = item.DataContext as XElement;
-                var parentId = xTarget.GetAttributeValue("GUID");
+                var parentId = xTarget.GetAttributeValue("_id");
                 data.SetAttributeValue("ParentId", parentId);
                 var sRoot = Communication.GetInstance().SetById(data);
                 var xRoot = XElement.Parse(sRoot);
@@ -72,8 +72,8 @@ namespace AutoX
                 else
                 {
                     //sender to find the source item, then delete it
-                    var toDelete = FindItemOnTree((sender as TreeView), "GUID",
-                                                  data.GetAttributeValue("GUID"));
+                    var toDelete = FindItemOnTree((sender as TreeView), "_id",
+                                                  data.GetAttributeValue("_id"));
                     if (toDelete != null)
                     {
                         var parent = toDelete.Parent as TreeViewItem;
@@ -128,7 +128,7 @@ namespace AutoX
             var tag = xTarget.Name.ToString();
             if (!tag.Equals("Folder")) return false;
             //rule 2: don't waste your time move to your parent
-            var parentId = xTarget.GetAttributeValue("GUID");
+            var parentId = xTarget.GetAttributeValue("_id");
             if (parentId.Equals(data.GetAttributeValue("ParentId")))
                 return false;
             return true;
@@ -229,8 +229,8 @@ namespace AutoX
                 {
                     ClientName = client.ComputerName,
                     Language = "Default",
-                    GUID = Guid.NewGuid().ToString(),
-                    ScriptGUID = data.GetAttributeValue("GUID"),
+                    _id = Guid.NewGuid().ToString(),
+                    ScriptGUID = data.GetAttributeValue("_id"),
                     SuiteName = data.GetAttributeValue("Name"),
                     Status = "STOP",
                     TestName = "New Test"

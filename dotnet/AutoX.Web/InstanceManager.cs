@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using AutoX.Basic;
 using AutoX.Basic.Model;
-using AutoX.Database;
+using AutoX.DB;
 
 #endregion
 
@@ -29,7 +29,7 @@ namespace AutoX.Web
 
         public IDataObject GetDataObject(string id)
         {
-            return DBManager.GetInstance().FindOneDataFromDB(id);
+            return null;//TODO return Data.Read(id);
         }
 
         public void SetCommand(string instanceId, XElement steps)
@@ -54,7 +54,7 @@ namespace AutoX.Web
             var name = instanceInfo.GetAttributeValue("TestName");
             var scriptGuid = instanceInfo.GetAttributeValue("ScriptGUID");
             var computer = instanceInfo.GetAttributeValue("ClientName");
-            var guid = instanceInfo.GetAttributeValue("GUID");
+            var guid = instanceInfo.GetAttributeValue("_id");
             var status = instanceInfo.GetAttributeValue("Status");
             var language = instanceInfo.GetAttributeValue("Language");
             var suiteName = instanceInfo.GetAttributeValue("SuiteName");

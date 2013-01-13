@@ -1,4 +1,4 @@
-<AutoX.Steps>
+<AutoX.Steps _id="0010010000001">
 	<Step Action="Enter" Data="test">
 		<Browser>
 			<UIObject type="text" XPath="//input[@name='userName'  and @type='text' ]" Name="userName" />

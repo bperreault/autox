@@ -18,11 +18,13 @@ namespace AutoX.DB
 
         private DBManager()
         {
-            var connectionString = Configuration.Settings("DBConnectionString", "mongodb://localhost");
+            string userName = Configuration.Settings("UserName", "jien.huang");
+            string productId = AsymmetricEncryption.GetProductId();
+            var connectionString = Configuration.Settings("DBConnectionString", "mongodb://"+userName+":"+productId+"@localhost"); //mongodb://uname:pwd@localhost
 
             var server = MongoServer.Create(connectionString);
             server.Connect();
-            _database = server.GetDatabase(Configuration.Settings("DBName", "Automation"));
+            _database = server.GetDatabase(Configuration.Settings("DBName", "autox"));
         }
 
         public static DBManager GetInstance()

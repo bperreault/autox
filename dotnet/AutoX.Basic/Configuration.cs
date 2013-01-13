@@ -39,7 +39,7 @@ namespace AutoX.Basic
         {
             var conn = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
             if (string.IsNullOrEmpty(conn))
-                conn = Settings("Database", "Server=(LocalDb)\\v11.0;Initial Catalog=Auto;Integrated Security=true;");
+                conn = Settings("Database", "mongodb://localhost");
             return conn;
         }
 
@@ -111,6 +111,7 @@ namespace AutoX.Basic
             //Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             //AppSettingsSection app = config.AppSettings;
             config.Save(ConfigurationSaveMode.Modified);
+            //config.SaveAs("c:\\test.cfg");
         }
 
         public static Config Clone()

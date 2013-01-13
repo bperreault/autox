@@ -16,6 +16,7 @@
                     <Menu Grid.Row="0" HorizontalAlignment="Left" Name="MainMenu" VerticalAlignment="Top"
                           BorderThickness="2">
                         <MenuItem Header="File" Name="FileMenu">
+                            <MenuItem Header="Generate Key File" Click="GenerateKeyFile"></MenuItem>
                             <MenuItem Header="Settings" Click="Settings" />
                             <MenuItem Header="Exit" Click="Exit" />
                         </MenuItem>
@@ -195,11 +196,17 @@
                                     </ContextMenu>
                                 </DataGrid.ContextMenu>
                                 <DataGrid.Columns>
+                                    <DataGridTextColumn Width="3*" Binding="{Binding Path=_id}"
+                                                        Header="Id" IsReadOnly="True" />
                                     <DataGridTextColumn Width="3*" Binding="{Binding Path=ComputerName}"
-                                                        Header="Computer Name" IsReadOnly="True" />
+                                                        Header="Client Computer Name" IsReadOnly="True" />
                                     <DataGridTextColumn Width="2*" Binding="{Binding Path=IPAddress}"
                                                         Header="IP Address" IsReadOnly="True" />
-                                    <DataGridTextColumn Width="3*" Binding="{Binding Path=Version}" Header="Version"
+                                    <DataGridTextColumn Width="3*" Binding="{Binding Path=Version}" Header="OS Version"
+                                                        IsReadOnly="True" />
+                                    <DataGridTextColumn Width="3*" Binding="{Binding Path=Updated}" Header="Updated"
+                                                        IsReadOnly="True" />
+                                    <DataGridTextColumn Width="3*" Binding="{Binding Path=Created}" Header="Created"
                                                         IsReadOnly="True" />
                                 </DataGrid.Columns>
                             </DataGrid>

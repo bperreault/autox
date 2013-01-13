@@ -32,10 +32,14 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
     <FilesToIncludeForPublish>OnlyFilesToRunTheApp</FilesToIncludeForPublish>
-    <ExcludeGeneratedDebugSymbol>false</ExcludeGeneratedDebugSymbol>
-    <ExcludeApp_Data>false</ExcludeApp_Data>
+    <ExcludeGeneratedDebugSymbol>true</ExcludeGeneratedDebugSymbol>
+    <ExcludeApp_Data>true</ExcludeApp_Data>
     <PackageAsSingleFile>false</PackageAsSingleFile>
     <PublishDatabases>false</PublishDatabases>
+    <PrecompileBeforePublish>true</PrecompileBeforePublish>
+    <IncludeIisSettings>true</IncludeIisSettings>
+    <IncludeAppPool>true</IncludeAppPool>
+    <DeployIisAppPath>Default Web Site/AutoX</DeployIisAppPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -131,20 +135,6 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actions\DeleteInstance.cs" />
-    <Compile Include="Actions\GetChildren.cs" />
-    <Compile Include="Actions\GetComputersInfo.cs" />
-    <Compile Include="Actions\GetById.cs" />
-    <Compile Include="Actions\GetInstancesInfo.cs" />
-    <Compile Include="Actions\Register.cs" />
-    <Compile Include="Actions\RequestCommand.cs" />
-    <Compile Include="Actions\SetById.cs" />
-    <Compile Include="Actions\SetInstanceInfo.cs" />
-    <Compile Include="Actions\SetResult.cs" />
-    <Compile Include="Actions\StartInstance.cs" />
-    <Compile Include="Actions\StopInstance.cs" />
-    <Compile Include="Actions\Utils.cs" />
-    <Compile Include="ComputersManager.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -180,9 +170,13 @@
       <Project>{bb39bdb6-d9a0-4b29-98c5-977069b8d575}</Project>
       <Name>AutoX.Basic</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AutoX.Database\AutoX.Database.csproj">
-      <Project>{1fa42233-e195-42cb-a15f-a63a6a6a774d}</Project>
-      <Name>AutoX.Database</Name>
+    <ProjectReference Include="..\AutoX.DB\AutoX.DB.csproj">
+      <Project>{7d09a7d8-2a35-49cb-936e-58919bb4a5f9}</Project>
+      <Name>AutoX.DB</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AutoX.WF.Core\AutoX.WF.Core.csproj">
+      <Project>{6A598CBB-A54F-4272-82AA-0DD64428E3C6}</Project>
+      <Name>AutoX.WF.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -196,12 +190,6 @@
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\automation - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\automation - Web Deploy.pubxml" />
-  </ItemGroup>
-  <ItemGroup>
-    <XamlAppDef Include="ServiceFlow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </XamlAppDef>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -33,7 +33,7 @@ namespace AutoX.Activities
 
     public static class Utilities
     {
-        public const string Filter = "Name;Type;Description;Type;GUID;";
+        public const string Filter = "Name;Type;Description;Type;_id;";
 
         public static string GetEnumDescription(Enum value)
         {
@@ -49,7 +49,7 @@ namespace AutoX.Activities
 
         public static void DropXElementToDesigner(XElement data, string dropData, ModelItem navtiveModelItem)
         {
-            var guid = data.GetAttributeValue("GUID");
+            var guid = data.GetAttributeValue("_id");
             var tag = data.Name.ToString();
             var modelProperty = navtiveModelItem.Properties[dropData];
             if (modelProperty == null) return;
@@ -69,7 +69,7 @@ namespace AutoX.Activities
                 var xSteps = XElement.Parse(userData);
 
                 var xStep = new XElement("Step");
-                xStep.SetAttributeValue("UIId", data.GetAttributeValue("GUID"));
+                xStep.SetAttributeValue("UIId", data.GetAttributeValue("_id"));
                 xStep.SetAttributeValue("UIObject", data.GetAttributeValue("Name"));
                 xStep.SetAttributeValue("Enable", "True");
                 xStep.SetAttributeValue("Data", "");
@@ -104,7 +104,7 @@ namespace AutoX.Activities
                 {
                     var activity = new CallTestCaseActivity
                         {
-                            TestCaseId = data.GetAttributeValue("GUID"),
+                            TestCaseId = data.GetAttributeValue("_id"),
                             TestCaseName = data.GetAttributeValue("Name"),
                             DisplayName = "Call Test Case: " + data.GetAttributeValue("Name")
                         };
@@ -115,7 +115,7 @@ namespace AutoX.Activities
                 {
                     var activity = new CallTestScreenActivity
                         {
-                            TestSreenId = data.GetAttributeValue("GUID"),
+                            TestSreenId = data.GetAttributeValue("_id"),
                             TestSreenName = data.GetAttributeValue("Name"),
                             DisplayName = "Call Test Screen: " + data.GetAttributeValue("Name")
                         };
@@ -126,7 +126,7 @@ namespace AutoX.Activities
                 {
                     var activity = new CallTestSuiteActivity
                         {
-                            TestSuiteId = data.GetAttributeValue("GUID"),
+                            TestSuiteId = data.GetAttributeValue("_id"),
                             TestSuiteName = data.GetAttributeValue("Name"),
                             TestSuiteDescription = data.GetAttributeValue("Description"),
                             DisplayName = "Call Test Suite: " + data.GetAttributeValue("Name")
@@ -199,7 +199,7 @@ namespace AutoX.Activities
                 {
                     if (String.IsNullOrEmpty(dataString))
                         continue;
-                    var sData = host.GetDataObject(dataString).EXTRA;
+                    var sData = host.GetDataObject(dataString).ToString();
                     if (String.IsNullOrEmpty(sData)) continue;
                     var xData = XElement.Parse(sData);
 

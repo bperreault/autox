@@ -190,13 +190,21 @@
       <Project>{bb39bdb6-d9a0-4b29-98c5-977069b8d575}</Project>
       <Name>AutoX.Basic</Name>
     </ProjectReference>
+    <ProjectReference Include="..\AutoX.Client.Core\AutoX.Client.Core.csproj">
+      <Project>{4c838b4a-f1c7-4b78-b6c4-eb65ead3fbe0}</Project>
+      <Name>AutoX.Client.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AutoX.Comm\AutoX.Comm.csproj">
       <Project>{ea1d75aa-b145-4b6b-84e5-9933a5d537f0}</Project>
       <Name>AutoX.Comm</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AutoX.Database\AutoX.Database.csproj">
-      <Project>{1fa42233-e195-42cb-a15f-a63a6a6a774d}</Project>
-      <Name>AutoX.Database</Name>
+    <ProjectReference Include="..\AutoX.DB\AutoX.DB.csproj">
+      <Project>{7d09a7d8-2a35-49cb-936e-58919bb4a5f9}</Project>
+      <Name>AutoX.DB</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AutoX.WF.Core\AutoX.WF.Core.csproj">
+      <Project>{6a598cbb-a54f-4272-82aa-0dd64428e3c6}</Project>
+      <Name>AutoX.WF.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

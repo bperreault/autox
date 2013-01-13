@@ -21,11 +21,7 @@ namespace AutoX.Basic.Model
             if (field == null)
             {
                 var prop = dataObject.GetType().GetProperty(attributeName);
-                if (prop == null)
-                {
-                    var extra = dataObject.EXTRA;
-                    return extra == null ? null : XElement.Parse(extra).GetAttributeValue(attributeName);
-                }
+                if (prop == null) return null;
                 return prop.GetValue(dataObject, null).ToString();
             }
             return field.GetValue(dataObject).ToString();
@@ -39,23 +35,7 @@ namespace AutoX.Basic.Model
             if (field == null)
             {
                 var prop = dataObject.GetType().GetProperty(attributeName);
-                if (prop == null)
-                {
-                    var extra = dataObject.EXTRA;
-                    if (extra == null)
-                    {
-                        var xExtra = new XElement("Extra");
-                        xExtra.SetAttributeValue(attributeName, value);
-                        dataObject.EXTRA = xExtra.ToString();
-                    }
-                    else
-                    {
-                        var xExtra = XElement.Parse(extra);
-                        xExtra.SetAttributeValue(attributeName, value);
-                        dataObject.EXTRA = xExtra.ToString();
-                    }
-                }
-                else
+                if (prop != null)
                 {
                     prop.SetValue(dataObject, value, null);
                 }
@@ -68,7 +48,7 @@ namespace AutoX.Basic.Model
 
         public static string GetId(this IDataObject dataObject)
         {
-            return dataObject.GetAttributeValue("GUID");
+            return dataObject.GetAttributeValue("_id");
         }
 
         public static object GetObjectFromXElement(this XElement element)

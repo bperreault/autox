@@ -14,7 +14,8 @@ using System.Xml.Linq;
 using AutoX.Activities.AutoActivities;
 using AutoX.Basic;
 using AutoX.Basic.Model;
-using AutoX.Database;
+using AutoX.DB;
+using AutoX.WF.Core;
 
 #endregion
 
@@ -32,13 +33,13 @@ namespace AutoX.Web
                             string language)
         {
             GUID = guid;
-            //get workflow store GUID
+            //get workflow store _id
             ScriptGUID = scriptGuid;
             SuiteName = suiteName;
             Language = language;
             Status = "Invalid";
             //get string content of workflow
-            var script = DBManager.GetInstance().FindOneDataFromDB(scriptGuid) as Script;
+            Script script = null; //TODO Data.Read(scriptGuid) as Script;
             if (script == null) return;
             if (script.Content == null) return;
             //load workflow
@@ -113,7 +114,7 @@ namespace AutoX.Web
             var logRootId = Configuration.Settings("ResultsRoot", "0020020000002");
             var xElement =
                 XElement.Parse(
-                    @"<Result Name='" + name + "' Type='Result' Description='Automation Result' GUID='" +
+                    @"<Result Name='" + name + "' Type='Result' Description='Automation Result' _id='" +
                     GUID + "' ParentId='" + logRootId + "' />");
             var iDataObject = xElement.GetDataObjectFromXElement() as Result;
             if (iDataObject == null) return;
@@ -185,7 +186,7 @@ namespace AutoX.Web
 
         private void InsertResultToDB(string guid, string parentId, Result result)
         {
-            DBManager.GetInstance().AddOrUpdateOneDataToDB(guid, parentId, result);
+            //TODO Data.Update(guid, parentId, result);
         }
 
         public void SetCommand(XElement steps)
@@ -205,9 +206,9 @@ namespace AutoX.Web
                     //we use runtime id to match results
                     var runtimeId = Guid.NewGuid().ToString();
                     steps.SetAttributeValue("RunTimeId", runtimeId);
-                    _currentStepGuid = steps.GetAttributeValue("GUID");
+                    _currentStepGuid = steps.GetAttributeValue("_id");
                     _results.Add(runtimeId, null);
-                    var computer = ComputersManager.GetInstance().GetComputer(ClientName);
+                    var computer = ClientInstancesManager.GetInstance().GetComputer(ClientName);
                     computer.SetCommand(steps.ToString());
                 }
                 return;
@@ -234,7 +235,7 @@ namespace AutoX.Web
                 }
                 if (!stepsId.Equals(_currentStepGuid))
                 {
-                    Log.Error("current GUID(" + _currentStepGuid + ") not equal the steps GUID(" + stepsId + ")");
+                    Log.Error("current _id(" + _currentStepGuid + ") not equal the steps _id(" + stepsId + ")");
                     return null;
                 }
 

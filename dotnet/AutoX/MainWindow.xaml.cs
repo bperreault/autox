@@ -25,19 +25,19 @@ namespace AutoX
         public MainWindow()
         {
             InitializeComponent();
-            HostManager.GetInstance().Register(this);
+//            HostManager.GetInstance().Register(this);
             StartProgressBar();
             //set datagrid itemssource
             ClientTable.ItemsSource = _clientSource.Get();
             InstanceTable.ItemsSource = _instanceSource.Get();
-            TestCaseResultTable.ItemsSource = _testCaseResultSource.Get();
-            TestStepsResultTable.ItemsSource = _testStepSource.Get();
-            TranslationTable.ItemsSource = _translationSource.Get();
+//            TestCaseResultTable.ItemsSource = _testCaseResultSource.Get();
+//            TestStepsResultTable.ItemsSource = _testStepSource.Get();
+//            TranslationTable.ItemsSource = _translationSource.Get();
 
             LoadToolBox();
             RegisterMetadata();
             //AddTestDesigner("TestSuite");
-            InitScreen();
+//            InitScreen();
             //InitializeProject();
             //LoadProject();
 

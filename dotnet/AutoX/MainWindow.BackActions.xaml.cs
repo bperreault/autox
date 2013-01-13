@@ -21,7 +21,10 @@ namespace AutoX
     {
         public IHost Host
         {
-            get { return Communication.GetInstance(); }
+            get
+            {
+                return null;//TODO Communication.GetInstance();
+            }
         }
 
 
@@ -44,11 +47,11 @@ namespace AutoX
 
         public static TreeViewItem GetItemFromXElement(XElement element, string parentId)
         {
-            var guid = element.GetAttributeValue("GUID");
+            var guid = element.GetAttributeValue("_id");
             if (string.IsNullOrEmpty(guid))
             {
                 guid = Guid.NewGuid().ToString();
-                element.SetAttributeValue("GUID", guid);
+                element.SetAttributeValue("_id", guid);
             }
             var rootPart = element.GetRootPartElement();
             rootPart.SetAttributeValue("ParentId", parentId);
@@ -178,7 +181,7 @@ namespace AutoX
             }
             var parent = selected.DataContext as XElement;
             if (parent == null) return;
-            var parentId = parent.GetAttributeValue("GUID");
+            var parentId = parent.GetAttributeValue("_id");
 
             if (parent.Name.ToString().Equals("Script"))
             {
@@ -251,7 +254,7 @@ namespace AutoX
             var xElement =
                 XElement.Parse(
                     @"<Script Name='New Test " + type + "' ScriptType='Test" + type +
-                    "' Description='Please add description here' Content='' GUID='" +
+                    "' Description='Please add description here' Content='' _id='" +
                     Guid.NewGuid() + "' />");
             var ret = AddNewItemToTree(ProjectTreeView, xElement);
             return ret;

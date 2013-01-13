@@ -1,20 +1,9 @@
 ﻿#region
 
 using System;
-using System.Reflection;
-using System.ServiceModel.Description;
+using System.IO;
 using AutoX.Basic;
-using AutoX.Basic.Model;
-using AutoX.WF.Core;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.ServiceProcess;
-using System.Text;
-using System.ServiceModel;
-using System.Web.Services;
+using AutoX.DB;
 
 #endregion
 
@@ -23,36 +12,53 @@ namespace AutoX.Test
 {
     internal class Program
     {
-        private static void Main(string[] args)
+        private static void Main()
         {
-            //JsonTest();
-            ServiceTest();
+            InitProject();
             Console.Read();
         }
 
-        private static void ServiceTest()
+        private static void InitProject()
         {
-            
+            //TestGenerateKey();
+            DBManager.GetInstance();
         }
 
-        private static void JsonTest()
+        private static void TestGenerateKey()
         {
-            var ass = Assembly.LoadFrom("AutoX.Basic.dll");
-            Log.Debug("Test Begin:");
-            var testFolder = new Folder
-                {
-                    GUID = "guid",
-                    Created = DateTime.Now,
-                    Name = "TestFolder",
-                    Description = "Description",
-                    Updated = DateTime.Now
-                };
-            var jstring = testFolder.JsonSerialize();
-            Log.Debug(jstring);
+            const int keySize = 2048;
+            string publicAndPrivateKey;
+            string publicKey;
 
-            var jobject = DataObjectExt.JsonDeserialize(jstring, ass.GetType("AutoX.Basic.Model.Folder"));
+            AsymmetricEncryption.GenerateKeys(keySize, out publicKey, out publicAndPrivateKey);
+            Console.WriteLine("public key:" + publicKey);
+            Console.WriteLine("public & private key:" + publicAndPrivateKey);
+            var productid = AsymmetricEncryption.GetProductId();
+            string userName = "jien.huang";
+            string text = userName + productid;
+            string encrypted = AsymmetricEncryption.EncryptText(text, keySize, publicKey);
 
-            Log.Debug(jobject.ToString());
+            Console.WriteLine("Encrypted: {0}", encrypted);
+            //send encrypted data to service
+            File.WriteAllText(userName + ".pem",
+                              "UserName:\n" + userName + "\nPublic Key:" + publicKey + "\nPublic and Private Key:\n" +
+                              publicAndPrivateKey + "Secrect:\n" + encrypted + "\nFor Test:\n" + productid);
+            string decrypted = AsymmetricEncryption.DecryptText(encrypted, keySize, publicAndPrivateKey);
+
+            //service person do below
+            Console.WriteLine("Decrypted: {0}", decrypted);
+//            string signature = AsymmetricEncryption.Sign(text,keySize,publicAndPrivateKey);
+//            Console.WriteLine("Signature:"+signature);
+//            Console.WriteLine("Verify Signature:" + AsymmetricEncryption.VerifySign(signature, text, keySize, publicKey));
+//            //create default root id for Project, Result, Data, Object
+
+            //get user name
+
+            //use productid as connection string password
+
+            Configuration.Set("UserName", userName);
+            Configuration.Set("PublicKey", publicKey);
+            Configuration.SaveSettings();
         }
     }
 }

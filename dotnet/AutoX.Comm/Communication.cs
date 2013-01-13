@@ -88,15 +88,18 @@ namespace AutoX.Comm
             return command;
         }
 
-        public string Register(string clientId)
+        public string Register(Config config)
         {
             var xCommand = GetCommandXElement("Register");
             var computer = Computer.GetLocalHost();
-            xCommand.SetAttributeValue("ClientId",clientId);
+            xCommand.SetAttributeValue("_id",config.Get("_id"));
             xCommand.SetAttributeValue("ComputerName", computer.ComputerName);
             xCommand.SetAttributeValue("IPAddress", computer.IPAddress);
             xCommand.SetAttributeValue("Version", computer.Version);
-
+            foreach (var key in config.GetList().Keys)
+            {
+                xCommand.SetAttributeValue(key,config.GetList()[key]);
+            }
             return Command(xCommand.ToString());
         }
 
@@ -146,35 +149,35 @@ namespace AutoX.Comm
         public string StartInstance(string guid)
         {
             var xCommand = GetCommandXElement("StartInstance");
-            xCommand.SetAttributeValue("GUID", guid);
+            xCommand.SetAttributeValue("_id", guid);
             return Command(xCommand.ToString());
         }
 
-        //public string GetInstanceLog(string GUID)
+        //public string GetInstanceLog(string _id)
         //{
         //    XElement xCommand = GetCommandXElement("GetInstanceLog");
-        //    xCommand.SetAttributeValue("GUID", GUID);
+        //    xCommand.SetAttributeValue("_id", _id);
         //    return Command(xCommand.ToString());
         //}
 
         public string StopInstance(string guid)
         {
             var xCommand = GetCommandXElement("StopInstance");
-            xCommand.SetAttributeValue("GUID", guid);
+            xCommand.SetAttributeValue("_id", guid);
             return Command(xCommand.ToString());
         }
 
         public string DeleteInstance(string guid)
         {
             var xCommand = GetCommandXElement("DeleteInstance");
-            xCommand.SetAttributeValue("GUID", guid);
+            xCommand.SetAttributeValue("_id", guid);
             return Command(xCommand.ToString());
         }
 
         public string GetById(string guid)
         {
             var xCommand = GetCommandXElement("GetById");
-            xCommand.SetAttributeValue("GUID", guid);
+            xCommand.SetAttributeValue("_id", guid);
             return Command(xCommand.ToString());
         }
 
@@ -188,7 +191,7 @@ namespace AutoX.Comm
         public string GetChildren(string guid)
         {
             var xCommand = GetCommandXElement("GetChildren");
-            xCommand.SetAttributeValue("GUID", guid);
+            xCommand.SetAttributeValue("_id", guid);
             return Command(xCommand.ToString());
         }
 
