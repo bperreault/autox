@@ -163,7 +163,7 @@ namespace AutoX.WF.Core
             }
         }
 
-        public string GetCommand()
+        public XElement GetCommand()
         {
             //Register last access time, for further clear use
             string retCommand;
@@ -184,7 +184,7 @@ namespace AutoX.WF.Core
                 _element.SetAttributeValue("Updated", Updated.ToString());
                 Monitor.Pulse(_commandList);
             }
-            return retCommand;
+            return XElement.Parse( retCommand);
         }
 
         

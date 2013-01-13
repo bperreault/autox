@@ -109,7 +109,7 @@ namespace AutoX.Comm
             var xCommand = GetCommandXElement("RequestCommand");
             var computerName = Dns.GetHostName();
             xCommand.SetAttributeValue("ComputerName", computerName);
-            xCommand.SetAttributeValue("ClientId",clientId);
+            xCommand.SetAttributeValue("_id",clientId);
             return Command(xCommand.ToString());
         }
 

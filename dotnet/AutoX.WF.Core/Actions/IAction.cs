@@ -62,7 +62,8 @@ namespace AutoX.WF.Core.Actions
 
         public XElement Do(XElement action)
         {
-            throw new System.NotImplementedException();
+            string clientInstanceId = action.Attribute("_id").Value;
+            return ClientInstancesManager.GetInstance().GetComputer(clientInstanceId).GetCommand();
         }
     }
     class SetById : IAction

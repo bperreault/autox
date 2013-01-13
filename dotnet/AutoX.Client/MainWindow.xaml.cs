@@ -5,6 +5,7 @@
 #region
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Windows;
@@ -28,7 +29,7 @@ namespace AutoX.Client
         
         private bool _shouldClose;
         private readonly ClientInstance _defaultClientInstance = new ClientInstance();
-
+        private readonly List<ClientInstance> _instances = new List<ClientInstance>();
         public MainWindow()
         {
             InitializeComponent();
@@ -190,8 +191,19 @@ namespace AutoX.Client
 
         private void OnMenuItemStartClick(object sender, EventArgs e)
         {
-            
-            _defaultClientInstance.Start();
+            string hostType = Configuration.Settings("Host.Type", "Sauce");
+            if (hostType.Equals("Sauce"))
+            {
+                int concurrency = int.Parse(Configuration.Settings("Host.Concurrent.Instances", "3"));
+                for (int i = 0; i < concurrency - _instances.Count; i++)
+                {
+                    var instance = new ClientInstance();
+                    _instances.Add(instance);
+                    instance.Start();
+                }
+            }
+            else
+                _defaultClientInstance.Start();
             
         }
 
@@ -199,7 +211,11 @@ namespace AutoX.Client
         {
             
             _defaultClientInstance.Stop();
-            
+            foreach (var clientInstance in _instances)
+            {
+                clientInstance.Stop();
+            }
+            _instances.Clear();
         }
 
         private void OnMenuItemRegisterClick(object sender, EventArgs e)

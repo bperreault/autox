@@ -1,4 +1,3 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -23,11 +22,12 @@ namespace AutoX.Comm
         }
 
         Task _task;
+        readonly CancellationTokenSource _tokenSource = new CancellationTokenSource();
 
         
         public void Start()
         {
-            _task = Task.Factory.StartNew(DoWhile);
+            _task = Task.Factory.StartNew(DoWhile,_tokenSource.Token);
             //task.Start();
         }
 
@@ -43,9 +43,15 @@ namespace AutoX.Comm
                     continue;
                 }
                 var command = RequestCommand();
+                 
                 //TODO notify the observer
                 var result = ActionsFactory.Execute(command);
-                SendResult(result);
+                if(command.Attribute("_id")!=null)
+                    SendResult(result);
+                else
+                {
+                    Thread.Sleep(6*1000);
+                }
             }
             
         }
@@ -54,9 +60,8 @@ namespace AutoX.Comm
         {
             if (_task == null)
                 return;
-            if (_task.IsCompleted || _task.IsCanceled)
-                return;
-            _task.Dispose();
+            _tokenSource.Cancel();
+            
         }
 
         public XElement RequestCommand()

@@ -21,20 +21,18 @@ namespace AutoX.DB
             string userName = Configuration.Settings("UserName", "jien.huang");
             string productId = AsymmetricEncryption.GetProductId();
             var connectionString = Configuration.Settings("DBConnectionString", "mongodb://"+userName+":"+productId+"@localhost"); //mongodb://uname:pwd@localhost
-
-            var server = MongoServer.Create(connectionString);
+            var client = new MongoClient(connectionString);
+            var server = client.GetServer(); //MongoServer.Create(connectionString);
             server.Connect();
             _database = server.GetDatabase(Configuration.Settings("DBName", "autox"));
         }
 
         public static DBManager GetInstance()
         {
-            if (_instance == null)
-                _instance = new DBManager();
-            return _instance;
+            return _instance ?? (_instance = new DBManager());
         }
 
-        public string find(Type type, string id)
+        public string Find(Type type, string id)
         {
             var query = Query.EQ("_id", id);
             MongoCursor cursor = _database.GetCollection(type.Name).Find(query);
