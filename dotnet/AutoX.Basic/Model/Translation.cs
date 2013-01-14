@@ -5,29 +5,18 @@
 #region
 
 using System;
-using System.Data.Linq.Mapping;
-
 #endregion
 
 namespace AutoX.Basic.Model
 {
-    [Table(Name = "Translation")]
     public class Translation : IDataObject
     {
         #region IDataObject Members
 
-        [Column(IsPrimaryKey = true)]
         public string _id { get; set; }
 
-        [Column(DbType = "NVarChar(MAX)")]
-        public string EXTRA { get; set; }
-
-        //put all data into this field
-
-        [Column]
         public DateTime Updated { get; set; }
 
-        [Column]
         public DateTime Created { get; set; }
 
         #endregion

@@ -115,10 +115,7 @@ namespace AutoX.Basic.Model
                 return null;
             var type = dataObject.GetType();
             var tag = type.FullName;
-            if (tag == null)
-            {
-                return null;
-            }
+            
             var ret = new XElement(tag);
 
             foreach (PropertyInfo prop in type.GetProperties())
@@ -146,18 +143,7 @@ namespace AutoX.Basic.Model
             {
                 var name = prop.Name;
                 var value = (prop.GetValue(dataObject, null) ?? "") as string;
-                if (name.Equals("Extra"))
-                {
-                    if (!string.IsNullOrEmpty(value))
-                    {
-                        foreach (XAttribute attr in XElement.Parse(value).Attributes())
-                        {
-                            ret.SetAttributeValue(attr.Name, attr.Value);
-                        }
-                    }
-                }
-                else
-                    ret.SetAttributeValue(name, value);
+                ret.SetAttributeValue(name, value);
             }
             return ret;
         }

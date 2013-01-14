@@ -46,17 +46,12 @@ namespace AutoX
 
         #region IHost Members
 
-        public IDataObject GetDataObject(string id)
-        {
-            return Communication.GetInstance().GetDataObject(id);
-        }
-
-        public void SetCommand(string instanceId, XElement steps)
+        public void SetCommand( XElement steps)
         {
             throw new NotImplementedException("This method should never be called.");
         }
 
-        public XElement GetResult(string instanceId, string guid)
+        public XElement GetResult( string guid)
         {
             throw new NotImplementedException("This method should never be called.");
         }

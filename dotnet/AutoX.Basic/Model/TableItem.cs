@@ -26,29 +26,9 @@ namespace AutoX.Basic.Model
 
         #endregion
 
-        public string _id
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        public string EXTRA
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        public DateTime Created
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        public DateTime Updated
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
+        public string _id { get; set; }
+        public DateTime Created { get; set; }
+        public DateTime Updated { get; set; }
 
         public ObservableCollection<object> Get()
         {

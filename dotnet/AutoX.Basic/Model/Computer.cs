@@ -17,13 +17,8 @@ namespace AutoX.Basic.Model
         public string ComputerName { get; set; }
         public string IPAddress { get; set; }
         public string Version { get; set; }
-
         public string _id { get; set; }
-
-
-
         public DateTime Created { get; set; }
-
         public DateTime Updated { get; set; }
 
         public static Computer GetLocalHost()

@@ -9,30 +9,21 @@
 #region
 
 using System;
-using System.Data.Linq.Mapping;
 
 #endregion
 
 namespace AutoX.Basic.Model
 {
-    [Table(Name = "Folder")]
     public class Folder : IDataObject
     {
-        [Column] public string Description;
-        [Column] public string Name;
+        public string Description;
+        public string Name;
 
         #region IDataObject Members
 
-        [Column(IsPrimaryKey = true)]
         public string _id { get; set; }
-
-        [Column]
-        public string EXTRA { get; set; }
-
-        [Column]
+        
         public DateTime Updated { get; set; }
-
-        [Column]
         public DateTime Created { get; set; }
 
         #endregion

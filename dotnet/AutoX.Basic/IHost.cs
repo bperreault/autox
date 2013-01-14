@@ -13,10 +13,10 @@ namespace AutoX.Basic
 {
     public interface IHost
     {
-        IDataObject GetDataObject(string id);
+        XElement GetDataObject(string id);
 
-        void SetCommand(string instanceId, XElement steps);
+        void SetCommand( XElement steps);
 
-        XElement GetResult(string instanceId, string guid);
+        XElement GetResult( string guid);
     }
 }

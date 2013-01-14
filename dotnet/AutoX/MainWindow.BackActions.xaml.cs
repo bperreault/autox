@@ -12,6 +12,7 @@ using System.Xml.Linq;
 using AutoX.Basic;
 using AutoX.Basic.Model;
 using AutoX.Comm;
+using AutoX.DB;
 
 #endregion
 
@@ -19,14 +20,10 @@ namespace AutoX
 {
     public partial class MainWindow
     {
-        public IHost Host
+        public XElement GetDataObject(string id)
         {
-            get
-            {
-                return null;//TODO Communication.GetInstance();
-            }
+            return Data.Read(id);
         }
-
 
         private bool BeforeActionCheck(TreeView treeView, string action, string objName)
         {

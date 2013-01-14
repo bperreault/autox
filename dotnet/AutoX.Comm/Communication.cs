@@ -16,7 +16,7 @@ using AutoX.Comm.AutoXService;
 
 namespace AutoX.Comm
 {
-    public sealed class Communication : IDisposable, IHost
+    public sealed class Communication : IDisposable
     {
         private static Communication _instance;
         private static readonly ServiceSoapClient Client = new ServiceSoapClient();

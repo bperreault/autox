@@ -65,9 +65,9 @@ namespace AutoX.Activities.AutoActivities
             //TODO implement it!!!
             //invoke a test suite here
             Log.Debug("in CallTestSuite, before Executing Test Suite: " + TestSuiteName);
-            var screen = Host.GetDataObject(TestSuiteId) as Script;
+            var screen = Host.GetDataObject(TestSuiteId);
             if (screen == null) return;
-            var activity = ActivityXamlServices.Load(new StringReader(screen.Content));
+            var activity = ActivityXamlServices.Load(new StringReader(screen.GetAttributeValue("Content")));
 
             WorkflowInvoker.Invoke(activity);
             _result = ((IPassData) activity).GetResult();

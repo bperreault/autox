@@ -21,7 +21,7 @@ using AutoX.WF.Core;
 
 namespace AutoX.Web
 {
-    public class TestInstance
+    public class TestInstance : IHost
     {
         private const string ExitStatus = "Completed;Aborted;Canceled;Terminated;Invalid";
         private readonly Dictionary<string, XElement> _results = new Dictionary<string, XElement>();
@@ -39,15 +39,15 @@ namespace AutoX.Web
             Language = language;
             Status = "Invalid";
             //get string content of workflow
-            Script script = null; //TODO Data.Read(scriptGuid) as Script;
+            XElement script = GetDataObject(scriptGuid);
             if (script == null) return;
-            if (script.Content == null) return;
+            if (script.GetAttributeValue("Content") == null) return;
             //load workflow
-            var activity = ActivityXamlServices.Load(new StringReader(script.Content)) as AutomationActivity;
+            var activity = ActivityXamlServices.Load(new StringReader(script.GetAttributeValue("Content"))) as AutomationActivity;
             if (activity != null)
             {
                 activity.InstanceId = GUID;
-                activity.SetHost(InstanceManager.GetInstance());
+                activity.SetHost(this);
                 //var idleEvent = new AutoResetEvent(false);
                 //TODO write log in workflow!!!
 
@@ -297,5 +297,12 @@ namespace AutoX.Web
         //    }
         //    return null;
         //}
+
+        public XElement GetDataObject(string id)
+        {
+            return Data.Read(id);
+        }
+
+        
     }
 }

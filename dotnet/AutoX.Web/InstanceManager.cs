@@ -14,7 +14,7 @@ using AutoX.DB;
 
 namespace AutoX.Web
 {
-    public class InstanceManager : IHost
+    public class InstanceManager
     {
         private static InstanceManager _instance;
         private readonly Dictionary<string, TestInstance> _instanceList = new Dictionary<string, TestInstance>();
@@ -22,27 +22,8 @@ namespace AutoX.Web
 
         private InstanceManager()
         {
-            HostManager.GetInstance().Register(this);
+            
         }
-
-        #region IHost Members
-
-        public IDataObject GetDataObject(string id)
-        {
-            return null;//TODO return Data.Read(id);
-        }
-
-        public void SetCommand(string instanceId, XElement steps)
-        {
-            GetTestInstance(instanceId).SetCommand(steps);
-        }
-
-        public XElement GetResult(string instanceId, string guid)
-        {
-            return GetTestInstance(instanceId).GetResult(guid);
-        }
-
-        #endregion
 
         public static InstanceManager GetInstance()
         {

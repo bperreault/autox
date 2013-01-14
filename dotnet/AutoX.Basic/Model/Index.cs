@@ -9,30 +9,20 @@
 #region
 
 using System;
-using System.Data.Linq.Mapping;
 
 #endregion
 
 namespace AutoX.Basic.Model
 {
-    [Table(Name = "Index")]
     public class Index : IDataObject
     {
-        [Column] public string ParentId;
-        [Column] public string Type;
+        public string ParentId;
+        public string Type;
 
         #region IDataObject Members
 
-        [Column(IsPrimaryKey = true)]
         public string _id { get; set; }
-
-        [Column]
-        public string EXTRA { get; set; }
-
-        [Column]
         public DateTime Updated { get; set; }
-
-        [Column]
         public DateTime Created { get; set; }
 
         #endregion

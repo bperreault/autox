@@ -16,7 +16,6 @@ using System.Linq;
 using System.Xml.Linq;
 using AutoX.Activities.AutoActivities;
 using AutoX.Basic;
-using AutoX.Basic.Model;
 
 #endregion
 
@@ -24,11 +23,16 @@ namespace AutoX.Activities
 {
     public enum OnError
     {
-        [Description("Always Return Success, Ignore All Errors")] AlwaysReturnTrue,
-        [Description("Only Show Warning in Result, Even Error")] JustShowWarning,
-        [Description("Mark Error in Result, but Continue Next Step")] Continue,
-        [Description("Stop Current Script, Mark it Failed")] StopCurrentScript,
-        [Description("Terminate this Test Instance")] Terminate
+        [Description("Always Return Success, Ignore All Errors")]
+        AlwaysReturnTrue,
+        [Description("Only Show Warning in Result, Even Error")]
+        JustShowWarning,
+        [Description("Mark Error in Result, but Continue Next Step")]
+        Continue,
+        [Description("Stop Current Script, Mark it Failed")]
+        StopCurrentScript,
+        [Description("Terminate this Test Instance")]
+        Terminate
     }
 
     public static class Utilities
@@ -40,8 +44,8 @@ namespace AutoX.Activities
             var fi = value.GetType().GetField(value.ToString());
 
             var attributes =
-                (DescriptionAttribute[]) fi.GetCustomAttributes(
-                    typeof (DescriptionAttribute),
+                (DescriptionAttribute[])fi.GetCustomAttributes(
+                    typeof(DescriptionAttribute),
                     false);
 
             return attributes.Length > 0 ? attributes[0].Description : value.ToString();
@@ -155,35 +159,30 @@ namespace AutoX.Activities
                     if (String.IsNullOrEmpty(dataString))
                         continue;
                     var sData = host.GetDataObject(dataString);
-                    if (sData == null) continue;
-                    var xData = sData.GetXElementFromDataObject();
-                    var dataSetName = xData.GetAttributeValue("Name");
-                    var xExtra = xData.GetAttributeValue("EXTRA");
-                    if (!string.IsNullOrEmpty(xExtra))
-                    {
-                        var xEe = XElement.Parse(xExtra);
 
-                        foreach (XAttribute xAttribute in xEe.Attributes())
-                        {
-                            var name = xAttribute.Name.ToString();
-                            if (Filter.Contains(name)) continue;
-                            var dataValue = xAttribute.Value;
-                            var data = new UserData
-                                {
-                                    DataSet = dataSetName,
-                                    Name = name,
-                                    Value = dataValue,
-                                    DataSetId = dataString
-                                };
-                            //remove the duplicate value
-                            if (dic.ContainsKey(name))
-                                dic[name] = data;
-                            else
+                    var dataSetName = sData.GetAttributeValue("Name");
+
+                    foreach (XAttribute xAttribute in sData.Attributes())
+                    {
+                        var name = xAttribute.Name.ToString();
+                        if (Filter.Contains(name)) continue;
+                        var dataValue = xAttribute.Value;
+                        var data = new UserData
                             {
-                                dic.Add(name, data);
-                            }
+                                DataSet = dataSetName,
+                                Name = name,
+                                Value = dataValue,
+                                DataSetId = dataString
+                            };
+                        //remove the duplicate value
+                        if (dic.ContainsKey(name))
+                            dic[name] = data;
+                        else
+                        {
+                            dic.Add(name, data);
                         }
                     }
+
                 }
             }
             return dic;

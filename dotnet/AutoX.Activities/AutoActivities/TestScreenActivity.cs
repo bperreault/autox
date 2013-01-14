@@ -105,8 +105,8 @@ namespace AutoX.Activities.AutoActivities
             }
             Log.Info("in TestScreenActivity internalexecute");
             var steps = GetSteps();
-            Host.SetCommand(InstanceId, steps);
-            var rElement = Host.GetResult(InstanceId, GUID);
+            Host.SetCommand(steps);
+            var rElement = Host.GetResult(GUID);
             //TODO Log should be done at the Host side, we use this result to get some variables to use in the workflow
         }
 
@@ -152,10 +152,10 @@ namespace AutoX.Activities.AutoActivities
                 var uiid = descendant.GetAttributeValue("UIId");
                 //TODO we have NOT handle the parent here, add it later; for now, it can work.
                 if (string.IsNullOrEmpty(uiid)) continue;
-                var uio = HostManager.GetInstance().GetHost().GetDataObject(uiid) as UIObject;
+                var uio = HostManager.GetInstance().GetHost().GetDataObject(uiid);
                 if (uio == null) continue;
                 var xO = XElement.Parse("<UIObject />");
-                var xpath = uio.XPath;
+                var xpath = uio.GetAttributeValue("XPath");
                 //TODO add name, id, css later!!!
                 if (string.IsNullOrEmpty(xpath)) continue;
                 xO.SetAttributeValue("XPath", xpath);

@@ -46,7 +46,6 @@
     <Reference Include="System.Data.Linq" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -61,7 +60,6 @@
     <Compile Include="ImageList.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Logger.cs" />
-    <Compile Include="Model\AbstractDataObject.cs" />
     <Compile Include="Model\Computer.cs" />
     <Compile Include="Model\DataObjectExt.cs" />
     <Compile Include="Model\Datum.cs" />
@@ -70,7 +68,6 @@
     <Compile Include="Model\Index.cs" />
     <Compile Include="Model\Instance.cs" />
     <Compile Include="Model\Result.cs" />
-    <Compile Include="Model\Script.cs" />
     <Compile Include="Model\TableItem.cs" />
     <Compile Include="Model\Translation.cs" />
     <Compile Include="Model\UIObject.cs" />

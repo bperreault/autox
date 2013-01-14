@@ -21,24 +21,9 @@ namespace AutoX.Basic.Model
         public string ScriptGUID { get; set; }
         public string _id { get; set; }
 
+        public DateTime Created { get; set; }
 
-        public string EXTRA
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        public DateTime Created
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        public DateTime Updated
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
+        public DateTime Updated { get; set; }
 
         public XElement ToXElement()
         {
