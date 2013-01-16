@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BsonDocumentExt.cs" />
     <Compile Include="Data.cs" />
     <Compile Include="DBManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

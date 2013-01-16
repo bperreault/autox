@@ -2,6 +2,7 @@
 
 using System;
 using AutoX.Basic;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 
@@ -32,14 +33,18 @@ namespace AutoX.DB
             return _instance ?? (_instance = new DBManager());
         }
 
-        public string Find(Type type, string id)
+        public BsonDocument Find(string id)
+        {
+            return _database.GetCollection("Data").FindOneByIdAs<BsonDocument>(id);
+        }
+        public bool Save(BsonDocument bsonDocument)
+        {
+            return _database.GetCollection("Data").Save(bsonDocument).Ok;
+        }
+        public void Delete(string id)
         {
             var query = Query.EQ("_id", id);
-            MongoCursor cursor = _database.GetCollection(type.Name).Find(query);
-
-            if (cursor.Count() == 0)
-                return null;
-            return cursor.ToString();
+            _database.GetCollection("Data").Remove(query);
         }
     }
 }

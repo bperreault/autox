@@ -343,7 +343,7 @@ namespace AutoX
 
             xElement.SetAttributeValue("Content", content);
 
-            var sRoot = Data.Update(xElement);
+            var sRoot = Data.Save(xElement);
             
             if (!sRoot)
             {

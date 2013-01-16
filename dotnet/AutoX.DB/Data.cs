@@ -11,34 +11,24 @@ namespace AutoX.DB
 {
     public static class Data
     {
-        public static bool Create(XElement xElement)
+        public static bool Save(XElement xElement)
         {
-            throw new NotImplementedException();
+            return DBManager.GetInstance().Save(xElement.ToBsonDocument());
         }
 
         public static XElement Read(string id)
         {
-            throw new NotImplementedException();
+            return Find(id).ToXElement();
         }
 
-        public static bool Update(XElement xElement)
+        public static BsonDocument Find(string id)
         {
-            throw new NotImplementedException();
+            return DBManager.GetInstance().Find(id);
         }
 
-        public static bool Delete(string id)
+        public static void Delete(string id)
         {
-            throw new NotImplementedException();
-        }
-
-        public static XElement BsonToXElement(this BsonDocument bsonDocument)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static BsonDocument XElementToBson(this XElement xElement)
-        {
-            throw new NotImplementedException();
+            DBManager.GetInstance().Delete(id);
         }
     }
 }
