@@ -49,17 +49,18 @@ namespace AutoX.DB
             
             foreach (var key in dictionary.Keys)
             {
-                if (usedKey.Contains(key))
+                var value = dictionary[key];
+                if (usedKey.Contains(value.ToString()))
                     continue;
                 //if key is a guid, then refer to ...
-                if (key.IsGuid())
+                if (value.ToString().IsGuid())
                 {
                     
-                    xElement.Add(Data.Find(key).ToXElement(usedKey+"|"+key));
+                    xElement.Add(Data.Find(value.ToString()).ToXElement(usedKey+"|"+value));
                     continue;
                 }
                 //if value is a bdoc, then it is a child
-                var value = dictionary[key];
+                
                 var document = value as BsonDocument;
                 if(document != null)
                     xElement.Add(document.ToXElement(usedKey));

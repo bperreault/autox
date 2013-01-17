@@ -16,6 +16,7 @@ namespace AutoX.DB
 
 
         private readonly MongoDatabase _database;
+        private MongoCollection project;
 
         private DBManager()
         {
@@ -26,25 +27,49 @@ namespace AutoX.DB
             var server = client.GetServer(); //MongoServer.Create(connectionString);
             server.Connect();
             _database = server.GetDatabase(Configuration.Settings("DBName", "autox"));
+            project = _database.GetCollection(Configuration.Settings("ProjectName", "Data"));
         }
+
+        
 
         public static DBManager GetInstance()
         {
             return _instance ?? (_instance = new DBManager());
         }
 
+        public bool AddUser(string newUser, string newPassword)
+        {
+            if (_database.FindUser(newUser) == null)
+            {
+                var user = new MongoCredentials(newUser, newPassword, false);
+                _database.AddUser(user);
+                return true;
+            }
+            return false;
+        }
+
+        public bool IsProjectExisted(string projectName)
+        {
+            return _database.GetCollection(projectName).Count() > 0;
+        }
+
+        public void SetProject(string projectName)
+        {
+            project = _database.GetCollection(projectName);
+        }
+
         public BsonDocument Find(string id)
         {
-            return _database.GetCollection("Data").FindOneByIdAs<BsonDocument>(id);
+            return project.FindOneByIdAs<BsonDocument>(id);
         }
         public bool Save(BsonDocument bsonDocument)
         {
-            return _database.GetCollection("Data").Save(bsonDocument).Ok;
+            return project.Save(bsonDocument).Ok;
         }
         public void Delete(string id)
         {
             var query = Query.EQ("_id", id);
-            _database.GetCollection("Data").Remove(query);
+            project.Remove(query);
         }
     }
 }

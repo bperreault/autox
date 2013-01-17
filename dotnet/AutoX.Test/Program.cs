@@ -21,11 +21,30 @@ namespace AutoX.Test
 
         private static void InitProject()
         {
-            TestGenerateKey("yazhi.pang");
-            
+            //AsymmetricEncryption.GenerateRegisterFile("yazhi.pang", "autox");
+            string fileContent = File.ReadAllText("yazhi.pang.pem");
+            XElement forSake = XElement.Parse(fileContent);
+            string projectName = forSake.GetAttributeValue("ProjectName");
+            if (DBManager.GetInstance().IsProjectExisted(projectName))
+            {
+                Console.WriteLine("Project already existed, continue?(y/n):");
+                if(!Console.ReadKey().KeyChar.Equals('y'))
+                    return;
+            }
+            DBManager.GetInstance().SetProject(projectName);
+            var root = forSake.Element("Root");
+            string publicAndPrivateKey = root.GetAttributeValue("PublicAndPrivateKey");
+            string secret = root.GetAttributeValue("Secret");
+            string decrypted = AsymmetricEncryption.DecryptText(secret, 2048, publicAndPrivateKey);
+            string userName = root.GetAttributeValue("UserName");
+            DBManager.GetInstance().AddUser(userName, decrypted);
+            foreach (var descendant in forSake.Descendants())
+            {
+                Data.Save(descendant);
+            }
         }
 
-        private static void TestGenerateKey(string userName)
+        private static void ForTempSave(string userName)
         {
             const int keySize = 2048;
             string publicAndPrivateKey;
@@ -35,10 +54,10 @@ namespace AutoX.Test
             AsymmetricEncryption.GenerateKeys(keySize, out publicKey, out publicAndPrivateKey);
             Console.WriteLine("public key:" + publicKey);
             Console.WriteLine("public & private key:" + publicAndPrivateKey);
-            root.SetAttributeValue("PublicKey",publicKey);
-            root.SetAttributeValue("PublicAndPrivateKey",publicAndPrivateKey);
+            root.SetAttributeValue("PublicKey", publicKey);
+            root.SetAttributeValue("PublicAndPrivateKey", publicAndPrivateKey);
             var productid = AsymmetricEncryption.GetProductId();
-            root.SetAttributeValue("ProductId",productid);
+            root.SetAttributeValue("ProductId", productid);
             //string userName = "jien.huang";
             string text = userName + productid;
             string encrypted = AsymmetricEncryption.EncryptText(text, keySize, publicKey);
