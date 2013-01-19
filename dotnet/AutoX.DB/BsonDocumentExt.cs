@@ -16,6 +16,8 @@ namespace AutoX.DB
             
             var type = xElement.Name.ToString();
             bsonDocument.Add("_type", type);
+            var mainId = xElement.Attribute("_id")!=null? xElement.Attribute("_id").Value:null;
+
             foreach (var attribure in xElement.Attributes())
             {
                 var key = attribure.Name.ToString();
@@ -25,13 +27,14 @@ namespace AutoX.DB
             foreach (var kid in xElement.Descendants())
             {
                 var id = kid.Attribute("_id");
-                if (id == null)
+                if (id == null||mainId==null)
                 {
                     bsonDocument.Add(kid.Name.ToString(), kid.ToBsonDocument());
                 }
                 else
                 {
-                    bsonDocument.Add(id.Value, null);
+                    kid.SetAttributeValue("_parentId",mainId);
+                    Data.Save(kid);
                 }
             }
             return bsonDocument;
@@ -43,22 +46,28 @@ namespace AutoX.DB
         }
         public static XElement ToXElement(this BsonDocument bsonDocument,string usedKey)
         {
+            if (bsonDocument == null)
+                return null;
             var dictionary = bsonDocument.ToDictionary();
             var type = dictionary.ContainsKey("_type") ? dictionary["_type"].ToString() : "Data";
+            var id = dictionary.ContainsKey("_id") ? dictionary["_id"].ToString() : null;
             var xElement = new XElement(type);
-            
+            if (id != null)
+            {
+                if (usedKey.Contains(id))
+                    return null;
+                xElement.SetAttributeValue("_id", id);
+            }
+
+
             foreach (var key in dictionary.Keys)
             {
                 var value = dictionary[key];
+                if (key.Equals("_id"))
+                    continue;
                 if (usedKey.Contains(value.ToString()))
                     continue;
-                //if key is a guid, then refer to ...
-                if (value.ToString().IsGuid())
-                {
-                    
-                    xElement.Add(Data.Find(value.ToString()).ToXElement(usedKey+"|"+value));
-                    continue;
-                }
+                
                 //if value is a bdoc, then it is a child
                 
                 var document = value as BsonDocument;

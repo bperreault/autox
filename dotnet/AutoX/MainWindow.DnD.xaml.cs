@@ -13,6 +13,7 @@ using System.Xml.Linq;
 using AutoX.Basic;
 using AutoX.Basic.Model;
 using AutoX.Comm;
+using AutoX.DB;
 
 #endregion
 
@@ -59,15 +60,11 @@ namespace AutoX
                 if (!CheckValidDrop(item, data)) return;
                 var xTarget = item.DataContext as XElement;
                 var parentId = xTarget.GetAttributeValue("_id");
-                data.SetAttributeValue("ParentId", parentId);
-                var sRoot = Communication.GetInstance().SetById(data);
-                var xRoot = XElement.Parse(sRoot);
-                var result = xRoot.GetAttributeValue("Result");
-                if (string.IsNullOrEmpty(result)) return;
-                if (result.Equals("Failed"))
+                data.SetAttributeValue("_parentId", parentId);
+                
+                if (!Data.Save(data))
                 {
-                    MessageBox.Show("update Tree item Failed. item=\n" + xRoot + "\nReason:" +
-                                    xRoot.GetAttributeValue("Reason"));
+                    MessageBox.Show("update Tree item Failed.");
                 }
                 else
                 {
@@ -129,7 +126,7 @@ namespace AutoX
             if (!tag.Equals("Folder")) return false;
             //rule 2: don't waste your time move to your parent
             var parentId = xTarget.GetAttributeValue("_id");
-            if (parentId.Equals(data.GetAttributeValue("ParentId")))
+            if (parentId.Equals(data.GetAttributeValue("_parentId")))
                 return false;
             return true;
         }

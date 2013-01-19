@@ -41,12 +41,14 @@ namespace AutoX.Basic
             var uiId = Guid.NewGuid().ToString();
             var dataId = Guid.NewGuid().ToString();
             var translationId = Guid.NewGuid().ToString();
+            var resultId = Guid.NewGuid().ToString();
 
             root.SetAttributeValue("_id",rootId);
             root.SetAttributeValue("Project",projectId);
             root.SetAttributeValue("UI",uiId);
             root.SetAttributeValue("Data",dataId);
             root.SetAttributeValue("Translation",translationId);
+            root.SetAttributeValue("Result",resultId);
             root.SetAttributeValue("PublicKey",publicKey);
             root.SetAttributeValue("PublicAndPrivateKey",publicAndPrivateKey);
             root.SetAttributeValue("Secret", encrypted);
@@ -54,16 +56,23 @@ namespace AutoX.Basic
             forSave.Add(root);
 //            File.WriteAllText(userName + ".pem", "UserName:\n" + userName + "\nPublic Key:\n" + publicKey + "\nPublic and Private Key:\n" +
 //                            publicAndPrivateKey + "\nSecrect:\n" + encrypted + "\nFor Test:\n" + productid);
-            forSave.Add(XElement.Parse("<Project _id='"+projectId+"' />"));
-            forSave.Add(XElement.Parse("<Data _id='" + dataId + "' />"));
-            forSave.Add(XElement.Parse("<UI _id='" + uiId + "' />"));
-            forSave.Add(XElement.Parse("<Translation _id='" + translationId + "' />"));
+            forSave.Add(XElement.Parse("<Project Name='Project' _id='" + projectId + "' _parentId='" + rootId + "' />"));
+            forSave.Add(XElement.Parse("<Data  Name='Data' _id='" + dataId + "' _parentId='" + rootId + "'  />"));
+            forSave.Add(XElement.Parse("<UI  Name='UI' _id='" + uiId + "' _parentId='" + rootId + "'  />"));
+            forSave.Add(XElement.Parse("<Translation  Name='Translation' _id='" + translationId + "' _parentId='" + rootId + "'  />"));
+            forSave.Add(XElement.Parse("<Result  Name='Result' _id='" + resultId + "' _parentId='" + rootId + "'  />"));
             File.WriteAllText(userName + ".pem", forSave.ToString());
             Configuration.Set("UserName", userName);
             Configuration.Set("PublicKey", publicKey);
             Configuration.Set("ProjectName",collectionName);
             Configuration.SaveSettings();
             return true;
+        }
+
+        public static string Hmacmd5(string key, string sessionId)
+        {
+            var md5 = new HMACMD5(Encoding.UTF8.GetBytes(key));
+            return BitConverter.ToString( md5.ComputeHash(Encoding.UTF8.GetBytes(sessionId))).Replace("-","").ToLower();
         }
 
         public static void GenerateKeys(int keySize, out string publicKey, out string publicAndPrivateKey)

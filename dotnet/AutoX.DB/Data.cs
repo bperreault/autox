@@ -33,5 +33,17 @@ namespace AutoX.DB
         {
             DBManager.GetInstance().Delete(id);
         }
+
+        public static XElement GetChildren(string parentId)
+        {
+            var kids = new XElement("Children");
+            var direntKids = DBManager.GetInstance().Kids(parentId);
+            foreach (var direntKid in direntKids)
+            {
+                kids.Add(direntKid.ToXElement());
+            }
+
+            return kids;
+        }
     }
 }

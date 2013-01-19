@@ -71,7 +71,7 @@ namespace AutoX.Client.Core
         public string GetAllValuableObjects()
         {
             var xBrowser = new XElement("UIObject");
-            xBrowser.SetAttributeValue("Type", "Browser");
+            xBrowser.SetAttributeValue("_type", "Browser");
             xBrowser.SetAttributeValue("Name", "Browser");
             var valueObjects = GetCurrentBrowser().FindElements(By.XPath(_cssxPath));
 
@@ -122,7 +122,7 @@ namespace AutoX.Client.Core
 
             var xe = new XElement("UIObject");
             var eTag = webElement.TagName;
-            xe.SetAttributeValue("Type", !string.IsNullOrEmpty(eTag) ? eTag : "*");
+            xe.SetAttributeValue("_type", !string.IsNullOrEmpty(eTag) ? eTag : "*");
             var eText = webElement.Text;
             if (!string.IsNullOrEmpty(eText))
             {
@@ -216,7 +216,7 @@ namespace AutoX.Client.Core
             {
                 if (item.GetType().Name.Contains("Hashtable"))
                 {
-                    ((Hashtable) item).Clear();
+                    ((Hashtable)item).Clear();
                 }
             }
             _pool.Clear();
@@ -251,7 +251,7 @@ namespace AutoX.Client.Core
 
         public string Snapshot()
         {
-            return ((ITakesScreenshot) GetCurrentBrowser()).GetScreenshot().AsBase64EncodedString;
+            return ((ITakesScreenshot)GetCurrentBrowser()).GetScreenshot().AsBase64EncodedString;
             //IJavaScriptExecutor js = GetCurrentBrowser() as IJavaScriptExecutor;
             //Response screenshotResponse = js.ExecuteScript(DriverCommand.Screenshot, null);
             //return screenshotResponse.Value.ToString();
@@ -284,7 +284,7 @@ namespace AutoX.Client.Core
         private void StartBrowser()
         {
             var clientType = Configuration.Settings("ClientType", "Sauce");
-            if(String.Compare(clientType, "Sauce", System.StringComparison.OrdinalIgnoreCase)==0)
+            if (String.Compare(clientType, "Sauce", System.StringComparison.OrdinalIgnoreCase) == 0)
                 StartSauceBrowser();
             else
                 StartLocalBrowser();
@@ -306,25 +306,40 @@ namespace AutoX.Client.Core
                 capabillities = DesiredCapabilities.IPhone();
             else if (browserType.Equals("Opera"))
                 capabillities = DesiredCapabilities.Opera();
-//            else if (browserType.Equals("Safari"))
-//                capabillities = DesiredCapabilities.Safari();
+            //            else if (browserType.Equals("Safari"))
+            //                capabillities = DesiredCapabilities.Safari();
             else if (browserType.Equals("InternetExplorer"))
                 capabillities = DesiredCapabilities.InternetExplorer();
             else
                 capabillities = DesiredCapabilities.Firefox();
 
-            capabillities.SetCapability(CapabilityType.Version, Configuration.Settings("Sauce.Version","10"));
+            capabillities.SetCapability(CapabilityType.Version, Configuration.Settings("Sauce.Version", "10"));
             capabillities.SetCapability(CapabilityType.Platform, new Platform(PlatformType.XP));
-            capabillities.SetCapability("name", Configuration.Settings("Sauce.Name","Testing Selenium 2 with C# on Sauce"));
-            capabillities.SetCapability("username", Configuration.Settings("Sauce.UserName","autox"));
-            capabillities.SetCapability("accessKey", Configuration.Settings("Sauce.AccessKey","b3842073-5a7a-4782-abbc-e7234e09f8ac"));
+            capabillities.SetCapability("name", Configuration.Settings("Sauce.Name", "Testing Selenium 2 with C# on Sauce"));
+            capabillities.SetCapability("username", Configuration.Settings("Sauce.UserName", "autox"));
+            capabillities.SetCapability("accessKey", Configuration.Settings("Sauce.AccessKey", "b3842073-5a7a-4782-abbc-e7234e09f8ac"));
 
-            _browser = new RemoteWebDriver(
+            _browser = new SauceDriver(
                       new Uri("http://ondemand.saucelabs.com:80/wd/hub"), capabillities);
+
             _browser.Navigate().GoToUrl(Configuration.Settings("DefaultURL", "about:blank"));
             MaximiseBrowser();
+            _sId = ((SauceDriver)_browser).GetSessionId();
+
         }
 
+        private string _sId;
+        public string GetResultLink()
+        {
+            if (Configuration.Settings("Sauce.Free", "true").ToLower().Equals("true"))
+            {
+                return "https://saucelabs.com/tests/" + _sId;
+            }
+            var key = Configuration.Settings("Sauce.User", "autox") + ":" +
+                      Configuration.Settings("Sauce.Key", "b3842073-5a7a-4782-abbc-e7234e09f8ac");
+            var jobId = AsymmetricEncryption.Hmacmd5(key, _sId);
+            return "https://saucelabs.com/jobs/" + _sId + "?auth=" + jobId;
+        }
         private void StartLocalBrowser()
         {
             var browserType = Configuration.Settings("BrowserType", "InternetExplorer");
@@ -375,17 +390,16 @@ namespace AutoX.Client.Core
             if (_browser != null)
             {
                 _browser.Quit();
-                
+
             }
 
             //browser = null;
             var clientType = Configuration.Settings("ClientType", "Sauce");
             if (String.Compare(clientType, "Sauce", System.StringComparison.OrdinalIgnoreCase) != 0)
             {
-                _browser.Dispose();
+                if (_browser != null) _browser.Dispose();
                 CloseLocalBrowser();
             }
-                
         }
 
         private static void CloseLocalBrowser()

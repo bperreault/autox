@@ -29,7 +29,7 @@ namespace AutoX.Basic.Model
 
         public static void SetAttributeValue(this IDataObject dataObject, string attributeName, object value)
         {
-            if (attributeName.Equals("Type") || attributeName.Equals("ParentId"))
+            if (attributeName.Equals("_type") || attributeName.Equals("_parentId"))
                 return;
             var field = dataObject.GetType().GetField(attributeName);
             if (field == null)
@@ -132,7 +132,7 @@ namespace AutoX.Basic.Model
             var type = dataObject.GetType();
             var tag = type.Name;
             var ret = new XElement(tag);
-            ret.SetAttributeValue("Type", tag);
+            ret.SetAttributeValue("_type", tag);
             foreach (FieldInfo field in type.GetFields())
             {
                 var name = field.Name;

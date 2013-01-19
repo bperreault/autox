@@ -15,11 +15,13 @@ namespace AutoX.Test
     {
         private static void Main()
         {
-            InitProject();
+            //AsymmetricEncryption.GenerateRegisterFile("yazhi.pang", "autox");
+            CreateProject();
+            //Console.WriteLine(AsymmetricEncryption.Hmacmd5("autox:b3842073-5a7a-4782-abbc-e7234e09f8ac", "5f9fef27854ca50a3c132ce331cb6034"));
             Console.Read();
         }
 
-        private static void InitProject()
+        private static void CreateProject()
         {
             //AsymmetricEncryption.GenerateRegisterFile("yazhi.pang", "autox");
             string fileContent = File.ReadAllText("yazhi.pang.pem");

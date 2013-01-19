@@ -11,6 +11,7 @@ using System.Windows.Media.Animation;
 using System.Xml.Linq;
 using AutoX.Basic;
 using AutoX.Comm;
+using AutoX.DB;
 using IDataObject = AutoX.Basic.Model.IDataObject;
 
 #endregion
@@ -22,22 +23,36 @@ namespace AutoX
     /// </summary>
     public partial class MainWindow : IHost
     {
+        private Config _config = Configuration.Clone();
         public MainWindow()
         {
             InitializeComponent();
-//            HostManager.GetInstance().Register(this);
+            HostManager.GetInstance().Register(this);
             StartProgressBar();
             //set datagrid itemssource
             ClientTable.ItemsSource = _clientSource.Get();
             InstanceTable.ItemsSource = _instanceSource.Get();
-//            TestCaseResultTable.ItemsSource = _testCaseResultSource.Get();
-//            TestStepsResultTable.ItemsSource = _testStepSource.Get();
-//            TranslationTable.ItemsSource = _translationSource.Get();
+            TestCaseResultTable.ItemsSource = _testCaseResultSource.Get();
+            TestStepsResultTable.ItemsSource = _testStepSource.Get();
+            TranslationTable.ItemsSource = _translationSource.Get();
 
             LoadToolBox();
             RegisterMetadata();
             //AddTestDesigner("TestSuite");
-//            InitScreen();
+            var rootId = Configuration.Settings("Root", null);
+            if (string.IsNullOrEmpty(rootId))
+            {
+                MessageBox.Show("Check your configuration settings, no Root entry");
+                return;
+            }
+            XElement xRoot = Data.Read(rootId);
+            Configuration.Set("ProjectRoot", xRoot.GetAttributeValue("Project"));
+            Configuration.Set("ResultsRoot", xRoot.GetAttributeValue("Result"));
+            Configuration.Set("DataRoot", xRoot.GetAttributeValue("Data"));
+            Configuration.Set("ObjectPool", xRoot.GetAttributeValue("UI"));
+            Configuration.Set("TranslationRoot", xRoot.GetAttributeValue("Translation"));
+            Configuration.SaveSettings();
+            InitScreen();
             //InitializeProject();
             //LoadProject();
 

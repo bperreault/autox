@@ -1,10 +1,12 @@
 ﻿#region
 
 using System;
+using System.Collections.Generic;
 using AutoX.Basic;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
+using System.Collections;
 
 #endregion
 
@@ -22,7 +24,8 @@ namespace AutoX.DB
         {
             string userName = Configuration.Settings("UserName", "jien.huang");
             string productId = AsymmetricEncryption.GetProductId();
-            var connectionString = Configuration.Settings("DBConnectionString", "mongodb://"+userName+":"+productId+"@localhost"); //mongodb://uname:pwd@localhost
+            var connectionString = Configuration.Settings("DBConnectionString", "mongodb://huangjien:Weilian2@localhost"); //mongodb://uname:pwd@localhost
+            //var connectionString = Configuration.Settings("DBConnectionString", "mongodb://" + userName + ":" + productId + "@localhost"); //mongodb://uname:pwd@localhost
             var client = new MongoClient(connectionString);
             var server = client.GetServer(); //MongoServer.Create(connectionString);
             server.Connect();
@@ -62,6 +65,16 @@ namespace AutoX.DB
         {
             return project.FindOneByIdAs<BsonDocument>(id);
         }
+        public List<BsonDocument> Kids(string parentId)
+        {
+            var children = new List<BsonDocument>();
+            MongoCursor cursor = project.FindAs<BsonDocument>(Query.EQ("_parentId", parentId));
+            foreach (BsonDocument variable in cursor)
+            {
+                children.Add(variable);
+            }
+            return children;
+        } 
         public bool Save(BsonDocument bsonDocument)
         {
             return project.Save(bsonDocument).Ok;

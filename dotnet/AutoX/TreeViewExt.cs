@@ -32,7 +32,7 @@ namespace AutoX
             var head = new StackPanel {Orientation = Orientation.Horizontal};
             Image image = null;
             var text = new TextBlock();
-            var type = xElement.GetAttributeValue("Type");
+            var type = xElement.GetAttributeValue("_type");
             var name = xElement.GetAttributeValue("Name");
 
             if (!string.IsNullOrWhiteSpace(type))

@@ -30,7 +30,7 @@ namespace AutoX
             var selected = (TreeViewItem) treeView.SelectedItem;
             if (selected != null)
             {
-                var type = ((XElement) selected.DataContext).GetAttributeValue("Type");
+                var type = ((XElement) selected.DataContext).GetAttributeValue("_type");
                 var query = from o in _xValidation.Descendants()
                             where o.GetAttributeValue("Action").Equals(action)
                                   && o.GetAttributeValue("Type").Equals(type)
@@ -51,17 +51,12 @@ namespace AutoX
                 element.SetAttributeValue("_id", guid);
             }
             var rootPart = element.GetRootPartElement();
-            rootPart.SetAttributeValue("ParentId", parentId);
+            rootPart.SetAttributeValue("_parentId", parentId);
 
-            var sRoot = Communication.GetInstance().SetById(rootPart);
-            var xRoot = XElement.Parse(sRoot);
-            var result = xRoot.GetAttributeValue("Result");
-            if (!string.IsNullOrEmpty(result))
-            {
-                if (result.Equals("Failed"))
+            
+                if (!Data.Save(rootPart))
                 {
-                    MessageBox.Show("update Tree item Failed. item=\n" + xRoot + "\nReason:" +
-                                    xRoot.GetAttributeValue("Reason"));
+                    MessageBox.Show("update Tree item Failed.");
                 }
                 else
                 {
@@ -73,7 +68,7 @@ namespace AutoX
                     }
                     return itself;
                 }
-            }
+            
 
             return null;
         }
@@ -104,22 +99,16 @@ namespace AutoX
                                 MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            xElement.SetAttributeValue("ParentId", "Deleted");
-            var sRoot = Communication.GetInstance().SetById(xElement);
-            var xRoot = XElement.Parse(sRoot);
-            var result = xRoot.GetAttributeValue("Result");
-            if (!string.IsNullOrEmpty(result))
-            {
-                if (result.Equals("Failed"))
+            xElement.SetAttributeValue("_parentId", "Deleted");
+            
+                if (!Data.Save(xElement))
                 {
-                    MessageBox.Show("Delete Tree item Failed. item=\n" + xRoot + "\nReason:" +
-                                    xRoot.GetAttributeValue("Reason"));
+                    MessageBox.Show("Delete Tree item Failed. ");
                     return;
                 }
                 parentItem.Items.Remove(selected);
                 return;
-            }
-            MessageBox.Show("Delete Tree item Failed. Reason Unknown.");
+            
         }
 
         private static TreeViewItem AddNewItemToTree(TreeView tree, XElement xElement)
@@ -133,24 +122,17 @@ namespace AutoX
             var parentId = xParent.GetAttributeValue("GUID");
 
 
-            xE.SetAttributeValue("ParentId", parentId);
-            var sRoot = Communication.GetInstance().SetById(xE);
-            var xRoot = XElement.Parse(sRoot);
-            var result = xRoot.GetAttributeValue("Result");
-            if (!string.IsNullOrEmpty(result))
-            {
-                if (result.Equals("Failed"))
+            xE.SetAttributeValue("_parentId", parentId);
+            
+                if (!Data.Save(xE))
                 {
-                    MessageBox.Show("Add Tree item Failed. item=\n" + xRoot + "\nReason:" +
-                                    xRoot.GetAttributeValue("Reason"));
+                    MessageBox.Show("Add Tree item Failed.");
                     return null;
                 }
                 var ret = xE.GetTreeViewItemFromXElement();
                 selected.Items.Add(ret);
                 return ret;
-            }
-            MessageBox.Show("Add Tree item Failed. Reason Unknown.");
-            return null;
+            
         }
 
         //private void InitTree(ItemsControl tree, string rootId)
@@ -185,19 +167,9 @@ namespace AutoX
                 AddTestDesigner(selected);
                 return;
             }
-            var sRoot = Communication.GetInstance().GetChildren(parentId);
-            var xRoot = XElement.Parse(sRoot);
-            var result = xRoot.GetAttributeValue("Result");
-            if (!string.IsNullOrEmpty(result))
-            {
-                if (result.Equals("Failed"))
-                {
-                    MessageBox.Show("Get Tree children item Failed. item=\n" + xRoot + "\nReason:" +
-                                    xRoot.GetAttributeValue("Reason"));
-                }
-            }
-            else
-            {
+            var xRoot = Data.GetChildren(parentId);
+            
+            
                 if (parent.Name.ToString().Equals("Result"))
                 {
                     //load its children to TestCaseResultTable
@@ -217,7 +189,7 @@ namespace AutoX
                 {
                     selected.Items.Add(kid.GetTreeViewItemFromXElement());
                 }
-            }
+            
         }
 
         private static void Edit(TreeViewItem selected)
@@ -231,19 +203,13 @@ namespace AutoX
             if (!dialog.DialogResult.HasValue || !dialog.DialogResult.Value) return;
             var xElement = dialog.GetElement();
 
-            var sRoot = Communication.GetInstance().SetById(xElement);
-            var xRoot = XElement.Parse(sRoot);
-            var result = xRoot.GetAttributeValue("Result");
-            if (!string.IsNullOrEmpty(result))
-            {
-                if (result.Equals("Failed"))
+            if (!Data.Save(xElement))
                 {
-                    MessageBox.Show("update Tree item Failed. item=\n" + xRoot + "\nReason:" +
-                                    xRoot.GetAttributeValue("Reason"));
+                    MessageBox.Show("update Tree item Failed.");
                     return;
                 }
                 selected.UpdateTreeViewItem(xElement);
-            }
+            
         }
 
         private TreeViewItem GetInitScriptXElement(string type)

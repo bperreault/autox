@@ -103,8 +103,8 @@ namespace AutoX
         private void AddPairControls(XAttribute a)
         {
             if (_isReadOnly
-                || a.Name.ToString().Equals("Type")
-                || a.Name.ToString().Equals("ParentId")
+                || a.Name.ToString().Equals("_type")
+                || a.Name.ToString().Equals("_parentId")
                 || a.Name.ToString().Equals("ScriptType")
                 || a.Name.ToString().Equals("_id")
                 )

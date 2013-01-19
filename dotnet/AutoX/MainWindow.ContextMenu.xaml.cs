@@ -14,6 +14,7 @@ using System.Xml.Linq;
 using AutoX.Basic;
 using AutoX.Basic.Model;
 using AutoX.Comm;
+using AutoX.DB;
 using Microsoft.Win32;
 
 #endregion
@@ -262,7 +263,7 @@ namespace AutoX
             var xData = new XElement("Datum");
             xData.SetAttributeValue("Name", "New Data");
             xData.SetAttributeValue("Description", "New Data");
-            xData.SetAttributeValue("Type", "Datum");
+            xData.SetAttributeValue("_type", "Datum");
             xData.SetAttributeValue("_id", Guid.NewGuid().ToString());
             AddNewItemToTree(DataTree, xData);
         }
@@ -296,13 +297,10 @@ namespace AutoX
 
         private static void InitTree(ItemsControl tree, string rootId)
         {
-            var sRoot = Communication.GetInstance().GetById(rootId);
-
-            var xRoot = XElement.Parse(sRoot);
-            var result = xRoot.GetAttributeValue("Result");
-            if (!string.IsNullOrEmpty(result))
+            var xRoot = Data.Read(rootId);
+            if (xRoot==null)
             {
-                MessageBox.Show("Get Tree Root Failed. id=" + rootId + "\nReason:" + xRoot.GetAttributeValue("Reason"));
+                MessageBox.Show("Get Tree Root Failed. id=" + rootId);
                 return;
             }
             tree.Items.Clear();
