@@ -56,11 +56,11 @@ namespace AutoX.Basic
             forSave.Add(root);
 //            File.WriteAllText(userName + ".pem", "UserName:\n" + userName + "\nPublic Key:\n" + publicKey + "\nPublic and Private Key:\n" +
 //                            publicAndPrivateKey + "\nSecrect:\n" + encrypted + "\nFor Test:\n" + productid);
-            forSave.Add(XElement.Parse("<Project Name='Project' _id='" + projectId + "' _parentId='" + rootId + "' />"));
-            forSave.Add(XElement.Parse("<Data  Name='Data' _id='" + dataId + "' _parentId='" + rootId + "'  />"));
-            forSave.Add(XElement.Parse("<UI  Name='UI' _id='" + uiId + "' _parentId='" + rootId + "'  />"));
+            forSave.Add(XElement.Parse("<Project _type='Folder' Name='Project' _id='" + projectId + "' _parentId='" + rootId + "' />"));
+            forSave.Add(XElement.Parse("<Data  _type='Folder' Name='Data' _id='" + dataId + "' _parentId='" + rootId + "'  />"));
+            forSave.Add(XElement.Parse("<UI  _type='Folder' Name='UI' _id='" + uiId + "' _parentId='" + rootId + "'  />"));
             forSave.Add(XElement.Parse("<Translation  Name='Translation' _id='" + translationId + "' _parentId='" + rootId + "'  />"));
-            forSave.Add(XElement.Parse("<Result  Name='Result' _id='" + resultId + "' _parentId='" + rootId + "'  />"));
+            forSave.Add(XElement.Parse("<Result  _type='Folder' Name='Result' _id='" + resultId + "' _parentId='" + rootId + "'  />"));
             File.WriteAllText(userName + ".pem", forSave.ToString());
             Configuration.Set("UserName", userName);
             Configuration.Set("PublicKey", publicKey);

@@ -25,6 +25,7 @@ namespace AutoX.Activities
         public StepsDialog()
         {
             InitializeComponent();
+            
         }
 
 
@@ -95,6 +96,7 @@ namespace AutoX.Activities
                 source[index] = temp;
                 StepsTable.Items.Refresh();
             }
+            
         }
 
         internal object Get()
@@ -114,6 +116,8 @@ namespace AutoX.Activities
             var ds = Utilities.GetRawUserData(userData, Host).Keys;
             foreach (string d in ds)
             {
+                if(Utilities.ReservedList.Contains(d))
+                    continue;
                 UserData.Add(d);
             }
             var steps = Utilities.GetStepsList(p, Actions, Host);

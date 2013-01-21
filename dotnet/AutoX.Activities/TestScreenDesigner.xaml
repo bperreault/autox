@@ -81,6 +81,7 @@
     <Grid>
         <ContentPresenter Style="{DynamicResource ExpandOrCollapsedStyle}" Content="{Binding}" />
         <Grid.Background>
+            
             <LinearGradientBrush>
                 <GradientStop Color="White" Offset="0.66"></GradientStop>
                 <GradientStop Color="Green" Offset="0.00"></GradientStop>

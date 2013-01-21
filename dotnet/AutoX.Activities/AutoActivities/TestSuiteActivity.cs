@@ -112,7 +112,8 @@ namespace AutoX.Activities.AutoActivities
 
             //grab the next Activity in MySequence.Activities and schedule it
             var nextChild = children[currentActivityIndex];
-
+            if(nextChild is AutomationActivity)
+                ((AutomationActivity)nextChild).SetHost(Host);
             context.ScheduleActivity(nextChild, _onChildComplete);
             //Get result here, it is sync or async????
             _result = _result && ((IPassData) nextChild).GetResult();

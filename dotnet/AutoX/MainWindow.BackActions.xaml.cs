@@ -119,7 +119,7 @@ namespace AutoX
             var xE = dialog.GetElement();
             var selected = (TreeViewItem) tree.SelectedItem;
             var xParent = (XElement) selected.DataContext;
-            var parentId = xParent.GetAttributeValue("GUID");
+            var parentId = xParent.GetAttributeValue("_id");
 
 
             xE.SetAttributeValue("_parentId", parentId);
@@ -185,7 +185,7 @@ namespace AutoX
                     return;
                 }
                 selected.Items.Clear();
-                foreach (XElement kid in xRoot.Descendants())
+                foreach (var kid in xRoot.Descendants())
                 {
                     selected.Items.Add(kid.GetTreeViewItemFromXElement());
                 }

@@ -159,7 +159,9 @@ namespace AutoX.Activities
                     if (String.IsNullOrEmpty(dataString))
                         continue;
                     var sData = host.GetDataObject(dataString);
-
+                    //sometimes, some data has been deleted.
+                    if(sData==null)
+                        continue;
                     var dataSetName = sData.GetAttributeValue("Name");
 
                     foreach (XAttribute xAttribute in sData.Attributes())
@@ -275,6 +277,54 @@ namespace AutoX.Activities
                 finalRet = outerData + ";" + userData;
             }
             return finalRet;
+        }
+
+        public const string ReservedList = "_id|_type|_parentId|Created|Updated|";
+
+        public static WorkflowApplication GetWorkflowApplication(AutomationActivity activity)
+        {
+            var workflowApplication = new WorkflowApplication(activity)
+                {
+                    Completed = delegate(WorkflowApplicationCompletedEventArgs e)
+                        {
+                            switch (e.CompletionState)
+                            {
+                                case ActivityInstanceState.Faulted:
+                                    //Logger.GetInstance().Log().Error("workflow " +
+                                    //                                 scriptGuid +
+                                    //                                 " stopped! Error Message:\n"
+                                    //                                 +
+                                    //                                 e.TerminationException.
+                                    //                                     GetType().FullName +
+                                    //                                 "\n"
+                                    //                                 +
+                                    //                                 e.TerminationException.
+                                    //                                     Message);
+                                    //Status = "Terminated";
+                                    break;
+                                case ActivityInstanceState.Canceled:
+                                    //Logger.GetInstance().Log().Warn("workflow " + scriptGuid +
+                                    //                                " Cancel.");
+                                    //Status = "Canceled";
+                                    break;
+                                default:
+                                    //Logger.GetInstance().Log().Info("workflow " + scriptGuid +
+                                    //                                " Completed.");
+                                    //Status = "Completed";
+                                    break;
+                            }
+                        },
+                    Aborted = delegate
+                        {
+                            //Logger.GetInstance().Log().Error("workflow " +
+                            //                                 scriptGuid
+                            //                                 + " aborted! Error Message:\n"
+                            //                                 + e.Reason.GetType().FullName + "\n" +
+                            //                                 e.Reason.Message);
+                            //Status = "Aborted";
+                        }
+                };
+            return workflowApplication;
         }
     }
 }

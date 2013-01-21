@@ -113,7 +113,7 @@ namespace AutoX.Activities.AutoActivities
         private XElement GetSteps()
         {
             //set command to instance, then get the result
-            var data = Utilities.GetActualUserData(UserData, HostManager.GetInstance().GetHost());
+            var data = Utilities.GetActualUserData(UserData, Host);
             //Utilities.PrintDictionary(data);
             //update the Steps into the format we want
             var steps = XElement.Parse("<AutoX.Steps />");
@@ -152,7 +152,7 @@ namespace AutoX.Activities.AutoActivities
                 var uiid = descendant.GetAttributeValue("UIId");
                 //TODO we have NOT handle the parent here, add it later; for now, it can work.
                 if (string.IsNullOrEmpty(uiid)) continue;
-                var uio = HostManager.GetInstance().GetHost().GetDataObject(uiid);
+                var uio = Host.GetDataObject(uiid);
                 if (uio == null) continue;
                 var xO = XElement.Parse("<UIObject />");
                 var xpath = uio.GetAttributeValue("XPath");

@@ -252,9 +252,10 @@ namespace AutoX
 
         private void AddNewData(object sender, RoutedEventArgs e)
         {
-            //var selected = DataTree.SelectedItem as TreeViewItem;
-            //if (selected == null)
-            //    return;
+            var selected = DataTree.SelectedItem as TreeViewItem;
+            if (selected == null)
+                return;
+            
             if (!BeforeActionCheck(DataTree, "CreateData", "Data"))
             {
                 MessageBox.Show("Not Valid Operation");

@@ -63,7 +63,9 @@ namespace AutoX.DB
 
         public BsonDocument Find(string id)
         {
-            return project.FindOneByIdAs<BsonDocument>(id);
+
+            return project.FindOneAs<BsonDocument>(Query.And(Query.EQ("_id", id), Query.Exists("_parentId"), Query.NE("_parentId", "Deleted")));
+//             project.FindOneByIdAs<BsonDocument>(id);
         }
         public List<BsonDocument> Kids(string parentId)
         {

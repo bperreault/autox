@@ -45,6 +45,8 @@ namespace AutoX
             var item = GetNearestContainer(e.OriginalSource as UIElement);
             var data = e.Data.GetData("DataFormat") as XElement;
             e.Effects = CheckValidDrop(item, data) ? DragDropEffects.Copy : DragDropEffects.None;
+            if(item!=null)
+                item.IsSelected = true;
         }
 
         private void TreeViewDrop(object sender, DragEventArgs e)

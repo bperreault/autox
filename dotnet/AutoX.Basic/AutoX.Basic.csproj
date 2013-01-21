@@ -58,6 +58,8 @@
     <Compile Include="HostManager.cs" />
     <Compile Include="IHost.cs" />
     <Compile Include="ImageList.cs" />
+    <Compile Include="IObserable.cs" />
+    <Compile Include="IObserver.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="Model\Computer.cs" />

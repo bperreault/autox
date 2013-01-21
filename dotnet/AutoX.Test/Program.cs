@@ -5,6 +5,7 @@ using System.IO;
 using AutoX.Basic;
 using AutoX.DB;
 using System.Xml.Linq;
+using AutoX.WF.Core;
 
 #endregion
 
@@ -16,9 +17,21 @@ namespace AutoX.Test
         private static void Main()
         {
             //AsymmetricEncryption.GenerateRegisterFile("yazhi.pang", "autox");
-            CreateProject();
+            //CreateProject();
+            TestWorkflow();
             //Console.WriteLine(AsymmetricEncryption.Hmacmd5("autox:b3842073-5a7a-4782-abbc-e7234e09f8ac", "5f9fef27854ca50a3c132ce331cb6034"));
             Console.Read();
+        }
+
+        private static void TestWorkflow()
+        {
+            WorkflowInstance workflowInstance = new WorkflowInstance("a9d9b6c0-b0d9-4797-b023-3cc673552335",null);
+            var xCommand = workflowInstance.GetCommand();
+            
+            Console.WriteLine(xCommand.ToString());
+            var xResult = Client.Core.ActionsFactory.Execute(xCommand);
+            Console.WriteLine(xResult);
+            workflowInstance.SetResult(xResult);
         }
 
         private static void CreateProject()

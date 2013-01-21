@@ -22,7 +22,10 @@ namespace AutoX.DB
             {
                 var key = attribure.Name.ToString();
                 var value = attribure.Value;
-                bsonDocument.Add(key, value);
+                if (bsonDocument.Contains(key))
+                    bsonDocument.Set(key, value);
+                else
+                    bsonDocument.Add(key, value);
             }
             foreach (var kid in xElement.Descendants())
             {
