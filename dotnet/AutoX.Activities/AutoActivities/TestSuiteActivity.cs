@@ -89,6 +89,8 @@ namespace AutoX.Activities.AutoActivities
         protected override void Execute(NativeActivityContext context)
         {
             InternalExecute(context, null);
+            //TODO when test suite finished, close the browser (required by sauce)
+            //<Step Action="Close" />
         }
 
         private void InternalExecute(NativeActivityContext context, ActivityInstance instance)
