@@ -98,6 +98,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BrowsersDialog.xaml.cs">
+      <DependentUpon>BrowsersDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ImageDialog.xaml.cs" />
     <Compile Include="InfoDialog.xaml.cs">
       <DependentUpon>InfoDialog.xaml</DependentUpon>
@@ -106,6 +109,10 @@
     <Compile Include="XElementDialog.xaml.cs">
       <DependentUpon>XElementDialog.xaml</DependentUpon>
     </Compile>
+    <Page Include="BrowsersDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ImageDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -415,6 +422,11 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Browsers.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

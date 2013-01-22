@@ -18,6 +18,7 @@ namespace AutoX
         public InfoDialog()
         {
             InitializeComponent();
+            
         }
 
         public string InfoContent

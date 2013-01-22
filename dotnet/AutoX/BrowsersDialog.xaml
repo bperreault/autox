@@ -1,0 +1,26 @@
+﻿<Window x:Class="AutoX.BrowsersDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="BrowsersDialog" Height="240" Width="320">
+    <Grid>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="2*" />
+        </Grid.RowDefinitions>
+        <Label  Grid.Row="0" Margin="5" Content="Choose the client machine's platform, browser type and version:"></Label>
+        <ComboBox Grid.Row="1" Name="BrowserType" SelectionChanged="BrowserType_OnSelectionChanged"  ></ComboBox>
+        <ComboBox Grid.Row="2" Name="Platform" SelectionChanged="Platform_OnSelectionChanged">
+        </ComboBox>
+        <ComboBox Grid.Row="3" Name="Version" SelectionChanged="Version_OnSelectionChanged"></ComboBox>
+
+
+        <StackPanel Grid.Row="4" Grid.ColumnSpan="2" Orientation="Horizontal">
+            <Button Name="OkButton" IsDefault="True" Width="135" Click="OkButtonClick" Margin="10">OK</Button>
+            <Button Name="CancelButton" IsCancel="True" Width="135" Click="CancelButtonClick" Margin="10">Cancel</Button>
+        </StackPanel>
+    </Grid>
+</Window>

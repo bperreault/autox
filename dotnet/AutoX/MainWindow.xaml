@@ -18,6 +18,8 @@
                         <MenuItem Header="File" Name="FileMenu">
                             <MenuItem Header="Generate Key File" Click="GenerateKeyFile"></MenuItem>
                             <MenuItem Header="Settings" Click="Settings" />
+                            <MenuItem Header="Browser Setting" Click="BrowserSetting"></MenuItem>
+                            <MenuItem Header="Run Test" Click="RunTest"></MenuItem>
                             <MenuItem Header="Exit" Click="Exit" />
                         </MenuItem>
                         <MenuItem Header="Edit">

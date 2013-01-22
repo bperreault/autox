@@ -34,6 +34,25 @@ namespace AutoX
     <Rule Action='CreateData' Type='Folder' Object='Data' />
 </Validation>"
             );
+
+        private void BrowserSetting(object sender, RoutedEventArgs e)
+        {
+            
+            var browsersDialog = new BrowsersDialog();
+            browsersDialog.ShowDialog();
+            if (browsersDialog.DialogResult == true)
+            {
+                Configuration.Set("BrowserType", browsersDialog.BrowserSetting.Name.ToString());
+                Configuration.Set("Browser.Platform", browsersDialog.BrowserSetting.GetAttributeValue("Platform"));
+                Configuration.Set("Browser.Version", browsersDialog.BrowserSetting.GetAttributeValue("Version"));
+            }
+        }
+
+        private void RunTest(object sender, RoutedEventArgs e)
+        {
+            //TODO get current workflow, run it
+        }
+
         private void GenerateKeyFile(object sender, RoutedEventArgs e)
         {
             

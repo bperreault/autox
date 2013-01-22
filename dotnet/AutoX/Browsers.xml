@@ -1,0 +1,183 @@
+﻿<Browsers>
+  <Chrome>
+    <Platform name='XP' value='Windows 2003'>
+    </Platform>
+    <Platform name='Windows 7' value='Windows 2008'>
+    </Platform>
+    <Platform name='Mac 10.6' value='Mac 10.6'>
+    </Platform>
+    <Platform name='Mac 10.8' value='Mac 10.8'>
+    </Platform>
+    <Platform name='Linux' value='Linux'>
+    </Platform>
+  </Chrome>
+
+  <Opera>
+    <Platform name='XP' value='Windows 2003'>
+      <Version value='11' />
+      <Version value='12' />
+    </Platform>
+    <Platform name='Windows 7' value='Windows 2008'>
+      <Version value='11' />
+      <Version value='12' />
+    </Platform>
+    <Platform name='Linux' value='Linux'>
+      <Version value='12' />
+    </Platform>
+  </Opera>
+
+  <InternetExplorer>
+    <Platform name='XP' value='Windows 2003'>
+      <Version value='6' />
+      <Version value='7' />
+      <Version value='8' />
+    </Platform>
+    <Platform name='Windows 7' value='Windows 2008'>
+      <Version value='8' />
+      <Version value='9' />
+    </Platform>
+    <Platform name='Windows 8' value='Windows 2012'>
+      <Version value='10' />
+    </Platform>
+  </InternetExplorer>
+
+  <Firefox>
+    <Platform name='XP' value='Windows 2003'>
+      <Version value='3.0' />
+      <Version value='3.5' />
+      <Version value='3.6' />
+      <Version value='4' />
+      <Version value='5' />
+      <Version value='6' />
+      <Version value='7' />
+      <Version value='8' />
+      <Version value='9' />
+      <Version value='10' />
+      <Version value='11' />
+      <Version value='12' />
+      <Version value='13' />
+      <Version value='14' />
+      <Version value='15' />
+      <Version value='16' />
+      <Version value='17' />
+      <Version value='18' />
+    </Platform>
+    <Platform name='Windows 7' value='Windows 2008'>
+      <Version value='3.0' />
+      <Version value='3.5' />
+      <Version value='3.6' />
+      <Version value='4' />
+      <Version value='5' />
+      <Version value='6' />
+      <Version value='7' />
+      <Version value='8' />
+      <Version value='9' />
+      <Version value='10' />
+      <Version value='11' />
+      <Version value='12' />
+      <Version value='13' />
+      <Version value='14' />
+      <Version value='15' />
+      <Version value='16' />
+      <Version value='17' />
+      <Version value='18' />
+    </Platform>
+    <Platform name='Windows 8' value='Windows 2012'>
+      <Version value='3.0' />
+      <Version value='3.5' />
+      <Version value='3.6' />
+      <Version value='4' />
+      <Version value='5' />
+      <Version value='6' />
+      <Version value='7' />
+      <Version value='8' />
+      <Version value='9' />
+      <Version value='10' />
+      <Version value='11' />
+      <Version value='12' />
+      <Version value='13' />
+      <Version value='14' />
+      <Version value='15' />
+      <Version value='16' />
+      <Version value='17' />
+      <Version value='18' />
+    </Platform>
+    <Platform name='Mac 10.6' value='Mac 10.6'>
+      <Version value='7' />
+      <Version value='8' />
+      <Version value='9' />
+      <Version value='10' />
+      <Version value='11' />
+      <Version value='12' />
+      <Version value='13' />
+      <Version value='14' />
+    </Platform>
+    <Platform name='Linux' value='Linux'>
+      <Version value='3.6' />
+      <Version value='4' />
+      <Version value='5' />
+      <Version value='6' />
+      <Version value='7' />
+      <Version value='8' />
+      <Version value='9' />
+      <Version value='10' />
+      <Version value='11' />
+      <Version value='12' />
+      <Version value='13' />
+      <Version value='14' />
+      <Version value='15' />
+      <Version value='16' />
+      <Version value='17' />
+      <Version value='18' />
+    </Platform>
+  </Firefox>
+
+  <Safari>
+    <Platform name='Windows 7' value='Windows 2008'>
+      <Version value='5' />
+    </Platform>
+    <Platform name='Mac 10.6' value='Mac 10.6'>
+      <Version value='5' />
+    </Platform>
+    <Platform name='Mac 10.8' value='Mac 10.8'>
+      <Version value='6' />
+    </Platform>
+  </Safari>
+
+  <Ipad>
+    <Platform name='IOS 4.3' value='Mac 10.6'>
+      <Version value='4.3' />
+    </Platform>
+    <Platform name='IOS 5' value='Mac 10.6'>
+      <Version value='5' />
+    </Platform>
+    <Platform name='IOS 5.1' value='Mac 10.8'>
+      <Version value='5.1' />
+    </Platform>
+    <Platform name='IOS 6' value='Mac 10.8'>
+      <Version value='6' />
+    </Platform>
+  </Ipad>
+
+  <Iphone>
+    <Platform name='IOS 4.3' value='Mac 10.6'>
+      <Version value='4.3' />
+    </Platform>
+    <Platform name='IOS 5' value='Mac 10.6'>
+      <Version value='5' />
+    </Platform>
+    <Platform name='IOS 5.1' value='Mac 10.8'>
+      <Version value='5.1' />
+    </Platform>
+    <Platform name='IOS 6' value='Mac 10.8'>
+      <Version value='6' />
+    </Platform>
+  </Iphone>
+
+  <Android>
+    <Platform name='Linux' value='Linux'>
+      <Version value='4' />
+    </Platform>
+  </Android>
+
+</Browsers> 
