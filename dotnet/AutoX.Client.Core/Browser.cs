@@ -7,7 +7,6 @@
 using System;
 using System.Collections;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
@@ -293,7 +292,7 @@ namespace AutoX.Client.Core
         private void StartSauceBrowser()
         {
             DesiredCapabilities capabillities;
-            var browserType = Configuration.Settings("BrowserType", "Firefox");
+            var browserType = Configuration.Settings("Browser.Type", "Firefox");
             if (browserType.Equals("IE"))
                 capabillities = DesiredCapabilities.InternetExplorer();
             else if (browserType.Equals("Chrome"))
@@ -313,8 +312,9 @@ namespace AutoX.Client.Core
             else
                 capabillities = DesiredCapabilities.Firefox();
 
-            capabillities.SetCapability(CapabilityType.Version, Configuration.Settings("Sauce.Version", "10"));
-            capabillities.SetCapability(CapabilityType.Platform, new Platform(PlatformType.XP));
+            capabillities.SetCapability(CapabilityType.Version, Configuration.Settings("Browser.Version", "10"));
+
+            capabillities.SetCapability(CapabilityType.Platform, Configuration.Settings("Browser.Platform", "Windows 2008"));
             capabillities.SetCapability("name", Configuration.Settings("Sauce.Name", "Testing Selenium 2 with C# on Sauce"));
             capabillities.SetCapability("username", Configuration.Settings("Sauce.UserName", "autox"));
             capabillities.SetCapability("accessKey", Configuration.Settings("Sauce.AccessKey", "b3842073-5a7a-4782-abbc-e7234e09f8ac"));
@@ -327,7 +327,7 @@ namespace AutoX.Client.Core
             _sId = ((SauceDriver)_browser).GetSessionId();
 
         }
-
+        
         private string _sId;
         public string GetResultLink()
         {

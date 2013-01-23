@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="AbstractAction.cs" />
     <Compile Include="ActionsFactory.cs" />
+    <Compile Include="AutoClient.cs" />
     <Compile Include="Browser.cs" />
     <Compile Include="Check.cs" />
     <Compile Include="Click.cs" />

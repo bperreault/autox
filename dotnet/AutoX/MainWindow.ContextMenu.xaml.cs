@@ -42,9 +42,11 @@ namespace AutoX
             browsersDialog.ShowDialog();
             if (browsersDialog.DialogResult == true)
             {
-                Configuration.Set("BrowserType", browsersDialog.BrowserSetting.Name.ToString());
-                Configuration.Set("Browser.Platform", browsersDialog.BrowserSetting.GetAttributeValue("Platform"));
-                Configuration.Set("Browser.Version", browsersDialog.BrowserSetting.GetAttributeValue("Version"));
+                
+                _config.Set("Browser.Type", browsersDialog.BrowserSetting.Name.ToString());
+                _config.Set("Browser.Platform", browsersDialog.BrowserSetting.GetAttributeValue("Platform"));
+                _config.Set("Browser.Version", browsersDialog.BrowserSetting.GetAttributeValue("Version"));
+                
             }
         }
 

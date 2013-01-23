@@ -13,6 +13,7 @@ namespace AutoX.Basic
 {
     public class Config
     {
+        
         string Id { get; set; }
         private readonly Dictionary<string, string> _variables = new Dictionary<string,string>();
         public Config(){

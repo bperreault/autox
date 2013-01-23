@@ -22,7 +22,10 @@ namespace AutoX
             BrowserType.Items.Clear();
             foreach (var browser in _choices.Elements())
             {
-                BrowserType.Items.Add(new ListBoxItem() {Content = browser.Name});
+                var current = new ListBoxItem() {Content = browser.Name};
+                BrowserType.Items.Add(current);
+                if (Content.Equals("Firefox"))
+                    BrowserType.SelectedItem = current;
             }
             
         }
@@ -39,8 +42,6 @@ namespace AutoX
         {
             DialogResult = false; 
         }
-
-        
 
         private void Platform_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -83,7 +84,7 @@ namespace AutoX
         {
             if (Version.SelectedItem == null)
                 return;
-            string platform = ((ListBoxItem)Platform.SelectedItem).Content.ToString();
+            string platform = ((ListBoxItem)Platform.SelectedItem).Tag.ToString();
             string browser = ((ListBoxItem)BrowserType.SelectedItem).Content.ToString();
             string version = ((ListBoxItem)Version.SelectedItem).Content.ToString();
             BrowserSetting = new XElement(browser);
