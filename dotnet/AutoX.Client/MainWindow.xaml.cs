@@ -13,7 +13,6 @@ using System.Windows.Input;
 using System.Xml.Linq;
 using AutoX.Basic;
 using AutoX.Client.Core;
-using AutoX.Comm;
 using Microsoft.Win32;
 
 #endregion
@@ -28,8 +27,8 @@ namespace AutoX.Client
         private WindowState _lastWindowState;
         
         private bool _shouldClose;
-        private readonly ClientInstance _defaultClientInstance = new ClientInstance();
-        private readonly List<ClientInstance> _instances = new List<ClientInstance>();
+        private readonly AutoClient _defaultClientInstance = new AutoClient();
+        private readonly List<AutoClient> _instances = new List<AutoClient>();
         public MainWindow()
         {
             InitializeComponent();
@@ -44,12 +43,12 @@ namespace AutoX.Client
 
         private void SwitchBrowser(object sender, RoutedEventArgs e)
         {
-            Browser.GetInstance().SwitchToAnotherBrowser();
+            _defaultClientInstance.Browser.SwitchToAnotherBrowser();
         }
 
         private void GetUIObjects(object sender, RoutedEventArgs e)
         {
-            SetPanel(Browser.GetInstance().GetAllValuableObjects());
+            SetPanel(_defaultClientInstance.Browser.GetAllValuableObjects());
         }
 
         private void Register(object sender, RoutedEventArgs e)
@@ -85,7 +84,7 @@ namespace AutoX.Client
                 return;
             }
             var steps = XElement.Parse(content);
-            var result = ActionsFactory.Execute(steps);
+            var result = _defaultClientInstance.Execute(steps);
 
             SetPanel(result.ToString());
         }
@@ -197,7 +196,7 @@ namespace AutoX.Client
                 int concurrency = int.Parse(Configuration.Settings("Host.Concurrent.Instances", "3"));
                 for (int i = 0; i < concurrency - _instances.Count; i++)
                 {
-                    var instance = new ClientInstance();
+                    var instance = new AutoClient();
                     _instances.Add(instance);
                     instance.Start();
                 }

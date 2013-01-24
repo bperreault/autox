@@ -35,20 +35,6 @@ namespace AutoX.Client.Core
         {
             _result.SetAttributeValue("Result", "Error");
             SetReason(reason);
-
-            SnapOn("SnapshotOnError");
-        }
-
-        private void SnapOn(string config)
-        {
-            var snapshotOnError = Configuration.Settings(config, "false");
-            if (Convert.ToBoolean(snapshotOnError))
-            {
-                var content = Browser.GetInstance().Snapshot();
-                var snap = new XElement("Snapshot");
-                snap.SetAttributeValue("Snapshot", content);
-                _result.Add(snap);
-            }
         }
 
         public void Warning(string reason)
@@ -63,7 +49,6 @@ namespace AutoX.Client.Core
                     _result.SetAttributeValue("Result", "Warning");
             }
             SetReason(reason);
-            SnapOn("SnapshotOnWarning");
         }
 
         public void SetReason(string reason)

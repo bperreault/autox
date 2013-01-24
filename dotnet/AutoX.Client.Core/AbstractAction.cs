@@ -6,6 +6,7 @@
 
 using System.Collections.ObjectModel;
 using System.Xml.Linq;
+using AutoX.Basic;
 using OpenQA.Selenium;
 
 #endregion
@@ -27,12 +28,13 @@ namespace AutoX.Client.Core
         }
 
         #endregion
-
+        public Browser Browser { set; get; }
+        public Config Config { set; get; }
         public void FindUIObject(XElement uiObj)
         {
             if (uiObj == null)
                 return;
-            UIObject = Browser.GetInstance().GetWebElement(uiObj);
+            UIObject = Browser.GetWebElement(uiObj);
         }
 
 

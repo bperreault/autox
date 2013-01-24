@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Activities.Tracking;
+using System.IO;
 using AutoX.Activities;
 using AutoX.Activities.AutoActivities;
 using AutoX.Basic;
@@ -30,6 +31,13 @@ namespace AutoX.WF.Core
                 StartActivity(script.GetAttributeValue("Content"));
 
         }
+
+        private StatusTracker statusTracker = new StatusTracker();
+        private WorkflowApplication workflowApplication;
+        public string GetStatus()
+        {
+            return statusTracker.Status;
+        }
         
         private void StartActivity(string workflow)
         {
@@ -37,10 +45,8 @@ namespace AutoX.WF.Core
             if (activity != null)
             {
                 activity.SetHost(this);
-                //var idleEvent = new AutoResetEvent(false);
-                //TODO write log in workflow!!!
-
-                var workflowApplication = Utilities.GetWorkflowApplication(activity);
+                workflowApplication = Utilities.GetWorkflowApplication(activity);
+                workflowApplication.Extensions.Add(statusTracker);
                 workflowApplication.Run();
             }
             
@@ -103,6 +109,19 @@ namespace AutoX.WF.Core
             foreach (var observer in _observers)
             {
                 observer.Update(change);
+            }
+        }
+    }
+
+    public class StatusTracker : TrackingParticipant
+    {
+
+        public string Status { get; private set; }
+        protected override void Track(TrackingRecord record, System.TimeSpan timeout)
+        {
+            if (record is WorkflowInstanceRecord)
+            {
+                Status = ((WorkflowInstanceRecord) record).State;
             }
         }
     }

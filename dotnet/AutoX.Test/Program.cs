@@ -6,6 +6,7 @@ using AutoX.Basic;
 using AutoX.DB;
 using System.Xml.Linq;
 using AutoX.WF.Core;
+using AutoX.Client.Core;
 
 #endregion
 
@@ -25,11 +26,12 @@ namespace AutoX.Test
 
         private static void TestWorkflow()
         {
-            WorkflowInstance workflowInstance = new WorkflowInstance("a9d9b6c0-b0d9-4797-b023-3cc673552335",null);
+            AutoClient auto  = new AutoClient();
+            WorkflowInstance workflowInstance = new WorkflowInstance("7fdcbd7a-b30e-4c36-aa46-58ba74b02401", null);
             var xCommand = workflowInstance.GetCommand();
             
             Console.WriteLine(xCommand.ToString());
-            var xResult = Client.Core.ActionsFactory.Execute(xCommand);
+            var xResult = auto.Execute(xCommand);
             Console.WriteLine(xResult);
             workflowInstance.SetResult(xResult);
         }

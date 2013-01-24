@@ -13,9 +13,9 @@ using AutoX.Basic;
 
 namespace AutoX.Client.Core
 {
-    public class ActionsFactory
+    internal class ActionsFactory
     {
-        public static XElement Execute(XElement steps)
+        public static XElement Execute(XElement steps,Browser browser,Config config)
         {
             var ret = new XElement("Result");
             var instanceId = steps.GetAttributeValue("InstanceId");
@@ -26,7 +26,7 @@ namespace AutoX.Client.Core
                 ret.SetAttributeValue("RunTimeId", runtimeId);
             var query = from o in steps.Elements("Step")
                         select o;
-            foreach (XElement step in query)
+            foreach (var step in query)
             {
                 var xAttribute = step.Attribute("Action");
                 if (xAttribute != null)
@@ -41,7 +41,8 @@ namespace AutoX.Client.Core
                     {
                         uiObj = step.Elements().First();
                     }
-                    var result = CallAction(action, data, uiObj);
+                    
+                    var result = CallAction(action, data, uiObj,browser,config);
                     ret.Add(result);
                 }
             }
@@ -49,14 +50,16 @@ namespace AutoX.Client.Core
             return ret;
         }
 
-        private static XElement CallAction(string action, string data, XElement uiObj)
+        private static XElement CallAction(string action, string data, XElement uiObj,Browser browser,Config config)
         {
             var act = Type.GetType(action);
             if (act == null)
                 return
                     XElement.Parse("<StepResult Action='" + action +
                                    "' Result='Error' Reason='Client does not support this action' />");
-            dynamic actDyn = Activator.CreateInstance(act);
+            dynamic actDyn = Activator.CreateInstance(act) as AbstractAction;
+            actDyn.Browser = browser;
+            actDyn.Config = config;
             return actDyn.Do(data, uiObj);
         }
     }

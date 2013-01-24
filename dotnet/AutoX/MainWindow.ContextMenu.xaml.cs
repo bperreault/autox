@@ -16,6 +16,9 @@ using AutoX.Basic.Model;
 using AutoX.Comm;
 using AutoX.DB;
 using Microsoft.Win32;
+using AutoX.WF.Core;
+using AutoX.Client.Core;
+using System.Threading;
 
 #endregion
 
@@ -50,9 +53,48 @@ namespace AutoX
             }
         }
 
+        readonly AutoClient _autoClient = new AutoClient();
         private void RunTest(object sender, RoutedEventArgs e)
         {
-            //TODO get current workflow, run it
+            //get workflowid from project tree
+            var selected = ProjectTreeView.SelectedItem as TreeViewItem;
+            if (selected == null)
+            {
+                MessageBox.Show("Please select a test suite from the project tree!");
+                return;
+            }
+            var selectedItem = selected.DataContext as XElement;
+            if (selectedItem == null) return;
+            var workflowId = selectedItem.GetAttributeValue("_id");
+            var type = selectedItem.GetAttributeValue("_type");
+            var scriptType = selectedItem.GetAttributeValue("ScriptType");
+            if (!type.Equals("Script")||!scriptType.Equals("TestSuite"))
+            {
+                MessageBox.Show("Selected Item MUST be a Test Script!");
+                return;
+            }
+            var workflowInstance = new WorkflowInstance(workflowId,null);
+            string finishedStatus = "Completed|Aborted|Canceled|Faulted";
+            while (true)
+            {
+                string status = workflowInstance.GetStatus();
+                if (status == null)
+                {
+                    Thread.Sleep(100);
+                    continue;
+                }
+                
+                var xCommand = workflowInstance.GetCommand();
+
+                Console.WriteLine(xCommand.ToString());
+                var xResult = _autoClient.Execute(xCommand);
+                Console.WriteLine(xResult);
+                workflowInstance.SetResult(xResult);
+                if (!finishedStatus.Contains(status))
+                    break;
+            }
+            //when finished, show a message
+            MessageBox.Show("Your Test finished.");
         }
 
         private void GenerateKeyFile(object sender, RoutedEventArgs e)

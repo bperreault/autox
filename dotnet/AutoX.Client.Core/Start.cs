@@ -15,7 +15,7 @@ namespace AutoX.Client.Core
         public override XElement Act()
         {
             var sr = new StepResult(this);
-            Browser.GetInstance().GetCurrentBrowser();
+            Browser.GetCurrentBrowser();
             return sr.GetResult();
         }
     }

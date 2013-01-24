@@ -28,12 +28,19 @@ namespace AutoX.Basic
                 _variables.Add(key,value);
         }
         public string Get(string key){
-            return _variables[key];
+            if(_variables.ContainsKey(key))
+                return _variables[key];
+            return null;
         }
         public Dictionary<string, string> GetList()
         {
             return _variables;
-        } 
+        }
 
+
+        public string Get(string p1, string p2)
+        {
+            return Get(p1) ?? p2;
+        }
     }
 }

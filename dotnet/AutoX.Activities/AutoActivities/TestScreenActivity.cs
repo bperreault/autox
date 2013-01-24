@@ -157,8 +157,8 @@ namespace AutoX.Activities.AutoActivities
                 var xO = XElement.Parse("<UIObject />");
                 var xpath = uio.GetAttributeValue("XPath");
                 //TODO add name, id, css later!!!
-                if (string.IsNullOrEmpty(xpath)) continue;
-                xO.SetAttributeValue("XPath", xpath);
+                if (!string.IsNullOrEmpty(xpath))
+                    xO.SetAttributeValue("XPath", xpath);
                 step.Add(xO);
                 steps.Add(step);
             }

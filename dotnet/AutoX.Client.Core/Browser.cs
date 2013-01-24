@@ -31,9 +31,10 @@ namespace AutoX.Client.Core
         private readonly Hashtable _pool = new Hashtable();
 
         private IWebDriver _browser;
-
-        private Browser()
+        private Config _config;
+        public Browser(Config config)
         {
+            _config = config;
         }
 
         #region IDisposable Members
@@ -44,11 +45,6 @@ namespace AutoX.Client.Core
         }
 
         #endregion
-
-        public static Browser GetInstance()
-        {
-            return _instance ?? (_instance = new Browser());
-        }
 
         public IWebDriver GetCurrentBrowser()
         {
@@ -228,14 +224,14 @@ namespace AutoX.Client.Core
             if (xParent.Equals("Browser") || xParent.Equals("frame"))
             {
                 xUI = xPage.Elements().First();
-                GetInstance().GetCurrentBrowser().SwitchTo().DefaultContent();
+                GetCurrentBrowser().SwitchTo().DefaultContent();
                 if (xParent.Equals("frame"))
                 {
                     var frame = xPage.Attribute("name");
                     if (frame != null)
                     {
                         var frameName = frame.Value;
-                        GetInstance().GetCurrentBrowser().SwitchTo().Frame(frameName);
+                        GetCurrentBrowser().SwitchTo().Frame(frameName);
                     }
                 }
             }
@@ -243,8 +239,6 @@ namespace AutoX.Client.Core
                 xUI = xPage;
 
             var xpath = xUI.GenerateXPathFromXElement();
-
-
             return GetCurrentBrowser().FindElements(By.XPath(xpath));
         }
 
@@ -282,8 +276,8 @@ namespace AutoX.Client.Core
 
         private void StartBrowser()
         {
-            var clientType = Configuration.Settings("ClientType", "Sauce");
-            if (String.Compare(clientType, "Sauce", System.StringComparison.OrdinalIgnoreCase) == 0)
+            var clientType = _config.Get("ClientType", "Sauce");
+            if (String.Compare(clientType, "Sauce", StringComparison.OrdinalIgnoreCase) == 0)
                 StartSauceBrowser();
             else
                 StartLocalBrowser();
@@ -292,7 +286,7 @@ namespace AutoX.Client.Core
         private void StartSauceBrowser()
         {
             DesiredCapabilities capabillities;
-            var browserType = Configuration.Settings("Browser.Type", "Firefox");
+            var browserType = _config.Get("Browser.Type", "Firefox");
             if (browserType.Equals("IE"))
                 capabillities = DesiredCapabilities.InternetExplorer();
             else if (browserType.Equals("Chrome"))
@@ -312,17 +306,17 @@ namespace AutoX.Client.Core
             else
                 capabillities = DesiredCapabilities.Firefox();
 
-            capabillities.SetCapability(CapabilityType.Version, Configuration.Settings("Browser.Version", "10"));
+            capabillities.SetCapability(CapabilityType.Version, _config.Get("Browser.Version", "10"));
 
-            capabillities.SetCapability(CapabilityType.Platform, Configuration.Settings("Browser.Platform", "Windows 2008"));
-            capabillities.SetCapability("name", Configuration.Settings("Sauce.Name", "Testing Selenium 2 with C# on Sauce"));
-            capabillities.SetCapability("username", Configuration.Settings("Sauce.UserName", "autox"));
-            capabillities.SetCapability("accessKey", Configuration.Settings("Sauce.AccessKey", "b3842073-5a7a-4782-abbc-e7234e09f8ac"));
+            capabillities.SetCapability(CapabilityType.Platform, _config.Get("Browser.Platform", "Windows 2008"));
+            capabillities.SetCapability("name", _config.Get("Sauce.Name", "Testing Selenium 2 with C# on Sauce"));
+            capabillities.SetCapability("username", _config.Get("Sauce.UserName", "autox"));
+            capabillities.SetCapability("accessKey", _config.Get("Sauce.AccessKey", "b3842073-5a7a-4782-abbc-e7234e09f8ac"));
 
             _browser = new SauceDriver(
                       new Uri("http://ondemand.saucelabs.com:80/wd/hub"), capabillities);
 
-            _browser.Navigate().GoToUrl(Configuration.Settings("DefaultURL", "about:blank"));
+            _browser.Navigate().GoToUrl(_config.Get("DefaultURL", "about:blank"));
             MaximiseBrowser();
             _sId = ((SauceDriver)_browser).GetSessionId();
 
@@ -331,18 +325,18 @@ namespace AutoX.Client.Core
         private string _sId;
         public string GetResultLink()
         {
-            if (Configuration.Settings("Sauce.Free", "true").ToLower().Equals("true"))
+            if (_config.Get("Sauce.Free", "true").ToLower().Equals("true"))
             {
                 return "https://saucelabs.com/tests/" + _sId;
             }
-            var key = Configuration.Settings("Sauce.User", "autox") + ":" +
-                      Configuration.Settings("Sauce.Key", "b3842073-5a7a-4782-abbc-e7234e09f8ac");
+            var key = _config.Get("Sauce.User", "autox") + ":" +
+                      _config.Get("Sauce.Key", "b3842073-5a7a-4782-abbc-e7234e09f8ac");
             var jobId = AsymmetricEncryption.Hmacmd5(key, _sId);
             return "https://saucelabs.com/jobs/" + _sId + "?auth=" + jobId;
         }
         private void StartLocalBrowser()
         {
-            var browserType = Configuration.Settings("BrowserType", "InternetExplorer");
+            var browserType = _config.Get("BrowserType", "InternetExplorer");
             if (browserType.Equals("IE") || browserType.Equals("InternetExplorer"))
             {
                 var processor = Environment.GetEnvironmentVariable("PROCESSOR_ARCHITECTURE");
@@ -375,13 +369,13 @@ namespace AutoX.Client.Core
                 _browser = new ChromeDriver();
             }
 
-            _browser.Navigate().GoToUrl(Configuration.Settings("DefaultURL", "about:blank"));
+            _browser.Navigate().GoToUrl(_config.Get("DefaultURL", "about:blank"));
             MaximiseBrowser();
         }
 
         private void MaximiseBrowser()
         {
-            if (Configuration.Settings("MaximScreen", "True").Equals("True"))
+            if (_config.Get("MaximScreen", "True").Equals("True"))
                 _browser.Manage().Window.Maximize();
         }
 
@@ -394,7 +388,7 @@ namespace AutoX.Client.Core
             }
 
             //browser = null;
-            var clientType = Configuration.Settings("ClientType", "Sauce");
+            var clientType = _config.Get("ClientType", "Sauce");
             if (String.Compare(clientType, "Sauce", System.StringComparison.OrdinalIgnoreCase) != 0)
             {
                 if (_browser != null) _browser.Dispose();
@@ -402,9 +396,9 @@ namespace AutoX.Client.Core
             }
         }
 
-        private static void CloseLocalBrowser()
+        private void CloseLocalBrowser()
         {
-            var browserType = Configuration.Settings("BrowserType", "IE");
+            var browserType = _config.Get("Browser.Type", "IE");
             if (browserType.Equals("IE"))
 
                 Command.DosCommand(Environment.SystemDirectory + "\\taskkill.exe", " /IM iexplore.exe");
