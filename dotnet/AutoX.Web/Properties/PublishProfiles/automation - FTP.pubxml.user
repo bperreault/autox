@@ -8,7 +8,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <LastUsedBuildConfiguration>Release</LastUsedBuildConfiguration>
     <LastUsedPlatform>Any CPU</LastUsedPlatform>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA72H1VdTdWEqnaIzV3CsVpgAAAAACAAAAAAADZgAAwAAAABAAAACDuLmnfxJTbcys8HsxDic9AAAAAASAAACgAAAAEAAAAOJOhYnlgSpe9kkvmvxdlhaAAAAAOQieOnZk1IKrHGhcemvgn7q4JeTptBZer4kErZ/lifCAOLb6gqYh283rmWamU8rb4z9IR8LvLnstCfW7q6OGoh+cW1IWbWe/vk3rWwWoWrMRvdFtmc+ezbUDtgz1UHznR/FgVAiWpssYMJqpxnkybABTRl23Mo9s1UG0k5q66XMUAAAAqSMDcs5ZFosiV2aEZXqV1ADD5Hs=</EncryptedPassword>
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAsaiFZ3r/qUipTLsfVsmV9AAAAAACAAAAAAAQZgAAAAEAACAAAAC2PlEYYxTS+d/vhZjIFWKh+NCS4B7sC/U1PfrP18wx4QAAAAAOgAAAAAIAACAAAACKmCQwCIdjVnL7R0MuWVsYdnCodNsD7nw8BM/UPknB6CAAAADsiNlF2vMTFU0modC8fDrcdot2GyoQpSuP7POx0/daekAAAAA4lUo0LBpz6R7sqIixGIFdTAU51iFPN2ZBv39Viz4IjUMRsqd4waVkSjCNkEr7HLK7oJWlVw5jbbbB+jr7aeHM</EncryptedPassword>
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/AutoX.Activities.dll">

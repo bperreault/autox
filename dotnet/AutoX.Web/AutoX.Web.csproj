@@ -34,7 +34,7 @@
     <FilesToIncludeForPublish>OnlyFilesToRunTheApp</FilesToIncludeForPublish>
     <ExcludeGeneratedDebugSymbol>true</ExcludeGeneratedDebugSymbol>
     <ExcludeApp_Data>true</ExcludeApp_Data>
-    <PackageAsSingleFile>false</PackageAsSingleFile>
+    <PackageAsSingleFile>true</PackageAsSingleFile>
     <PublishDatabases>false</PublishDatabases>
     <PrecompileBeforePublish>true</PrecompileBeforePublish>
     <IncludeIisSettings>true</IncludeIisSettings>
