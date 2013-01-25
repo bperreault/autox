@@ -1,4 +1,5 @@
-﻿using System.Activities.Tracking;
+﻿using System;
+using System.Activities.Tracking;
 using System.IO;
 using AutoX.Activities;
 using AutoX.Activities.AutoActivities;
@@ -19,6 +20,18 @@ namespace AutoX.WF.Core
         private volatile XElement _command;
         private volatile XElement _result;
         private List<IObserver> _observers = new List<IObserver>();
+        private string _instanceId = Guid.NewGuid().ToString();
+
+        public string InstanceId
+        {
+            get { return _instanceId; }
+        }
+    
+        public string ParentId
+        {
+            get { return _parentId; }
+            set { _parentId = value; }
+        }
         public WorkflowInstance(string workflowId, Dictionary<string, string> upperLevelVariables)
         {
             if(upperLevelVariables!=null)
@@ -27,16 +40,19 @@ namespace AutoX.WF.Core
                     _variables.Add(upperLevelVariable.Key,upperLevelVariable.Value);
                 }
             XElement script = GetDataObject(workflowId);
+            _result = null;
+            _command = null;
             if(script!=null)
                 StartActivity(script.GetAttributeValue("Content"));
 
         }
 
-        private StatusTracker statusTracker = new StatusTracker();
-        private WorkflowApplication workflowApplication;
+        private readonly StatusTracker _statusTracker = new StatusTracker();
+        private WorkflowApplication _workflowApplication;
+        private string _parentId;
         public string GetStatus()
         {
-            return statusTracker.Status;
+            return _statusTracker.Status;
         }
         
         private void StartActivity(string workflow)
@@ -45,9 +61,10 @@ namespace AutoX.WF.Core
             if (activity != null)
             {
                 activity.SetHost(this);
-                workflowApplication = Utilities.GetWorkflowApplication(activity);
-                workflowApplication.Extensions.Add(statusTracker);
-                workflowApplication.Run();
+                activity.InstanceId = InstanceId;
+                _workflowApplication = Utilities.GetWorkflowApplication(activity);
+                _workflowApplication.Extensions.Add(_statusTracker);
+                _workflowApplication.Run();
             }
             
         }

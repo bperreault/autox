@@ -276,7 +276,7 @@ namespace AutoX.Client.Core
 
         private void StartBrowser()
         {
-            var clientType = _config.Get("ClientType", "Sauce");
+            var clientType = _config.Get("Host.Type", "Sauce");
             if (String.Compare(clientType, "Sauce", StringComparison.OrdinalIgnoreCase) == 0)
                 StartSauceBrowser();
             else
@@ -388,12 +388,13 @@ namespace AutoX.Client.Core
             }
 
             //browser = null;
-            var clientType = _config.Get("ClientType", "Sauce");
+            var clientType = _config.Get("Host.Type", "Sauce");
             if (String.Compare(clientType, "Sauce", System.StringComparison.OrdinalIgnoreCase) != 0)
             {
                 if (_browser != null) _browser.Dispose();
                 CloseLocalBrowser();
             }
+            _browser = null;
         }
 
         private void CloseLocalBrowser()

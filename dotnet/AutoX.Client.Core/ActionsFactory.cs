@@ -20,6 +20,9 @@ namespace AutoX.Client.Core
             var ret = new XElement("Result");
             var instanceId = steps.GetAttributeValue("InstanceId");
             var runtimeId = steps.GetAttributeValue("RunTimeId");
+            var onError = steps.GetAttributeValue("OnError");
+            if(!string.IsNullOrEmpty(onError))
+                ret.SetAttributeValue("OnError",onError);
             if (!string.IsNullOrEmpty(instanceId))
                 ret.SetAttributeValue("InstanceId", instanceId);
             if (!string.IsNullOrEmpty(runtimeId))

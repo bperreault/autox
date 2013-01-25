@@ -75,26 +75,36 @@ namespace AutoX
             }
             var workflowInstance = new WorkflowInstance(workflowId,null);
             string finishedStatus = "Completed|Aborted|Canceled|Faulted";
+            bool debugMode = _config.Get("Mode.Debug", "True").Equals("True", StringComparison.CurrentCultureIgnoreCase);
             while (true)
             {
                 string status = workflowInstance.GetStatus();
                 if (status == null)
                 {
-                    Thread.Sleep(100);
+                    Thread.Sleep(1000);
                     continue;
                 }
-                
+                status = workflowInstance.GetStatus();
+                if (finishedStatus.Contains(status))
+                    break;
                 var xCommand = workflowInstance.GetCommand();
-
+                if (debugMode)
+                    MessageBox.Show(xCommand.ToString());
+                Log.Info(xCommand.ToString());
                 Console.WriteLine(xCommand.ToString());
                 var xResult = _autoClient.Execute(xCommand);
-                Console.WriteLine(xResult);
+                if (debugMode)
+                    MessageBox.Show(xResult.ToString());
+                Log.Info(xResult.ToString());
                 workflowInstance.SetResult(xResult);
-                if (!finishedStatus.Contains(status))
+                Thread.Sleep(1000);
+                status = workflowInstance.GetStatus();
+                if (finishedStatus.Contains(status))
                     break;
             }
             //when finished, show a message
             MessageBox.Show("Your Test finished.");
+            workflowInstance = null;
         }
 
         private void GenerateKeyFile(object sender, RoutedEventArgs e)
