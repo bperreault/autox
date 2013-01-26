@@ -37,7 +37,12 @@ namespace AutoX.Basic.Model
                 var prop = dataObject.GetType().GetProperty(attributeName);
                 if (prop != null)
                 {
-                    prop.SetValue(dataObject, value, null);
+                    if (prop.PropertyType.Name.Equals("DateTime"))
+                    {
+                        prop.SetValue(dataObject,DateTime.Parse(value.ToString()),null);
+                    }
+                    else
+                        prop.SetValue(dataObject, value, null);
                 }
             }
             else

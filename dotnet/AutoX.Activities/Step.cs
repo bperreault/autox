@@ -13,6 +13,7 @@ namespace AutoX.Activities
 {
     public class Step
     {
+        public string _id { get; set; }
         public string UIObject { get; set; }
         public string UIId { get; set; }
         public string Action { get; set; }
@@ -25,6 +26,7 @@ namespace AutoX.Activities
         public XElement ToXElement()
         {
             var element = new XElement("Step");
+            element.SetAttributeValue("_id", _id);
             element.SetAttributeValue("UIObject", UIObject);
             element.SetAttributeValue("UIId", UIId);
             element.SetAttributeValue("Action", Action);

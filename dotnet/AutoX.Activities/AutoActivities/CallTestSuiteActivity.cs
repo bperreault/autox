@@ -68,7 +68,11 @@ namespace AutoX.Activities.AutoActivities
             var screen = Host.GetDataObject(TestSuiteId);
             if (screen == null) return;
             var activity = ActivityXamlServices.Load(new StringReader(screen.GetAttributeValue("Content")));
-
+            if (activity is AutomationActivity)
+            {
+                ((AutomationActivity)activity).SetHost(Host);
+                ((AutomationActivity)activity).SetParentResultId(ParentResultId);
+            }
             WorkflowInvoker.Invoke(activity);
             _result = ((IPassData) activity).GetResult();
         }

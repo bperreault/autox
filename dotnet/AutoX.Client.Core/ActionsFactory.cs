@@ -32,9 +32,11 @@ namespace AutoX.Client.Core
             foreach (var step in query)
             {
                 var xAttribute = step.Attribute("Action");
+                var xId = step.GetAttributeValue("_id");
                 if (xAttribute != null)
                 {
                     var action = Configuration.Settings(xAttribute.Value, xAttribute.Value);
+                    
                     var xData = step.Attribute("Data");
                     string data = null;
                     if (xData != null)
@@ -46,6 +48,7 @@ namespace AutoX.Client.Core
                     }
                     
                     var result = CallAction(action, data, uiObj,browser,config);
+                    //result.SetAttributeValue("_id",xId);
                     ret.Add(result);
                 }
             }
@@ -63,6 +66,7 @@ namespace AutoX.Client.Core
             dynamic actDyn = Activator.CreateInstance(act) as AbstractAction;
             actDyn.Browser = browser;
             actDyn.Config = config;
+
             return actDyn.Do(data, uiObj);
         }
     }

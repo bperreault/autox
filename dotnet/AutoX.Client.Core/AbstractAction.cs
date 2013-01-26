@@ -17,6 +17,7 @@ namespace AutoX.Client.Core
     {
         public ReadOnlyCollection<IWebElement> UIObject { get; set; }
         public string Data { get; set; }
+        //public string _id { get; set; }
 
         #region IAction Members
 

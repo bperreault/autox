@@ -6,8 +6,11 @@
 
 using System.Activities;
 using System.Activities.Presentation.PropertyEditing;
+using System.Activities.XamlIntegration;
 using System.ComponentModel;
 using System.Drawing;
+using System.IO;
+using AutoX.Basic;
 
 #endregion
 
@@ -81,6 +84,18 @@ namespace AutoX.Activities.AutoActivities
             WorkflowInvoker.Invoke(activity);
             result = ((IPassData) activity).GetResult();
 */
+            var screen = Host.GetDataObject(TestCaseId);
+            if (screen == null) return;
+            var activity = ActivityXamlServices.Load(new StringReader(screen.GetAttributeValue("Content")));
+            if (activity is AutomationActivity)
+            {
+                ((AutomationActivity)activity).SetHost(Host);
+                ((AutomationActivity)activity).SetParentResultId(ParentResultId);
+            }
+            WorkflowInvoker.Invoke(activity);
+            _result = ((IPassData)activity).GetResult();
+            
+            
         }
     }
 }

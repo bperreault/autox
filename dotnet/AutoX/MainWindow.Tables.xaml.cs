@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Xml.Linq;
 using AutoX.Basic.Model;
+using AutoX.DB;
 using IDataObject = AutoX.Basic.Model.IDataObject;
 using AutoX.Comm;
 
@@ -81,9 +82,9 @@ namespace AutoX
         {
             var table = sender as DataGrid;
             if (table == null) return;
-            var selected = table.SelectedItem;
+            var selected = table.SelectedItem as IDataObject;
             if (selected == null) return;
-            var element = ((IDataObject) selected).GetXElementFromObject();
+            var element = selected.GetXElementFromObject();
             var source = table.ItemsSource as Collection<object>;
             if (source == null) return;
             var index = source.IndexOf(selected);
@@ -101,8 +102,7 @@ namespace AutoX
             var selected = TestCaseResultTable.SelectedItem as Result;
             if (selected == null) return;
 
-            var sRoot = Communication.GetInstance().GetChildren(selected._id);
-            var xRoot = XElement.Parse(sRoot);
+            var xRoot = Data.GetChildren(selected._id);
             if (xRoot.HasElements)
             {
                 _testStepSource.Clear();

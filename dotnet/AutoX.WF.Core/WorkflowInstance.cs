@@ -32,7 +32,7 @@ namespace AutoX.WF.Core
             get { return _parentId; }
             set { _parentId = value; }
         }
-        public WorkflowInstance(string workflowId, Dictionary<string, string> upperLevelVariables)
+        public WorkflowInstance(string workflowId, Dictionary<string, string> upperLevelVariables, string resultParentId)
         {
             if(upperLevelVariables!=null)
                 foreach (var upperLevelVariable in upperLevelVariables)
@@ -43,26 +43,25 @@ namespace AutoX.WF.Core
             _result = null;
             _command = null;
             if(script!=null)
-                StartActivity(script.GetAttributeValue("Content"));
+                StartActivity(script.GetAttributeValue("Content"),resultParentId);
 
         }
 
         private readonly StatusTracker _statusTracker = new StatusTracker();
         private WorkflowApplication _workflowApplication;
         private string _parentId;
-        public string GetStatus()
-        {
-            return _statusTracker.Status;
-        }
+        public string Status { get; set; }
         
-        private void StartActivity(string workflow)
+        
+        private void StartActivity(string workflow,string resultParentId)
         {
             var activity = ActivityXamlServices.Load(new StringReader(workflow)) as AutomationActivity;
             if (activity != null)
             {
                 activity.SetHost(this);
                 activity.InstanceId = InstanceId;
-                _workflowApplication = Utilities.GetWorkflowApplication(activity);
+                activity.SetParentResultId(resultParentId);
+                _workflowApplication = GetWorkflowApplication(activity);
                 _workflowApplication.Extensions.Add(_statusTracker);
                 _workflowApplication.Run();
             }
@@ -128,12 +127,75 @@ namespace AutoX.WF.Core
                 observer.Update(change);
             }
         }
+
+        public WorkflowApplication GetWorkflowApplication(AutomationActivity activity)
+        {
+            var workflowApplication = new WorkflowApplication(activity)
+            {
+                Completed = delegate(WorkflowApplicationCompletedEventArgs e)
+                {
+                    switch (e.CompletionState)
+                    {
+                        case ActivityInstanceState.Faulted:
+                            //Logger.GetInstance().Log().Error("workflow " +
+                            //                                 scriptGuid +
+                            //                                 " stopped! Error Message:\n"
+                            //                                 +
+                            //                                 e.TerminationException.
+                            //                                     GetType().FullName +
+                            //                                 "\n"
+                            //                                 +
+                            //                                 e.TerminationException.
+                            //                                     Message);
+                            Status = "Terminated";
+                            break;
+                        case ActivityInstanceState.Canceled:
+                            //Logger.GetInstance().Log().Warn("workflow " + scriptGuid +
+                            //                                " Cancel.");
+                            Status = "Canceled";
+                            break;
+                        default:
+                            //Logger.GetInstance().Log().Info("workflow " + scriptGuid +
+                            //                                " Completed.");
+                            Status = "Completed";
+                            break;
+                    }
+                },
+                Aborted = delegate
+                {
+                    //Logger.GetInstance().Log().Error("workflow " +
+                    //                                 scriptGuid
+                    //                                 + " aborted! Error Message:\n"
+                    //                                 + e.Reason.GetType().FullName + "\n" +
+                    //                                 e.Reason.Message);
+                    Status = "Aborted";
+                }
+            };
+            return workflowApplication;
+        }
     }
 
     public class StatusTracker : TrackingParticipant
     {
 
         public string Status { get; private set; }
+        public StatusTracker()
+        {
+            var trackingProfile = new TrackingProfile();
+            trackingProfile.Queries.Add(new ActivityStateQuery
+            {
+                ActivityName = "*",
+                States = { "*" },
+                Variables = { "*" },
+                Arguments = { "*" }
+            });
+            trackingProfile.Queries.Add(new WorkflowInstanceQuery
+            {
+                States = { "*" },
+            });
+
+            this.TrackingProfile = trackingProfile;
+        }
         protected override void Track(TrackingRecord record, System.TimeSpan timeout)
         {
             if (record is WorkflowInstanceRecord)
@@ -142,4 +204,6 @@ namespace AutoX.WF.Core
             }
         }
     }
+
+    
 }

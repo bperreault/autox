@@ -30,6 +30,25 @@ namespace AutoX.Basic.Model
 
         public string Snapshot { get; set; }
 
+        public string Link { get; set; }
+
+        #region IDataObject Members
+
+        public string _id { get; set; }
+        public DateTime Updated { get; set; }
+        public DateTime Created { get; set; }
+
+        #endregion
+    }
+
+    public class StepResult : IDataObject
+    {
+        public string Action { get; set; }
+
+        public string Data { get; set; }
+
+        public string Result { get; set; }
+
         #region IDataObject Members
 
         public string _id { get; set; }

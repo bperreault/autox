@@ -90,12 +90,8 @@ namespace AutoX.Activities.AutoActivities
 
         protected override void Execute(NativeActivityContext context)
         {
-            //TODO how to get the instance information???, if can get it, will be more easier
-            //put bookmark here, it require return argument or something
-            //context.CreateBookmark(bookmarkId, BookmarkCallback);
             InternalExecute(context, null);
         }
-
 
         private void InternalExecute(NativeActivityContext context, ActivityInstance instance)
         {
@@ -109,7 +105,7 @@ namespace AutoX.Activities.AutoActivities
             var rElement = Host.GetResult(GUID);
             //TODO Log should be done at the Host side, we use this result to get some variables to use in the workflow
             Log.Info(rElement.ToString());
-
+            SetResult(rElement);
         }
 
         private XElement GetSteps()
@@ -132,11 +128,13 @@ namespace AutoX.Activities.AutoActivities
                 if (!enable.ToLower().Equals("true"))
                     continue;
                 var action = descendant.GetAttributeValue("Action");
+                
                 if (string.IsNullOrEmpty(action))
                 {
                     Log.Error("Action is empty, please check!");
                     continue;
                 }
+                
                 var step = XElement.Parse("<Step />");
 
                 step.SetAttributeValue("Action", action);
@@ -150,6 +148,15 @@ namespace AutoX.Activities.AutoActivities
                 else
                 {
                     step.SetAttributeValue("Data", data.ContainsKey(dataref) ? data[dataref] : "");
+                }
+                var stepId = descendant.GetAttributeValue("_id");
+                if (string.IsNullOrEmpty(stepId))
+                {
+                    Log.Error("Step id is empty.");
+                }
+                else
+                {
+                    step.SetAttributeValue("StepId",stepId);
                 }
                 var uiid = descendant.GetAttributeValue("UIId");
                 //TODO we have NOT handle the parent here, add it later; for now, it can work.

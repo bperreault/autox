@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using System.Xml.Linq;
 using AutoX.Basic;
 using AutoX.Basic.Model;
+using AutoX.Client.Core;
 using AutoX.Comm;
 using AutoX.DB;
 
@@ -27,10 +28,10 @@ namespace AutoX
 
         private bool BeforeActionCheck(TreeView treeView, string action, string objName)
         {
-            var selected = (TreeViewItem) treeView.SelectedItem;
+            var selected = (TreeViewItem)treeView.SelectedItem;
             if (selected != null)
             {
-                var type = ((XElement) selected.DataContext).GetAttributeValue("_type");
+                var type = ((XElement)selected.DataContext).GetAttributeValue("_type");
                 var query = from o in _xValidation.Descendants()
                             where o.GetAttributeValue("Action").Equals(action)
                                   && o.GetAttributeValue("Type").Equals(type)
@@ -53,22 +54,22 @@ namespace AutoX
             var rootPart = element.GetRootPartElement();
             rootPart.SetAttributeValue("_parentId", parentId);
 
-            
-                if (!Data.Save(rootPart))
-                {
-                    MessageBox.Show("update Tree item Failed.");
-                }
-                else
-                {
-                    var itself = rootPart.GetTreeViewItemFromXElement();
 
-                    foreach (XElement kid in element.Descendants())
-                    {
-                        itself.Items.Add(GetItemFromXElement(kid, guid));
-                    }
-                    return itself;
+            if (!Data.Save(rootPart))
+            {
+                MessageBox.Show("update Tree item Failed.");
+            }
+            else
+            {
+                var itself = rootPart.GetTreeViewItemFromXElement();
+
+                foreach (XElement kid in element.Descendants())
+                {
+                    itself.Items.Add(GetItemFromXElement(kid, guid));
                 }
-            
+                return itself;
+            }
+
 
             return null;
         }
@@ -76,7 +77,7 @@ namespace AutoX
 
         private static void Delete(TreeView parent)
         {
-            var selected = (TreeViewItem) parent.SelectedItem;
+            var selected = (TreeViewItem)parent.SelectedItem;
             if (selected == null)
             {
                 return;
@@ -86,7 +87,7 @@ namespace AutoX
                 MessageBoxButton.YesNo);
 
             if (messageBoxResult != MessageBoxResult.Yes) return;
-            var xElement = (XElement) selected.DataContext;
+            var xElement = (XElement)selected.DataContext;
             if (Equals(selected.Parent, parent))
             {
                 MessageBox.Show("Cannot Delete Root Item!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -100,15 +101,15 @@ namespace AutoX
                 return;
             }
             xElement.SetAttributeValue("_parentId", "Deleted");
-            
-                if (!Data.Save(xElement))
-                {
-                    MessageBox.Show("Delete Tree item Failed. ");
-                    return;
-                }
-                parentItem.Items.Remove(selected);
+
+            if (!Data.Save(xElement))
+            {
+                MessageBox.Show("Delete Tree item Failed. ");
                 return;
-            
+            }
+            parentItem.Items.Remove(selected);
+            return;
+
         }
 
         private static TreeViewItem AddNewItemToTree(TreeView tree, XElement xElement)
@@ -117,22 +118,22 @@ namespace AutoX
             dialog.ShowDialog();
             if (!dialog.DialogResult.HasValue || !dialog.DialogResult.Value) return null;
             var xE = dialog.GetElement();
-            var selected = (TreeViewItem) tree.SelectedItem;
-            var xParent = (XElement) selected.DataContext;
+            var selected = (TreeViewItem)tree.SelectedItem;
+            var xParent = (XElement)selected.DataContext;
             var parentId = xParent.GetAttributeValue("_id");
 
 
             xE.SetAttributeValue("_parentId", parentId);
-            
-                if (!Data.Save(xE))
-                {
-                    MessageBox.Show("Add Tree item Failed.");
-                    return null;
-                }
-                var ret = xE.GetTreeViewItemFromXElement();
-                selected.Items.Add(ret);
-                return ret;
-            
+
+            if (!Data.Save(xE))
+            {
+                MessageBox.Show("Add Tree item Failed.");
+                return null;
+            }
+            var ret = xE.GetTreeViewItemFromXElement();
+            selected.Items.Add(ret);
+            return ret;
+
         }
 
         //private void InitTree(ItemsControl tree, string rootId)
@@ -168,28 +169,40 @@ namespace AutoX
                 return;
             }
             var xRoot = Data.GetChildren(parentId);
-            
-            
-                if (parent.Name.ToString().Equals("Result"))
+
+
+            if (parent.Name.ToString().Equals("Result"))
+            {
+                //load its children to TestCaseResultTable
+                _testCaseResultSource.Clear();
+                _testStepSource.Clear();
+                foreach (XElement kid in xRoot.Descendants())
                 {
-                    //load its children to TestCaseResultTable
-                    _testCaseResultSource.Clear();
-                    _testStepSource.Clear();
-                    foreach (XElement kid in xRoot.Descendants())
+                    string kind = kid.Name.ToString();
+                    if (kind.Equals("Result"))
                     {
                         var testcaseresult = kid.GetDataObjectFromXElement() as Result;
-                        //TODO if it is case result, put it to caseresult table, else, put it to step result table
+                        selected.Items.Add(testcaseresult);
                         _testCaseResultSource.Add(testcaseresult);
                     }
+                    if (kind.Equals("StepResult"))
+                    {
+                        var testStepResult = kid.GetDataObjectFromXElement() as Basic.Model.StepResult;
+                        _testStepSource.Add(testStepResult);
+                    }
+                    
+                }
+                TestCaseResultTable.ItemsSource = _testCaseResultSource.Get();
+                TestStepsResultTable.ItemsSource = _testStepSource.Get();
 
-                    return;
-                }
-                selected.Items.Clear();
-                foreach (var kid in xRoot.Descendants())
-                {
-                    selected.Items.Add(kid.GetTreeViewItemFromXElement());
-                }
-            
+                return;
+            }
+            selected.Items.Clear();
+            foreach (var kid in xRoot.Descendants())
+            {
+                selected.Items.Add(kid.GetTreeViewItemFromXElement());
+            }
+
         }
 
         private static void Edit(TreeViewItem selected)
@@ -198,18 +211,18 @@ namespace AutoX
             {
                 return;
             }
-            var dialog = new XElementDialog(((XElement) selected.DataContext), false);
+            var dialog = new XElementDialog(((XElement)selected.DataContext), false);
             dialog.ShowDialog();
             if (!dialog.DialogResult.HasValue || !dialog.DialogResult.Value) return;
             var xElement = dialog.GetElement();
 
             if (!Data.Save(xElement))
-                {
-                    MessageBox.Show("update Tree item Failed.");
-                    return;
-                }
-                selected.UpdateTreeViewItem(xElement);
-            
+            {
+                MessageBox.Show("update Tree item Failed.");
+                return;
+            }
+            selected.UpdateTreeViewItem(xElement);
+
         }
 
         private TreeViewItem GetInitScriptXElement(string type)

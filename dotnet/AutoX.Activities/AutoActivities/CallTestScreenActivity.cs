@@ -97,6 +97,7 @@ namespace AutoX.Activities.AutoActivities
             {
                 activity.PassData(InstanceId, UserData);
                 activity.SetHost(Host);
+                activity.SetParentResultId(ParentResultId);
                 Utilities.GetWorkflowApplication(activity).Run();
             }
             

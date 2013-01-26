@@ -11,6 +11,8 @@
                   RowDetailsVisibilityMode="VisibleWhenSelected" SelectionMode="Extended" SelectionUnit="FullRow"
                   CanUserSortColumns="False" ScrollViewer.VerticalScrollBarVisibility="Visible" IsEnabled="True" CanUserDeleteRows="True">
             <DataGrid.Columns>
+                <DataGridTextColumn Width="2*" Binding="{Binding _id}" Header="ID" IsReadOnly="True" />
+
                 <DataGridTextColumn Width="2*" Binding="{Binding UIObject}" Header="UI Object" IsReadOnly="True" />
                 <DataGridComboBoxColumn Width="1*" SelectedItemBinding="{Binding Action}" Header="Action">
                     <DataGridComboBoxColumn.ElementStyle>

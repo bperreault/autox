@@ -294,7 +294,7 @@
                             </Grid.RowDefinitions>
                             <TextBox Grid.Row="0" Name="filterTestCaseResult" HorizontalAlignment="Stretch"
                                      BorderThickness="0" KeyUp="TestCaseTableEnterFilter" />
-                            <DataGrid Background="#FFE5E5E5" Name="TestCaseResultTable" Grid.Row="1"
+                            <DataGrid Background="#FFE5E5E5" Name="TestCaseResultTable" Grid.Row="1" AutoGenerateColumns="False"
                                       MouseDoubleClick="DoubleClickOnTable" BorderThickness="0" ItemsSource="{Binding}" SelectionUnit="FullRow" SelectionChanged="TestCaseResultTableSelectionChanged">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Width="4*" Binding="{Binding OriginalResult}"
@@ -302,6 +302,8 @@
                                     <DataGridTextColumn Width="4*" Binding="{Binding FinalResult}"
                                                         Header="Final Result" IsReadOnly="True" />
                                     <DataGridTextColumn Width="4*" Binding="{Binding StartTime}" Header="Start Time"
+                                                        IsReadOnly="True" />
+                                    <DataGridTextColumn Width="4*" Binding="{Binding Link}" Header="Link"
                                                         IsReadOnly="True" />
                                 </DataGrid.Columns>
                             </DataGrid>
@@ -315,14 +317,14 @@
                             </Grid.RowDefinitions>
                             <TextBox Grid.Row="0" Name="filterTestStep" HorizontalAlignment="Stretch"
                                      BorderThickness="0" KeyUp="TestStepTableEnterFilter" />
-                            <DataGrid Background="#FFE5E5E5" Name="TestStepsResultTable" Grid.Row="1"
+                            <DataGrid Background="#FFE5E5E5" Name="TestStepsResultTable" Grid.Row="1" AutoGenerateColumns="False"
                                       MouseDoubleClick="DoubleClickOnTable" BorderThickness="0" ItemsSource="{Binding}" SelectionUnit="FullRow">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Width="4*" Binding="{Binding OriginalResult}"
-                                                        Header="Original Result" IsReadOnly="True" />
-                                    <DataGridTextColumn Width="4*" Binding="{Binding FinalResult}"
-                                                        Header="Final Result" IsReadOnly="True" />
-                                    <DataGridTextColumn Width="4*" Binding="{Binding StartTime}" Header="Start Time"
+                                    <DataGridTextColumn Width="4*" Binding="{Binding Action}"
+                                                        Header="Action" IsReadOnly="True" />
+                                    <DataGridTextColumn Width="4*" Binding="{Binding Data}"
+                                                        Header="Data" IsReadOnly="True" />
+                                    <DataGridTextColumn Width="4*" Binding="{Binding Result}" Header="Result"
                                                         IsReadOnly="True" />
                                 </DataGrid.Columns>
                             </DataGrid>

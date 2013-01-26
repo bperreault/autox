@@ -73,6 +73,7 @@ namespace AutoX.Activities
                 var xSteps = XElement.Parse(userData);
 
                 var xStep = new XElement("Step");
+                xStep.SetAttributeValue("_id", Guid.NewGuid().ToString());
                 xStep.SetAttributeValue("UIId", data.GetAttributeValue("_id"));
                 xStep.SetAttributeValue("UIObject", data.GetAttributeValue("Name"));
                 xStep.SetAttributeValue("Enable", "True");
@@ -250,9 +251,11 @@ namespace AutoX.Activities
                     var enable = Boolean.Parse(element.GetAttributeValue("Enable"));
                     var defaultDataValue = element.GetAttributeValue("DefaultData");
                     var dataName = element.GetAttributeValue("Data");
+                    var stepId = element.GetAttributeValue("_id");
                     var action = element.GetAttributeValue("Action") ?? "";
                     var step = new Step
                         {
+                            _id = stepId,
                             Action = action,
                             UIId = uiId,
                             UIObject = uiObject,

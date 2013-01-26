@@ -18,6 +18,8 @@ namespace AutoX.Client.Core
 
         public StepResult(AbstractAction action)
         {
+            
+            _result.SetAttributeValue("_id",Guid.NewGuid().ToString());
             _result.SetAttributeValue("Action", action.GetType().Name);
             _result.SetAttributeValue("Data", action.Data);
             Success();

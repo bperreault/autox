@@ -4,10 +4,13 @@
 
 #region
 
+using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Xml.Linq;
 using AutoX.Basic;
+using AutoX.DB;
 
 #endregion
 
@@ -19,6 +22,30 @@ namespace AutoX.Activities.AutoActivities
 
         [Browsable(false)]
         public string InstanceId { get; set; }
+
+        protected string ResultId;
+        protected string ParentResultId;
+        public void SetParentResultId(string parentResultId)
+        {
+            if (string.IsNullOrEmpty(parentResultId))
+            {
+                Log.Error("Pass a null parent result id!");
+                return;
+            }
+            ParentResultId = parentResultId;
+            ResultId = Guid.NewGuid().ToString();
+        }
+
+        protected void SetResult(XElement result)
+        {
+            result.SetAttributeValue("_parentId",ParentResultId);
+            result.SetAttributeValue("_id",ResultId);
+            result.SetAttributeValue("InstanceId",InstanceId);
+            result.SetAttributeValue("_type","Result");
+            result.SetAttributeValue("Name",GetType().Name);
+            result.SetAttributeValue("ScriptId",Id);
+            Data.Save(result);
+        }
 
         [DisplayName("Local Data First")]
         public bool OwnDataFirst { get; set; }
