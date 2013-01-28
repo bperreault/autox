@@ -66,7 +66,8 @@ namespace AutoX.Client.Core
         public string GetAllValuableObjects()
         {
             var xBrowser = new XElement("UIObject");
-            xBrowser.SetAttributeValue("_type", "Browser");
+            xBrowser.SetAttributeValue("_type", "UIObject");
+            xBrowser.SetAttributeValue("type", "Browser");
             xBrowser.SetAttributeValue("Name", "Browser");
             var valueObjects = GetCurrentBrowser().FindElements(By.XPath(_cssxPath));
 
@@ -116,8 +117,9 @@ namespace AutoX.Client.Core
                 return null;
 
             var xe = new XElement("UIObject");
+            xe.SetAttributeValue("_type", "UIObject");
             var eTag = webElement.TagName;
-            xe.SetAttributeValue("_type", !string.IsNullOrEmpty(eTag) ? eTag : "*");
+            xe.SetAttributeValue("type", !string.IsNullOrEmpty(eTag) ? eTag : "*");
             var eText = webElement.Text;
             if (!string.IsNullOrEmpty(eText))
             {

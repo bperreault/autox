@@ -59,6 +59,8 @@ namespace AutoX.Basic
                 foreach (XAttribute xa in xUi.Attributes())
                 {
                     var key = xa.Name.ToString();
+                    if (key.StartsWith("_"))
+                        continue;
                     var value = xa.Value;
                     if (count > 0)
                         xpath = xpath + " and ";

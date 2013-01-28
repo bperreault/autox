@@ -54,6 +54,21 @@ namespace AutoX
         }
 
         readonly AutoClient _autoClient = new AutoClient();
+        private void GetUIObjectsSaveToFile(object sender, RoutedEventArgs e)
+        {
+            var uiObjectsString = _autoClient.Browser.GetAllValuableObjects();
+            var fileDialog = new SaveFileDialog();
+            fileDialog.FileName = "UI";
+            fileDialog.DefaultExt = "xml";
+            fileDialog.Filter = "XML format (*.xml)|*.xml";
+            if (fileDialog.ShowDialog().Value)
+            {
+                var fileName = fileDialog.FileName;
+                File.WriteAllText(fileName, uiObjectsString);
+            }
+
+
+        }
         private void RunTest(object sender, RoutedEventArgs e)
         {
             //get workflowid from project tree

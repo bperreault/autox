@@ -20,7 +20,7 @@ namespace AutoX.Basic.Model
         public string _id { get; set; }
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
-
+        public string _parentId { get; set; }
         public static Computer GetLocalHost()
         {
             var computer = new Computer

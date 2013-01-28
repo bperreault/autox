@@ -20,7 +20,7 @@ namespace AutoX.Basic.Model
         public string Name;
 
         #region IDataObject Members
-
+        public string _parentId { get; set; }
         public string _id { get; set; }
         
         public DateTime Updated { get; set; }

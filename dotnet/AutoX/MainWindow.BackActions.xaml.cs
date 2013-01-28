@@ -100,13 +100,9 @@ namespace AutoX
                                 MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            xElement.SetAttributeValue("_parentId", "Deleted");
-
-            if (!Data.Save(xElement))
-            {
-                MessageBox.Show("Delete Tree item Failed. ");
-                return;
-            }
+            var toBeDeletedId = xElement.GetAttributeValue("_id");
+           // xElement.SetAttributeValue("_parentId", "Deleted");
+            Data.Delete (toBeDeletedId);
             parentItem.Items.Remove(selected);
             return;
 
@@ -179,13 +175,13 @@ namespace AutoX
                 foreach (XElement kid in xRoot.Descendants())
                 {
                     string kind = kid.Name.ToString();
-                    if (kind.Equals("Result"))
+                    if (kind.Equals("Result")||kind.Equals("AutoX.Basic.Model.Result"))
                     {
                         var testcaseresult = kid.GetDataObjectFromXElement() as Result;
                         selected.Items.Add(testcaseresult);
                         _testCaseResultSource.Add(testcaseresult);
                     }
-                    if (kind.Equals("StepResult"))
+                    if (kind.Equals("StepResult") || kind.Equals("AutoX.Basic.Model.StepResult"))
                     {
                         var testStepResult = kid.GetDataObjectFromXElement() as Basic.Model.StepResult;
                         _testStepSource.Add(testStepResult);

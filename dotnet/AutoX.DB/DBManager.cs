@@ -83,6 +83,14 @@ namespace AutoX.DB
         }
         public void Delete(string id)
         {
+            if (id == null)
+                return;
+            var kidQuery = Query.EQ("_parentId", id);
+            MongoCursor kidCursor = project.FindAs<BsonDocument>(kidQuery);
+            foreach (BsonDocument kid in kidCursor)
+            {
+                Delete(kid.GetValue("_id").ToString());
+            }
             var query = Query.EQ("_id", id);
             project.Remove(query);
         }

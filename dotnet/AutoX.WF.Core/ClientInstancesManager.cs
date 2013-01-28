@@ -139,7 +139,7 @@ namespace AutoX.WF.Core
         public DateTime Updated { set; get; }
         public string _id { get; set; }
         public DateTime Created { get; set; }
-
+        public string _parentId { get; set; }
         public XElement Element()
         {
             return _element;

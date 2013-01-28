@@ -18,13 +18,17 @@
                         <MenuItem Header="File" Name="FileMenu">
                             <MenuItem Header="Generate Key File" Click="GenerateKeyFile"></MenuItem>
                             <MenuItem Header="Settings" Click="Settings" />
-                            <MenuItem Header="Browser Setting" Click="BrowserSetting"></MenuItem>
-                            <MenuItem Header="Run Test" Click="RunTest"></MenuItem>
+                            
                             <MenuItem Header="Exit" Click="Exit" />
                         </MenuItem>
                         <MenuItem Header="Edit">
                             <MenuItem Header="Undo" Name="undoMenu" IsEnabled="False" />
                             <MenuItem Header="Redo" Name="redoMenu" IsEnabled="False" />
+                        </MenuItem>
+                        <MenuItem Header="Automation">
+                            <MenuItem Header="Browser Setting" Click="BrowserSetting"></MenuItem>
+                            <MenuItem Header="Get UI Objects" Click="GetUIObjectsSaveToFile" ></MenuItem>
+                            <MenuItem Header="Run Test" Click="RunTest"></MenuItem>
                         </MenuItem>
                     </Menu>
                     <Grid Grid.Row="1" Name="grid1">
@@ -322,10 +326,20 @@
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Width="4*" Binding="{Binding Action}"
                                                         Header="Action" IsReadOnly="True" />
+                                    <DataGridTextColumn Width="4*" Binding="{Binding UIObject}"
+                                                        Header="UI Object" IsReadOnly="True" />
                                     <DataGridTextColumn Width="4*" Binding="{Binding Data}"
                                                         Header="Data" IsReadOnly="True" />
                                     <DataGridTextColumn Width="4*" Binding="{Binding Result}" Header="Result"
                                                         IsReadOnly="True" />
+                                    <DataGridTextColumn Width="4*" Binding="{Binding Reason}"
+                                                        Header="Reason" IsReadOnly="True" />
+                                    <DataGridTextColumn Width="4*" Binding="{Binding Duration}"
+                                                        Header="Duration" IsReadOnly="True" />
+                                    <DataGridTextColumn Width="4*" Binding="{Binding StartTime}"
+                                                        Header="Start At" IsReadOnly="True" />
+                                    <DataGridTextColumn Width="4*" Binding="{Binding EndTime}"
+                                                        Header="Stop At" IsReadOnly="True" />
                                 </DataGrid.Columns>
                             </DataGrid>
                         </Grid>

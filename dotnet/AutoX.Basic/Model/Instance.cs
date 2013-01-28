@@ -20,7 +20,7 @@ namespace AutoX.Basic.Model
         public string Language { get; set; }
         public string ScriptGUID { get; set; }
         public string _id { get; set; }
-
+        public string _parentId { get; set; }
         public DateTime Created { get; set; }
 
         public DateTime Updated { get; set; }

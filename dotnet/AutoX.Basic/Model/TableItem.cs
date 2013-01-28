@@ -29,7 +29,7 @@ namespace AutoX.Basic.Model
         public string _id { get; set; }
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
-
+        public string _parentId { get; set; }
         public ObservableCollection<object> Get()
         {
             return _list;

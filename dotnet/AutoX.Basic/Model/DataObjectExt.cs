@@ -29,8 +29,8 @@ namespace AutoX.Basic.Model
 
         public static void SetAttributeValue(this IDataObject dataObject, string attributeName, object value)
         {
-            if (attributeName.Equals("_type") || attributeName.Equals("_parentId"))
-                return;
+            //if (attributeName.Equals("_type") || attributeName.Equals("_parentId"))
+            //    return;
             var field = dataObject.GetType().GetField(attributeName);
             if (field == null)
             {
@@ -39,8 +39,10 @@ namespace AutoX.Basic.Model
                 {
                     if (prop.PropertyType.Name.Equals("DateTime"))
                     {
-                        prop.SetValue(dataObject,DateTime.Parse(value.ToString()),null);
+                        prop.SetValue(dataObject, DateTime.Parse(value.ToString()), null);
                     }
+                    else if (prop.PropertyType.Name.Equals("TimeSpan"))
+                        prop.SetValue(dataObject, TimeSpan.Parse(value.ToString()), null);
                     else
                         prop.SetValue(dataObject, value, null);
                 }
@@ -73,7 +75,17 @@ namespace AutoX.Basic.Model
                     {
                         var prop = entity.GetType().GetProperty(xa.Name.ToString());
                         if (prop != null)
-                            prop.SetValue(entity, xa.Value, null);
+                        {
+                            if (prop.PropertyType.Name.Equals("DateTime"))
+                            {
+                                prop.SetValue(entity, DateTime.Parse(xa.Value.ToString()), null);
+                            }
+                            else if (prop.PropertyType.Name.Equals("TimeSpan"))
+                                prop.SetValue(entity, TimeSpan.Parse(xa.Value.ToString()), null);
+                            else
+                                prop.SetValue(entity, xa.Value, null);
+                            //prop.SetValue(entity, xa.Value, null);
+                        }
                     }
                     return entity;
                 }
@@ -90,7 +102,9 @@ namespace AutoX.Basic.Model
         public static IDataObject GetDataObjectFromXElement(this XElement element)
         {
             var name = element.Name.ToString();
-            var type = Type.GetType("AutoX.Basic.Model." + name);
+            
+            var type = Type.GetType( name.Contains("AutoX.Basic.Model.")? name: "AutoX.Basic.Model." + name);
+            
             if (type != null)
             {
                 var constructor = type.GetConstructor(Type.EmptyTypes);
@@ -126,8 +140,11 @@ namespace AutoX.Basic.Model
             foreach (PropertyInfo prop in type.GetProperties())
             {
                 var name = prop.Name;
-                var value = (prop.GetValue(dataObject, null) ?? "") as string;
-                ret.SetAttributeValue(name, value);
+                var value = prop.GetValue(dataObject, null);
+                if(value==null)
+                    ret.SetAttributeValue(name, "");
+                else
+                    ret.SetAttributeValue(name, value.ToString());
             }
             return ret;
         }

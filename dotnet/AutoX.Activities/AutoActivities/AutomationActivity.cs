@@ -44,6 +44,7 @@ namespace AutoX.Activities.AutoActivities
             result.SetAttributeValue("_type","Result");
             result.SetAttributeValue("Name",GetType().Name);
             result.SetAttributeValue("ScriptId",Id);
+            //result.SetAttributeValue("UIObject", UIObject);
             Data.Save(result);
         }
 

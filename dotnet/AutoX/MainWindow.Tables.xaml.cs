@@ -94,6 +94,7 @@ namespace AutoX
             var updated = dialog.GetElement().GetObjectFromXElement();
             source[index] = updated;
             table.ItemsSource = source;
+            Data.Save(dialog.GetElement());
         }
 
         private void TestCaseResultTableSelectionChanged(object sender, SelectionChangedEventArgs e)

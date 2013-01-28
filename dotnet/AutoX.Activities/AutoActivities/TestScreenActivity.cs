@@ -159,8 +159,14 @@ namespace AutoX.Activities.AutoActivities
                     step.SetAttributeValue("StepId",stepId);
                 }
                 var uiid = descendant.GetAttributeValue("UIId");
+                var uiObject = descendant.GetAttributeValue("UIObject");
+                if (!string.IsNullOrEmpty(uiObject))
+                {
+                    step.SetAttributeValue("UIObject", uiObject);
+                }
                 //TODO we have NOT handle the parent here, add it later; for now, it can work.
                 if (string.IsNullOrEmpty(uiid)) continue;
+                step.SetAttributeValue("UIId", uiid);
                 var uio = Host.GetDataObject(uiid);
                 if (uio == null) continue;
                 var xO = XElement.Parse("<UIObject />");
