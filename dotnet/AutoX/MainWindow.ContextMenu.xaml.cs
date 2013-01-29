@@ -40,20 +40,25 @@ namespace AutoX
 
         private void BrowserSetting(object sender, RoutedEventArgs e)
         {
-            
+
+            PopupBrowsersDialogSetDefaultConfig();
+        }
+
+        private void PopupBrowsersDialogSetDefaultConfig()
+        {
             var browsersDialog = new BrowsersDialog();
             browsersDialog.ShowDialog();
             if (browsersDialog.DialogResult == true)
             {
-                
+
                 _config.Set("Browser.Type", browsersDialog.BrowserSetting.Name.ToString());
                 _config.Set("Browser.Platform", browsersDialog.BrowserSetting.GetAttributeValue("Platform"));
                 _config.Set("Browser.Version", browsersDialog.BrowserSetting.GetAttributeValue("Version"));
-                
+
             }
         }
 
-        readonly AutoClient _autoClient = new AutoClient();
+        AutoClient _autoClient = new AutoClient();
         private void GetUIObjectsSaveToFile(object sender, RoutedEventArgs e)
         {
             var uiObjectsString = _autoClient.Browser.GetAllValuableObjects();
@@ -68,6 +73,33 @@ namespace AutoX
             }
 
 
+        }
+        private void RunSauceTest(object sender, RoutedEventArgs e)
+        {
+            //get workflowid from project tree
+            var selected = ProjectTreeView.SelectedItem as TreeViewItem;
+            if (selected == null)
+            {
+                MessageBox.Show("Please select a test suite from the project tree!");
+                return;
+            }
+            var selectedItem = selected.DataContext as XElement;
+            if (selectedItem == null) return;
+            var workflowId = selectedItem.GetAttributeValue("_id");
+            var type = selectedItem.GetAttributeValue("_type");
+            var scriptType = selectedItem.GetAttributeValue("ScriptType");
+            if (!type.Equals("Script") || !scriptType.Equals("TestSuite"))
+            {
+                MessageBox.Show("Selected Item MUST be a Test Script!");
+                return;
+            }
+            //popup a dialog to get the browser os version
+            PopupBrowsersDialogSetDefaultConfig();
+            _config.Set("Host.Type", "Sauce");
+            _autoClient = new AutoClient(_config);
+            RunWorkflowById(workflowId);
+            //when finished, show a message
+            MessageBox.Show("Your Test finished.");
         }
         private void RunTest(object sender, RoutedEventArgs e)
         {
@@ -88,38 +120,36 @@ namespace AutoX
                 MessageBox.Show("Selected Item MUST be a Test Script!");
                 return;
             }
-            var workflowInstance = new WorkflowInstance(workflowId,null,Configuration.Settings("ResultsRoot",""));
-            string finishedStatus = "Completed|Aborted|Canceled|Faulted";
+            _autoClient.Config.Set("Host.Type", "Local");
+            RunWorkflowById(workflowId);
+            //when finished, show a message
+            MessageBox.Show("Your Test finished.");
             
+        }
+
+        private void RunWorkflowById(string workflowId)
+        {
+            var workflowInstance = new WorkflowInstance(workflowId, null, Configuration.Settings("ResultsRoot", ""));
+            string finishedStatus = "Completed|Aborted|Canceled|Faulted";
+
             bool debugMode = _config.Get("Mode.Debug", "True").Equals("True", StringComparison.CurrentCultureIgnoreCase);
             while (true)
             {
-//                string status = workflowInstance.GetStatus();
-//                if (status == null)
-//                {
-//                    Thread.Sleep(1000);
-//                    continue;
-//                }
-//                status = workflowInstance.GetStatus();
-//                if (finishedStatus.Contains(status))
-//                    break;
                 var xCommand = workflowInstance.GetCommand();
                 if (debugMode)
                     MessageBox.Show(xCommand.ToString());
                 Log.Info(xCommand.ToString());
-                
+
                 var xResult = _autoClient.Execute(xCommand);
                 if (debugMode)
                     MessageBox.Show(xResult.ToString());
                 Log.Info(xResult.ToString());
                 workflowInstance.SetResult(xResult);
                 Thread.Sleep(1000);
-                
+
                 if (finishedStatus.Contains(workflowInstance.Status))
                     break;
             }
-            //when finished, show a message
-            MessageBox.Show("Your Test finished.");
             workflowInstance = null;
         }
 

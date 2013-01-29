@@ -24,9 +24,19 @@ namespace AutoX.DB
             return Find(id).ToXElement();
         }
 
+        public static XElement Read(string key, string value)
+        {
+            return Find(key, value).ToXElement();
+        }
+
         public static BsonDocument Find(string id)
         {
             return DBManager.GetInstance().Find(id);
+        }
+
+        public static BsonDocument Find(string key, string value)
+        {
+            return DBManager.GetInstance().Find(key, value);
         }
 
         public static void Delete(string id)

@@ -295,9 +295,9 @@ namespace AutoX.Client.Core
                 capabillities = DesiredCapabilities.Chrome();
             else if (browserType.Equals("Android"))
                 capabillities = DesiredCapabilities.Android();
-            else if (browserType.Equals("IPad"))
+            else if (browserType.Equals("Ipad"))
                 capabillities = DesiredCapabilities.IPad();
-            else if (browserType.Equals("IPhone"))
+            else if (browserType.Equals("Iphone"))
                 capabillities = DesiredCapabilities.IPhone();
             else if (browserType.Equals("Opera"))
                 capabillities = DesiredCapabilities.Opera();

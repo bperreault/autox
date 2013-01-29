@@ -28,7 +28,8 @@
                         <MenuItem Header="Automation">
                             <MenuItem Header="Browser Setting" Click="BrowserSetting"></MenuItem>
                             <MenuItem Header="Get UI Objects" Click="GetUIObjectsSaveToFile" ></MenuItem>
-                            <MenuItem Header="Run Test" Click="RunTest"></MenuItem>
+                            <MenuItem Header="Debug Test (Local)" Click="RunTest"></MenuItem>
+                            <MenuItem Header="Debug Test (Sauce)" Click="RunSauceTest"></MenuItem>
                         </MenuItem>
                     </Menu>
                     <Grid Grid.Row="1" Name="grid1">
@@ -298,7 +299,7 @@
                             </Grid.RowDefinitions>
                             <TextBox Grid.Row="0" Name="filterTestCaseResult" HorizontalAlignment="Stretch"
                                      BorderThickness="0" KeyUp="TestCaseTableEnterFilter" />
-                            <DataGrid Background="#FFE5E5E5" Name="TestCaseResultTable" Grid.Row="1" AutoGenerateColumns="False"
+                            <DataGrid Background="#FFE5E5E5" Name="TestCaseResultTable" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False"
                                       MouseDoubleClick="DoubleClickOnTable" BorderThickness="0" ItemsSource="{Binding}" SelectionUnit="FullRow" SelectionChanged="TestCaseResultTableSelectionChanged">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Width="4*" Binding="{Binding OriginalResult}"
@@ -321,7 +322,7 @@
                             </Grid.RowDefinitions>
                             <TextBox Grid.Row="0" Name="filterTestStep" HorizontalAlignment="Stretch"
                                      BorderThickness="0" KeyUp="TestStepTableEnterFilter" />
-                            <DataGrid Background="#FFE5E5E5" Name="TestStepsResultTable" Grid.Row="1" AutoGenerateColumns="False"
+                            <DataGrid Background="#FFE5E5E5" Name="TestStepsResultTable" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False"
                                       MouseDoubleClick="DoubleClickOnTable" BorderThickness="0" ItemsSource="{Binding}" SelectionUnit="FullRow">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Width="4*" Binding="{Binding Action}"

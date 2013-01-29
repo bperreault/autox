@@ -15,13 +15,42 @@ namespace AutoX.Test
 {
     internal class Program
     {
-        private static void Main()
+        private static int Main(string[] args)
         {
+            for (int i = 0 ; i<args.Length; i++)
+            {
+                if(args[i].StartsWith("-")){
+                    if(args[i].Equals("-C")){
+                        //clearn the project to initial status
+                    }
+                    if (args[i].Equals("-R"))
+                    {
+                        //remove all the results
+                    }
+                    if (args[i].Equals("-G"))
+                    {
+                        //create a project for a new user
+                    }
+                    if (args[i].Equals("-A"))
+                    {
+                        //add user to project
+                    }
+                    if (args[i].Equals("-S"))
+                    {
+                        //run a test suite
+                    }
+                    if (args[i].Equals("-F"))
+                    {
+                        //run a set of tests
+                    }
+                }
+            }
             //AsymmetricEncryption.GenerateRegisterFile("yazhi.pang", "autox");
             //CreateProject();
             TestWorkflow();
             //Console.WriteLine(AsymmetricEncryption.Hmacmd5("autox:b3842073-5a7a-4782-abbc-e7234e09f8ac", "5f9fef27854ca50a3c132ce331cb6034"));
             Console.Read();
+            return 0;
         }
 
         private static void TestWorkflow()

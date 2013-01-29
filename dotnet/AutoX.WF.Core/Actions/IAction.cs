@@ -16,22 +16,22 @@ namespace AutoX.WF.Core.Actions
             throw new System.NotImplementedException();
         }
     }
-    class GetById : IAction
-    {
+    //class GetById : IAction
+    //{
 
-        public XElement Do(XElement action)
-        {
-            throw new System.NotImplementedException();
-        }
-    }
-    class GetChildren : IAction
-    {
+    //    public XElement Do(XElement action)
+    //    {
+    //        throw new System.NotImplementedException();
+    //    }
+    //}
+    //class GetChildren : IAction
+    //{
 
-        public XElement Do(XElement action)
-        {
-            throw new System.NotImplementedException();
-        }
-    }
+    //    public XElement Do(XElement action)
+    //    {
+    //        throw new System.NotImplementedException();
+    //    }
+    //}
     class GetComputersInfo : IAction
     {
 
@@ -66,14 +66,14 @@ namespace AutoX.WF.Core.Actions
             return ClientInstancesManager.GetInstance().GetComputer(clientInstanceId).GetCommand();
         }
     }
-    class SetById : IAction
-    {
+    //class SetById : IAction
+    //{
 
-        public XElement Do(XElement action)
-        {
-            throw new System.NotImplementedException();
-        }
-    }
+    //    public XElement Do(XElement action)
+    //    {
+    //        throw new System.NotImplementedException();
+    //    }
+    //}
     class SetInstanceInfo : IAction
     {
 
