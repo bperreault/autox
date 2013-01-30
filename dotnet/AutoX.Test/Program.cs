@@ -21,11 +21,11 @@ namespace AutoX.Test
             {
                 if(args[i].StartsWith("-")){
                     if(args[i].Equals("-C")){
-                        //clearn the project to initial status
+                        CleanProject();
                     }
                     if (args[i].Equals("-R"))
                     {
-                        //remove all the results
+                        RemoveResults();
                     }
                     if (args[i].Equals("-G"))
                     {
@@ -47,10 +47,39 @@ namespace AutoX.Test
             }
             //AsymmetricEncryption.GenerateRegisterFile("yazhi.pang", "autox");
             //CreateProject();
-            TestWorkflow();
+            //TestWorkflow();
             //Console.WriteLine(AsymmetricEncryption.Hmacmd5("autox:b3842073-5a7a-4782-abbc-e7234e09f8ac", "5f9fef27854ca50a3c132ce331cb6034"));
-            Console.Read();
+            //Console.Read();
             return 0;
+        }
+
+        private static void RemoveResults()
+        {
+            //find root element
+            var xRoot = Data.Read("_type", "Root");
+            var resultId = xRoot.GetAttributeValue("Result");
+            var results = Data.GetChildren(resultId);
+            foreach (var kids in results.Descendants())
+            {
+                Data.Delete(kids.GetAttributeValue("_id"));
+            }
+        }
+
+        private static void CleanProject()
+        {
+            //find root element
+            var xRoot = Data.Read("_type", "Root");
+            var root = Data.GetChildren(xRoot.GetAttributeValue("_id"));
+            foreach (var kid in root.Descendants())
+            {
+                var id = kid.GetAttributeValue("_id");
+                if(id.Equals(xRoot.GetAttributeValue("_id")))
+                    continue;
+                foreach (var grandKid in Data.GetChildren(id).Descendants())
+                {
+                    Data.Delete(grandKid.GetAttributeValue("_id"));
+                }
+            }
         }
 
         private static void TestWorkflow()
