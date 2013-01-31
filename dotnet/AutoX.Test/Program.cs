@@ -17,40 +17,72 @@ namespace AutoX.Test
     {
         private static int Main(string[] args)
         {
+            Dictionary<string,string> params = new Dictionary<string,string>();
             for (int i = 0 ; i<args.Length; i++)
             {
                 if(args[i].StartsWith("-")){
-                    if(args[i].Equals("-C")){
+                   params.Add(args[i],args[i+1]);
+                }
+            }
+                    if(params.ContainKey("-C")){
                         CleanProject();
                     }
-                    if (args[i].Equals("-R"))
+                    if (params.ContainKey("-R"))
                     {
                         RemoveResults();
                     }
-                    if (args[i].Equals("-G"))
+                    if (params.ContainKey("-G"))
                     {
                         //create a project for a new user
                     }
-                    if (args[i].Equals("-A"))
+                    if (params.ContainKey("-A"))
                     {
                         //add user to project
                     }
-                    if (args[i].Equals("-S"))
+                    if (params.ContainKey("-S"))
                     {
                         //run a test suite
+                        if(params.ContainKey("-i")){
+
+                        }
+                        else{
+                            PrintUsage();
+                        }
                     }
-                    if (args[i].Equals("-F"))
+                    if (params.ContainKey("-F"))
                     {
                         //run a set of tests
+                        if(params.ContainKey("-i")){
+
+                        }
+                        else{
+                            PrintUsage();
+                        }
                     }
-                }
-            }
+            if(params.Length <= 0)
+                PrintUsage();    
             //AsymmetricEncryption.GenerateRegisterFile("yazhi.pang", "autox");
             //CreateProject();
             //TestWorkflow();
             //Console.WriteLine(AsymmetricEncryption.Hmacmd5("autox:b3842073-5a7a-4782-abbc-e7234e09f8ac", "5f9fef27854ca50a3c132ce331cb6034"));
             //Console.Read();
             return 0;
+        }
+
+        private static void PrintUsage(){
+            Console.WriteLine("Usage:");
+            Console.WriteLine("\t-C\tClean The Current Project");
+            Console.WriteLine("\t-R\tRemove all Results from Current Project");
+            Console.WriteLine("\t-G\tCreate a Project for a new User, require -f");
+            Console.WriteLine("\t-A\tAdd a User to Project, require -p -u");
+            Console.WriteLine("\t-S\tRun One Script, require -i");
+            Console.WriteLine("\t-F\tRun a Set of Tests, require -i");
+            Console.WriteLine("\t-u\tUser Name");
+            Console.WriteLine("\t-p\tProject Name");
+            Console.WriteLine("\t-f\tFile Name");
+            Console.WriteLine("\t-i\tId");
+            Console.WriteLine("\t-v\tVersion");
+            Console.WriteLine("\t-b\tBuild");
         }
 
         private static void RemoveResults()
