@@ -22,6 +22,7 @@
         </DrawingBrush>
     </sap:ActivityDesigner.Icon>
     <sap:ActivityDesigner.Resources>
+        <Activities:StepsConverter x:Key="StepsConverter" />
         <Activities:DatumConverter x:Key="DatumConverter" />
 
         <DataTemplate x:Key="Collapsed">
@@ -30,11 +31,47 @@
         <DataTemplate x:Key="Expanded">
             <StackPanel>
                 <TextBlock HorizontalAlignment="Center" Text="{Binding Path=ModelItem.TestSreenName}"></TextBlock>
+                <DataGrid HorizontalContentAlignment="Stretch"
+                    ItemsSource="{Binding Path=ModelItem.Steps, Converter={StaticResource StepsConverter},ConverterParameter=In}"
+                    Background="Transparent" AllowDrop="True" Name="StepsTable" AutoGenerateColumns="False" CanUserAddRows="False"
+                    IsReadOnly="True" CanUserDeleteRows="False" CanUserSortColumns="False" >
+                    <DataGrid.RowStyle>
+                        <Style TargetType="DataGridRow">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Enable}" Value="False">
+                                    <Setter Property="Visibility" Value="Collapsed"></Setter>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Enable}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible"></Setter>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding UIObject}" Header="Object" />
 
-                <DataGrid
+                        <DataGridComboBoxColumn SelectedItemBinding="{Binding Action}" Header="Action">
+                            <DataGridComboBoxColumn.ElementStyle>
+                                <Style TargetType="ComboBox">
+                                    <Setter Property="ItemsSource" Value="{Binding PossibleAction}" />
+                                    <Setter Property="IsReadOnly" Value="True" />
+                                </Style>
+                            </DataGridComboBoxColumn.ElementStyle>
+                            <DataGridComboBoxColumn.EditingElementStyle>
+                                <Style TargetType="ComboBox">
+                                    <Setter Property="ItemsSource" Value="{Binding PossibleAction}" />
+                                </Style>
+                            </DataGridComboBoxColumn.EditingElementStyle>
+                        </DataGridComboBoxColumn>
+                        <DataGridTextColumn Binding="{Binding Data}" Header="Data Name" />
+                        <DataGridTextColumn Binding="{Binding DefaultData}" Header="Default Data Value" />
+                        <DataGridCheckBoxColumn Binding="{Binding Enable}" Header="Enable" />
+                    </DataGrid.Columns>
+                </DataGrid>
+                <DataGrid HorizontalContentAlignment="Stretch"
                     ItemsSource="{Binding Path=ModelItem.UserData, Converter={StaticResource DatumConverter},ConverterParameter=In}"
                     Background="Transparent" AllowDrop="False" Name="DataTable" AutoGenerateColumns="False" CanUserAddRows="False"
-                    CanUserSortColumns="True" CanUserDeleteRows="False" IsReadOnly="True">
+                    CanUserSortColumns="True" CanUserDeleteRows="False" IsReadOnly="False">
                     <DataGrid.Columns>
                         <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
                         <DataGridTextColumn Binding="{Binding Value}" Header="Value" />

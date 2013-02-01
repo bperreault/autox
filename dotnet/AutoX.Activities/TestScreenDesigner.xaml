@@ -31,14 +31,14 @@
             <StackPanel>
                 <TextBlock HorizontalAlignment="Center" Text="{Binding Path=ModelItem.Name}"></TextBlock>
 
-                <DataGrid
+                <DataGrid HorizontalContentAlignment="Stretch"
                     ItemsSource="{Binding Path=ModelItem.Steps, Converter={StaticResource StepsConverter},ConverterParameter=In}"
                     Background="Transparent" AllowDrop="True" Name="StepsTable" AutoGenerateColumns="False" CanUserAddRows="False"
                     IsReadOnly="True" CanUserDeleteRows="False" CanUserSortColumns="False">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding UIObject}" Header="Object" />
+                        <DataGridTextColumn Binding="{Binding UIObject}" Header="Object"/>
 
-                        <DataGridComboBoxColumn SelectedItemBinding="{Binding Action}" Header="Action">
+                        <DataGridComboBoxColumn SelectedItemBinding="{Binding Action}" Header="Action" >
                             <DataGridComboBoxColumn.ElementStyle>
                                 <Style TargetType="ComboBox">
                                     <Setter Property="ItemsSource" Value="{Binding PossibleAction}" />
@@ -53,17 +53,17 @@
                         </DataGridComboBoxColumn>
                         <DataGridTextColumn Binding="{Binding Data}" Header="Data Name" />
                         <DataGridTextColumn Binding="{Binding DefaultData}" Header="Default Data Value" />
-                        <DataGridCheckBoxColumn Binding="{Binding Enable}" Header="Enable" />
+                        <DataGridCheckBoxColumn Binding="{Binding Enable}" Header="Enable" Visibility="Collapsed" />
                     </DataGrid.Columns>
                 </DataGrid>
-                <DataGrid
+                <DataGrid 
                     ItemsSource="{Binding Path=ModelItem.UserData, Converter={StaticResource DatumConverter},ConverterParameter=In}"
                     Background="Transparent" AllowDrop="False" Name="DataTable" AutoGenerateColumns="False" CanUserAddRows="False"
-                    CanUserSortColumns="True" CanUserDeleteRows="False" IsReadOnly="True">
+                    CanUserSortColumns="True" CanUserDeleteRows="False" IsReadOnly="True" Visibility="Collapsed">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding Name}" Header="Name" />
-                        <DataGridTextColumn Binding="{Binding Value}" Header="Value" />
-                        <DataGridTextColumn Binding="{Binding DataSet}" Header="DataSet" />
+                        <DataGridTextColumn Binding="{Binding Name}" Header="Name"  Width="*"/>
+                        <DataGridTextColumn Binding="{Binding Value}" Header="Value" Width="*" />
+                        <DataGridTextColumn Binding="{Binding DataSet}" Header="DataSet" Width="*"/>
                     </DataGrid.Columns>
                 </DataGrid>
 

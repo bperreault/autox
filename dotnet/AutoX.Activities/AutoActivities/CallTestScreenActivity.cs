@@ -42,6 +42,14 @@ namespace AutoX.Activities.AutoActivities
 
         [Browsable(false)]
         public string TestSreenId { get; set; }
+        private string _steps = "<Steps />";
+        [DisplayName("Test Steps")]
+        [Editor(typeof(StepsEditor), typeof(DialogPropertyValueEditor))]
+        public string Steps
+        {
+            get { return _steps; }
+            set { _steps = value; }
+        }
 
         [DisplayName("User Data")]
         [Editor(typeof (UserDataEditor), typeof (DialogPropertyValueEditor))]

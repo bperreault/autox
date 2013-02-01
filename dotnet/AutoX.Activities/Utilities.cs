@@ -76,7 +76,7 @@ namespace AutoX.Activities
                 xStep.SetAttributeValue("_id", Guid.NewGuid().ToString());
                 xStep.SetAttributeValue("UIId", data.GetAttributeValue("_id"));
                 xStep.SetAttributeValue("UIObject", data.GetAttributeValue("Name"));
-                xStep.SetAttributeValue("Enable", "True");
+                xStep.SetAttributeValue("Enable", "False");
                 xStep.SetAttributeValue("Data", "");
                 xStep.SetAttributeValue("DefaultData", "");
                 xStep.SetAttributeValue("Action", "");
@@ -122,7 +122,8 @@ namespace AutoX.Activities
                         {
                             TestSreenId = data.GetAttributeValue("_id"),
                             TestSreenName = data.GetAttributeValue("Name"),
-                            DisplayName = "Call Test Screen: " + data.GetAttributeValue("Name")
+                            DisplayName = "Call Test Screen: " + data.GetAttributeValue("Name"),
+                            Steps = XElement.Parse( data.GetAttributeValue("Content")).GetAttributeValue("Steps")
                         };
                     activity.SetHost(host);
                     return activity;

@@ -8,6 +8,7 @@ using System.Collections;
 using System.Windows;
 using System.Xml.Linq;
 using AutoX.Basic;
+using AutoX.DB;
 
 #endregion
 
@@ -28,6 +29,13 @@ namespace AutoX.Activities
             
         }
 
+        private void ButtonReload(object sender, RoutedEventArgs e)
+        {
+
+            var p = XElement.Parse(Data.Read(StepId).GetAttributeValue("Content")).GetAttributeValue("Steps");
+            var steps = Utilities.GetStepsList(p, Actions, Host);
+            StepsTable.ItemsSource = steps;
+        }
 
         private void ButtonOKClick(object sender, RoutedEventArgs e)
         {
@@ -110,7 +118,12 @@ namespace AutoX.Activities
                 }
             return xSteps.ToString();
         }
-
+        private string StepId;
+        internal void Set(string stepId)
+        {
+            reloadButton.IsEnabled = true;
+            StepId = stepId;
+        }
         internal void Set(string p, string userData)
         {
             var ds = Utilities.GetRawUserData(userData, Host).Keys;

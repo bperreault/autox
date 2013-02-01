@@ -23,7 +23,7 @@ namespace AutoX.Client.Core
 {
     public sealed class Browser : IDisposable
     {
-        private static Browser _instance;
+        
         //CSS types that we care
         private readonly string _cssxPath = Configuration.Settings("CSSType",
                                                                    "//*[@class='ROW1' or @class='ROW2' or @class='EDIT' or @class='VIEWBOXCAPTION' or @class='TABON' or @class='TABOFF' or @class='ButtonItem' or @class='TOPBC' or @type='checkbox' or @type='text' or @class='Logonbutton' or @type='password']");

@@ -81,6 +81,7 @@
       <DependentUpon>StepsDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="StepsEditor.cs" />
+    <Compile Include="StepsIdConverter.cs" />
     <Compile Include="TestCaseDesigner.xaml.cs">
       <DependentUpon>TestCaseDesigner.xaml</DependentUpon>
     </Compile>

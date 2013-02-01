@@ -18,3 +18,4 @@ bin
 /dotnet/AutoX.Activities/obj
 /dotnet/AutoX.Client/obj
 /dotnet/AutoX.Database/obj
+/dotnet/AutoX.Web/weblog.txt

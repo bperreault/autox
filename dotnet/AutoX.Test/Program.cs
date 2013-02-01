@@ -7,6 +7,7 @@ using AutoX.DB;
 using System.Xml.Linq;
 using AutoX.WF.Core;
 using AutoX.Client.Core;
+using System.Collections.Generic;
 
 #endregion
 
@@ -15,51 +16,53 @@ namespace AutoX.Test
 {
     internal class Program
     {
+        static Dictionary<string, string> parameters = new Dictionary<string, string>();
         private static int Main(string[] args)
         {
-            Dictionary<string,string> params = new Dictionary<string,string>();
+            //Dictionary<string,string> parameters = new Dictionary<string,string>();
+
             for (int i = 0 ; i<args.Length; i++)
             {
                 if(args[i].StartsWith("-")){
-                   params.Add(args[i],args[i+1]);
+                   parameters.Add(args[i],args[i+1]);
                 }
             }
-                    if(params.ContainKey("-C")){
+                    if(parameters.ContainsKey("-C")){
                         CleanProject();
                     }
-                    if (params.ContainKey("-R"))
+                    if (parameters.ContainsKey("-R"))
                     {
                         RemoveResults();
                     }
-                    if (params.ContainKey("-G"))
+                    if (parameters.ContainsKey("-G"))
                     {
                         //create a project for a new user
                     }
-                    if (params.ContainKey("-A"))
+                    if (parameters.ContainsKey("-A"))
                     {
                         //add user to project
                     }
-                    if (params.ContainKey("-S"))
+                    if (parameters.ContainsKey("-S"))
                     {
                         //run a test suite
-                        if(params.ContainKey("-i")){
+                        if(parameters.ContainsKey("-i")){
 
                         }
                         else{
                             PrintUsage();
                         }
                     }
-                    if (params.ContainKey("-F"))
+                    if (parameters.ContainsKey("-F"))
                     {
                         //run a set of tests
-                        if(params.ContainKey("-i")){
+                        if(parameters.ContainsKey("-i")){
 
                         }
                         else{
                             PrintUsage();
                         }
                     }
-            if(params.Length <= 0)
+            if(parameters.Count <= 0)
                 PrintUsage();    
             //AsymmetricEncryption.GenerateRegisterFile("yazhi.pang", "autox");
             //CreateProject();

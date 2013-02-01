@@ -34,7 +34,7 @@ namespace AutoX.Activities
         protected override void OnDragOver(DragEventArgs e)
         {
             var data = e.Data.GetData("DataFormat") as XElement;
-            if (Utilities.CheckValidDrop(data, "UIObject", "Datum"))
+            if (Utilities.CheckValidDrop(data, "UIObject"))
             {
                 e.Effects = (DragDropEffects.Move & e.AllowedEffects);
                 e.Handled = true;

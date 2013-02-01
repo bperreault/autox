@@ -50,9 +50,14 @@ namespace AutoX.Activities
             if (property == null) return;
             var userData = "";
             if (property.Value != null) userData = property.Value.ToString();
-
+            var stepId = modelItem.Properties["TestSreenId"];
+            string steps = "";
+            if (stepId != null)
+                steps = stepId.Value.ToString();
             var stepsDialog = new StepsDialog();
             stepsDialog.Set(propertyValue.Value.ToString(), userData);
+            if (!string.IsNullOrEmpty(steps))
+                stepsDialog.Set(steps);
             stepsDialog.ShowDialog();
 
             if (stepsDialog.DialogResult == true)

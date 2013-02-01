@@ -1,10 +1,4 @@
-﻿// Hapa Project, CC
-// Created @2012 08 24 09:25
-// Last Updated  by Huang, Jien @2012 08 24 09:25
-
-#region
-
-using System;
+﻿using System;
 using System.Collections;
 using System.Globalization;
 using System.Windows.Data;
@@ -12,11 +6,9 @@ using AutoX.Basic;
 using AutoX.DB;
 using System.Xml.Linq;
 
-#endregion
-
 namespace AutoX.Activities
 {
-    public class StepsConverter : IValueConverter
+    public class StepsIdConverter : IValueConverter
     {
         private readonly ArrayList _options = Configuration.GetSupportedAction();
 
@@ -25,7 +17,13 @@ namespace AutoX.Activities
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var textValue = value as string;
-            var ret = Utilities.GetStepsList(textValue, _options, HostManager.GetInstance().GetHost());
+            if (string.IsNullOrEmpty(textValue))
+                return null;
+            string content = Data.Read(textValue).GetAttributeValue("Content");
+            if (string.IsNullOrEmpty(content))
+                return null;
+            var steps = XElement.Parse(content).GetAttributeValue("Steps");
+            var ret = Utilities.GetStepsList(steps, _options, HostManager.GetInstance().GetHost());
 
             return ret;
         }
@@ -36,6 +34,7 @@ namespace AutoX.Activities
         }
 
         #endregion
+
+        
     }
-    
 }
