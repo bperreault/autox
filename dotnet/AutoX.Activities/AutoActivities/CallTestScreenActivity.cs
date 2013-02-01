@@ -92,6 +92,7 @@ namespace AutoX.Activities.AutoActivities
         // and return the value from the Execute method.
         protected override void Execute(NativeActivityContext context)
         {
+            /******** old way: call test screen *****
             // Obtain the runtime value of the Text input argument
 
             //TODO implement it!!!
@@ -108,7 +109,99 @@ namespace AutoX.Activities.AutoActivities
                 activity.SetParentResultId(ParentResultId);
                 Utilities.GetWorkflowApplication(activity).Run();
             }
-            
+            ********* old way end here **********/
+            InternalExecute(context,null);
+        }
+
+        private void InternalExecute(NativeActivityContext context, ActivityInstance instance)
+        {
+            if (_onChildComplete == null)
+            {
+                _onChildComplete = InternalExecute;
+            }
+            Log.Info("in CallTestScreenActivity internalexecute");
+            var steps = GetSteps();
+            Host.SetCommand(steps);
+            var rElement = Host.GetResult(GUID);
+            //TODO Log should be done at the Host side, we use this result to get some variables to use in the workflow
+            Log.Info(rElement.ToString());
+            SetResult(rElement);
+        }
+
+        private XElement GetSteps()
+        {
+            //TODO: use screen id to get the latest steps, compare to the current one, 
+            //force enable some steps(if original one enabled), 
+            //delete some steps (if original one gone), 
+            //add some steps, update some steps (new and mark enabled, also add the un-enabled items, they would not work anyway)
+            //set command to instance, then get the result
+            var data = Utilities.GetActualUserData(UserData, Host);
+            //Utilities.PrintDictionary(data);
+            //update the Steps into the format we want
+            var steps = XElement.Parse("<AutoX.Steps />");
+            steps.SetAttributeValue("OnError", ErrorLevel.ToString());
+            steps.SetAttributeValue("InstanceId", InstanceId);
+            steps.SetAttributeValue("_id", GUID);
+            foreach (XElement descendant in XElement.Parse(_steps).Descendants("Step"))
+            {
+                var enable = descendant.GetAttributeValue("Enable");
+                if (string.IsNullOrEmpty(enable))
+                {
+                    enable = "True";
+                }
+                if (!enable.ToLower().Equals("true"))
+                    continue;
+                var action = descendant.GetAttributeValue("Action");
+                
+                if (string.IsNullOrEmpty(action))
+                {
+                    Log.Error("Action is empty, please check!");
+                    continue;
+                }
+                
+                var step = XElement.Parse("<Step />");
+
+                step.SetAttributeValue("Action", action);
+                var dataref = descendant.GetAttributeValue("Data");
+                if (string.IsNullOrEmpty(dataref))
+                {
+                    var defaultData = descendant.GetAttributeValue("DefaultData");
+                    if (!string.IsNullOrEmpty(defaultData))
+                        step.SetAttributeValue("Data", defaultData);
+                }
+                else
+                {
+                    step.SetAttributeValue("Data", data.ContainsKey(dataref) ? data[dataref] : "");
+                }
+                var stepId = descendant.GetAttributeValue("_id");
+                if (string.IsNullOrEmpty(stepId))
+                {
+                    Log.Error("Step id is empty.");
+                }
+                else
+                {
+                    step.SetAttributeValue("StepId",stepId);
+                }
+                var uiid = descendant.GetAttributeValue("UIId");
+                var uiObject = descendant.GetAttributeValue("UIObject");
+                if (!string.IsNullOrEmpty(uiObject))
+                {
+                    step.SetAttributeValue("UIObject", uiObject);
+                }
+                //TODO we have NOT handle the parent here, add it later; for now, it can work.
+                if (string.IsNullOrEmpty(uiid)) continue;
+                step.SetAttributeValue("UIId", uiid);
+                var uio = Host.GetDataObject(uiid);
+                if (uio == null) continue;
+                var xO = XElement.Parse("<UIObject />");
+                var xpath = uio.GetAttributeValue("XPath");
+                //TODO add name, id, css later!!!
+                if (!string.IsNullOrEmpty(xpath))
+                    xO.SetAttributeValue("XPath", xpath);
+                step.Add(xO);
+                steps.Add(step);
+            }
+            return steps;
         }
     }
 }

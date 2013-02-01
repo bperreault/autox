@@ -34,6 +34,15 @@ namespace AutoX.Activities
 
             var p = XElement.Parse(Data.Read(StepId).GetAttributeValue("Content")).GetAttributeValue("Steps");
             var steps = Utilities.GetStepsList(p, Actions, Host);
+            var current = StepsTable.ItemsSource as ArrayList;
+            //TODO add new things and remove something
+            ArrayList newList = new ArrayList();
+            foreach(Step currentStep in current){
+                foreach(Step original in steps){
+                    //TODO currentStep must existed in steps, if not, means globally deleted; 
+                    //if in steps, and it is marked Enable, then mark current one Enable, it is globally enabled.
+                }
+            }
             StepsTable.ItemsSource = steps;
         }
 

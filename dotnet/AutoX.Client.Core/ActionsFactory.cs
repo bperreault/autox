@@ -21,6 +21,7 @@ namespace AutoX.Client.Core
             var instanceId = steps.GetAttributeValue("InstanceId");
             var runtimeId = steps.GetAttributeValue("RunTimeId");
             var onError = steps.GetAttributeValue("OnError");
+            string link = null;
             if(!string.IsNullOrEmpty(onError))
                 ret.SetAttributeValue("OnError",onError);
             if (!string.IsNullOrEmpty(instanceId))
@@ -49,6 +50,15 @@ namespace AutoX.Client.Core
                     var startTime = DateTime.Now;
                     var result = CallAction(action, data, uiObj,browser,config);
                     var endTime = DateTime.Now;
+                    var currentLink = browser.GetResultLink();
+                    if(!string.IsNullOrEmpty(currentLink)){
+                        if(!currentLink.Equals(link)){
+                            link = currentLink;
+                            result.SetAttributeValue("Link", link);
+                        }
+                        
+                    }
+                        
                     result.SetAttributeValue("StartTime", startTime);
                     result.SetAttributeValue("EndTime", endTime);
                     result.SetAttributeValue("Duration", string.Format("{0:0.000}",(endTime.Ticks-startTime.Ticks)/10000000.00));
@@ -59,7 +69,8 @@ namespace AutoX.Client.Core
                     ret.Add(result);
                 }
             }
-
+            if(!string.IsNullOrEmpty(link))
+                ret.SetAttributeValue("Link", link);
             return ret;
         }
 

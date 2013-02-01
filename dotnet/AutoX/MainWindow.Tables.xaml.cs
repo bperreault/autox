@@ -78,6 +78,12 @@ namespace AutoX
             e.Handled = true;
         }
 
+        private void HyperlinkClick(object sender, RoutedEventArgs e)
+        {
+            Hyperlink link = e.OriginalSource as Hyperlink;
+            Process.Start(link.NavigateUri.AbsoluteUri);
+        }
+
         private void DoubleClickOnTable(object sender, MouseButtonEventArgs e)
         {
             var table = sender as DataGrid;

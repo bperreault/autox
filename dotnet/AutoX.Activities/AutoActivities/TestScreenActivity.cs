@@ -42,7 +42,7 @@ namespace AutoX.Activities.AutoActivities
             {
                 _name = value;
                 DisplayName = "Screen: " + _name;
-                NotifyPropertyChanged("UserData");
+                //NotifyPropertyChanged("UserData");
             }
         }
 
@@ -50,8 +50,8 @@ namespace AutoX.Activities.AutoActivities
         public string Description { get; set; }
 
 
-        [DisplayName("On Error")]
-        public OnError ErrorLevel { get; set; }
+//        [DisplayName("On Error")]
+//        public OnError ErrorLevel { get; set; }
 
         [DisplayName("Test Steps")]
         [Editor(typeof (StepsEditor), typeof (DialogPropertyValueEditor))]
@@ -60,7 +60,7 @@ namespace AutoX.Activities.AutoActivities
             get { return _steps; }
             set { _steps = value; }
         }
-
+/*****
         [DisplayName("User Data")]
         [Editor(typeof (UserDataEditor), typeof (DialogPropertyValueEditor))]
         public string UserData
@@ -72,13 +72,13 @@ namespace AutoX.Activities.AutoActivities
                 NotifyPropertyChanged("UserData");
             }
         }
-
+*****/
         #region IPassData Members
 
         public void PassData(string instanceId, string outerData)
         {
-            InstanceId = instanceId;
-            UserData = Utilities.PassData(outerData, UserData, OwnDataFirst);
+            //InstanceId = instanceId;
+            //UserData = Utilities.PassData(outerData, UserData, OwnDataFirst);
         }
 
         public override bool GetResult()
@@ -90,9 +90,9 @@ namespace AutoX.Activities.AutoActivities
 
         protected override void Execute(NativeActivityContext context)
         {
-            InternalExecute(context, null);
+            //InternalExecute(context, null);
         }
-
+/*******
         private void InternalExecute(NativeActivityContext context, ActivityInstance instance)
         {
             if (_onChildComplete == null)
@@ -179,5 +179,6 @@ namespace AutoX.Activities.AutoActivities
             }
             return steps;
         }
+        ********/
     }
 }

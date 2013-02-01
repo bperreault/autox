@@ -327,6 +327,8 @@ namespace AutoX.Client.Core
         private string _sId;
         public string GetResultLink()
         {
+            if(string.IsNullOrEmpty(_sId))
+                return null;
             if (_config.Get("Sauce.Free", "true").ToLower().Equals("true"))
             {
                 return "https://saucelabs.com/tests/" + _sId;
