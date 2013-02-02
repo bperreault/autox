@@ -15,6 +15,8 @@ namespace AutoX
         public BrowsersDialog()
         {
             InitializeComponent();
+            AUT_Version.Text = Configuration.Settings("AUT.Version", "AutoX v0.45");
+            AUT_Build.Text = Configuration.Settings("AUT.Build", "0.1.1");
             //load data from browsers.xml
             string browsers = File.ReadAllText("Browsers.xml");
             _choices = XElement.Parse(browsers);
@@ -35,6 +37,19 @@ namespace AutoX
 
         private void OkButtonClick(object sender, RoutedEventArgs e)
         {
+            BrowserSetting.SetAttributeValue("AUT.Version", AUT_Version.Text);
+            BrowserSetting.SetAttributeValue("AUT.Build", AUT_Build.Text);
+            if (Configuration.Settings("AUT.Version", null) == null)
+            {
+                Configuration.Set("AUT.Version", AUT_Version.Text);
+                Configuration.SaveSettings();
+            }
+            if (Configuration.Settings("AUT.Build", null) == null)
+            {
+                Configuration.Set("AUT.Build", AUT_Build.Text);
+                Configuration.SaveSettings();
+            }
+            
             DialogResult = true;
         }
 

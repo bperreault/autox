@@ -55,10 +55,8 @@ namespace AutoX.Client.Core
                         if(!currentLink.Equals(link)){
                             link = currentLink;
                             result.SetAttributeValue("Link", link);
-                        }
-                        
-                    }
-                        
+                        }                        
+                    }                        
                     result.SetAttributeValue("StartTime", startTime);
                     result.SetAttributeValue("EndTime", endTime);
                     result.SetAttributeValue("Duration", string.Format("{0:0.000}",(endTime.Ticks-startTime.Ticks)/10000000.00));

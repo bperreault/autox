@@ -50,11 +50,11 @@ namespace AutoX
             browsersDialog.ShowDialog();
             if (browsersDialog.DialogResult == true)
             {
-
+                _config.Set("AUT.Version", browsersDialog.BrowserSetting.GetAttributeValue("AUT.Version"));
+                _config.Set("AUT.Build", browsersDialog.BrowserSetting.GetAttributeValue("AUT.Build"));
                 _config.Set("Browser.Type", browsersDialog.BrowserSetting.Name.ToString());
                 _config.Set("Browser.Platform", browsersDialog.BrowserSetting.GetAttributeValue("Platform"));
                 _config.Set("Browser.Version", browsersDialog.BrowserSetting.GetAttributeValue("Version"));
-
             }
         }
 
@@ -71,8 +71,6 @@ namespace AutoX
                 var fileName = fileDialog.FileName;
                 File.WriteAllText(fileName, uiObjectsString);
             }
-
-
         }
         private void RunSauceTest(object sender, RoutedEventArgs e)
         {
@@ -120,8 +118,10 @@ namespace AutoX
                 MessageBox.Show("Selected Item MUST be a Test Script!");
                 return;
             }
+            /**********This is a simple instance***********/
             _autoClient.Config.Set("Host.Type", "Local");
             RunWorkflowById(workflowId);
+            /***********end of instance*******************/
             //when finished, show a message
             MessageBox.Show("Your Test finished.");
             

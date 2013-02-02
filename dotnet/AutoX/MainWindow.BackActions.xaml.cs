@@ -155,11 +155,12 @@ namespace AutoX
             {
                 return;
             }
+            var treeViewName = treeView.Name;
             var parent = selected.DataContext as XElement;
             if (parent == null) return;
             var parentId = parent.GetAttributeValue("_id");
 
-            if (parent.Name.ToString().Equals("Script"))
+            if (parent.Name.ToString().Equals("Script") && treeViewName.Equals("ProjectTreeView"))
             {
                 AddTestDesigner(selected);
                 return;
@@ -196,7 +197,17 @@ namespace AutoX
             selected.Items.Clear();
             foreach (var kid in xRoot.Descendants())
             {
-                selected.Items.Add(kid.GetTreeViewItemFromXElement());
+                if (treeViewName.Equals("SuiteTree"))
+                {
+                    var type = kid.GetAttributeValue("_type");
+                    if (type.Equals("Script"))
+                    {
+                        var scriptType = kid.GetAttributeValue("ScriptType");
+                        if (!scriptType.Equals("TestSuite")) continue;
+                    }
+                }
+                TreeViewItem newItem = kid.GetTreeViewItemFromXElement();
+                selected.Items.Add(newItem);
             }
 
         }

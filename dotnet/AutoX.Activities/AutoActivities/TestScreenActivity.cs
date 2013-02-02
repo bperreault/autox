@@ -28,8 +28,8 @@ namespace AutoX.Activities.AutoActivities
 
         public TestScreenActivity()
         {
-            ErrorLevel = OnError.Continue;
-            OwnDataFirst = true;
+            //ErrorLevel = OnError.Continue;
+            //OwnDataFirst = true;
         }
 
         [Browsable(false)]
@@ -42,7 +42,7 @@ namespace AutoX.Activities.AutoActivities
             {
                 _name = value;
                 DisplayName = "Screen: " + _name;
-                //NotifyPropertyChanged("UserData");
+                NotifyPropertyChanged("Steps");
             }
         }
 

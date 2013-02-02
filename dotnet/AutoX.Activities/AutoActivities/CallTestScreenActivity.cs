@@ -12,19 +12,21 @@ using System.Drawing;
 using System.IO;
 using AutoX.Basic;
 using AutoX.Basic.Model;
+using System.Xml.Linq;
 
 #endregion
 
 namespace AutoX.Activities.AutoActivities
 {
-    [ToolboxBitmap(typeof (CallTestScreenDesigner), "TestScreen.bmp")]
-    [Designer(typeof (CallTestScreenDesigner))]
+    [ToolboxBitmap(typeof(CallTestScreenDesigner), "TestScreen.bmp")]
+    [Designer(typeof(CallTestScreenDesigner))]
     public sealed class CallTestScreenActivity : AutomationActivity, IPassData
     {
         // Define an activity input argument of type string
         private bool _result;
         private string _testScreenName;
         private string _userData = "";
+        private CompletionCallback _onChildComplete;
 
         [DisplayName("Test Screen Name")]
         public string TestSreenName
@@ -38,8 +40,10 @@ namespace AutoX.Activities.AutoActivities
                 NotifyPropertyChanged("DisplayName");
             }
         }
-
-
+        [DisplayName("On Error")]
+        public OnError ErrorLevel { get; set; }
+        [Browsable(false)]
+        public string GUID { get; set; }
         [Browsable(false)]
         public string TestSreenId { get; set; }
         private string _steps = "<Steps />";
@@ -52,7 +56,7 @@ namespace AutoX.Activities.AutoActivities
         }
 
         [DisplayName("User Data")]
-        [Editor(typeof (UserDataEditor), typeof (DialogPropertyValueEditor))]
+        [Editor(typeof(UserDataEditor), typeof(DialogPropertyValueEditor))]
         public string UserData
         {
             get { return _userData; }
@@ -71,11 +75,11 @@ namespace AutoX.Activities.AutoActivities
             UserData = Utilities.PassData(outerData, UserData, OwnDataFirst);
         }
 
-//        protected override void CacheMetadata(NativeActivityMetadata metadata)
-//        {
-//            base.CacheMetadata(metadata);
-//            metadata.AddImplementationVariable(result);
-//        }
+        //        protected override void CacheMetadata(NativeActivityMetadata metadata)
+        //        {
+        //            base.CacheMetadata(metadata);
+        //            metadata.AddImplementationVariable(result);
+        //        }
 
         /// <summary>
         ///   you must call this method after workflowinvoker.invoke
@@ -110,7 +114,7 @@ namespace AutoX.Activities.AutoActivities
                 Utilities.GetWorkflowApplication(activity).Run();
             }
             ********* old way end here **********/
-            InternalExecute(context,null);
+            InternalExecute(context, null);
         }
 
         private void InternalExecute(NativeActivityContext context, ActivityInstance instance)
@@ -152,13 +156,13 @@ namespace AutoX.Activities.AutoActivities
                 if (!enable.ToLower().Equals("true"))
                     continue;
                 var action = descendant.GetAttributeValue("Action");
-                
+
                 if (string.IsNullOrEmpty(action))
                 {
                     Log.Error("Action is empty, please check!");
                     continue;
                 }
-                
+
                 var step = XElement.Parse("<Step />");
 
                 step.SetAttributeValue("Action", action);
@@ -180,7 +184,7 @@ namespace AutoX.Activities.AutoActivities
                 }
                 else
                 {
-                    step.SetAttributeValue("StepId",stepId);
+                    step.SetAttributeValue("StepId", stepId);
                 }
                 var uiid = descendant.GetAttributeValue("UIId");
                 var uiObject = descendant.GetAttributeValue("UIObject");

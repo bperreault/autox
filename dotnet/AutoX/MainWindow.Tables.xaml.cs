@@ -13,6 +13,8 @@ using AutoX.Basic.Model;
 using AutoX.DB;
 using IDataObject = AutoX.Basic.Model.IDataObject;
 using AutoX.Comm;
+using System.Windows.Documents;
+using System.Diagnostics;
 
 #endregion
 
