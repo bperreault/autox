@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using AutoX.Basic;
+using AutoX.Comm;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
-using AutoX.Basic;
 using System.Xml.Linq;
-using AutoX.Comm;
 
 namespace AutoX.Client.Core
 {
-    public class AutoClient
+    public class AutoClient : IDisposable
     {
         public Config Config { get; private set; }
+
         private Browser _browser;
 
         public Browser Browser
@@ -21,14 +19,14 @@ namespace AutoX.Client.Core
         }
 
         private volatile bool _registered;
-        Task _task;
-        readonly CancellationTokenSource _tokenSource = new CancellationTokenSource();
-
+        private Task _task;
+        private readonly CancellationTokenSource _tokenSource = new CancellationTokenSource();
 
         public AutoClient(Config config)
         {
             Config = config;
         }
+
         public AutoClient()
         {
             Config = Configuration.Clone();
@@ -36,13 +34,13 @@ namespace AutoX.Client.Core
 
         public XElement Execute(XElement steps)
         {
-            
             return ActionsFactory.Execute(steps, Browser, Config);
         }
 
         public void Start()
         {
             _task = Task.Factory.StartNew(DoWhile, _tokenSource.Token);
+
             //task.Start();
         }
 
@@ -61,14 +59,13 @@ namespace AutoX.Client.Core
 
                 //TODO notify the observer
                 var result = Execute(command);
-                if (command.Attribute("_id") != null)
+                if (command.Attribute(Constants._ID) != null)
                     SendResult(result);
                 else
                 {
                     Thread.Sleep(6 * 1000);
                 }
             }
-
         }
 
         public void Stop()
@@ -76,12 +73,11 @@ namespace AutoX.Client.Core
             if (_task == null)
                 return;
             _tokenSource.Cancel();
-
         }
 
         public XElement RequestCommand()
         {
-            return RequestCommand(Config.Get("_id"));
+            return RequestCommand(Config.Get(Constants._ID));
         }
 
         public bool Register()
@@ -106,7 +102,34 @@ namespace AutoX.Client.Core
 
         public string SendResult(XElement stepResult)
         {
-            return Communication.GetInstance().SetResult(Config.Get("_id"), stepResult);
+            return Communication.GetInstance().SetResult(Config.Get(Constants._ID), stepResult);
+        }
+
+        private bool disposed = false; // to detect redundant calls
+        public void Dispose()
+        {
+            Dispose(true);
+            //GC.SupressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    if (_tokenSource != null)
+                    {
+                        _tokenSource.Dispose();
+                    }
+                    if (_task != null)
+                    {
+                        _task.Dispose();
+                    }
+                }
+
+                disposed = true;
+            }
         }
     }
 }

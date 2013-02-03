@@ -4,10 +4,10 @@
 
 #region
 
+using Newtonsoft.Json;
 using System;
 using System.Reflection;
 using System.Xml.Linq;
-using Newtonsoft.Json;
 
 #endregion
 
@@ -29,7 +29,7 @@ namespace AutoX.Basic.Model
 
         public static void SetAttributeValue(this IDataObject dataObject, string attributeName, object value)
         {
-            //if (attributeName.Equals("_type") || attributeName.Equals("_parentId"))
+            //if (attributeName.Equals(Constants._TYPE) || attributeName.Equals(Constants.PARENT_ID))
             //    return;
             var field = dataObject.GetType().GetField(attributeName);
             if (field == null)
@@ -55,7 +55,7 @@ namespace AutoX.Basic.Model
 
         public static string GetId(this IDataObject dataObject)
         {
-            return dataObject.GetAttributeValue("_id");
+            return dataObject.GetAttributeValue(Constants._ID);
         }
 
         public static object GetObjectFromXElement(this XElement element)
@@ -84,6 +84,7 @@ namespace AutoX.Basic.Model
                                 prop.SetValue(entity, TimeSpan.Parse(xa.Value.ToString()), null);
                             else
                                 prop.SetValue(entity, xa.Value, null);
+
                             //prop.SetValue(entity, xa.Value, null);
                         }
                     }
@@ -93,7 +94,6 @@ namespace AutoX.Basic.Model
             return null;
         }
 
-
         public static IDataObject JsonDeserialize(string jsonString, Type type)
         {
             return JsonConvert.DeserializeObject(jsonString, type) as IDataObject;
@@ -102,16 +102,16 @@ namespace AutoX.Basic.Model
         public static IDataObject GetDataObjectFromXElement(this XElement element)
         {
             var name = element.Name.ToString();
-            
-            var type = Type.GetType( name.Contains("AutoX.Basic.Model.")? name: "AutoX.Basic.Model." + name);
-            
+
+            var type = Type.GetType(name.Contains("AutoX.Basic.Model.") ? name : "AutoX.Basic.Model." + name);
+
             if (type != null)
             {
                 var constructor = type.GetConstructor(Type.EmptyTypes);
                 if (constructor != null)
                 {
                     var entity = constructor.Invoke(new Object[0]);
-                    var ido = (IDataObject) entity;
+                    var ido = (IDataObject)entity;
                     foreach (XAttribute xa in element.Attributes())
                     {
                         ido.SetAttributeValue(xa.Name.ToString(), xa.Value);
@@ -127,21 +127,20 @@ namespace AutoX.Basic.Model
             return JsonConvert.SerializeObject(dataObject);
         }
 
-
         public static XElement GetXElementFromObject(this IDataObject dataObject)
         {
             if (dataObject == null)
                 return null;
             var type = dataObject.GetType();
             var tag = type.FullName;
-            
+
             var ret = new XElement(tag);
 
             foreach (PropertyInfo prop in type.GetProperties())
             {
                 var name = prop.Name;
                 var value = prop.GetValue(dataObject, null);
-                if(value==null)
+                if (value == null)
                     ret.SetAttributeValue(name, "");
                 else
                     ret.SetAttributeValue(name, value.ToString());
@@ -154,7 +153,7 @@ namespace AutoX.Basic.Model
             var type = dataObject.GetType();
             var tag = type.Name;
             var ret = new XElement(tag);
-            ret.SetAttributeValue("_type", tag);
+            ret.SetAttributeValue(Constants._TYPE, tag);
             foreach (FieldInfo field in type.GetFields())
             {
                 var name = field.Name;

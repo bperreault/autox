@@ -4,18 +4,18 @@
 
 #region
 
-using System;
-using System.Collections;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Xml.Linq;
 using AutoX.Basic;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.IE;
 using OpenQA.Selenium.Remote;
+using System;
+using System.Collections;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Xml.Linq;
 
 #endregion
 
@@ -23,7 +23,6 @@ namespace AutoX.Client.Core
 {
     public sealed class Browser : IDisposable
     {
-        
         //CSS types that we care
         private readonly string _cssxPath = Configuration.Settings("CSSType",
                                                                    "//*[@class='ROW1' or @class='ROW2' or @class='EDIT' or @class='VIEWBOXCAPTION' or @class='TABON' or @class='TABOFF' or @class='ButtonItem' or @class='TOPBC' or @type='checkbox' or @type='text' or @class='Logonbutton' or @type='password']");
@@ -32,6 +31,7 @@ namespace AutoX.Client.Core
 
         private IWebDriver _browser;
         private Config _config;
+
         public Browser(Config config)
         {
             _config = config;
@@ -65,10 +65,10 @@ namespace AutoX.Client.Core
 
         public string GetAllValuableObjects()
         {
-            var xBrowser = new XElement("UIObject");
-            xBrowser.SetAttributeValue("_type", "UIObject");
+            var xBrowser = new XElement(Constants.UI_OBJECT);
+            xBrowser.SetAttributeValue(Constants._TYPE, Constants.UI_OBJECT);
             xBrowser.SetAttributeValue("type", "Browser");
-            xBrowser.SetAttributeValue("Name", "Browser");
+            xBrowser.SetAttributeValue(Constants.NAME, "Browser");
             var valueObjects = GetCurrentBrowser().FindElements(By.XPath(_cssxPath));
 
             foreach (IWebElement webElement in valueObjects)
@@ -82,14 +82,14 @@ namespace AutoX.Client.Core
                 var indexer = 0;
                 foreach (IWebElement webElement in frames)
                 {
-                    var frameName = webElement.GetAttribute("name");
+                    var frameName = webElement.GetAttribute(Constants._NAME);
                     framesNames[indexer] = frameName;
                     indexer++;
                 }
                 foreach (string name in framesNames)
                 {
                     var frameX = new XElement("frame");
-                    frameX.SetAttributeValue("name", name);
+                    frameX.SetAttributeValue(Constants._NAME, name);
                     GetAllValueableObjectsOfFrame(frameX);
                     _browser.SwitchTo().DefaultContent();
                     _browser.SwitchTo().Frame(name);
@@ -110,14 +110,13 @@ namespace AutoX.Client.Core
             }
         }
 
-
         private static XElement GetXFromElement(IWebElement webElement)
         {
             if (webElement == null)
                 return null;
 
-            var xe = new XElement("UIObject");
-            xe.SetAttributeValue("_type", "UIObject");
+            var xe = new XElement(Constants.UI_OBJECT);
+            xe.SetAttributeValue(Constants._TYPE, Constants.UI_OBJECT);
             var eTag = webElement.TagName;
             xe.SetAttributeValue("type", !string.IsNullOrEmpty(eTag) ? eTag : "*");
             var eText = webElement.Text;
@@ -126,10 +125,9 @@ namespace AutoX.Client.Core
                 xe.SetAttributeValue("text", eText);
             }
 
-
             WebAttrToAttr(webElement, xe, "id");
-            WebAttrToAttr(webElement, xe, "name");
-            WebAttrToAttr(webElement, xe, "name");
+            WebAttrToAttr(webElement, xe, Constants._NAME);
+            WebAttrToAttr(webElement, xe, Constants._NAME);
             WebAttrToAttr(webElement, xe, "type");
             WebAttrToAttr(webElement, xe, "value");
             WebAttrToAttr(webElement, xe, "class");
@@ -142,23 +140,23 @@ namespace AutoX.Client.Core
                 xe.SetAttributeValue("href", eHref);
             var xpath = xe.GenerateXPathFromXElement();
             xe.SetAttributeValue("XPath", xpath);
-            var nAttribute = xe.Attribute("name");
+            var nAttribute = xe.Attribute(Constants._NAME);
             if (nAttribute != null)
             {
                 var value = nAttribute.Value;
                 nAttribute.Remove();
-                xe.SetAttributeValue("Name", value);
+                xe.SetAttributeValue(Constants.NAME, value);
             }
             else
             {
                 var id = xe.GetAttributeValue("id");
                 if (string.IsNullOrEmpty(id))
                 {
-                    xe.SetAttributeValue("Name", "EmptyName");
+                    xe.SetAttributeValue(Constants.NAME, "EmptyName");
                 }
                 else
                 {
-                    xe.SetAttributeValue("Name", "Id_" + id);
+                    xe.SetAttributeValue(Constants.NAME, "Id_" + id);
                 }
             }
             return xe;
@@ -229,7 +227,7 @@ namespace AutoX.Client.Core
                 GetCurrentBrowser().SwitchTo().DefaultContent();
                 if (xParent.Equals("frame"))
                 {
-                    var frame = xPage.Attribute("name");
+                    var frame = xPage.Attribute(Constants._NAME);
                     if (frame != null)
                     {
                         var frameName = frame.Value;
@@ -247,6 +245,7 @@ namespace AutoX.Client.Core
         public string Snapshot()
         {
             return ((ITakesScreenshot)GetCurrentBrowser()).GetScreenshot().AsBase64EncodedString;
+
             //IJavaScriptExecutor js = GetCurrentBrowser() as IJavaScriptExecutor;
             //Response screenshotResponse = js.ExecuteScript(DriverCommand.Screenshot, null);
             //return screenshotResponse.Value.ToString();
@@ -301,6 +300,7 @@ namespace AutoX.Client.Core
                 capabillities = DesiredCapabilities.IPhone();
             else if (browserType.Equals("Opera"))
                 capabillities = DesiredCapabilities.Opera();
+
             //            else if (browserType.Equals("Safari"))
             //                capabillities = DesiredCapabilities.Safari();
             else if (browserType.Equals("InternetExplorer"))
@@ -311,7 +311,7 @@ namespace AutoX.Client.Core
             capabillities.SetCapability(CapabilityType.Version, _config.Get("Browser.Version", "10"));
 
             capabillities.SetCapability(CapabilityType.Platform, _config.Get("Browser.Platform", "Windows 2008"));
-            capabillities.SetCapability("name", _config.Get("Sauce.Name", "Testing Selenium 2 with C# on Sauce"));
+            capabillities.SetCapability(Constants._NAME, _config.Get("Sauce.Name", "Testing Selenium 2 with C# on Sauce"));
             capabillities.SetCapability("username", _config.Get("Sauce.UserName", "autox"));
             capabillities.SetCapability("accessKey", _config.Get("Sauce.AccessKey", "b3842073-5a7a-4782-abbc-e7234e09f8ac"));
 
@@ -321,13 +321,13 @@ namespace AutoX.Client.Core
             _browser.Navigate().GoToUrl(_config.Get("DefaultURL", "about:blank"));
             MaximiseBrowser();
             _sId = ((SauceDriver)_browser).GetSessionId();
-
         }
-        
+
         private string _sId;
+
         public string GetResultLink()
         {
-            if(string.IsNullOrEmpty(_sId))
+            if (string.IsNullOrEmpty(_sId))
                 return null;
             if (_config.Get("Sauce.Free", "true").ToLower().Equals("true"))
             {
@@ -338,6 +338,7 @@ namespace AutoX.Client.Core
             var jobId = AsymmetricEncryption.Hmacmd5(key, _sId);
             return "https://saucelabs.com/jobs/" + _sId + "?auth=" + jobId;
         }
+
         private void StartLocalBrowser()
         {
             var browserType = _config.Get("BrowserType", "InternetExplorer");
@@ -388,7 +389,6 @@ namespace AutoX.Client.Core
             if (_browser != null)
             {
                 _browser.Quit();
-
             }
 
             //browser = null;

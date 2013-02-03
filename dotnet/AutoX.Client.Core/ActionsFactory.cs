@@ -4,10 +4,10 @@
 
 #region
 
+using AutoX.Basic;
 using System;
 using System.Linq;
 using System.Xml.Linq;
-using AutoX.Basic;
 
 #endregion
 
@@ -15,61 +15,71 @@ namespace AutoX.Client.Core
 {
     internal class ActionsFactory
     {
-        public static XElement Execute(XElement steps,Browser browser,Config config)
+        const string LINK = "Link";
+        public static XElement Execute(XElement steps, Browser browser, Config config)
         {
-            var ret = new XElement("Result");
-            var instanceId = steps.GetAttributeValue("InstanceId");
-            var runtimeId = steps.GetAttributeValue("RunTimeId");
-            var onError = steps.GetAttributeValue("OnError");
+            var ret = new XElement(Constants.RESULT);
+            var instanceId = steps.GetAttributeValue(Constants.INSTANCE_ID);
+            var runtimeId = steps.GetAttributeValue(Constants.RUNTIME_ID);
+            var onError = steps.GetAttributeValue(Constants.ON_ERROR);
             string link = null;
-            if(!string.IsNullOrEmpty(onError))
-                ret.SetAttributeValue("OnError",onError);
+            if (!string.IsNullOrEmpty(onError))
+                ret.SetAttributeValue(Constants.ON_ERROR, onError);
             if (!string.IsNullOrEmpty(instanceId))
-                ret.SetAttributeValue("InstanceId", instanceId);
+                ret.SetAttributeValue(Constants.INSTANCE_ID, instanceId);
             if (!string.IsNullOrEmpty(runtimeId))
-                ret.SetAttributeValue("RunTimeId", runtimeId);
-            var query = from o in steps.Elements("Step")
+                ret.SetAttributeValue(Constants.RUNTIME_ID, runtimeId);
+            var query = from o in steps.Elements(Constants.STEP)
                         select o;
             foreach (var step in query)
             {
-                var xAttribute = step.Attribute("Action");
-                var xId = step.GetAttributeValue("_id");
+                var xAttribute = step.Attribute(Constants.ACTION);
+                var xId = step.GetAttributeValue(Constants._ID);
                 if (xAttribute != null)
                 {
-                    var action = Configuration.Settings(xAttribute.Value, xAttribute.Value);
-                    
-                    var xData = step.Attribute("Data");
-                    string data = null;
-                    if (xData != null)
-                        data = xData.Value;
-                    XElement uiObj = null;
-                    if (step.HasElements)
-                    {
-                        uiObj = step.Elements().First();
-                    }
-                    var startTime = DateTime.Now;
-                    var result = CallAction(action, data, uiObj,browser,config);
-                    var endTime = DateTime.Now;
-                    var currentLink = browser.GetResultLink();
-                    if(!string.IsNullOrEmpty(currentLink)){
-                        if(!currentLink.Equals(link)){
-                            link = currentLink;
-                            result.SetAttributeValue("Link", link);
-                        }                        
-                    }                        
-                    result.SetAttributeValue("StartTime", startTime);
-                    result.SetAttributeValue("EndTime", endTime);
-                    result.SetAttributeValue("Duration", string.Format("{0:0.000}",(endTime.Ticks-startTime.Ticks)/10000000.00));
-                    result.SetAttributeValue("InstanceId", instanceId);
-                    CopyAttribute(result, step, "UIId");
-                    CopyAttribute(result, step, "UIObject");
-                    //result.SetAttributeValue("_id",xId);
-                    ret.Add(result);
+                    link = HandleOneStep(browser, config, ret, instanceId, link, step, xAttribute);
                 }
             }
-            if(!string.IsNullOrEmpty(link))
-                ret.SetAttributeValue("Link", link);
+            if (!string.IsNullOrEmpty(link))
+                ret.SetAttributeValue(LINK, link);
             return ret;
+        }
+
+        private static string HandleOneStep(Browser browser, Config config, XElement ret, string instanceId, string link, XElement step, XAttribute xAttribute)
+        {
+            var action = Configuration.Settings(xAttribute.Value, xAttribute.Value);
+
+            var xData = step.Attribute(Constants.DATA);
+            string data = null;
+            if (xData != null)
+                data = xData.Value;
+            XElement uiObj = null;
+            if (step.HasElements)
+            {
+                uiObj = step.Elements().First();
+            }
+            var startTime = DateTime.Now;
+            var result = CallAction(action, data, uiObj, browser, config);
+            var endTime = DateTime.Now;
+            var currentLink = browser.GetResultLink();
+            if (!string.IsNullOrEmpty(currentLink))
+            {
+                if (!currentLink.Equals(link))
+                {
+                    link = currentLink;
+                    result.SetAttributeValue(LINK, link);
+                }
+            }
+            result.SetAttributeValue("StartTime", startTime);
+            result.SetAttributeValue("EndTime", endTime);
+            result.SetAttributeValue("Duration", string.Format("{0:0.000}", (endTime.Ticks - startTime.Ticks) / 10000000.00));
+            result.SetAttributeValue(Constants.INSTANCE_ID, instanceId);
+            CopyAttribute(result, step, Constants.UI_ID);
+            CopyAttribute(result, step, Constants.UI_OBJECT);
+
+            //result.SetAttributeValue(Constants._ID,xId);
+            ret.Add(result);
+            return link;
         }
 
         private static void CopyAttribute(XElement ret, XElement step, string attribteName)
@@ -78,7 +88,7 @@ namespace AutoX.Client.Core
                 ret.SetAttributeValue(attribteName, step.GetAttributeValue(attribteName));
         }
 
-        private static XElement CallAction(string action, string data, XElement uiObj,Browser browser,Config config)
+        private static XElement CallAction(string action, string data, XElement uiObj, Browser browser, Config config)
         {
             var act = Type.GetType(action);
             if (act == null)

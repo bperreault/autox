@@ -6,7 +6,5 @@
     <Grid>
 
         <Image Name="vImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
-
-
     </Grid>
 </Window>

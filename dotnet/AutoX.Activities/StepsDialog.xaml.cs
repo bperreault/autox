@@ -4,11 +4,11 @@
 
 #region
 
+using AutoX.Basic;
+using AutoX.DB;
 using System.Collections;
 using System.Windows;
 using System.Xml.Linq;
-using AutoX.Basic;
-using AutoX.DB;
 
 #endregion
 
@@ -26,20 +26,21 @@ namespace AutoX.Activities
         public StepsDialog()
         {
             InitializeComponent();
-            
         }
 
         private void ButtonReload(object sender, RoutedEventArgs e)
         {
-
-            var p = XElement.Parse(Data.Read(StepId).GetAttributeValue("Content")).GetAttributeValue("Steps");
+            var p = XElement.Parse(Data.Read(StepId).GetAttributeValue(Constants.CONTENT)).GetAttributeValue("Steps");
             var steps = Utilities.GetStepsList(p, Actions, Host);
             var current = StepsTable.ItemsSource as ArrayList;
+
             //TODO add new things and remove something
             ArrayList newList = new ArrayList();
-            foreach(Step currentStep in current){
-                foreach(Step original in steps){
-                    //TODO currentStep must existed in steps, if not, means globally deleted; 
+            foreach (Step currentStep in current)
+            {
+                foreach (Step original in steps)
+                {
+                    //TODO currentStep must existed in steps, if not, means globally deleted;
                     //if in steps, and it is marked Enable, then mark current one Enable, it is globally enabled.
                 }
             }
@@ -113,7 +114,6 @@ namespace AutoX.Activities
                 source[index] = temp;
                 StepsTable.Items.Refresh();
             }
-            
         }
 
         internal object Get()
@@ -127,18 +127,21 @@ namespace AutoX.Activities
                 }
             return xSteps.ToString();
         }
+
         private string StepId;
+
         internal void Set(string stepId)
         {
             reloadButton.IsEnabled = true;
             StepId = stepId;
         }
+
         internal void Set(string p, string userData)
         {
             var ds = Utilities.GetRawUserData(userData, Host).Keys;
             foreach (string d in ds)
             {
-                if(Utilities.ReservedList.Contains(d))
+                if (Utilities.ReservedList.Contains(d))
                     continue;
                 UserData.Add(d);
             }

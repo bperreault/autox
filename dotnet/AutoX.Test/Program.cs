@@ -1,69 +1,74 @@
 ﻿#region
 
-using System;
-using System.IO;
 using AutoX.Basic;
-using AutoX.DB;
-using System.Xml.Linq;
-using AutoX.WF.Core;
 using AutoX.Client.Core;
+using AutoX.DB;
+using AutoX.WF.Core;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Xml.Linq;
 
 #endregion
-
 
 namespace AutoX.Test
 {
     internal class Program
     {
-        static Dictionary<string, string> parameters = new Dictionary<string, string>();
+        private static Dictionary<string, string> parameters = new Dictionary<string, string>();
+
         private static int Main(string[] args)
         {
             //Dictionary<string,string> parameters = new Dictionary<string,string>();
 
-            for (int i = 0 ; i<args.Length; i++)
+            for (int i = 0; i < args.Length; i++)
             {
-                if(args[i].StartsWith("-")){
-                   parameters.Add(args[i],args[i+1]);
+                if (args[i].StartsWith("-"))
+                {
+                    parameters.Add(args[i], args[i + 1]);
                 }
             }
-                    if(parameters.ContainsKey("-C")){
-                        CleanProject();
-                    }
-                    if (parameters.ContainsKey("-R"))
-                    {
-                        RemoveResults();
-                    }
-                    if (parameters.ContainsKey("-G"))
-                    {
-                        //create a project for a new user
-                    }
-                    if (parameters.ContainsKey("-A"))
-                    {
-                        //add user to project
-                    }
-                    if (parameters.ContainsKey("-S"))
-                    {
-                        //run a test suite
-                        if(parameters.ContainsKey("-i")){
+            if (parameters.ContainsKey("-C"))
+            {
+                CleanProject();
+            }
+            if (parameters.ContainsKey("-R"))
+            {
+                RemoveResults();
+            }
+            if (parameters.ContainsKey("-G"))
+            {
+                //create a project for a new user
+            }
+            if (parameters.ContainsKey("-A"))
+            {
+                //add user to project
+            }
+            if (parameters.ContainsKey("-S"))
+            {
+                //run a test suite
+                if (parameters.ContainsKey("-i"))
+                {
+                }
+                else
+                {
+                    PrintUsage();
+                }
+            }
+            if (parameters.ContainsKey("-F"))
+            {
+                //run a set of tests
+                if (parameters.ContainsKey("-i"))
+                {
+                }
+                else
+                {
+                    PrintUsage();
+                }
+            }
+            if (parameters.Count <= 0)
+                PrintUsage();
 
-                        }
-                        else{
-                            PrintUsage();
-                        }
-                    }
-                    if (parameters.ContainsKey("-F"))
-                    {
-                        //run a set of tests
-                        if(parameters.ContainsKey("-i")){
-
-                        }
-                        else{
-                            PrintUsage();
-                        }
-                    }
-            if(parameters.Count <= 0)
-                PrintUsage();    
             //AsymmetricEncryption.GenerateRegisterFile("yazhi.pang", "autox");
             //CreateProject();
             //TestWorkflow();
@@ -72,7 +77,8 @@ namespace AutoX.Test
             return 0;
         }
 
-        private static void PrintUsage(){
+        private static void PrintUsage()
+        {
             Console.WriteLine("Usage:");
             Console.WriteLine("\t-C\tClean The Current Project");
             Console.WriteLine("\t-R\tRemove all Results from Current Project");
@@ -91,38 +97,38 @@ namespace AutoX.Test
         private static void RemoveResults()
         {
             //find root element
-            var xRoot = Data.Read("_type", "Root");
-            var resultId = xRoot.GetAttributeValue("Result");
+            var xRoot = Data.Read(Constants._TYPE, "Root");
+            var resultId = xRoot.GetAttributeValue(Constants.RESULT);
             var results = Data.GetChildren(resultId);
             foreach (var kids in results.Descendants())
             {
-                Data.Delete(kids.GetAttributeValue("_id"));
+                Data.Delete(kids.GetAttributeValue(Constants._ID));
             }
         }
 
         private static void CleanProject()
         {
             //find root element
-            var xRoot = Data.Read("_type", "Root");
-            var root = Data.GetChildren(xRoot.GetAttributeValue("_id"));
+            var xRoot = Data.Read(Constants._TYPE, "Root");
+            var root = Data.GetChildren(xRoot.GetAttributeValue(Constants._ID));
             foreach (var kid in root.Descendants())
             {
-                var id = kid.GetAttributeValue("_id");
-                if(id.Equals(xRoot.GetAttributeValue("_id")))
+                var id = kid.GetAttributeValue(Constants._ID);
+                if (id.Equals(xRoot.GetAttributeValue(Constants._ID)))
                     continue;
                 foreach (var grandKid in Data.GetChildren(id).Descendants())
                 {
-                    Data.Delete(grandKid.GetAttributeValue("_id"));
+                    Data.Delete(grandKid.GetAttributeValue(Constants._ID));
                 }
             }
         }
 
         private static void TestWorkflow()
         {
-            AutoClient auto  = new AutoClient();
+            AutoClient auto = new AutoClient();
             WorkflowInstance workflowInstance = new WorkflowInstance("7fdcbd7a-b30e-4c36-aa46-58ba74b02401", null, "8afc65e2-fd1f-4cf0-8e20-337c40c27912");
             var xCommand = workflowInstance.GetCommand();
-            
+
             Console.WriteLine(xCommand.ToString());
             var xResult = auto.Execute(xCommand);
             Console.WriteLine(xResult);
@@ -138,7 +144,7 @@ namespace AutoX.Test
             if (DBManager.GetInstance().IsProjectExisted(projectName))
             {
                 Console.WriteLine("Project already existed, continue?(y/n):");
-                if(!Console.ReadKey().KeyChar.Equals('y'))
+                if (!Console.ReadKey().KeyChar.Equals('y'))
                     return;
             }
             DBManager.GetInstance().SetProject(projectName);
@@ -160,7 +166,7 @@ namespace AutoX.Test
             string publicAndPrivateKey;
             string publicKey;
             XElement root = new XElement("Root");
-            root.SetAttributeValue("_id", Guid.NewGuid().ToString());
+            root.SetAttributeValue(Constants._ID, Guid.NewGuid().ToString());
             AsymmetricEncryption.GenerateKeys(keySize, out publicKey, out publicAndPrivateKey);
             Console.WriteLine("public key:" + publicKey);
             Console.WriteLine("public & private key:" + publicAndPrivateKey);
@@ -168,11 +174,13 @@ namespace AutoX.Test
             root.SetAttributeValue("PublicAndPrivateKey", publicAndPrivateKey);
             var productid = AsymmetricEncryption.GetProductId();
             root.SetAttributeValue("ProductId", productid);
+
             //string userName = "jien.huang";
             string text = userName + productid;
             string encrypted = AsymmetricEncryption.EncryptText(text, keySize, publicKey);
 
             Console.WriteLine("Encrypted: {0}", encrypted);
+
             //send encrypted data to service
             File.WriteAllText(userName + ".pem",
                               "UserName:\n" + userName + "\nPublic Key:" + publicKey + "\nPublic and Private Key:\n" +
@@ -182,9 +190,9 @@ namespace AutoX.Test
             //service person do below
             Console.WriteLine("Decrypted: {0}", decrypted);
 
-//            Configuration.Set("UserName", userName);
-//            Configuration.Set("PublicKey", publicKey);
-//            Configuration.SaveSettings();
+            //            Configuration.Set("UserName", userName);
+            //            Configuration.Set("PublicKey", publicKey);
+            //            Configuration.SaveSettings();
             Data.Save(root);
             Console.WriteLine(Data.Read("a02cf4ad-ba0c-4c69-9f7c-e7d73a8fecad"));
         }

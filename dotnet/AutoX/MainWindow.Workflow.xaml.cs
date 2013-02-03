@@ -40,11 +40,11 @@ namespace AutoX
         private void AddTestDesigner(TreeViewItem treeViewItem)
         {
             var xElement = treeViewItem.DataContext as XElement;
-            var type = xElement.GetAttributeValue("ScriptType");
-            var name = xElement.GetAttributeValue("Name");
-            var guid = xElement.GetAttributeValue("_id");
+            var type = xElement.GetAttributeValue(Constants.SCRIPT_TYPE);
+            var name = xElement.GetAttributeValue(Constants.NAME);
+            var guid = xElement.GetAttributeValue(Constants._ID);
             var description = xElement.GetAttributeValue("Description");
-            var content = xElement.GetAttributeValue("Content");
+            var content = xElement.GetAttributeValue(Constants.CONTENT);
 
             Activity newActivity = null;
 
@@ -334,14 +334,14 @@ namespace AutoX
                 return;
             }
             var activity = Utilities.GetActivityFromContentString(content);
-            var name = activity.GetType().GetProperty("Name").GetValue(activity, null) as string;
+            var name = activity.GetType().GetProperty(Constants.NAME).GetValue(activity, null) as string;
             var description = activity.GetType().GetProperty("Description").GetValue(activity, null) as string;
             if (!string.IsNullOrEmpty(name))
-                xElement.SetAttributeValue("Name", name);
+                xElement.SetAttributeValue(Constants.NAME, name);
             if (!string.IsNullOrEmpty(description))
                 xElement.SetAttributeValue("Description", description);
 
-            xElement.SetAttributeValue("Content", content);
+            xElement.SetAttributeValue(Constants.CONTENT, content);
 
             var sRoot = Data.Save(xElement);
             

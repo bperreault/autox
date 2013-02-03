@@ -18,6 +18,7 @@ namespace AutoX.Activities.AutoActivities
 {
     public abstract class AutomationActivity : NativeActivity, INotifyPropertyChanged
     {
+        const string SCRIPT_ID = "ScriptId";
         protected IHost Host = null;
 
         [Browsable(false)]
@@ -38,13 +39,13 @@ namespace AutoX.Activities.AutoActivities
 
         protected void SetResult(XElement result)
         {
-            result.SetAttributeValue("_parentId",ParentResultId);
-            result.SetAttributeValue("_id",ResultId);
-            result.SetAttributeValue("InstanceId",InstanceId);
-            result.SetAttributeValue("_type","Result");
-            result.SetAttributeValue("Name",GetType().Name);
-            result.SetAttributeValue("ScriptId",Id);
-            //result.SetAttributeValue("UIObject", UIObject);
+            result.SetAttributeValue(Constants.PARENT_ID,ParentResultId);
+            result.SetAttributeValue(Constants._ID,ResultId);
+            result.SetAttributeValue(Constants.INSTANCE_ID,InstanceId);
+            result.SetAttributeValue(Constants._TYPE,Constants.RESULT);
+            result.SetAttributeValue(Constants.NAME,GetType().Name);
+            result.SetAttributeValue(SCRIPT_ID, Id);
+            //result.SetAttributeValue(Constants.UI_OBJECT, UIObject);
             Data.Save(result);
         }
 

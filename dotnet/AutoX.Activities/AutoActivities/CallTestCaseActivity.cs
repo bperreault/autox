@@ -4,26 +4,25 @@
 
 #region
 
+using AutoX.Basic;
 using System.Activities;
 using System.Activities.Presentation.PropertyEditing;
 using System.Activities.XamlIntegration;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
-using AutoX.Basic;
 
 #endregion
 
 namespace AutoX.Activities.AutoActivities
 {
-    [ToolboxBitmap(typeof (CallTestCaseDesigner), "TestCase.bmp")]
-    [Designer(typeof (CallTestCaseDesigner))]
+    [ToolboxBitmap(typeof(CallTestCaseDesigner), "TestCase.bmp")]
+    [Designer(typeof(CallTestCaseDesigner))]
     public sealed class CallTestCaseActivity : AutomationActivity
     {
         private bool _result;
         private string _testCaseName;
         private string _userData = "";
-
 
         public CallTestCaseActivity()
         {
@@ -45,7 +44,7 @@ namespace AutoX.Activities.AutoActivities
         public string TestCaseId { get; set; }
 
         [DisplayName("User Data")]
-        [Editor(typeof (UserDataEditor), typeof (DialogPropertyValueEditor))]
+        [Editor(typeof(UserDataEditor), typeof(DialogPropertyValueEditor))]
         public string UserData
         {
             get { return _userData; }
@@ -55,7 +54,6 @@ namespace AutoX.Activities.AutoActivities
                 NotifyPropertyChanged("UserData");
             }
         }
-
 
         // If your activity returns a value, derive from CodeActivity<TResult>
         // and return the value from the Execute method.
@@ -75,18 +73,18 @@ namespace AutoX.Activities.AutoActivities
         {
             //TODO implement it!!!
             //invoke a test suite here
-/*
-            Logger.GetInstance().Log().Debug("in CallTestCase, before Executing Test Case: " + TestCaseName);
-            var screen = DBManager.GetInstance().FindOneDataFromDB(TestCaseId) as Script;
-            if (screen == null) return;
-            var activity = ActivityXamlServices.Load(new StringReader(screen.Content));
-            ((IPassData) activity).PassData(InstanceId, UserData);
-            WorkflowInvoker.Invoke(activity);
-            result = ((IPassData) activity).GetResult();
-*/
+            /*
+                        Logger.GetInstance().Log().Debug("in CallTestCase, before Executing Test Case: " + TestCaseName);
+                        var screen = DBManager.GetInstance().FindOneDataFromDB(TestCaseId) as Script;
+                        if (screen == null) return;
+                        var activity = ActivityXamlServices.Load(new StringReader(screen.Content));
+                        ((IPassData) activity).PassData(InstanceId, UserData);
+                        WorkflowInvoker.Invoke(activity);
+                        result = ((IPassData) activity).GetResult();
+            */
             var screen = Host.GetDataObject(TestCaseId);
             if (screen == null) return;
-            var activity = ActivityXamlServices.Load(new StringReader(screen.GetAttributeValue("Content")));
+            var activity = ActivityXamlServices.Load(new StringReader(screen.GetAttributeValue(Constants.CONTENT)));
             if (activity is AutomationActivity)
             {
                 ((AutomationActivity)activity).SetHost(Host);
@@ -94,8 +92,6 @@ namespace AutoX.Activities.AutoActivities
             }
             WorkflowInvoker.Invoke(activity);
             _result = ((IPassData)activity).GetResult();
-            
-            
         }
     }
 }

@@ -4,6 +4,7 @@
 
 #region
 
+using AutoX.Basic;
 using System.Activities.Presentation;
 using System.Windows;
 using System.Xml.Linq;
@@ -22,8 +23,8 @@ namespace AutoX.Activities
 
         protected override void OnDragEnter(DragEventArgs e)
         {
-            var data = e.Data.GetData("DataFormat") as XElement;
-            if (Utilities.CheckValidDrop(data, "UIObject", "Datum"))
+            var data = e.Data.GetData(Constants.DATA_FORMAT) as XElement;
+            if (Utilities.CheckValidDrop(data, Constants.UI_OBJECT, Constants.DATUM))
             {
                 e.Effects = (DragDropEffects.Move & e.AllowedEffects);
                 e.Handled = true;
@@ -33,8 +34,8 @@ namespace AutoX.Activities
 
         protected override void OnDragOver(DragEventArgs e)
         {
-            var data = e.Data.GetData("DataFormat") as XElement;
-            if (Utilities.CheckValidDrop(data, "UIObject"))
+            var data = e.Data.GetData(Constants.DATA_FORMAT) as XElement;
+            if (Utilities.CheckValidDrop(data, Constants.UI_OBJECT))
             {
                 e.Effects = (DragDropEffects.Move & e.AllowedEffects);
                 e.Handled = true;
@@ -45,13 +46,13 @@ namespace AutoX.Activities
         protected override void OnDrop(DragEventArgs e)
         {
             e.Handled = true;
-            var data = e.Data.GetData("DataFormat") as XElement;
+            var data = e.Data.GetData(Constants.DATA_FORMAT) as XElement;
             if (data != null)
             {
                 var tag = data.Name.ToString();
-                if (tag.Equals("Datum"))
+                if (tag.Equals(Constants.DATUM))
                     Utilities.DropXElementToDesigner(data, "UserData", ModelItem);
-                if (tag.Equals("UIObject"))
+                if (tag.Equals(Constants.UI_OBJECT))
                     Utilities.DropXElementToDesigner(data, "Steps", ModelItem);
                 DragDropHelper.SetDragDropCompletedEffects(e, DragDropEffects.Move);
             }

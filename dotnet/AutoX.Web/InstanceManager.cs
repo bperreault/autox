@@ -4,11 +4,10 @@
 
 #region
 
-using System.Collections.Generic;
-using System.Xml.Linq;
 using AutoX.Basic;
 using AutoX.Basic.Model;
-using AutoX.DB;
+using System.Collections.Generic;
+using System.Xml.Linq;
 
 #endregion
 
@@ -19,10 +18,8 @@ namespace AutoX.Web
         private static InstanceManager _instance;
         private readonly Dictionary<string, TestInstance> _instanceList = new Dictionary<string, TestInstance>();
 
-
         private InstanceManager()
         {
-            
         }
 
         public static InstanceManager GetInstance()
@@ -35,7 +32,7 @@ namespace AutoX.Web
             var name = instanceInfo.GetAttributeValue("TestName");
             var scriptGuid = instanceInfo.GetAttributeValue("ScriptGUID");
             var computer = instanceInfo.GetAttributeValue("ClientName");
-            var guid = instanceInfo.GetAttributeValue("_id");
+            var guid = instanceInfo.GetAttributeValue(Constants._ID);
             var status = instanceInfo.GetAttributeValue("Status");
             var language = instanceInfo.GetAttributeValue("Language");
             var suiteName = instanceInfo.GetAttributeValue("SuiteName");
@@ -66,7 +63,7 @@ namespace AutoX.Web
             var list = new XElement("Instances");
             foreach (TestInstance ti in _instanceList.Values)
             {
-                list.Add(((IDataObject) ti).GetXElementFromObject());
+                list.Add(((IDataObject)ti).GetXElementFromObject());
             }
             return list.ToString();
         }

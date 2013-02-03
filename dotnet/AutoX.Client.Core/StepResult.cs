@@ -19,36 +19,36 @@ namespace AutoX.Client.Core
         public StepResult(AbstractAction action)
         {
             
-            _result.SetAttributeValue("_id",Guid.NewGuid().ToString());
-            _result.SetAttributeValue("Action", action.GetType().Name);
-            _result.SetAttributeValue("Data", action.Data);
+            _result.SetAttributeValue(Constants._ID,Guid.NewGuid().ToString());
+            _result.SetAttributeValue(Constants.ACTION, action.GetType().Name);
+            _result.SetAttributeValue(Constants.DATA, action.Data);
             Success();
         }
 
         private void Success()
         {
-            if (_result.Attribute("Result") == null)
+            if (_result.Attribute(Constants.RESULT) == null)
             {
-                _result.SetAttributeValue("Result", "Success");
+                _result.SetAttributeValue(Constants.RESULT, "Success");
             }
         }
 
         public void Error(string reason)
         {
-            _result.SetAttributeValue("Result", "Error");
+            _result.SetAttributeValue(Constants.RESULT, "Error");
             SetReason(reason);
         }
 
         public void Warning(string reason)
         {
-            var xResult = _result.Attribute("Result");
+            var xResult = _result.Attribute(Constants.RESULT);
             if (xResult == null)
-                _result.SetAttributeValue("Result", "Warning");
+                _result.SetAttributeValue(Constants.RESULT, "Warning");
             else
             {
                 var value = xResult.Value;
                 if (!value.Equals("Error"))
-                    _result.SetAttributeValue("Result", "Warning");
+                    _result.SetAttributeValue(Constants.RESULT, "Warning");
             }
             SetReason(reason);
         }

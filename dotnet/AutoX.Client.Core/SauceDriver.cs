@@ -4,10 +4,10 @@ using System;
 
 namespace AutoX.Client.Core
 {
-    class SauceDriver : RemoteWebDriver
+    internal class SauceDriver : RemoteWebDriver
     {
-        
-        public SauceDriver(Uri remoteAddress, ICapabilities desiredCapabilities) : base(remoteAddress, desiredCapabilities)
+        public SauceDriver(Uri remoteAddress, ICapabilities desiredCapabilities)
+            : base(remoteAddress, desiredCapabilities)
         {
         }
 

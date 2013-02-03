@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoX.Basic;
+using System;
 using System.Xml.Linq;
-using AutoX.Basic;
 
 namespace AutoX.WF.Core
 {
@@ -14,6 +10,7 @@ namespace AutoX.WF.Core
         {
             var command = XElement.Parse(commandString);
             var action = GetActionName(command);
+
             //reflection way to get the class, then call it, get result
             if (!action.Contains("."))
                 action = "AutoX.WF.Core.Actions." + action;
@@ -25,11 +22,11 @@ namespace AutoX.WF.Core
             }
             var r = (@"<Result Result='Failed' Reason='Encounter UnKnown Action[" + action + "]' />");
             return XElement.Parse(r);
-            
         }
+
         private static string GetActionName(XElement command)
         {
-            return command.GetAttributeValue("Action");
+            return command.GetAttributeValue(Constants.ACTION);
         }
     }
 }

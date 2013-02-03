@@ -28,38 +28,38 @@ namespace AutoX.Client
     public class NotificationAreaIcon : FrameworkElement, IDisposable
     {
         public static readonly RoutedEvent MouseClickEvent = EventManager.RegisterRoutedEvent(
-            "MouseClick", RoutingStrategy.Bubble, typeof (MouseButtonEventHandler), typeof (NotificationAreaIcon));
+            "MouseClick", RoutingStrategy.Bubble, typeof(MouseButtonEventHandler), typeof(NotificationAreaIcon));
 
         public static readonly RoutedEvent MouseDoubleClickEvent = EventManager.RegisterRoutedEvent(
-            "MouseDoubleClick", RoutingStrategy.Bubble, typeof (MouseButtonEventHandler), typeof (NotificationAreaIcon));
+            "MouseDoubleClick", RoutingStrategy.Bubble, typeof(MouseButtonEventHandler), typeof(NotificationAreaIcon));
 
         public static readonly DependencyProperty IconProperty =
-            DependencyProperty.Register("Icon", typeof (ImageSource), typeof (NotificationAreaIcon));
+            DependencyProperty.Register("Icon", typeof(ImageSource), typeof(NotificationAreaIcon));
 
         public static readonly DependencyProperty TextProperty =
-            DependencyProperty.Register("Text", typeof (string), typeof (NotificationAreaIcon));
+            DependencyProperty.Register("Text", typeof(string), typeof(NotificationAreaIcon));
 
         public static readonly DependencyProperty FormsContextMenuProperty =
-            DependencyProperty.Register("MenuItems", typeof (List<MenuItem>), typeof (NotificationAreaIcon),
+            DependencyProperty.Register("MenuItems", typeof(List<MenuItem>), typeof(NotificationAreaIcon),
                                         new PropertyMetadata(new List<MenuItem>()));
 
         private NotifyIcon _notifyIcon;
 
         public List<MenuItem> MenuItems
         {
-            get { return (List<MenuItem>) GetValue(FormsContextMenuProperty); }
+            get { return (List<MenuItem>)GetValue(FormsContextMenuProperty); }
             set { SetValue(FormsContextMenuProperty, value); }
         }
 
         public ImageSource Icon
         {
-            get { return (ImageSource) GetValue(IconProperty); }
+            get { return (ImageSource)GetValue(IconProperty); }
             set { SetValue(IconProperty, value); }
         }
 
         public string Text
         {
-            get { return (string) GetValue(TextProperty); }
+            get { return (string)GetValue(TextProperty); }
             set { SetValue(TextProperty, value); }
         }
 
@@ -78,7 +78,7 @@ namespace AutoX.Client
             base.OnInitialized(e);
 
             // Create and initialize the window forms notify icon based
-            _notifyIcon = new NotifyIcon {Text = Text};
+            _notifyIcon = new NotifyIcon { Text = Text };
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
                 _notifyIcon.Icon = FromImageSource(Icon);

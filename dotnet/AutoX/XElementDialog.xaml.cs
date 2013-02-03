@@ -4,6 +4,7 @@
 
 #region
 
+using AutoX.Basic;
 using System;
 using System.Globalization;
 using System.Windows;
@@ -32,6 +33,7 @@ namespace AutoX
             _content = element;
             _isReadOnly = isReadOnly;
             SrcEdit.Text = _content.ToString(SaveOptions.None);
+
             //Refresh(element, isReadOnly);
         }
 
@@ -103,10 +105,10 @@ namespace AutoX
         private void AddPairControls(XAttribute a)
         {
             if (_isReadOnly
-                || a.Name.ToString().Equals("_type")
-                || a.Name.ToString().Equals("_parentId")
-                || a.Name.ToString().Equals("ScriptType")
-                || a.Name.ToString().Equals("_id")
+                || a.Name.ToString().Equals(Constants._TYPE)
+                || a.Name.ToString().Equals(Constants.PARENT_ID)
+                || a.Name.ToString().Equals(Constants.SCRIPT_TYPE)
+                || a.Name.ToString().Equals(Constants._ID)
                 )
             {
                 var label = new TextBlock
@@ -115,7 +117,7 @@ namespace AutoX
                         TextWrapping = TextWrapping.Wrap,
                         FontWeight = FontWeights.Bold
                     };
-                var value = new TextBlock {Text = a.Value, TextWrapping = TextWrapping.Wrap};
+                var value = new TextBlock { Text = a.Value, TextWrapping = TextWrapping.Wrap };
                 ContentGrid.Children.Add(label);
                 ContentGrid.Children.Add(value);
             }
@@ -129,7 +131,7 @@ namespace AutoX
                 //                    TextWrapping = TextWrapping.Wrap
                 //                };
                 //label.TextChanged += LabelTextChanged;
-                var label = new TextBlock {Text = a.Name.ToString(), FontWeight = FontWeights.Bold};
+                var label = new TextBlock { Text = a.Name.ToString(), FontWeight = FontWeights.Bold };
                 ContentGrid.Children.Add(label);
 
                 var value = new TextBox
@@ -146,13 +148,14 @@ namespace AutoX
                 value.TextChanged += ValueTextChanged;
                 ContentGrid.Children.Add(value);
             }
+
             //ResizeMode = ResizeMode.NoResize;
         }
 
         private void ValueTextChanged(object sender, TextChangedEventArgs e)
         {
-            var nameX = ((TextBox) sender).Tag.ToString();
-            var valueX = ((TextBox) sender).Text;
+            var nameX = ((TextBox)sender).Tag.ToString();
+            var valueX = ((TextBox)sender).Text;
             _content.SetAttributeValue(nameX, valueX);
         }
 
@@ -172,7 +175,6 @@ namespace AutoX
             Close();
         }
 
-
         private void ButtonNewClick(object sender, RoutedEventArgs e)
         {
             var newAttrName = "NewAttribute";
@@ -183,7 +185,7 @@ namespace AutoX
                 newAttrName = "NewAttribute" + i.ToString(CultureInfo.InvariantCulture).Trim();
                 i++;
             }
-            var iDlg = new InfoDialog {InfoContent = newAttrName};
+            var iDlg = new InfoDialog { InfoContent = newAttrName };
             iDlg.ShowDialog();
             if (iDlg.DialogResult == true)
             {
@@ -191,6 +193,7 @@ namespace AutoX
                 var newAttribute = new XAttribute(newAttrName,
                                                   "NewValue" + i.ToString(CultureInfo.InvariantCulture).Trim());
                 _content.Add(newAttribute);
+
                 //ContentGrid.Rows += 1;
                 AddPairControls(newAttribute);
             }
@@ -248,6 +251,7 @@ namespace AutoX
 
                 _content.ReplaceAll(newNode.Elements());
                 _content.ReplaceAttributes(newNode.Attributes());
+
                 //_content = XElement.Parse(SrcEdit.Text);
 
                 //Refresh(_content, _isReadOnly);
@@ -257,6 +261,7 @@ namespace AutoX
                 //if not valid, don't change anything
                 _content.ReplaceWith(XElement.Parse(_backup));
             }
+
             //Refresh();
         }
     }

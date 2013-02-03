@@ -22,9 +22,13 @@ namespace AutoX.Basic.Model
         #region IDataObject Members
 
         public string _id { get; set; }
+
         public DateTime Updated { get; set; }
+
         public DateTime Created { get; set; }
+
         public string _parentId { get; set; }
+
         #endregion
     }
 }

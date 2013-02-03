@@ -34,7 +34,7 @@
                 <DataGrid HorizontalContentAlignment="Stretch"
                     ItemsSource="{Binding Path=ModelItem.Steps, Converter={StaticResource StepsConverter},ConverterParameter=In}"
                     Background="Transparent" AllowDrop="True" Name="StepsTable" AutoGenerateColumns="False" CanUserAddRows="False"
-                    IsReadOnly="True" CanUserDeleteRows="False" CanUserSortColumns="False" >
+                    IsReadOnly="True" CanUserDeleteRows="False" CanUserSortColumns="False">
                     <DataGrid.RowStyle>
                         <Style TargetType="DataGridRow">
                             <Style.Triggers>
@@ -97,7 +97,6 @@
                 <GradientStop Color="Green" Offset="0.00"></GradientStop>
                 <GradientStop Color="Orange" Offset="0.99"></GradientStop>
             </LinearGradientBrush>
-
         </Grid.Background>
         <Border BorderBrush="Blue" BorderThickness="2">
             <StackPanel>
@@ -105,6 +104,5 @@
                 <ContentPresenter Style="{DynamicResource ExpandOrCollapsedStyle}" Content="{Binding}" />
             </StackPanel>
         </Border>
-
     </Grid>
 </sap:ActivityDesigner>

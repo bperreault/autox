@@ -62,8 +62,6 @@
                 <GradientStop Color="Green" Offset="0.00"></GradientStop>
                 <GradientStop Color="Orange" Offset="0.99"></GradientStop>
             </LinearGradientBrush>
-
         </Grid.Background>
-
     </Grid>
 </sap:ActivityDesigner>

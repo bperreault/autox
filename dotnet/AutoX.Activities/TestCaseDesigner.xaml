@@ -50,7 +50,6 @@
                             <StackPanel Orientation="Vertical" AllowDrop="True" />
                         </ItemsPanelTemplate>
                     </sap:WorkflowItemsPresenter.ItemsPanel>
-
                 </sap:WorkflowItemsPresenter>
             </StackPanel>
         </DataTemplate>
@@ -71,8 +70,6 @@
                 <GradientStop Color="Green" Offset="0.00"></GradientStop>
                 <GradientStop Color="Orange" Offset="0.99"></GradientStop>
             </LinearGradientBrush>
-
         </Grid.Background>
-
     </Grid>
 </sap:ActivityDesigner>

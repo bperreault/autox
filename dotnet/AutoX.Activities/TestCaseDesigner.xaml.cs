@@ -4,6 +4,7 @@
 
 #region
 
+using AutoX.Basic;
 using System;
 using System.Activities;
 using System.Activities.Presentation;
@@ -35,15 +36,15 @@ namespace AutoX.Activities
             if (DragDropHelper.AllowDrop(
                 e.Data,
                 Context,
-                typeof (Activity)))
+                typeof(Activity)))
             {
                 e.Effects = (DragDropEffects.Move & e.AllowedEffects);
                 e.Handled = true;
             }
             else
             {
-                var data = e.Data.GetData("DataFormat") as XElement;
-                if (Utilities.CheckValidDrop(data, "Script", "Datum"))
+                var data = e.Data.GetData(Constants.DATA_FORMAT) as XElement;
+                if (Utilities.CheckValidDrop(data, Constants.SCRIPT, Constants.DATUM))
                 {
                     var activity = Utilities.GetActivityFromXElement(data);
                     if (activity != null)
@@ -74,7 +75,7 @@ namespace AutoX.Activities
         private void DropOverTestCase(object sender, DragEventArgs e)
         {
             e.Handled = true;
-            var data = e.Data.GetData("DataFormat") as XElement;
+            var data = e.Data.GetData(Constants.DATA_FORMAT) as XElement;
             if (data != null)
             {
                 Utilities.DropXElementToDesigner(data, "UserData", ModelItem);
@@ -91,7 +92,6 @@ namespace AutoX.Activities
             }
         }
 
-
         protected override void OnDrop(DragEventArgs e)
         {
             DropOverTestCase(null, e);
@@ -103,15 +103,15 @@ namespace AutoX.Activities
             if (DragDropHelper.AllowDrop(
                 e.Data,
                 Context,
-                typeof (Activity)))
+                typeof(Activity)))
             {
                 e.Effects = (DragDropEffects.Move & e.AllowedEffects);
                 e.Handled = true;
             }
             else
             {
-                var data = e.Data.GetData("DataFormat") as XElement;
-                if (Utilities.CheckValidDrop(data, "Script", "Datum"))
+                var data = e.Data.GetData(Constants.DATA_FORMAT) as XElement;
+                if (Utilities.CheckValidDrop(data, Constants.SCRIPT, Constants.DATUM))
                 {
                     e.Effects = (DragDropEffects.Move & e.AllowedEffects);
                     e.Handled = true;

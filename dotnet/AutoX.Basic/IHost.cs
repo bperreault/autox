@@ -5,7 +5,6 @@
 #region
 
 using System.Xml.Linq;
-using AutoX.Basic.Model;
 
 #endregion
 
@@ -15,8 +14,8 @@ namespace AutoX.Basic
     {
         XElement GetDataObject(string id);
 
-        void SetCommand( XElement steps);
+        void SetCommand(XElement steps);
 
-        XElement GetResult( string guid);
+        XElement GetResult(string guid);
     }
 }

@@ -7,7 +7,9 @@
 #endregion
 
 #region
+
 using System;
+
 #endregion
 
 namespace AutoX.Basic.Model
@@ -21,7 +23,9 @@ namespace AutoX.Basic.Model
         #region IDataObject Members
 
         public string _id { get; set; }
+
         public string _parentId { get; set; }
+
         public DateTime Updated { get; set; }
 
         public DateTime Created { get; set; }

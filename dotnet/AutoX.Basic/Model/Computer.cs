@@ -15,12 +15,19 @@ namespace AutoX.Basic.Model
     public class Computer : IDataObject
     {
         public string ComputerName { get; set; }
+
         public string IPAddress { get; set; }
+
         public string Version { get; set; }
+
         public string _id { get; set; }
+
         public DateTime Created { get; set; }
+
         public DateTime Updated { get; set; }
+
         public string _parentId { get; set; }
+
         public static Computer GetLocalHost()
         {
             var computer = new Computer
@@ -70,7 +77,7 @@ namespace AutoX.Basic.Model
             //return xComputer.GetObjectFromXElement() as Computer;
             var computer = new Computer
                 {
-                    _id = xComputer.GetAttributeValue("_id"),
+                    _id = xComputer.GetAttributeValue(Constants._ID),
                     Created = DateTime.Parse(xComputer.GetAttributeValue("Created")),
                     Updated = DateTime.Parse(xComputer.GetAttributeValue("Updated")),
                     ComputerName = xComputer.GetAttributeValue("ComputerName"),

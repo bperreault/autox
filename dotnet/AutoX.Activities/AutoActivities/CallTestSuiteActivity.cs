@@ -67,7 +67,7 @@ namespace AutoX.Activities.AutoActivities
             Log.Debug("in CallTestSuite, before Executing Test Suite: " + TestSuiteName);
             var screen = Host.GetDataObject(TestSuiteId);
             if (screen == null) return;
-            var activity = ActivityXamlServices.Load(new StringReader(screen.GetAttributeValue("Content")));
+            var activity = ActivityXamlServices.Load(new StringReader(screen.GetAttributeValue(Constants.CONTENT)));
             if (activity is AutomationActivity)
             {
                 ((AutomationActivity)activity).SetHost(Host);

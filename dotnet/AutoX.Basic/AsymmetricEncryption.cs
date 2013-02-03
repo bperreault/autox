@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using Microsoft.Win32;
 using System.Xml.Linq;
 
 namespace AutoX.Basic
@@ -15,9 +15,10 @@ namespace AutoX.Basic
         {
             var userName = Configuration.Settings("UserName");
             var collectionName = Configuration.Settings("ProjectName", "Project_" + userName.Replace(".", ""));
-            return !string.IsNullOrEmpty(userName) && GenerateRegisterFile(userName,collectionName);
+            return !string.IsNullOrEmpty(userName) && GenerateRegisterFile(userName, collectionName);
         }
-        public static bool GenerateRegisterFile(string userName,string collectionName)
+
+        public static bool GenerateRegisterFile(string userName, string collectionName)
         {
             const int keySize = 2048;
             string publicAndPrivateKey;
@@ -33,7 +34,7 @@ namespace AutoX.Basic
 
             //send encrypted data to service
             XElement forSave = new XElement("Register");
-            forSave.SetAttributeValue("ProjectName",collectionName);
+            forSave.SetAttributeValue("ProjectName", collectionName);
             XElement root = new XElement("Root");
 
             var rootId = Guid.NewGuid().ToString();
@@ -43,19 +44,20 @@ namespace AutoX.Basic
             var translationId = Guid.NewGuid().ToString();
             var resultId = Guid.NewGuid().ToString();
 
-            root.SetAttributeValue("_id",rootId);
-            root.SetAttributeValue("Project",projectId);
-            root.SetAttributeValue("UI",uiId);
-            root.SetAttributeValue("Data",dataId);
-            root.SetAttributeValue("Translation",translationId);
-            root.SetAttributeValue("Result",resultId);
-            root.SetAttributeValue("PublicKey",publicKey);
-            root.SetAttributeValue("PublicAndPrivateKey",publicAndPrivateKey);
+            root.SetAttributeValue(Constants._ID, rootId);
+            root.SetAttributeValue("Project", projectId);
+            root.SetAttributeValue("UI", uiId);
+            root.SetAttributeValue(Constants.DATA, dataId);
+            root.SetAttributeValue("Translation", translationId);
+            root.SetAttributeValue(Constants.RESULT, resultId);
+            root.SetAttributeValue("PublicKey", publicKey);
+            root.SetAttributeValue("PublicAndPrivateKey", publicAndPrivateKey);
             root.SetAttributeValue("Secret", encrypted);
-            root.SetAttributeValue("UserName",userName);
+            root.SetAttributeValue("UserName", userName);
             forSave.Add(root);
-//            File.WriteAllText(userName + ".pem", "UserName:\n" + userName + "\nPublic Key:\n" + publicKey + "\nPublic and Private Key:\n" +
-//                            publicAndPrivateKey + "\nSecrect:\n" + encrypted + "\nFor Test:\n" + productid);
+
+            //            File.WriteAllText(userName + ".pem", "UserName:\n" + userName + "\nPublic Key:\n" + publicKey + "\nPublic and Private Key:\n" +
+            //                            publicAndPrivateKey + "\nSecrect:\n" + encrypted + "\nFor Test:\n" + productid);
             forSave.Add(XElement.Parse("<Project _type='Folder' Name='Project' _id='" + projectId + "' _parentId='" + rootId + "' />"));
             forSave.Add(XElement.Parse("<Data  _type='Folder' Name='Data' _id='" + dataId + "' _parentId='" + rootId + "'  />"));
             forSave.Add(XElement.Parse("<UI  _type='Folder' Name='UI' _id='" + uiId + "' _parentId='" + rootId + "'  />"));
@@ -64,7 +66,7 @@ namespace AutoX.Basic
             File.WriteAllText(userName + ".pem", forSave.ToString());
             Configuration.Set("UserName", userName);
             Configuration.Set("PublicKey", publicKey);
-            Configuration.Set("ProjectName",collectionName);
+            Configuration.Set("ProjectName", collectionName);
             Configuration.SaveSettings();
             return true;
         }
@@ -72,7 +74,7 @@ namespace AutoX.Basic
         public static string Hmacmd5(string key, string sessionId)
         {
             var md5 = new HMACMD5(Encoding.UTF8.GetBytes(key));
-            return BitConverter.ToString( md5.ComputeHash(Encoding.UTF8.GetBytes(sessionId))).Replace("-","").ToLower();
+            return BitConverter.ToString(md5.ComputeHash(Encoding.UTF8.GetBytes(sessionId))).Replace("-", "").ToLower();
         }
 
         public static void GenerateKeys(int keySize, out string publicKey, out string publicAndPrivateKey)
@@ -86,13 +88,12 @@ namespace AutoX.Basic
 
         public static string Sign(string text, int keySize, string publicAndPrivateKeyXml)
         {
-
             SHA1 sha1 = new SHA1Managed();
             byte[] data = sha1.ComputeHash(sha1.ComputeHash(Encoding.UTF8.GetBytes(text)));
             var decrypted = Sign(data, keySize, publicAndPrivateKeyXml);
             return Convert.ToBase64String(decrypted);
-            //return Encoding.UTF8.GetString(decrypted);
 
+            //return Encoding.UTF8.GetString(decrypted);
         }
 
         public static byte[] Sign(byte[] data, int keySize, string publicAndPrivateKeyXml)
@@ -105,20 +106,21 @@ namespace AutoX.Basic
             {
                 provider.FromXmlString(publicAndPrivateKeyXml);
 
-                //Create a signature for HashValue and assign it to 
+                //Create a signature for HashValue and assign it to
                 //SignedHashValue.
                 return provider.SignData(data, new SHA1CryptoServiceProvider());
+
                 //                return RSAFormatter.CreateSignature(data);
                 //
                 //                return provider.Decrypt(data, _optimalAsymmetricEncryptionPadding);
             }
         }
 
-
         public static bool VerifySign(string signature, string origin, int keySize, string publicKeyXml)
         {
             byte[] data = Convert.FromBase64String(signature);
             if (data == null || data.Length == 0) throw new ArgumentException("Data are empty", "signature");
+
             // int maxLength = GetMaxDataLength(keySize);
             // if (data.Length > maxLength) throw new ArgumentException(String.Format("Maximum data length is {0}", maxLength), "data");
             //if (!IsKeySizeValid(keySize)) throw new ArgumentException("Key size is not valid", "keySize");
@@ -131,6 +133,7 @@ namespace AutoX.Basic
                 SHA1 sha1 = new SHA1Managed();
                 byte[] buffer = sha1.ComputeHash(sha1.ComputeHash(Encoding.UTF8.GetBytes(origin)));
                 return provider.VerifyData(buffer, new SHA1CryptoServiceProvider(), data);
+
                 //return RSADeformatter.VerifySignature(Encoding.UTF8.GetBytes(origin), data);
                 //return provider.Encrypt(data, _optimalAsymmetricEncryptionPadding);
             }
@@ -176,7 +179,6 @@ namespace AutoX.Basic
                 return provider.Decrypt(data, OptimalAsymmetricEncryptionPadding);
             }
         }
-
 
         public static int GetMaxDataLength(int keySize)
         {

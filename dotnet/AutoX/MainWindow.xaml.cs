@@ -47,8 +47,8 @@ namespace AutoX
             }
             XElement xRoot = Data.Read(rootId);
             Configuration.Set("ProjectRoot", xRoot.GetAttributeValue("Project"));
-            Configuration.Set("ResultsRoot", xRoot.GetAttributeValue("Result"));
-            Configuration.Set("DataRoot", xRoot.GetAttributeValue("Data"));
+            Configuration.Set("ResultsRoot", xRoot.GetAttributeValue(Constants.RESULT));
+            Configuration.Set("DataRoot", xRoot.GetAttributeValue(Constants.DATA));
             Configuration.Set("ObjectPool", xRoot.GetAttributeValue("UI"));
             Configuration.Set("TranslationRoot", xRoot.GetAttributeValue("Translation"));
             Configuration.SaveSettings();

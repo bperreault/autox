@@ -27,9 +27,13 @@ namespace AutoX.Basic.Model
         #endregion
 
         public string _id { get; set; }
+
         public DateTime Created { get; set; }
+
         public DateTime Updated { get; set; }
+
         public string _parentId { get; set; }
+
         public ObservableCollection<object> Get()
         {
             return _list;
@@ -57,7 +61,7 @@ namespace AutoX.Basic.Model
             var ret = new ObservableCollection<object>();
             foreach (
                 IDataObject rowItem in
-                    _list.Where(rowItem => ((IDataObject) rowItem).GetXElementFromObject().ToString().Contains(filter)))
+                    _list.Where(rowItem => ((IDataObject)rowItem).GetXElementFromObject().ToString().Contains(filter)))
             {
                 ret.Add(rowItem);
             }

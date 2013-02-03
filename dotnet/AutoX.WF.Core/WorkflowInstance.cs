@@ -1,22 +1,20 @@
-﻿using System;
-using System.Activities.Tracking;
-using System.IO;
-using AutoX.Activities;
-using AutoX.Activities.AutoActivities;
+﻿using AutoX.Activities.AutoActivities;
 using AutoX.Basic;
-using System.Collections.Generic;
 using AutoX.DB;
-using System.Xml.Linq;
-using System.Threading;
+using System;
 using System.Activities;
+using System.Activities.Tracking;
 using System.Activities.XamlIntegration;
-
+using System.Collections.Generic;
+using System.IO;
+using System.Threading;
+using System.Xml.Linq;
 
 namespace AutoX.WF.Core
 {
-    public class WorkflowInstance : IHost,IObserable
+    public class WorkflowInstance : IHost, IObserable
     {
-        private Dictionary<string,string > _variables = new Dictionary<string, string>();
+        private Dictionary<string, string> _variables = new Dictionary<string, string>();
         private volatile XElement _command;
         private volatile XElement _result;
         private List<IObserver> _observers = new List<IObserver>();
@@ -26,34 +24,34 @@ namespace AutoX.WF.Core
         {
             get { return _instanceId; }
         }
-    
+
         public string ParentId
         {
             get { return _parentId; }
             set { _parentId = value; }
         }
+
         public WorkflowInstance(string workflowId, Dictionary<string, string> upperLevelVariables, string resultParentId)
         {
-            if(upperLevelVariables!=null)
+            if (upperLevelVariables != null)
                 foreach (var upperLevelVariable in upperLevelVariables)
                 {
-                    _variables.Add(upperLevelVariable.Key,upperLevelVariable.Value);
+                    _variables.Add(upperLevelVariable.Key, upperLevelVariable.Value);
                 }
             XElement script = GetDataObject(workflowId);
             _result = null;
             _command = null;
-            if(script!=null)
-                StartActivity(script.GetAttributeValue("Content"),resultParentId);
-
+            if (script != null)
+                StartActivity(script.GetAttributeValue(Constants.CONTENT), resultParentId);
         }
 
         private readonly StatusTracker _statusTracker = new StatusTracker();
         private WorkflowApplication _workflowApplication;
         private string _parentId;
+
         public string Status { get; set; }
-        
-        
-        private void StartActivity(string workflow,string resultParentId)
+
+        private void StartActivity(string workflow, string resultParentId)
         {
             var activity = ActivityXamlServices.Load(new StringReader(workflow)) as AutomationActivity;
             if (activity != null)
@@ -65,7 +63,6 @@ namespace AutoX.WF.Core
                 _workflowApplication.Extensions.Add(_statusTracker);
                 _workflowApplication.Run();
             }
-            
         }
 
         public XElement GetDataObject(string id)
@@ -74,8 +71,8 @@ namespace AutoX.WF.Core
         }
 
         public void SetCommand(XElement steps)
-        {            
-                _command = steps;
+        {
+            _command = steps;
         }
 
         public XElement GetResult(string guid)
@@ -94,9 +91,9 @@ namespace AutoX.WF.Core
         }
 
         public void SetResult(XElement result)
-        { 
-                _result = result;
-                Notify(result);
+        {
+            _result = result;
+            Notify(result);
         }
 
         public XElement GetCommand()
@@ -116,7 +113,7 @@ namespace AutoX.WF.Core
 
         public void Register(IObserver observer)
         {
-            if(!_observers.Contains(observer))
+            if (!_observers.Contains(observer))
                 _observers.Add(observer);
         }
 
@@ -137,6 +134,7 @@ namespace AutoX.WF.Core
                     switch (e.CompletionState)
                     {
                         case ActivityInstanceState.Faulted:
+
                             //Logger.GetInstance().Log().Error("workflow " +
                             //                                 scriptGuid +
                             //                                 " stopped! Error Message:\n"
@@ -149,12 +147,16 @@ namespace AutoX.WF.Core
                             //                                     Message);
                             Status = "Terminated";
                             break;
+
                         case ActivityInstanceState.Canceled:
+
                             //Logger.GetInstance().Log().Warn("workflow " + scriptGuid +
                             //                                " Cancel.");
                             Status = "Canceled";
                             break;
+
                         default:
+
                             //Logger.GetInstance().Log().Info("workflow " + scriptGuid +
                             //                                " Completed.");
                             Status = "Completed";
@@ -177,11 +179,12 @@ namespace AutoX.WF.Core
 
     public class StatusTracker : TrackingParticipant
     {
-
         public string Status { get; private set; }
+        TrackingProfile trackingProfile = new TrackingProfile();
+
         public StatusTracker()
         {
-            var trackingProfile = new TrackingProfile();
+            
             trackingProfile.Queries.Add(new ActivityStateQuery
             {
                 ActivityName = "*",
@@ -196,14 +199,13 @@ namespace AutoX.WF.Core
 
             this.TrackingProfile = trackingProfile;
         }
+
         protected override void Track(TrackingRecord record, System.TimeSpan timeout)
         {
             if (record is WorkflowInstanceRecord)
             {
-                Status = ((WorkflowInstanceRecord) record).State;
+                Status = ((WorkflowInstanceRecord)record).State;
             }
         }
     }
-
-    
 }

@@ -4,6 +4,9 @@
 
 #region
 
+using AutoX.Basic;
+using AutoX.Client.Core;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,9 +14,6 @@ using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using System.Xml.Linq;
-using AutoX.Basic;
-using AutoX.Client.Core;
-using Microsoft.Win32;
 
 #endregion
 
@@ -22,18 +22,18 @@ namespace AutoX.Client
     /// <summary>
     ///   Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow
+    public partial class MainWindow :IDisposable
     {
         private WindowState _lastWindowState;
-        
+
         private bool _shouldClose;
         private readonly AutoClient _defaultClientInstance = new AutoClient();
         private readonly List<AutoClient> _instances = new List<AutoClient>();
+
         public MainWindow()
         {
             InitializeComponent();
             Hide();
-            
         }
 
         private void MenuItemExit(object sender, RoutedEventArgs e)
@@ -59,7 +59,6 @@ namespace AutoX.Client
         private void Register()
         {
             _defaultClientInstance.Register();
-           
         }
 
         private void RequestCommand(object sender, RoutedEventArgs e)
@@ -127,6 +126,7 @@ namespace AutoX.Client
             {
                 var fileName = openFile.FileName;
                 var content = ReadSelectedOrWholeText();
+
                 //File.CreateText(fileName);
                 //File.AppendAllText(fileName, content);
                 File.WriteAllText(fileName, content);
@@ -203,12 +203,10 @@ namespace AutoX.Client
             }
             else
                 _defaultClientInstance.Start();
-            
         }
 
         private void OnMenuItemStopClick(object sender, EventArgs e)
         {
-            
             _defaultClientInstance.Stop();
             foreach (var clientInstance in _instances)
             {
@@ -224,5 +222,33 @@ namespace AutoX.Client
         }
 
         #endregion UI things
+
+        private bool disposed = false; // to detect redundant calls
+        public void Dispose()
+        {
+            Dispose(true);
+            //GC.SupressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    if (_instances.Count>0)
+                    {
+                        foreach (var instance in _instances)
+                            instance.Dispose();
+                    }
+                    if (_defaultClientInstance != null)
+                    {
+                        _defaultClientInstance.Dispose();
+                    }
+                }
+
+                disposed = true;
+            }
+        }
     }
 }

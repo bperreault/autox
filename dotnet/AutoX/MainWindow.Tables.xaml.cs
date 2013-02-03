@@ -4,17 +4,17 @@
 
 #region
 
+using AutoX.Basic.Model;
+using AutoX.Comm;
+using AutoX.DB;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Xml.Linq;
-using AutoX.Basic.Model;
-using AutoX.DB;
 using IDataObject = AutoX.Basic.Model.IDataObject;
-using AutoX.Comm;
-using System.Windows.Documents;
-using System.Diagnostics;
 
 #endregion
 
@@ -27,7 +27,6 @@ namespace AutoX
         private readonly TableItem _testCaseResultSource = new TableItem();
         private readonly TableItem _testStepSource = new TableItem();
         private readonly TableItem _translationSource = new TableItem();
-
 
         private void RefreshClientTable(object sender, RoutedEventArgs e)
         {

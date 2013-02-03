@@ -4,16 +4,16 @@
 
 #region
 
-using System;
 using log4net;
 using log4net.Config;
+using System;
 
 #endregion
 
 namespace AutoX.Basic
 {
     /*
-     * 
+     *
 <configuration>
 <configSections>
 <section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler,log4net" requirePermission="false"/>
@@ -30,7 +30,7 @@ namespace AutoX.Basic
   <priority value="ALL" /><!-- set leve here:FATAL,ERROR,WARN,INFO,DEBUG,ALL-->
   <appender-ref ref="LogFileAppender" />
 </root>
-    
+
 </log4net>
 <!--<startup>
 <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.5"/>

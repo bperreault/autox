@@ -4,15 +4,12 @@
 
 #region
 
-using System;
-using System.Activities;
-using System.Collections.Generic;
+using AutoX.Basic;
+using AutoX.WF.Core;
 using System.ComponentModel;
 using System.Web.Script.Services;
 using System.Web.Services;
 using System.Xml.Linq;
-using AutoX.Basic;
-using AutoX.WF.Core;
 
 #endregion
 
@@ -24,11 +21,11 @@ namespace AutoX.Web
     [WebService(Namespace = "http://tempuri.org/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [ToolboxItem(false)]
-    // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
+
+    // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line.
     [ScriptService]
     public class Service : WebService
     {
-
         [WebMethod]
         public string Hello(string input)
         {

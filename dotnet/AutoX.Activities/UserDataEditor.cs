@@ -18,9 +18,9 @@ namespace AutoX.Activities
         {
             InlineEditorTemplate = new DataTemplate();
 
-            var stack = new FrameworkElementFactory(typeof (StackPanel));
+            var stack = new FrameworkElementFactory(typeof(StackPanel));
             stack.SetValue(StackPanel.OrientationProperty, Orientation.Horizontal);
-            var editModeSwitch = new FrameworkElementFactory(typeof (EditModeSwitchButton));
+            var editModeSwitch = new FrameworkElementFactory(typeof(EditModeSwitchButton));
             editModeSwitch.SetValue(EditModeSwitchButton.TargetEditModeProperty, PropertyContainerEditMode.Dialog);
             stack.AppendChild(editModeSwitch);
             InlineEditorTemplate.VisualTree = stack;

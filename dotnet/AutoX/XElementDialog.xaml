@@ -12,7 +12,6 @@
                         <RowDefinition Height="Auto" MaxHeight="560" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" MinHeight="32" />
-
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*" />
@@ -25,23 +24,19 @@
                     <GridSplitter Height="6" Grid.Row="1" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" Margin="0" />
                     <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="5"
                           ScrollViewer.CanContentScroll="False" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                        
+
                         <ScrollViewer  MaxHeight="480" MaxWidth="640"
-                                    ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" 
-                                      >
+                                    ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto"
+>
                             <ScrollViewer.Content>
                                 <StackPanel Orientation="Vertical" Name="ContentGrid" MinHeight="120" MaxWidth="640"
-                                    ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" 
-                                    CanVerticallyScroll="True" CanHorizontallyScroll="True"  />
+                                    ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                    CanVerticallyScroll="True" CanHorizontallyScroll="True" />
                             </ScrollViewer.Content>
-                            
-
-                            
                         </ScrollViewer>
                         <!--<StackPanel Orientation="Vertical" Name="ContentGrid" MaxHeight="480" MaxWidth="640"
-                                    ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto" 
-                                    CanVerticallyScroll="True" CanHorizontallyScroll="True"  >
-                            
+                                    ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                    CanVerticallyScroll="True" CanHorizontallyScroll="True">
                         </StackPanel>-->
                     </Grid>
                     <GridSplitter Height="6" Grid.Row="3" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" />
@@ -51,7 +46,6 @@
                             Click="ButtonOkClick" Margin="5" />
                     <Button Content="Cancel" Name="BtnCancel" Grid.Row="4" Grid.Column="2" Click="ButtonCancelClick"
                             Margin="5" />
-
                 </Grid>
             </TabItem>
             <TabItem Name="Source" Header="Source">
@@ -74,7 +68,6 @@
                             Grid.ColumnSpan="2" />
                     <Button Content="Cancel" Name="SrcCancel" Grid.Row="2" Grid.Column="2" Click="ButtonCancelClick"
                             Margin="5" />
-
                 </Grid>
             </TabItem>
         </TabControl>

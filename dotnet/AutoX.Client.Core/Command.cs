@@ -16,6 +16,7 @@ namespace AutoX.Client.Core
         public override XElement Act()
         {
             var sr = new StepResult(this);
+
             //because it is .net, so we can only work on dos
             DosCommand(Data);
             return sr.GetResult();

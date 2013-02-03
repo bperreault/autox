@@ -71,7 +71,7 @@ namespace AutoX
                 return;
             }
             var query = from o in _choices.Element(browser).Elements()
-                        where o.GetAttributeValue("name").Equals(platform)
+                        where o.GetAttributeValue(Constants._NAME).Equals(platform)
                         select o;
                         
 
@@ -88,7 +88,7 @@ namespace AutoX
             Version.Items.Clear();
             foreach (var descendant in _choices.Element(browser).Descendants("Platform"))
             {
-                string name = descendant.Attribute("name").Value;
+                string name = descendant.Attribute(Constants._NAME).Value;
                 string value = descendant.Attribute("value").Value;
                 Platform.Items.Add(new ListBoxItem() {Content = name, Tag = value});
             }

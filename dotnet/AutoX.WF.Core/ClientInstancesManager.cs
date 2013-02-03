@@ -4,6 +4,7 @@
 
 #region
 
+using AutoX.Basic;
 using AutoX.Basic.Model;
 using System;
 using System.Collections;
@@ -34,7 +35,7 @@ namespace AutoX.WF.Core
                 {
                     while (true)
                     {
-                        var cancelled = token.WaitHandle.WaitOne(5*60*1000);
+                        var cancelled = token.WaitHandle.WaitOne(5 * 60 * 1000);
                         var now = DateTime.Now;
                         foreach (string nameOfComputer in _computerList.Keys)
                         {
@@ -67,8 +68,7 @@ namespace AutoX.WF.Core
 
         public void Register(XElement xElement)
         {
-            
-            var xAction = xElement.Attribute("Action");
+            var xAction = xElement.Attribute(Constants.ACTION);
             if (xAction != null) xAction.Remove();
             var computer = new ClientInstance(xElement);
 
@@ -77,7 +77,6 @@ namespace AutoX.WF.Core
                 _computerList.Remove(computer._id);
             }
             _computerList.Add(computer._id, computer);
-            
         }
 
         public static ClientInstancesManager GetInstance()
@@ -123,23 +122,31 @@ namespace AutoX.WF.Core
             if (xAttribute != null) Name = xAttribute.Value;
             xAttribute = info.Attribute("IPAddress");
             if (xAttribute != null) IPAddress = xAttribute.Value;
-            xAttribute = info.Attribute("_id");
+            xAttribute = info.Attribute(Constants._ID);
             if (xAttribute != null) _id = xAttribute.Value;
             xAttribute = info.Attribute("Version");
             if (xAttribute != null) Version = xAttribute.Value;
             Created = DateTime.Now;
             Updated = DateTime.Now;
-            _element.SetAttributeValue("Created",Created.ToString());
+            _element.SetAttributeValue("Created", Created.ToString());
             _element.SetAttributeValue("Updated", Updated.ToString());
         }
-//TODO add some other properties about sauce, browser, etc
+
+        //TODO add some other properties about sauce, browser, etc
         public string Name { set; get; }
+
         public string IPAddress { set; get; } //computer's role
+
         public string Version { get; set; }
+
         public DateTime Updated { set; get; }
+
         public string _id { get; set; }
+
         public DateTime Created { get; set; }
+
         public string _parentId { get; set; }
+
         public XElement Element()
         {
             return _element;
@@ -155,10 +162,11 @@ namespace AutoX.WF.Core
             lock (_commandList)
             {
                 if (string.IsNullOrEmpty(command)) return;
-                //Monitor.Wait(CommandList);                  
+
+                //Monitor.Wait(CommandList);
                 _commandList.Add(command);
                 Updated = DateTime.Now;
-                _element.SetAttributeValue("Updated",Updated.ToString());
+                _element.SetAttributeValue("Updated", Updated.ToString());
                 Monitor.Pulse(_commandList);
             }
         }
@@ -184,9 +192,7 @@ namespace AutoX.WF.Core
                 _element.SetAttributeValue("Updated", Updated.ToString());
                 Monitor.Pulse(_commandList);
             }
-            return XElement.Parse( retCommand);
+            return XElement.Parse(retCommand);
         }
-
-        
     }
 }

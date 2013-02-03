@@ -13,30 +13,35 @@ namespace AutoX.Basic
 {
     public class Config
     {
-        
-        string Id { get; set; }
-        private readonly Dictionary<string, string> _variables = new Dictionary<string,string>();
-        public Config(){
+        private string Id { get; set; }
+
+        private readonly Dictionary<string, string> _variables = new Dictionary<string, string>();
+
+        public Config()
+        {
             Id = Guid.NewGuid().ToString();
-            _variables.Add("_id",Id);
+            _variables.Add(Constants._ID, Id);
         }
 
-        public void Set(string key, string value){
-            if(_variables.ContainsKey(key))
+        public void Set(string key, string value)
+        {
+            if (_variables.ContainsKey(key))
                 _variables[key] = value;
             else
-                _variables.Add(key,value);
+                _variables.Add(key, value);
         }
-        public string Get(string key){
-            if(_variables.ContainsKey(key))
+
+        public string Get(string key)
+        {
+            if (_variables.ContainsKey(key))
                 return _variables[key];
             return null;
         }
+
         public Dictionary<string, string> GetList()
         {
             return _variables;
         }
-
 
         public string Get(string p1, string p2)
         {

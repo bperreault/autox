@@ -62,11 +62,7 @@
         <!--<Border BorderBrush="Blue" BorderThickness="2">
             <StackPanel>
                 <Label Content="Test Suite Name" Name="DisplayName"></Label>
-
             </StackPanel>
         </Border>-->
-
     </Grid>
-
-
 </sap:ActivityDesigner>

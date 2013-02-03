@@ -15,8 +15,11 @@ namespace AutoX.Basic.Model
         //just a mark
         //string Name { get; set; }
         string _id { get; set; }
+
         string _parentId { get; set; }
+
         DateTime Created { get; set; }
+
         DateTime Updated { get; set; }
     }
 }

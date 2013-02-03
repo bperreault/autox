@@ -83,10 +83,10 @@ namespace AutoX
             }
             var selectedItem = selected.DataContext as XElement;
             if (selectedItem == null) return;
-            var workflowId = selectedItem.GetAttributeValue("_id");
-            var type = selectedItem.GetAttributeValue("_type");
-            var scriptType = selectedItem.GetAttributeValue("ScriptType");
-            if (!type.Equals("Script") || !scriptType.Equals("TestSuite"))
+            var workflowId = selectedItem.GetAttributeValue(Constants._ID);
+            var type = selectedItem.GetAttributeValue(Constants._TYPE);
+            var scriptType = selectedItem.GetAttributeValue(Constants.SCRIPT_TYPE);
+            if (!type.Equals(Constants.SCRIPT) || !scriptType.Equals("TestSuite"))
             {
                 MessageBox.Show("Selected Item MUST be a Test Script!");
                 return;
@@ -110,10 +110,10 @@ namespace AutoX
             }
             var selectedItem = selected.DataContext as XElement;
             if (selectedItem == null) return;
-            var workflowId = selectedItem.GetAttributeValue("_id");
-            var type = selectedItem.GetAttributeValue("_type");
-            var scriptType = selectedItem.GetAttributeValue("ScriptType");
-            if (!type.Equals("Script")||!scriptType.Equals("TestSuite"))
+            var workflowId = selectedItem.GetAttributeValue(Constants._ID);
+            var type = selectedItem.GetAttributeValue(Constants._TYPE);
+            var scriptType = selectedItem.GetAttributeValue(Constants.SCRIPT_TYPE);
+            if (!type.Equals(Constants.SCRIPT)||!scriptType.Equals("TestSuite"))
             {
                 MessageBox.Show("Selected Item MUST be a Test Script!");
                 return;
@@ -232,7 +232,7 @@ namespace AutoX
 
         private void CreateFolderOnDataTree(object sender, RoutedEventArgs e)
         {
-            CreateFolderOnTree(DataTree, "Data");
+            CreateFolderOnTree(DataTree, Constants.DATA);
         }
 
         private void CreateFolderOnUITree(object sender, RoutedEventArgs e)
@@ -375,16 +375,16 @@ namespace AutoX
             if (selected == null)
                 return;
             
-            if (!BeforeActionCheck(DataTree, "CreateData", "Data"))
+            if (!BeforeActionCheck(DataTree, "CreateData", Constants.DATA))
             {
                 MessageBox.Show("Not Valid Operation");
                 return;
             }
-            var xData = new XElement("Datum");
-            xData.SetAttributeValue("Name", "New Data");
+            var xData = new XElement(Constants.DATUM);
+            xData.SetAttributeValue(Constants.NAME, "New Data");
             xData.SetAttributeValue("Description", "New Data");
-            xData.SetAttributeValue("_type", "Datum");
-            xData.SetAttributeValue("_id", Guid.NewGuid().ToString());
+            xData.SetAttributeValue(Constants._TYPE, Constants.DATUM);
+            xData.SetAttributeValue(Constants._ID, Guid.NewGuid().ToString());
             AddNewItemToTree(DataTree, xData);
         }
 
@@ -410,7 +410,7 @@ namespace AutoX
             {
                 var content = File.ReadAllText(dialog.FileName);
                 var page = XElement.Parse(content);
-                var newItem = GetItemFromXElement(page, xParent.GetAttributeValue("_id"));
+                var newItem = GetItemFromXElement(page, xParent.GetAttributeValue(Constants._ID));
                 if (newItem != null) selected.Items.Add(newItem);
             }
         }
@@ -476,7 +476,7 @@ namespace AutoX
             if (selected == null) return;
             var sRoot = Communication.GetInstance().StartInstance(selected._id);
             var xRoot = XElement.Parse(sRoot);
-            var result = xRoot.GetAttributeValue("Result");
+            var result = xRoot.GetAttributeValue(Constants.RESULT);
             if (string.IsNullOrEmpty(result)) return;
             if (result.Equals("Failed"))
             {
@@ -496,7 +496,7 @@ namespace AutoX
             if (selected == null) return;
             var sRoot = Communication.GetInstance().StopInstance(selected._id);
             var xRoot = XElement.Parse(sRoot);
-            var result = xRoot.GetAttributeValue("Result");
+            var result = xRoot.GetAttributeValue(Constants.RESULT);
             if (string.IsNullOrEmpty(result)) return;
             if (result.Equals("Failed"))
             {
@@ -541,7 +541,7 @@ namespace AutoX
             if (selected == null) return;
             var sRoot = Communication.GetInstance().SetInstanceInfo(selected.GetXElementFromObject());
             var xRoot = XElement.Parse(sRoot);
-            var result = xRoot.GetAttributeValue("Result");
+            var result = xRoot.GetAttributeValue(Constants.RESULT);
             if (string.IsNullOrEmpty(result)) return;
             if (result.Equals("Failed"))
             {
@@ -556,7 +556,7 @@ namespace AutoX
             if (selected == null) return;
             var sRoot = Communication.GetInstance().DeleteInstance(selected._id);
             var xRoot = XElement.Parse(sRoot);
-            var result = xRoot.GetAttributeValue("Result");
+            var result = xRoot.GetAttributeValue(Constants.RESULT);
             if (string.IsNullOrEmpty(result)) return;
             if (result.Equals("Failed"))
             {

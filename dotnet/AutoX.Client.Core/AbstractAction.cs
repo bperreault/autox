@@ -4,10 +4,10 @@
 
 #region
 
-using System.Collections.ObjectModel;
-using System.Xml.Linq;
 using AutoX.Basic;
 using OpenQA.Selenium;
+using System.Collections.ObjectModel;
+using System.Xml.Linq;
 
 #endregion
 
@@ -16,7 +16,9 @@ namespace AutoX.Client.Core
     public abstract class AbstractAction : IAction
     {
         public ReadOnlyCollection<IWebElement> UIObject { get; set; }
+
         public string Data { get; set; }
+
         //public string _id { get; set; }
 
         #region IAction Members
@@ -29,15 +31,17 @@ namespace AutoX.Client.Core
         }
 
         #endregion
+
         public Browser Browser { set; get; }
+
         public Config Config { set; get; }
+
         public void FindUIObject(XElement uiObj)
         {
             if (uiObj == null)
                 return;
             UIObject = Browser.GetWebElement(uiObj);
         }
-
 
         public abstract XElement Act();
     }

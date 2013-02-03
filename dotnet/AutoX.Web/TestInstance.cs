@@ -4,6 +4,11 @@
 
 #region
 
+using AutoX.Activities.AutoActivities;
+using AutoX.Basic;
+using AutoX.Basic.Model;
+using AutoX.DB;
+using AutoX.WF.Core;
 using System;
 using System.Activities;
 using System.Activities.XamlIntegration;
@@ -11,11 +16,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Xml.Linq;
-using AutoX.Activities.AutoActivities;
-using AutoX.Basic;
-using AutoX.Basic.Model;
-using AutoX.DB;
-using AutoX.WF.Core;
 
 #endregion
 
@@ -33,21 +33,25 @@ namespace AutoX.Web
                             string language)
         {
             GUID = guid;
+
             //get workflow store _id
             ScriptGUID = scriptGuid;
             SuiteName = suiteName;
             Language = language;
             Status = "Invalid";
+
             //get string content of workflow
             XElement script = GetDataObject(scriptGuid);
             if (script == null) return;
-            if (script.GetAttributeValue("Content") == null) return;
+            if (script.GetAttributeValue(Constants.CONTENT) == null) return;
+
             //load workflow
-            var activity = ActivityXamlServices.Load(new StringReader(script.GetAttributeValue("Content"))) as AutomationActivity;
+            var activity = ActivityXamlServices.Load(new StringReader(script.GetAttributeValue(Constants.CONTENT))) as AutomationActivity;
             if (activity != null)
             {
                 activity.InstanceId = GUID;
                 activity.SetHost(this);
+
                 //var idleEvent = new AutoResetEvent(false);
                 //TODO write log in workflow!!!
 
@@ -58,6 +62,7 @@ namespace AutoX.Web
                                 switch (e.CompletionState)
                                 {
                                     case ActivityInstanceState.Faulted:
+
                                         //Logger.GetInstance().Log().Error("workflow " +
                                         //                                 scriptGuid +
                                         //                                 " stopped! Error Message:\n"
@@ -70,12 +75,16 @@ namespace AutoX.Web
                                         //                                     Message);
                                         Status = "Terminated";
                                         break;
+
                                     case ActivityInstanceState.Canceled:
+
                                         //Logger.GetInstance().Log().Warn("workflow " + scriptGuid +
                                         //                                " Cancel.");
                                         Status = "Canceled";
                                         break;
+
                                     default:
+
                                         //Logger.GetInstance().Log().Info("workflow " + scriptGuid +
                                         //                                " Completed.");
                                         Status = "Completed";
@@ -108,7 +117,7 @@ namespace AutoX.Web
             //                        });
             TestName = name;
             ClientName = computer;
-            Status = "STOP";
+            Status = "Stop";
 
             //create log entry here
             var logRootId = Configuration.Settings("ResultsRoot", "0020020000002");
@@ -120,17 +129,21 @@ namespace AutoX.Web
             if (iDataObject == null) return;
             iDataObject.StopTime = DateTime.UtcNow;
             InsertResultToDB(guid, logRootId, iDataObject);
+
             //DBManager.GetInstance().AddOrUpdateOneDataToDB(guid, logRootId, iDataObject);
         }
 
-
         public string GUID { get; set; }
-        public string ScriptGUID { get; set; }
-        public string TestName { get; set; }
-        public string ClientName { get; set; }
-        public string SuiteName { get; set; }
-        public string Language { get; set; }
 
+        public string ScriptGUID { get; set; }
+
+        public string TestName { get; set; }
+
+        public string ClientName { get; set; }
+
+        public string SuiteName { get; set; }
+
+        public string Language { get; set; }
 
         public string Status
         {
@@ -156,15 +169,18 @@ namespace AutoX.Web
             Status = "Start";
             if (_results.Count == 0)
                 _workflowApplication.Run();
+
             //start or resume workflow
         }
 
         public void Stop()
         {
             //infact this is a pause
-            Status = "STOP";
-            //TODO temp solution, can be use in most situation  
+            Status = "Stop";
+
+            //TODO temp solution, can be use in most situation
             _workflowApplication.Cancel();
+
             //suspend or pause workflow
         }
 
@@ -180,6 +196,7 @@ namespace AutoX.Web
         {
             if (ExitStatus.Contains(Status))
                 return;
+
             //TODO activity check the onerror part, give out the final result, write it to variable list etc
             //if it is Test case, write it to db
         }
@@ -197,7 +214,7 @@ namespace AutoX.Web
             {
                 if (Status.Equals("Stop"))
                 {
-                    Thread.Sleep(1000*3);
+                    Thread.Sleep(1000 * 3);
                     continue;
                 }
 
@@ -205,8 +222,8 @@ namespace AutoX.Web
                 {
                     //we use runtime id to match results
                     var runtimeId = Guid.NewGuid().ToString();
-                    steps.SetAttributeValue("RunTimeId", runtimeId);
-                    _currentStepGuid = steps.GetAttributeValue("_id");
+                    steps.SetAttributeValue(Constants.RUNTIME_ID, runtimeId);
+                    _currentStepGuid = steps.GetAttributeValue(Constants._ID);
                     _results.Add(runtimeId, null);
                     var computer = ClientInstancesManager.GetInstance().GetComputer(ClientName);
                     computer.SetCommand(steps.ToString());
@@ -230,7 +247,7 @@ namespace AutoX.Web
                 //while not get the result, sleep a while, continue
                 if (Status.Equals("Stop"))
                 {
-                    Thread.Sleep(1000*3);
+                    Thread.Sleep(1000 * 3);
                     continue;
                 }
                 if (!stepsId.Equals(_currentStepGuid))
@@ -274,7 +291,7 @@ namespace AutoX.Web
 
         //    var prop = new DynamicActivityProperty
         //                   {
-        //                       Name = "Data",
+        //                       Name = Constants.DATA,
         //                       Type = typeof (InArgument<IDictionary<string, object>>),
         //                   };
 
@@ -302,7 +319,5 @@ namespace AutoX.Web
         {
             return Data.Read(id);
         }
-
-        
     }
 }

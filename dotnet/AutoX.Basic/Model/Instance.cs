@@ -14,13 +14,21 @@ namespace AutoX.Basic.Model
     public class Instance : IDataObject
     {
         public string TestName { get; set; }
+
         public string SuiteName { get; set; }
+
         public string Status { get; set; }
+
         public string ClientName { get; set; }
+
         public string Language { get; set; }
+
         public string ScriptGUID { get; set; }
+
         public string _id { get; set; }
+
         public string _parentId { get; set; }
+
         public DateTime Created { get; set; }
 
         public DateTime Updated { get; set; }

@@ -1,24 +1,23 @@
-﻿
+﻿using AutoX.Basic;
 using System.Xml.Linq;
 
 namespace AutoX.WF.Core.Actions
 {
-    interface IAction
+    internal interface IAction
     {
         XElement Do(XElement action);
     }
 
-    class DeleteInstance : IAction
+    internal class DeleteInstance : IAction
     {
-
         public XElement Do(XElement action)
         {
             throw new System.NotImplementedException();
         }
     }
+
     //class GetById : IAction
     //{
-
     //    public XElement Do(XElement action)
     //    {
     //        throw new System.NotImplementedException();
@@ -26,79 +25,77 @@ namespace AutoX.WF.Core.Actions
     //}
     //class GetChildren : IAction
     //{
-
     //    public XElement Do(XElement action)
     //    {
     //        throw new System.NotImplementedException();
     //    }
     //}
-    class GetComputersInfo : IAction
+    internal class GetComputersInfo : IAction
     {
-
         public XElement Do(XElement action)
         {
             return ClientInstancesManager.GetInstance().ToXElement();
         }
     }
-    class GetInstancesInfo : IAction
-    {
 
+    internal class GetInstancesInfo : IAction
+    {
         public XElement Do(XElement action)
         {
             throw new System.NotImplementedException();
         }
     }
-    class Register : IAction
-    {
 
+    internal class Register : IAction
+    {
         public XElement Do(XElement action)
         {
             ClientInstancesManager.GetInstance().Register(action);
             return XElement.Parse("<Result Result='Success' />");
         }
     }
-    class RequestCommand : IAction
-    {
 
+    internal class RequestCommand : IAction
+    {
         public XElement Do(XElement action)
         {
-            string clientInstanceId = action.Attribute("_id").Value;
+            string clientInstanceId = action.Attribute(Constants._ID).Value;
             return ClientInstancesManager.GetInstance().GetComputer(clientInstanceId).GetCommand();
         }
     }
+
     //class SetById : IAction
     //{
-
     //    public XElement Do(XElement action)
     //    {
     //        throw new System.NotImplementedException();
     //    }
     //}
-    class SetInstanceInfo : IAction
+    internal class SetInstanceInfo : IAction
     {
-
         public XElement Do(XElement action)
         {
             throw new System.NotImplementedException();
         }
     }
-    class SetResult : IAction
-    {
 
+    internal class SetResult : IAction
+    {
         public XElement Do(XElement action)
         {
             throw new System.NotImplementedException();
         }
     }
-    class StartInstance : IAction
-    {
 
+    internal class StartInstance : IAction
+    {
         public XElement Do(XElement action)
         {
             throw new System.NotImplementedException();
         }
     }
-    class StopInstance : IAction
+
+    internal class StopInstance : IAction
     {
         public XElement Do(XElement action)
         {

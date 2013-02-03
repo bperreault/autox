@@ -22,7 +22,7 @@ namespace AutoX.Client.Core
             {
                 time = Convert.ToInt32(Data);
             }
-            Thread.Sleep(time*1000);
+            Thread.Sleep(time * 1000);
             return sr.GetResult();
         }
     }

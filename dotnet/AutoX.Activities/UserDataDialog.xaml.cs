@@ -4,10 +4,10 @@
 
 #region
 
+using AutoX.Basic;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using AutoX.Basic;
 
 #endregion
 
@@ -33,7 +33,7 @@ namespace AutoX.Activities
             var filtered = new List<UserData>();
             foreach (var userData in Data)
             {
-                if(!Utilities.ReservedList.Contains(userData.Name))
+                if (!Utilities.ReservedList.Contains(userData.Name))
                     filtered.Add(userData);
             }
             UserDataTable.ItemsSource = filtered;

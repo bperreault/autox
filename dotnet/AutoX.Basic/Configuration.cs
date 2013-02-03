@@ -108,9 +108,11 @@ namespace AutoX.Basic
                     app.Settings.Add(key.ToString(), Settings(key.ToString(), key.ToString()));
                 app.Settings[key.ToString()].Value = Settings(key.ToString(), key.ToString());
             }
+
             //Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             //AppSettingsSection app = config.AppSettings;
             config.Save(ConfigurationSaveMode.Modified);
+
             //config.SaveAs("c:\\test.cfg");
         }
 
@@ -119,11 +121,10 @@ namespace AutoX.Basic
             var cfg = new Config();
             var config =
                 ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            
+
             foreach (object key in ConfigurationManager.AppSettings.Keys)
             {
-                cfg.Set(key.ToString(),Settings(key.ToString(),key.ToString()));
-                
+                cfg.Set(key.ToString(), Settings(key.ToString(), key.ToString()));
             }
             return cfg;
         }

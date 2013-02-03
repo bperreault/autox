@@ -4,6 +4,7 @@
 
 #region
 
+using AutoX.Basic;
 using System;
 using System.Activities;
 using System.Activities.Presentation;
@@ -28,15 +29,15 @@ namespace AutoX.Activities
             if (DragDropHelper.AllowDrop(
                 e.Data,
                 Context,
-                typeof (Activity)))
+                typeof(Activity)))
             {
                 e.Effects = (DragDropEffects.Move & e.AllowedEffects);
                 e.Handled = true;
             }
             else
             {
-                var data = e.Data.GetData("DataFormat") as XElement;
-                if (Utilities.CheckValidDrop(data, "Script"))
+                var data = e.Data.GetData(Constants.DATA_FORMAT) as XElement;
+                if (Utilities.CheckValidDrop(data, Constants.SCRIPT))
                 {
                     var activity = Utilities.GetActivityFromXElement(data);
                     if (activity != null)
@@ -64,15 +65,15 @@ namespace AutoX.Activities
             if (DragDropHelper.AllowDrop(
                 e.Data,
                 Context,
-                typeof (Activity)))
+                typeof(Activity)))
             {
                 e.Effects = (DragDropEffects.Move & e.AllowedEffects);
                 e.Handled = true;
             }
             else
             {
-                var data = e.Data.GetData("DataFormat") as XElement;
-                if (Utilities.CheckValidDrop(data, "Script"))
+                var data = e.Data.GetData(Constants.DATA_FORMAT) as XElement;
+                if (Utilities.CheckValidDrop(data, Constants.SCRIPT))
                 {
                     e.Effects = (DragDropEffects.Move & e.AllowedEffects);
                     e.Handled = true;
@@ -84,7 +85,9 @@ namespace AutoX.Activities
         protected override void OnDrop(DragEventArgs e)
         {
             e.Handled = true;
+
             //TODO not a graceful implementation, think about change it.
+
             var droppedItem = DragDropHelper.GetDroppedObject(this, e, Context);
             var canvasActivity = ModelItem;
             canvasActivity.Properties["children"].Collection.Add(droppedItem);

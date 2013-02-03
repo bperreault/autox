@@ -14,7 +14,6 @@
                 <DataGridTextColumn Width="2*" Binding="{Binding Name}" Header="Name" IsReadOnly="True" />
                 <DataGridTextColumn Width="3*" Binding="{Binding Value}" Header="Value" IsReadOnly="True" />
                 <DataGridTextColumn Width="2*" Binding="{Binding DataSet}" Header="DataSet" IsReadOnly="True" />
-
             </DataGrid.Columns>
         </DataGrid>
         <Grid Grid.Row="1">
@@ -27,6 +26,5 @@
             <Button Grid.Column="1" Content="OK" Margin="2" Click="ButtonOkClick" />
             <Button Grid.Column="2" Content="Cancel" Margin="2" Click="ButtonCancelClick" />
         </Grid>
-
     </Grid>
 </Window>

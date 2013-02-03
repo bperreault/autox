@@ -69,7 +69,7 @@ namespace AutoX
             bImage.BeginInit();
             bImage.StreamSource = ms;
             bImage.EndInit();
-            var retImage = new Image {Source = bImage};
+            var retImage = new Image { Source = bImage };
             ms.Close();
 
             return retImage;

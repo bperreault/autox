@@ -4,6 +4,8 @@
 
 #region
 
+using AutoX.Activities.AutoActivities;
+using AutoX.Basic;
 using System;
 using System.Activities;
 using System.Activities.Presentation.Model;
@@ -14,8 +16,6 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using AutoX.Activities.AutoActivities;
-using AutoX.Basic;
 
 #endregion
 
@@ -25,12 +25,16 @@ namespace AutoX.Activities
     {
         [Description("Always Return Success, Ignore All Errors")]
         AlwaysReturnTrue,
+
         [Description("Only Show Warning in Result, Even Error")]
         JustShowWarning,
+
         [Description("Mark Error in Result, but Continue Next Step")]
         Continue,
+
         [Description("Stop Current Script, Mark it Failed")]
         StopCurrentScript,
+
         [Description("Terminate this Test Instance")]
         Terminate
     }
@@ -53,14 +57,14 @@ namespace AutoX.Activities
 
         public static void DropXElementToDesigner(XElement data, string dropData, ModelItem navtiveModelItem)
         {
-            var guid = data.GetAttributeValue("_id");
+            var guid = data.GetAttributeValue(Constants._ID);
             var tag = data.Name.ToString();
             var modelProperty = navtiveModelItem.Properties[dropData];
             if (modelProperty == null) return;
             if (modelProperty.Value == null) return;
             var userData = modelProperty.Value.GetCurrentValue() as string ?? "";
 
-            if (tag.Equals("Datum"))
+            if (tag.Equals(Constants.DATUM))
             {
                 if (userData.Contains(guid))
                 {
@@ -68,18 +72,18 @@ namespace AutoX.Activities
                 }
                 userData += guid + ";";
             }
-            if (tag.Equals("UIObject"))
+            if (tag.Equals(Constants.UI_OBJECT))
             {
                 var xSteps = XElement.Parse(userData);
 
-                var xStep = new XElement("Step");
-                xStep.SetAttributeValue("_id", Guid.NewGuid().ToString());
-                xStep.SetAttributeValue("UIId", data.GetAttributeValue("_id"));
-                xStep.SetAttributeValue("UIObject", data.GetAttributeValue("Name"));
-                xStep.SetAttributeValue("Enable", "False");
-                xStep.SetAttributeValue("Data", "");
-                xStep.SetAttributeValue("DefaultData", "");
-                xStep.SetAttributeValue("Action", "");
+                var xStep = new XElement(Constants.STEP);
+                xStep.SetAttributeValue(Constants._ID, Guid.NewGuid().ToString());
+                xStep.SetAttributeValue(Constants.UI_ID, data.GetAttributeValue(Constants._ID));
+                xStep.SetAttributeValue(Constants.UI_OBJECT, data.GetAttributeValue(Constants.NAME));
+                xStep.SetAttributeValue(Constants.ENABLE, "False");
+                xStep.SetAttributeValue(Constants.DATA, "");
+                xStep.SetAttributeValue(Constants.DEFAULT_DATA, "");
+                xStep.SetAttributeValue(Constants.ACTION, "");
                 xSteps.Add(xStep);
                 userData = xSteps.ToString();
             }
@@ -101,7 +105,7 @@ namespace AutoX.Activities
 
         public static Activity GetActivityFromXElement(XElement data)
         {
-            var scriptType = data.GetAttributeValue("ScriptType");
+            var scriptType = data.GetAttributeValue(Constants.SCRIPT_TYPE);
             if (!String.IsNullOrEmpty(scriptType))
             {
                 var host = HostManager.GetInstance().GetHost();
@@ -109,9 +113,9 @@ namespace AutoX.Activities
                 {
                     var activity = new CallTestCaseActivity
                         {
-                            TestCaseId = data.GetAttributeValue("_id"),
-                            TestCaseName = data.GetAttributeValue("Name"),
-                            DisplayName = "Call Test Case: " + data.GetAttributeValue("Name")
+                            TestCaseId = data.GetAttributeValue(Constants._ID),
+                            TestCaseName = data.GetAttributeValue(Constants.NAME),
+                            DisplayName = "Call Test Case: " + data.GetAttributeValue(Constants.NAME)
                         };
                     activity.SetHost(host);
                     return activity;
@@ -120,10 +124,10 @@ namespace AutoX.Activities
                 {
                     var activity = new CallTestScreenActivity
                         {
-                            TestSreenId = data.GetAttributeValue("_id"),
-                            TestSreenName = data.GetAttributeValue("Name"),
-                            DisplayName = "Call Test Screen: " + data.GetAttributeValue("Name"),
-                            Steps = XElement.Parse( data.GetAttributeValue("Content")).GetAttributeValue("Steps")
+                            TestSreenId = data.GetAttributeValue(Constants._ID),
+                            TestSreenName = data.GetAttributeValue(Constants.NAME),
+                            DisplayName = "Call Test Screen: " + data.GetAttributeValue(Constants.NAME),
+                            Steps = XElement.Parse(data.GetAttributeValue(Constants.CONTENT)).GetAttributeValue("Steps")
                         };
                     activity.SetHost(host);
                     return activity;
@@ -132,10 +136,10 @@ namespace AutoX.Activities
                 {
                     var activity = new CallTestSuiteActivity
                         {
-                            TestSuiteId = data.GetAttributeValue("_id"),
-                            TestSuiteName = data.GetAttributeValue("Name"),
+                            TestSuiteId = data.GetAttributeValue(Constants._ID),
+                            TestSuiteName = data.GetAttributeValue(Constants.NAME),
                             TestSuiteDescription = data.GetAttributeValue("Description"),
-                            DisplayName = "Call Test Suite: " + data.GetAttributeValue("Name")
+                            DisplayName = "Call Test Suite: " + data.GetAttributeValue(Constants.NAME)
                         };
                     activity.SetHost(host);
                     return activity;
@@ -161,10 +165,11 @@ namespace AutoX.Activities
                     if (String.IsNullOrEmpty(dataString))
                         continue;
                     var sData = host.GetDataObject(dataString);
+
                     //sometimes, some data has been deleted.
-                    if(sData==null)
+                    if (sData == null)
                         continue;
-                    var dataSetName = sData.GetAttributeValue("Name");
+                    var dataSetName = sData.GetAttributeValue(Constants.NAME);
 
                     foreach (XAttribute xAttribute in sData.Attributes())
                     {
@@ -178,6 +183,7 @@ namespace AutoX.Activities
                                 Value = dataValue,
                                 DataSetId = dataString
                             };
+
                         //remove the duplicate value
                         if (dic.ContainsKey(name))
                             dic[name] = data;
@@ -186,7 +192,6 @@ namespace AutoX.Activities
                             dic.Add(name, data);
                         }
                     }
-
                 }
             }
             return dic;
@@ -212,6 +217,7 @@ namespace AutoX.Activities
                         if (Filter.Contains(name)) continue;
                         var dataValue = xAttribute.Value;
                         var data = dataValue;
+
                         //remove the duplicate value
                         if (dic.ContainsKey(name))
                             dic[name] = data;
@@ -232,28 +238,28 @@ namespace AutoX.Activities
             Log.Debug(pS);
         }
 
-
         public static ArrayList GetStepsList(string textValue, ArrayList possibleAction, IHost host)
         {
             var ret = new ArrayList();
             if (textValue != null)
             {
                 var xSteps = XElement.Parse(textValue);
-                foreach (XElement element in xSteps.Descendants("Step"))
+                foreach (XElement element in xSteps.Descendants(Constants.STEP))
                 {
-                    var uiId = element.GetAttributeValue("UIId");
+                    var uiId = element.GetAttributeValue(Constants.UI_ID);
                     if (String.IsNullOrEmpty(uiId)) continue;
 
                     var sData = host.GetDataObject(uiId);
                     if (sData == null) continue;
+
                     //var xData = sData.GetXElementFromDataObject();
-                    var uiObject = element.GetAttributeValue("UIObject");
+                    var uiObject = element.GetAttributeValue(Constants.UI_OBJECT);
                     if (String.IsNullOrEmpty(uiObject)) continue;
-                    var enable = Boolean.Parse(element.GetAttributeValue("Enable"));
-                    var defaultDataValue = element.GetAttributeValue("DefaultData");
-                    var dataName = element.GetAttributeValue("Data");
-                    var stepId = element.GetAttributeValue("_id");
-                    var action = element.GetAttributeValue("Action") ?? "";
+                    var enable = Boolean.Parse(element.GetAttributeValue(Constants.ENABLE));
+                    var defaultDataValue = element.GetAttributeValue(Constants.DEFAULT_DATA);
+                    var dataName = element.GetAttributeValue(Constants.DATA);
+                    var stepId = element.GetAttributeValue(Constants._ID);
+                    var action = element.GetAttributeValue(Constants.ACTION) ?? "";
                     var step = new Step
                         {
                             _id = stepId,
@@ -294,6 +300,7 @@ namespace AutoX.Activities
                             switch (e.CompletionState)
                             {
                                 case ActivityInstanceState.Faulted:
+
                                     //Logger.GetInstance().Log().Error("workflow " +
                                     //                                 scriptGuid +
                                     //                                 " stopped! Error Message:\n"
@@ -306,12 +313,16 @@ namespace AutoX.Activities
                                     //                                     Message);
                                     //Status = "Terminated";
                                     break;
+
                                 case ActivityInstanceState.Canceled:
+
                                     //Logger.GetInstance().Log().Warn("workflow " + scriptGuid +
                                     //                                " Cancel.");
                                     //Status = "Canceled";
                                     break;
+
                                 default:
+
                                     //Logger.GetInstance().Log().Info("workflow " + scriptGuid +
                                     //                                " Completed.");
                                     //Status = "Completed";

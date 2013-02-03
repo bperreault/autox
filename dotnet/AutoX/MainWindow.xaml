@@ -18,7 +18,7 @@
                         <MenuItem Header="File" Name="FileMenu">
                             <MenuItem Header="Generate Key File" Click="GenerateKeyFile"></MenuItem>
                             <MenuItem Header="Settings" Click="Settings" />
-                            
+
                             <MenuItem Header="Exit" Click="Exit" />
                         </MenuItem>
                         <MenuItem Header="Edit">
@@ -272,7 +272,7 @@
                                  KeyUp="ResultEnterFilter" />
                         <TreeView Grid.Row="1" Name="TestResultTree" MouseDoubleClick="DoubleClickOnResultTree"
                                   PreviewMouseLeftButtonDown="TreePreviewMouseLeftButtonDown" PreviewMouseMove="PreviewMouseMoveOnTree" AllowDrop="True"
-                                  DragOver="TreeViewDragOver" Drop="TreeViewDrop" HorizontalAlignment="Stretch" 
+                                  DragOver="TreeViewDragOver" Drop="TreeViewDrop" HorizontalAlignment="Stretch"
                                   ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto"
                                   ScrollViewer.CanContentScroll="True" BorderThickness="0">
                             <TreeView.ContextMenu>
@@ -301,18 +301,18 @@
                                      BorderThickness="0" KeyUp="TestCaseTableEnterFilter" />
                             <DataGrid Background="#FFE5E5E5" Name="TestCaseResultTable" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False"
                                       MouseDoubleClick="DoubleClickOnTable" BorderThickness="0" ItemsSource="{Binding}" SelectionUnit="FullRow" SelectionChanged="TestCaseResultTableSelectionChanged">
-                                      <DataGrid.RowStyle>
-                                            <Style TargetType="DataGridRow">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding FinalResult}" Value="Success">
-                                                        <Setter Property="Background" Value="#FFE5E5E5"></Setter>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding FinalResult}" Value="Failed">
-                                                        <Setter Property="Background" Value="DarkGray"></Setter>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </DataGrid.RowStyle>
+                                <DataGrid.RowStyle>
+                                    <Style TargetType="DataGridRow">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding FinalResult}" Value="Success">
+                                                <Setter Property="Background" Value="#FFE5E5E5"></Setter>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding FinalResult}" Value="Failed">
+                                                <Setter Property="Background" Value="DarkGray"></Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGrid.RowStyle>
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Width="4*" Binding="{Binding OriginalResult}"
                                                         Header="Original Result" IsReadOnly="True" />
@@ -321,7 +321,7 @@
                                     <DataGridHyperlinkColumn Binding="{Binding Link}">
                                         <DataGridHyperlinkColumn.ElementStyle>
                                             <Style>
-                                                <EventSetter Event="Hyperlink.Click" Handler="HyperlinkClick"/>
+                                                <EventSetter Event="Hyperlink.Click" Handler="HyperlinkClick" />
                                             </Style>
                                         </DataGridHyperlinkColumn.ElementStyle>
                                     </DataGridHyperlinkColumn>
@@ -343,18 +343,18 @@
                                      BorderThickness="0" KeyUp="TestStepTableEnterFilter" />
                             <DataGrid Background="#FFE5E5E5" Name="TestStepsResultTable" Grid.Row="1" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False"
                                       MouseDoubleClick="DoubleClickOnTable" BorderThickness="0" ItemsSource="{Binding}" SelectionUnit="FullRow">
-                                      <DataGrid.RowStyle>
-                                            <Style TargetType="DataGridRow">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Result}" Value="Success">
-                                                        <Setter Property="Background" Value="#FFE5E5E5"></Setter>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Result}" Value="Failed">
-                                                        <Setter Property="Background" Value="DarkGray"></Setter>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </DataGrid.RowStyle>
+                                <DataGrid.RowStyle>
+                                    <Style TargetType="DataGridRow">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Result}" Value="Success">
+                                                <Setter Property="Background" Value="#FFE5E5E5"></Setter>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Result}" Value="Failed">
+                                                <Setter Property="Background" Value="DarkGray"></Setter>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGrid.RowStyle>
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Width="4*" Binding="{Binding Action}"
                                                         Header="Action" IsReadOnly="True" />
@@ -371,7 +371,7 @@
                                     <DataGridHyperlinkColumn Binding="{Binding Link}">
                                         <DataGridHyperlinkColumn.ElementStyle>
                                             <Style>
-                                                <EventSetter Event="Hyperlink.Click" Handler="HyperlinkClick"/>
+                                                <EventSetter Event="Hyperlink.Click" Handler="HyperlinkClick" />
                                             </Style>
                                         </DataGridHyperlinkColumn.ElementStyle>
                                     </DataGridHyperlinkColumn>

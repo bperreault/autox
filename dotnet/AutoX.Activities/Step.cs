@@ -4,6 +4,7 @@
 
 #region
 
+using AutoX.Basic;
 using System.Collections;
 using System.Xml.Linq;
 
@@ -25,14 +26,14 @@ namespace AutoX.Activities
 
         public XElement ToXElement()
         {
-            var element = new XElement("Step");
-            element.SetAttributeValue("_id", _id);
-            element.SetAttributeValue("UIObject", UIObject);
-            element.SetAttributeValue("UIId", UIId);
-            element.SetAttributeValue("Action", Action);
-            element.SetAttributeValue("Data", Data);
-            element.SetAttributeValue("DefaultData", DefaultData);
-            element.SetAttributeValue("Enable", Enable);
+            var element = new XElement(Constants.STEP);
+            element.SetAttributeValue(Constants._ID, _id);
+            element.SetAttributeValue(Constants.UI_OBJECT, UIObject);
+            element.SetAttributeValue(Constants.UI_ID, UIId);
+            element.SetAttributeValue(Constants.ACTION, Action);
+            element.SetAttributeValue(Constants.DATA, Data);
+            element.SetAttributeValue(Constants.DEFAULT_DATA, DefaultData);
+            element.SetAttributeValue(Constants.ENABLE, Enable);
             return element;
         }
     }

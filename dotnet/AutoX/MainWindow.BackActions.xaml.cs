@@ -4,22 +4,20 @@
 
 #region
 
+using AutoX.Basic;
+using AutoX.Basic.Model;
+using AutoX.DB;
 using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml.Linq;
-using AutoX.Basic;
-using AutoX.Basic.Model;
-using AutoX.Client.Core;
-using AutoX.Comm;
-using AutoX.DB;
 
 #endregion
 
 namespace AutoX
 {
-    public partial class MainWindow
+    public partial class MainWindow : IDisposable
     {
         public XElement GetDataObject(string id)
         {
@@ -31,9 +29,9 @@ namespace AutoX
             var selected = (TreeViewItem)treeView.SelectedItem;
             if (selected != null)
             {
-                var type = ((XElement)selected.DataContext).GetAttributeValue("_type");
+                var type = ((XElement)selected.DataContext).GetAttributeValue(Constants._TYPE);
                 var query = from o in _xValidation.Descendants()
-                            where o.GetAttributeValue("Action").Equals(action)
+                            where o.GetAttributeValue(Constants.ACTION).Equals(action)
                                   && o.GetAttributeValue("Type").Equals(type)
                                   && o.GetAttributeValue("Object").Equals(objName)
                             select o;
@@ -45,15 +43,14 @@ namespace AutoX
 
         public static TreeViewItem GetItemFromXElement(XElement element, string parentId)
         {
-            var guid = element.GetAttributeValue("_id");
+            var guid = element.GetAttributeValue(Constants._ID);
             if (string.IsNullOrEmpty(guid))
             {
                 guid = Guid.NewGuid().ToString();
-                element.SetAttributeValue("_id", guid);
+                element.SetAttributeValue(Constants._ID, guid);
             }
             var rootPart = element.GetRootPartElement();
-            rootPart.SetAttributeValue("_parentId", parentId);
-
+            rootPart.SetAttributeValue(Constants.PARENT_ID, parentId);
 
             if (!Data.Save(rootPart))
             {
@@ -70,10 +67,8 @@ namespace AutoX
                 return itself;
             }
 
-
             return null;
         }
-
 
         private static void Delete(TreeView parent)
         {
@@ -100,12 +95,12 @@ namespace AutoX
                                 MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            var toBeDeletedId = xElement.GetAttributeValue("_id");
-           // xElement.SetAttributeValue("_parentId", "Deleted");
-            Data.Delete (toBeDeletedId);
+            var toBeDeletedId = xElement.GetAttributeValue(Constants._ID);
+
+            // xElement.SetAttributeValue(Constants.PARENT_ID, "Deleted");
+            Data.Delete(toBeDeletedId);
             parentItem.Items.Remove(selected);
             return;
-
         }
 
         private static TreeViewItem AddNewItemToTree(TreeView tree, XElement xElement)
@@ -116,10 +111,9 @@ namespace AutoX
             var xE = dialog.GetElement();
             var selected = (TreeViewItem)tree.SelectedItem;
             var xParent = (XElement)selected.DataContext;
-            var parentId = xParent.GetAttributeValue("_id");
+            var parentId = xParent.GetAttributeValue(Constants._ID);
 
-
-            xE.SetAttributeValue("_parentId", parentId);
+            xE.SetAttributeValue(Constants.PARENT_ID, parentId);
 
             if (!Data.Save(xE))
             {
@@ -129,7 +123,6 @@ namespace AutoX
             var ret = xE.GetTreeViewItemFromXElement();
             selected.Items.Add(ret);
             return ret;
-
         }
 
         //private void InitTree(ItemsControl tree, string rootId)
@@ -137,7 +130,7 @@ namespace AutoX
         //    var sRoot = Communication.GetInstance().GetById(rootId);
 
         //    var xRoot = XElement.Parse(sRoot);
-        //    var result = xRoot.GetAttributeValue("Result");
+        //    var result = xRoot.GetAttributeValue(Constants.RESULT);
         //    if (!string.IsNullOrEmpty(result))
         //    {
         //        MessageBox.Show("Get Tree Root Failed. id=" + rootId + "\nReason:" + xRoot.GetAttributeValue("Reason"));
@@ -158,58 +151,65 @@ namespace AutoX
             var treeViewName = treeView.Name;
             var parent = selected.DataContext as XElement;
             if (parent == null) return;
-            var parentId = parent.GetAttributeValue("_id");
+            var parentId = parent.GetAttributeValue(Constants._ID);
 
-            if (parent.Name.ToString().Equals("Script") && treeViewName.Equals("ProjectTreeView"))
+            if (parent.Name.ToString().Equals(Constants.SCRIPT) && treeViewName.Equals("ProjectTreeView"))
             {
                 AddTestDesigner(selected);
                 return;
             }
             var xRoot = Data.GetChildren(parentId);
 
-
-            if (parent.Name.ToString().Equals("Result"))
+            if (parent.Name.ToString().Equals(Constants.RESULT))
             {
                 //load its children to TestCaseResultTable
-                _testCaseResultSource.Clear();
-                _testStepSource.Clear();
-                foreach (XElement kid in xRoot.Descendants())
-                {
-                    string kind = kid.Name.ToString();
-                    if (kind.Equals("Result")||kind.Equals("AutoX.Basic.Model.Result"))
-                    {
-                        var testcaseresult = kid.GetDataObjectFromXElement() as Result;
-                        selected.Items.Add(testcaseresult);
-                        _testCaseResultSource.Add(testcaseresult);
-                    }
-                    if (kind.Equals("StepResult") || kind.Equals("AutoX.Basic.Model.StepResult"))
-                    {
-                        var testStepResult = kid.GetDataObjectFromXElement() as Basic.Model.StepResult;
-                        _testStepSource.Add(testStepResult);
-                    }
-                    
-                }
-                TestCaseResultTable.ItemsSource = _testCaseResultSource.Get();
-                TestStepsResultTable.ItemsSource = _testStepSource.Get();
+                LoadResultTableOfTreeViewItem(selected, xRoot);
 
                 return;
             }
+            HandleDoubleClick(selected, treeViewName, xRoot);
+        }
+
+        private static void HandleDoubleClick(TreeViewItem selected, string treeViewName, XElement xRoot)
+        {
             selected.Items.Clear();
             foreach (var kid in xRoot.Descendants())
             {
                 if (treeViewName.Equals("SuiteTree"))
                 {
-                    var type = kid.GetAttributeValue("_type");
-                    if (type.Equals("Script"))
+                    var type = kid.GetAttributeValue(Constants._TYPE);
+                    if (type.Equals(Constants.SCRIPT))
                     {
-                        var scriptType = kid.GetAttributeValue("ScriptType");
+                        var scriptType = kid.GetAttributeValue(Constants.SCRIPT_TYPE);
                         if (!scriptType.Equals("TestSuite")) continue;
                     }
                 }
                 TreeViewItem newItem = kid.GetTreeViewItemFromXElement();
                 selected.Items.Add(newItem);
             }
+        }
 
+        private void LoadResultTableOfTreeViewItem(TreeViewItem selected, XElement xRoot)
+        {
+            _testCaseResultSource.Clear();
+            _testStepSource.Clear();
+            foreach (XElement kid in xRoot.Descendants())
+            {
+                string kind = kid.Name.ToString();
+                if (kind.Equals(Constants.RESULT) || kind.Equals("AutoX.Basic.Model.Result"))
+                {
+                    var testcaseresult = kid.GetDataObjectFromXElement() as Result;
+                    selected.Items.Add(testcaseresult);
+                    _testCaseResultSource.Add(testcaseresult);
+                }
+                if (kind.Equals("StepResult") || kind.Equals("AutoX.Basic.Model.StepResult"))
+                {
+                    var testStepResult = kid.GetDataObjectFromXElement() as Basic.Model.StepResult;
+                    _testStepSource.Add(testStepResult);
+                }
+            }
+            TestCaseResultTable.ItemsSource = _testCaseResultSource.Get();
+            TestStepsResultTable.ItemsSource = _testStepSource.Get();
         }
 
         private static void Edit(TreeViewItem selected)
@@ -229,7 +229,6 @@ namespace AutoX
                 return;
             }
             selected.UpdateTreeViewItem(xElement);
-
         }
 
         private TreeViewItem GetInitScriptXElement(string type)
@@ -241,6 +240,30 @@ namespace AutoX
                     Guid.NewGuid() + "' />");
             var ret = AddNewItemToTree(ProjectTreeView, xElement);
             return ret;
+        }
+
+        private bool disposed = false; // to detect redundant calls
+        public void Dispose()
+        {
+            Dispose(true);
+            //GC.SupressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    if (_autoClient != null)
+                    {
+                        _autoClient.Dispose();
+                    }
+                    
+                }
+
+                disposed = true;
+            }
         }
     }
 }

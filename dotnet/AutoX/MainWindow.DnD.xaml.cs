@@ -43,7 +43,7 @@ namespace AutoX
             if (!(Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance) ||
                 !(Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance)) return;
             var item = GetNearestContainer(e.OriginalSource as UIElement);
-            var data = e.Data.GetData("DataFormat") as XElement;
+            var data = e.Data.GetData(Constants.DATA_FORMAT) as XElement;
             e.Effects = CheckValidDrop(item, data) ? DragDropEffects.Copy : DragDropEffects.None;
             if(item!=null)
                 item.IsSelected = true;
@@ -57,12 +57,12 @@ namespace AutoX
                 e.Effects = DragDropEffects.None;
                 e.Handled = true;
                 var item = GetNearestContainer(e.OriginalSource as UIElement);
-                var data = e.Data.GetData("DataFormat") as XElement;
+                var data = e.Data.GetData(Constants.DATA_FORMAT) as XElement;
                 if (data == null) return;
                 if (!CheckValidDrop(item, data)) return;
                 var xTarget = item.DataContext as XElement;
-                var parentId = xTarget.GetAttributeValue("_id");
-                data.SetAttributeValue("_parentId", parentId);
+                var parentId = xTarget.GetAttributeValue(Constants._ID);
+                data.SetAttributeValue(Constants.PARENT_ID, parentId);
                 
                 if (!Data.Save(data))
                 {
@@ -71,8 +71,8 @@ namespace AutoX
                 else
                 {
                     //sender to find the source item, then delete it
-                    var toDelete = FindItemOnTree((sender as TreeView), "_id",
-                                                  data.GetAttributeValue("_id"));
+                    var toDelete = FindItemOnTree((sender as TreeView), Constants._ID,
+                                                  data.GetAttributeValue(Constants._ID));
                     if (toDelete != null)
                     {
                         var parent = toDelete.Parent as TreeViewItem;
@@ -127,8 +127,8 @@ namespace AutoX
             var tag = xTarget.Name.ToString();
             if (!tag.Equals("Folder")) return false;
             //rule 2: don't waste your time move to your parent
-            var parentId = xTarget.GetAttributeValue("_id");
-            if (parentId.Equals(data.GetAttributeValue("_parentId")))
+            var parentId = xTarget.GetAttributeValue(Constants._ID);
+            if (parentId.Equals(data.GetAttributeValue(Constants.PARENT_ID)))
                 return false;
             return true;
         }
@@ -162,7 +162,7 @@ namespace AutoX
                     return;
 
                 // Initialize the drag & drop operation
-                var dragData = new DataObject("DataFormat", xe);
+                var dragData = new DataObject(Constants.DATA_FORMAT, xe);
                 try
                 {
                     DragDrop.DoDragDrop(listViewItem, dragData, DragDropEffects.Move);
@@ -195,7 +195,7 @@ namespace AutoX
 
         private void ClientTableDragEnter(object sender, DragEventArgs e)
         {
-            var data = e.Data.GetData("DataFormat") as XElement;
+            var data = e.Data.GetData(Constants.DATA_FORMAT) as XElement;
             if (data == null)
                 return;
 
@@ -219,7 +219,7 @@ namespace AutoX
 
         private void ClientTableDrop(object sender, DragEventArgs e)
         {
-            var data = e.Data.GetData("DataFormat") as XElement;
+            var data = e.Data.GetData(Constants.DATA_FORMAT) as XElement;
             if (data == null) return;
             var client = ClientTable.SelectedItem as Computer;
             if (client == null) return;
@@ -229,14 +229,14 @@ namespace AutoX
                     ClientName = client.ComputerName,
                     Language = "Default",
                     _id = Guid.NewGuid().ToString(),
-                    ScriptGUID = data.GetAttributeValue("_id"),
-                    SuiteName = data.GetAttributeValue("Name"),
+                    ScriptGUID = data.GetAttributeValue(Constants._ID),
+                    SuiteName = data.GetAttributeValue(Constants.NAME),
                     Status = "STOP",
                     TestName = "New Test"
                 };
             var sRoot = Communication.GetInstance().SetInstanceInfo(newInstance.GetXElementFromObject());
             var xRoot = XElement.Parse(sRoot);
-            var result = xRoot.GetAttributeValue("Result");
+            var result = xRoot.GetAttributeValue(Constants.RESULT);
             if (string.IsNullOrEmpty(result)) return;
             if (result.Equals("Failed"))
             {

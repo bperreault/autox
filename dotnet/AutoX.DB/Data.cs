@@ -1,9 +1,8 @@
 ﻿#region
 
+using MongoDB.Bson;
 using System;
 using System.Xml.Linq;
-using MongoDB.Bson;
-
 
 #endregion
 
@@ -13,9 +12,9 @@ namespace AutoX.DB
     {
         public static bool Save(XElement xElement)
         {
-            if(xElement.Attribute("Created")==null)
-                xElement.SetAttributeValue("Created",DateTime.UtcNow.ToString());
-            xElement.SetAttributeValue("Updated",DateTime.UtcNow.ToString());
+            if (xElement.Attribute("Created") == null)
+                xElement.SetAttributeValue("Created", DateTime.UtcNow.ToString());
+            xElement.SetAttributeValue("Updated", DateTime.UtcNow.ToString());
             return DBManager.GetInstance().Save(xElement.ToBsonDocument());
         }
 

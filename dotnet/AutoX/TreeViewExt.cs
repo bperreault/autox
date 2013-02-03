@@ -4,6 +4,7 @@
 
 #region
 
+using AutoX.Basic;
 using System;
 using System.Linq;
 using System.Windows;
@@ -11,7 +12,6 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
 using System.Xml.Linq;
-using AutoX.Basic;
 
 #endregion
 
@@ -21,7 +21,7 @@ namespace AutoX
     {
         public static TreeViewItem GetTreeViewItemFromXElement(this XElement xElement)
         {
-            var treeViewItem = new TreeViewItem {DataContext = xElement};
+            var treeViewItem = new TreeViewItem { DataContext = xElement };
             treeViewItem.UpdateTreeViewItem(xElement);
             return treeViewItem;
         }
@@ -29,11 +29,11 @@ namespace AutoX
         public static void UpdateTreeViewItem(this TreeViewItem treeViewItem, XElement xElement)
         {
             treeViewItem.DataContext = xElement;
-            var head = new StackPanel {Orientation = Orientation.Horizontal};
+            var head = new StackPanel { Orientation = Orientation.Horizontal };
             Image image = null;
             var text = new TextBlock();
-            var type = xElement.GetAttributeValue("_type");
-            var name = xElement.GetAttributeValue("Name");
+            var type = xElement.GetAttributeValue(Constants._TYPE);
+            var name = xElement.GetAttributeValue(Constants.NAME);
 
             if (!string.IsNullOrWhiteSpace(type))
             {
@@ -41,7 +41,7 @@ namespace AutoX
                 if (bitmap != null)
                 {
                     // this is important, remove it, the tree will be 20 times slower
-                    Dispatcher.CurrentDispatcher.BeginInvoke((DispatcherPriority.Normal), (Action) (() =>
+                    Dispatcher.CurrentDispatcher.BeginInvoke((DispatcherPriority.Normal), (Action)(() =>
                         {
                             image = new Image
                                 {
@@ -76,6 +76,7 @@ namespace AutoX
                                             GetAttributeValue
                                             ("Description")
                                 };
+
                             //head.Children.Add(image);
                             head.
                                 Children
@@ -88,10 +89,10 @@ namespace AutoX
             }
 
             text.Text = name;
-            text.ToolTip = new ToolTip {Content = xElement.GetSimpleDescriptionFromXElement()};
+            text.ToolTip = new ToolTip { Content = xElement.GetSimpleDescriptionFromXElement() };
 
             if (image == null)
-                text.ToolTip = new ToolTip {Content = xElement.GetText()};
+                text.ToolTip = new ToolTip { Content = xElement.GetText() };
 
             head.Children.Add(text);
 
