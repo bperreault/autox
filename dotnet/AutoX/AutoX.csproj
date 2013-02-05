@@ -13,11 +13,17 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
+    <SignAssembly>False</SignAssembly>
+    <DelaySign>False</DelaySign>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
+    <NoStdLib>False</NoStdLib>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
+    <DebugType>Full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
@@ -32,6 +38,14 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
+    <RegisterForComInterop>False</RegisterForComInterop>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+    <BaseAddress>4194304</BaseAddress>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Activities.Extensions">
@@ -98,23 +112,23 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\..\Project\autox\dotnet\AutoX.Basic\AutoX.Basic.csproj">
+    <ProjectReference Include="..\AutoX.Basic\AutoX.Basic.csproj">
       <Project>{bb39bdb6-d9a0-4b29-98c5-977069b8d575}</Project>
       <Name>AutoX.Basic</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\..\Project\autox\dotnet\AutoX.Client.Core\AutoX.Client.Core.csproj">
+    <ProjectReference Include="..\AutoX.Client.Core\AutoX.Client.Core.csproj">
       <Project>{4c838b4a-f1c7-4b78-b6c4-eb65ead3fbe0}</Project>
       <Name>AutoX.Client.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\..\Project\autox\dotnet\AutoX.Comm\AutoX.Comm.csproj">
+    <ProjectReference Include="..\AutoX.Comm\AutoX.Comm.csproj">
       <Project>{ea1d75aa-b145-4b6b-84e5-9933a5d537f0}</Project>
       <Name>AutoX.Comm</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\..\Project\autox\dotnet\AutoX.DB\AutoX.DB.csproj">
+    <ProjectReference Include="..\AutoX.DB\AutoX.DB.csproj">
       <Project>{7d09a7d8-2a35-49cb-936e-58919bb4a5f9}</Project>
       <Name>AutoX.DB</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\..\Project\autox\dotnet\AutoX.WF.Core\AutoX.WF.Core.csproj">
+    <ProjectReference Include="..\AutoX.WF.Core\AutoX.WF.Core.csproj">
       <Project>{6a598cbb-a54f-4272-82aa-0dd64428e3c6}</Project>
       <Name>AutoX.WF.Core</Name>
     </ProjectReference>

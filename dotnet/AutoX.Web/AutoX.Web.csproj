@@ -84,15 +84,15 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\..\Project\autox\dotnet\AutoX.Basic\AutoX.Basic.csproj">
+    <ProjectReference Include="..\AutoX.Basic\AutoX.Basic.csproj">
       <Project>{bb39bdb6-d9a0-4b29-98c5-977069b8d575}</Project>
       <Name>AutoX.Basic</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\..\Project\autox\dotnet\AutoX.DB\AutoX.DB.csproj">
+    <ProjectReference Include="..\AutoX.DB\AutoX.DB.csproj">
       <Project>{7d09a7d8-2a35-49cb-936e-58919bb4a5f9}</Project>
       <Name>AutoX.DB</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\..\..\..\..\Project\autox\dotnet\AutoX.WF.Core\AutoX.WF.Core.csproj">
+    <ProjectReference Include="..\AutoX.WF.Core\AutoX.WF.Core.csproj">
       <Project>{6a598cbb-a54f-4272-82aa-0dd64428e3c6}</Project>
       <Name>AutoX.WF.Core</Name>
     </ProjectReference>
