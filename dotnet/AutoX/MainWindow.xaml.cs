@@ -86,7 +86,7 @@ namespace AutoX
             //load suite tree
             ReloadOnSuiteTree(null, null);
             //load computer table
-            RefreshClientTable(null, null);
+            //RefreshClientTable(null, null);
         }
 
         #region Progress bar

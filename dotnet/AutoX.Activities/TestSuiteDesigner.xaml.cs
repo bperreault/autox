@@ -91,7 +91,7 @@ namespace AutoX.Activities
             var droppedItem = DragDropHelper.GetDroppedObject(this, e, Context);
             var canvasActivity = ModelItem;
             canvasActivity.Properties["children"].Collection.Add(droppedItem);
-
+            
             DragDropHelper.SetDragDropCompletedEffects(e, DragDropEffects.Move);
 
             base.OnDrop(e);

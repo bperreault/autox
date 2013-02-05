@@ -49,12 +49,13 @@
     <Compile Include="ActionsFactory.cs" />
     <Compile Include="Actions\IAction.cs" />
     <Compile Include="ClientInstancesManager.cs" />
+    <Compile Include="InstanceManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WorkflowInstance.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AutoX.Activities\AutoX.Activities.csproj">
-      <Project>{98ec024c-6439-44b1-8b1e-29e457b2201f}</Project>
+      <Project>{82ce9df9-7593-4b3c-b232-2b2894e40bb8}</Project>
       <Name>AutoX.Activities</Name>
     </ProjectReference>
     <ProjectReference Include="..\AutoX.Basic\AutoX.Basic.csproj">

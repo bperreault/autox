@@ -35,7 +35,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Management" />
@@ -61,7 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AutoX.Activities\AutoX.Activities.csproj">
-      <Project>{98ec024c-6439-44b1-8b1e-29e457b2201f}</Project>
+      <Project>{82ce9df9-7593-4b3c-b232-2b2894e40bb8}</Project>
       <Name>AutoX.Activities</Name>
     </ProjectReference>
     <ProjectReference Include="..\AutoX.Basic\AutoX.Basic.csproj">

@@ -1,19 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>10.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{98EC024C-6439-44B1-8B1E-29E457B2201F}</ProjectGuid>
-    <ProjectTypeGuids>{32f31d43-81cc-4c15-9de6-3fc5453562b6};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>{82CE9DF9-7593-4B3C-B232-2B2894E40BB8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AutoX.Activities</RootNamespace>
     <AssemblyName>AutoX.Activities</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -23,7 +20,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -32,27 +28,27 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net">
-      <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Activities" />
+    <Reference Include="System.Activities.Core.Presentation" />
     <Reference Include="System.Activities.Presentation" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.ServiceModel.Activities" />
+    <Reference Include="System.Windows" />
+    <Reference Include="System.Workflow.Activities" />
+    <Reference Include="System.Workflow.ComponentModel" />
+    <Reference Include="System.Workflow.Runtime" />
     <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -64,93 +60,92 @@
     <Compile Include="AutoActivities\TestCaseActivity.cs" />
     <Compile Include="AutoActivities\TestScreenActivity.cs" />
     <Compile Include="AutoActivities\TestSuiteActivity.cs" />
-    <Compile Include="CallTestCaseDesigner.xaml.cs">
-      <DependentUpon>CallTestCaseDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="CallTestScreenDesigner.xaml.cs">
-      <DependentUpon>CallTestScreenDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="CallTestSuiteActivityDesigner.xaml.cs">
-      <DependentUpon>CallTestSuiteActivityDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="StepsConverter.cs" />
+    <Compile Include="CallTestCaseDesigner.xaml.cs" />
+    <Compile Include="CallTestScreenDesigner.xaml.cs" />
+    <Compile Include="CallTestSuiteActivityDesigner.xaml.cs" />
     <Compile Include="DatumConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Step.cs" />
-    <Compile Include="StepsDialog.xaml.cs">
-      <DependentUpon>StepsDialog.xaml</DependentUpon>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Step.cs" />
+    <Compile Include="StepsConverter.cs" />
+    <Compile Include="StepsDialog.xaml.cs" />
     <Compile Include="StepsEditor.cs" />
     <Compile Include="StepsIdConverter.cs" />
-    <Compile Include="TestCaseDesigner.xaml.cs">
-      <DependentUpon>TestCaseDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="TestScreenDesigner.xaml.cs">
-      <DependentUpon>TestScreenDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="TestSuiteDesigner.xaml.cs">
-      <DependentUpon>TestSuiteDesigner.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="TestCaseDesigner.xaml.cs" />
+    <Compile Include="TestScreenDesigner.xaml.cs" />
+    <Compile Include="TestSuiteDesigner.xaml.cs" />
     <Compile Include="UserData.cs" />
-    <Compile Include="UserDataDialog.xaml.cs">
-      <DependentUpon>UserDataDialog.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="UserDataDialog.xaml.cs" />
     <Compile Include="UserDataEditor.cs" />
     <Compile Include="Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\..\Project\autox\dotnet\AutoX.Basic\AutoX.Basic.csproj">
+      <Project>{bb39bdb6-d9a0-4b29-98c5-977069b8d575}</Project>
+      <Name>AutoX.Basic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\..\..\Project\autox\dotnet\AutoX.DB\AutoX.DB.csproj">
+      <Project>{7d09a7d8-2a35-49cb-936e-58919bb4a5f9}</Project>
+      <Name>AutoX.DB</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <Page Include="CallTestCaseDesigner.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="CallTestScreenDesigner.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="CallTestSuiteActivityDesigner.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="StepsDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
     <Page Include="TestCaseDesigner.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="TestScreenDesigner.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="TestSuiteDesigner.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UserDataDialog.xaml">
-      <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\AutoX.Basic\AutoX.Basic.csproj">
-      <Project>{bb39bdb6-d9a0-4b29-98c5-977069b8d575}</Project>
-      <Name>AutoX.Basic</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\AutoX.DB\AutoX.DB.csproj">
-      <Project>{7d09a7d8-2a35-49cb-936e-58919bb4a5f9}</Project>
-      <Name>AutoX.DB</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="TestScreen.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="TestCase.bmp" />
-    <Resource Include="TestSuite.bmp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="TestCase.bmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="TestScreen.bmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="TestSuite.bmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -236,7 +236,7 @@ namespace AutoX
             var xElement =
                 XElement.Parse(
                     @"<Script Name='New Test " + type + "' ScriptType='Test" + type +
-                    "' Description='Please add description here' Content='' _id='" +
+                    "' Description='Please add description here' _type='Script' Content='' _id='" +
                     Guid.NewGuid() + "' />");
             var ret = AddNewItemToTree(ProjectTreeView, xElement);
             return ret;
