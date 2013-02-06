@@ -53,7 +53,7 @@ namespace AutoX.Activities
                 if (tag.Equals(Constants.DATUM))
                     Utilities.DropXElementToDesigner(data, "UserData", ModelItem);
 
-                DragDropHelper.SetDragDropCompletedEffects(e, DragDropEffects.Move);
+                //DragDropHelper.SetDragDropCompletedEffects(e, DragDropEffects.Move);
             }
             base.OnDrop(e);
         }

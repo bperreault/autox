@@ -87,12 +87,17 @@ namespace AutoX.Activities
             e.Handled = true;
 
             //TODO not a graceful implementation, think about change it.
-
-            var droppedItem = DragDropHelper.GetDroppedObject(this, e, Context);
             var canvasActivity = ModelItem;
-            canvasActivity.Properties["children"].Collection.Add(droppedItem);
+            var droppedItems =DragDropHelper.GetDroppedObjects(this, e, Context);
+            //var droppedItem = DragDropHelper.GetDroppedObject(this, e, Context);
+            foreach (var droppedItem in droppedItems)
+            {
+                canvasActivity.Properties["children"].Collection.Add(droppedItem);
+            }
+           
             
-            DragDropHelper.SetDragDropCompletedEffects(e, DragDropEffects.Move);
+            
+            //DragDropHelper.SetDragDropCompletedEffects(e, DragDropEffects.Move);
 
             base.OnDrop(e);
         }

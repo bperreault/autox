@@ -21,10 +21,10 @@ namespace AutoX.Activities.AutoActivities
     public sealed class TestScreenActivity : AutomationActivity, IPassData
     {
         private string _name;
-        private CompletionCallback _onChildComplete;
-        private bool _result;
+        //private CompletionCallback _onChildComplete;
+        //private bool _result;
         private string _steps = "<Steps />";
-        private string _userData = "";
+        //private string _userData = "";
 
         public TestScreenActivity()
         {
@@ -83,7 +83,8 @@ namespace AutoX.Activities.AutoActivities
 
         public override bool GetResult()
         {
-            return _result;
+            return false;
+            //return _result;
         }
 
         #endregion

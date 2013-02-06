@@ -50,11 +50,11 @@ namespace AutoX.Activities
             if (data != null)
             {
                 var tag = data.Name.ToString();
-                if (tag.Equals(Constants.DATUM))
-                    Utilities.DropXElementToDesigner(data, "UserData", ModelItem);
+                //if (tag.Equals(Constants.DATUM))
+                //    Utilities.DropXElementToDesigner(data, "UserData", ModelItem);
                 if (tag.Equals(Constants.UI_OBJECT))
                     Utilities.DropXElementToDesigner(data, "Steps", ModelItem);
-                DragDropHelper.SetDragDropCompletedEffects(e, DragDropEffects.Move);
+                //DragDropHelper.SetDragDropCompletedEffects(e, DragDropEffects.Move);
             }
             base.OnDrop(e);
         }
