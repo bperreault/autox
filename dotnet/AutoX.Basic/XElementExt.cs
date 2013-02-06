@@ -4,6 +4,7 @@
 
 #region
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -91,6 +92,16 @@ namespace AutoX.Basic
                 return null;
             var xa = e.Attribute(attrName) ?? e.Attribute(attrName.ToLower());
             return xa == null ? null : xa.Value;
+        }
+
+        public static Dictionary<string, string> GetAttributeList(this XElement e)
+        {
+            Dictionary<string, string> attributeList = new Dictionary<string, string>();
+            foreach (XAttribute attr in e.Attributes())
+            {
+                attributeList.Add(attr.Name.ToString(), attr.Value);
+            }
+            return attributeList;
         }
 
         public static string XElementToText(this XElement e)

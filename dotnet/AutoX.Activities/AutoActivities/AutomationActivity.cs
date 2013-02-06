@@ -43,7 +43,7 @@ namespace AutoX.Activities.AutoActivities
             result.SetAttributeValue(Constants._ID,ResultId);
             result.SetAttributeValue(Constants.INSTANCE_ID,InstanceId);
             result.SetAttributeValue(Constants._TYPE,Constants.RESULT);
-            result.SetAttributeValue(Constants.NAME,GetType().Name);
+            result.SetAttributeValue(Constants.NAME,DisplayName);
             result.SetAttributeValue(SCRIPT_ID, Id);
             //result.SetAttributeValue(Constants.UI_OBJECT, UIObject);
             Data.Save(result);

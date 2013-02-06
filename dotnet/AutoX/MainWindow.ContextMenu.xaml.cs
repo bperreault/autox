@@ -129,8 +129,9 @@ namespace AutoX
 
         private void RunWorkflowById(string workflowId)
         {
-            var workflowInstance = new WorkflowInstance(workflowId, null, Configuration.Settings("ResultsRoot", ""));
-            string finishedStatus = "Completed|Aborted|Canceled|Faulted";
+            
+            var workflowInstance = new WorkflowInstance(workflowId, _config.GetList());
+            
 
             bool debugMode = _config.Get("Mode.Debug", "True").Equals("True", StringComparison.CurrentCultureIgnoreCase);
             while (true)
@@ -147,7 +148,7 @@ namespace AutoX
                 workflowInstance.SetResult(xResult);
                 Thread.Sleep(1000);
 
-                if (finishedStatus.Contains(workflowInstance.Status))
+                if (workflowInstance.IsFinished())
                     break;
             }
             workflowInstance = null;

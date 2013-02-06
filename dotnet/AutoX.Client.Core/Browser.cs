@@ -286,6 +286,17 @@ namespace AutoX.Client.Core
 
         private void StartSauceBrowser()
         {
+            DesiredCapabilities capabillities = ConfigSauceCapabilities();
+            _browser = new SauceDriver(
+                      new Uri("http://ondemand.saucelabs.com:80/wd/hub"), capabillities);
+
+            _browser.Navigate().GoToUrl(_config.Get("DefaultURL", "about:blank"));
+            MaximiseBrowser();
+            _sId = ((SauceDriver)_browser).GetSessionId();
+        }
+
+        private DesiredCapabilities ConfigSauceCapabilities()
+        {
             DesiredCapabilities capabillities;
             var browserType = _config.Get("Browser.Type", "Firefox");
             if (browserType.Equals("IE"))
@@ -310,18 +321,16 @@ namespace AutoX.Client.Core
 
             capabillities.SetCapability(CapabilityType.Version, _config.Get("Browser.Version", "10"));
             capabillities.SetCapability(CapabilityType.Platform, _config.Get("Browser.Platform", "Windows 2008"));
-            capabillities.SetCapability(Constants._NAME, _config.Get("Sauce.Name", "Testing Selenium 2 with C# on Sauce"));
+            var versionName = _config.Get("AUT.Version") ?? "Test.Version";
+
+            var buildName = _config.Get("AUT.Build") ?? "Test.Build";
+            capabillities.SetCapability(Constants._NAME, _config.Get("Sauce.Name", versionName+"/"+buildName));
             capabillities.SetCapability("username", _config.Get("Sauce.UserName", "autox"));
             capabillities.SetCapability("accessKey", _config.Get("Sauce.AccessKey", "b3842073-5a7a-4782-abbc-e7234e09f8ac"));
             capabillities.SetCapability("idle-timeout", 300);
             capabillities.SetCapability("max-duration", 3600);
             capabillities.SetCapability("command-timeout", 300);
-            _browser = new SauceDriver(
-                      new Uri("http://ondemand.saucelabs.com:80/wd/hub"), capabillities);
-
-            _browser.Navigate().GoToUrl(_config.Get("DefaultURL", "about:blank"));
-            MaximiseBrowser();
-            _sId = ((SauceDriver)_browser).GetSessionId();
+            return capabillities;
         }
 
         private string _sId;

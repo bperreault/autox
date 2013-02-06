@@ -43,7 +43,7 @@ namespace AutoX.WF.Core
             }
             else
             {
-                var instance = new WorkflowInstance(guid, null, null);//new WorkflowInstance(guid, scriptGuid, name, computer, suiteName, language);
+                var instance = new WorkflowInstance(guid, instanceInfo.GetAttributeList());//new WorkflowInstance(guid, scriptGuid, name, computer, suiteName, language);
                 _instanceList.Add(guid, instance);
                 return !instance.Status.Equals("Invalid");
             }

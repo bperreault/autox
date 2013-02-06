@@ -31,18 +31,60 @@ namespace AutoX.WF.Core
             set { _parentId = value; }
         }
 
-        public WorkflowInstance(string workflowId, Dictionary<string, string> upperLevelVariables, string resultParentId)
+        public WorkflowInstance(string workflowId, Dictionary<string, string> upperLevelVariables)
         {
             if (upperLevelVariables != null)
                 foreach (var upperLevelVariable in upperLevelVariables)
                 {
                     _variables.Add(upperLevelVariable.Key, upperLevelVariable.Value);
                 }
-            XElement script = GetDataObject(workflowId);
-            _result = null;
-            _command = null;
-            if (script != null)
-                StartActivity(script.GetAttributeValue(Constants.CONTENT), resultParentId);
+            var rootId = upperLevelVariables["Root"];
+            var versionName = upperLevelVariables["AUT.Version"] ?? "Test.Version";
+
+            var buildName = upperLevelVariables["AUT.Build"] ?? "Test.Build";
+            if (!string.IsNullOrEmpty(rootId))
+            {
+                var _1stLevelKid = Data.Read(rootId);
+                var resultId = _1stLevelKid.GetAttributeValue("Result");
+
+                if (!string.IsNullOrEmpty(resultId))
+                {
+                    string versionId = FindOrCreateSubResultFolder(versionName, resultId);
+                    string buildId = FindOrCreateSubResultFolder(buildName, versionId);
+                    XElement script = GetDataObject(workflowId);
+                    _result = null;
+                    _command = null;
+                    if (script != null)
+                        StartActivity(script.GetAttributeValue(Constants.CONTENT), buildId);
+                }
+
+            }
+
+        }
+
+        private static string FindOrCreateSubResultFolder(string versionName, string resultId)
+        {
+            var results = Data.GetChildren(resultId);
+            string versionId = null;
+            if (results != null)
+            {
+
+                foreach (var result in results.Descendants())
+                {
+                    if (versionName.Equals(result.GetAttributeValue("Name")))
+                    {
+                        versionId = result.GetAttributeValue("_id");
+                        break;
+                    }
+                }
+
+            }
+            if (string.IsNullOrEmpty(versionId))
+            {
+                versionId = Guid.NewGuid().ToString();
+                Data.Save(XElement.Parse("<Result Name='" + versionName + "' _id='" + versionId + "' _parentId='" + resultId + "' _type='Folder' Created='" + DateTime.Now.ToString() + "' Updated='" + DateTime.Now.ToString() + "' />"));
+            }
+            return versionId;
         }
 
         private readonly StatusTracker _statusTracker = new StatusTracker();
@@ -125,6 +167,19 @@ namespace AutoX.WF.Core
             }
         }
 
+        const string FINISHED_STATUSES = "Completed|Aborted|Canceled|Faulted";
+
+        public bool IsFinished()
+        {
+            return (FINISHED_STATUSES.Contains(Status));
+        }
+
+        public void Stop()
+        {
+            if (_workflowApplication != null)
+                _workflowApplication.Cancel();
+        }
+
         public WorkflowApplication GetWorkflowApplication(AutomationActivity activity)
         {
             var workflowApplication = new WorkflowApplication(activity)
@@ -184,7 +239,7 @@ namespace AutoX.WF.Core
 
         public StatusTracker()
         {
-            
+
             trackingProfile.Queries.Add(new ActivityStateQuery
             {
                 ActivityName = "*",

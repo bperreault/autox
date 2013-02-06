@@ -126,7 +126,7 @@ namespace AutoX.Test
         private static void TestWorkflow()
         {
             AutoClient auto = new AutoClient();
-            WorkflowInstance workflowInstance = new WorkflowInstance("7fdcbd7a-b30e-4c36-aa46-58ba74b02401", null, "8afc65e2-fd1f-4cf0-8e20-337c40c27912");
+            WorkflowInstance workflowInstance = new WorkflowInstance("7fdcbd7a-b30e-4c36-aa46-58ba74b02401", Configuration.Clone().GetList());
             var xCommand = workflowInstance.GetCommand();
 
             Console.WriteLine(xCommand.ToString());
