@@ -309,12 +309,13 @@ namespace AutoX.Client.Core
                 capabillities = DesiredCapabilities.Firefox();
 
             capabillities.SetCapability(CapabilityType.Version, _config.Get("Browser.Version", "10"));
-
             capabillities.SetCapability(CapabilityType.Platform, _config.Get("Browser.Platform", "Windows 2008"));
             capabillities.SetCapability(Constants._NAME, _config.Get("Sauce.Name", "Testing Selenium 2 with C# on Sauce"));
             capabillities.SetCapability("username", _config.Get("Sauce.UserName", "autox"));
             capabillities.SetCapability("accessKey", _config.Get("Sauce.AccessKey", "b3842073-5a7a-4782-abbc-e7234e09f8ac"));
-
+            capabillities.SetCapability("idle-timeout", 300);
+            capabillities.SetCapability("max-duration", 3600);
+            capabillities.SetCapability("command-timeout", 300);
             _browser = new SauceDriver(
                       new Uri("http://ondemand.saucelabs.com:80/wd/hub"), capabillities);
 
