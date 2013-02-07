@@ -28,21 +28,21 @@ namespace AutoX.WF.Core
             //var name = instanceInfo.GetAttributeValue("TestName");
             //var scriptGuid = instanceInfo.GetAttributeValue("ScriptGUID");
             //var computer = instanceInfo.GetAttributeValue("ClientName");
-            var guid = instanceInfo.GetAttributeValue(Constants._ID);
+            var guid = ((XElement)instanceInfo.FirstNode).GetAttributeValue(Constants._ID);
             //var status = instanceInfo.GetAttributeValue("Status");
             //var language = instanceInfo.GetAttributeValue("Language");
             //var suiteName = instanceInfo.GetAttributeValue("SuiteName");
             if (_instanceList.ContainsKey(guid))
             {
                 var instance = _instanceList[guid];
-                instance.Variables = instanceInfo.GetAttributeList();
-                return !instance.Status.Equals("Invalid");
+                instance.Variables = ((XElement)instanceInfo.FirstNode).GetAttributeList();
+                return instance.Status == null || !instance.Status.Equals("Invalid");
             }
             else
             {
-                var instance = new WorkflowInstance(guid, instanceInfo.GetAttributeList());//new WorkflowInstance(guid, scriptGuid, name, computer, suiteName, language);
+                var instance = new WorkflowInstance(guid, ((XElement)instanceInfo.FirstNode).GetAttributeList());//new WorkflowInstance(guid, scriptGuid, name, computer, suiteName, language);
                 _instanceList.Add(guid, instance);
-                return !instance.Status.Equals("Invalid");
+                return instance.Status==null||!instance.Status.Equals("Invalid");
             }
         }
 
@@ -70,7 +70,7 @@ namespace AutoX.WF.Core
 
         internal XElement SetResult(XElement action)
         {
-            var guid = action.GetAttributeValue(Constants._ID);
+            var guid = ((XElement)action.FirstNode).GetAttributeValue(Constants._ID);
             if (!_instanceList.ContainsKey(guid)) return XElement.Parse("<Result Result='Error' />");
             _instanceList[guid].SetResult(action);
             return XElement.Parse("<Result Result='Error' />");
@@ -78,14 +78,14 @@ namespace AutoX.WF.Core
 
         internal XElement StartInstance(XElement action)
         {
-            var guid = action.GetAttributeValue(Constants._ID);
+            var guid = ((XElement)action.FirstNode).GetAttributeValue(Constants._ID);
             if (!_instanceList.ContainsKey(guid)) return XElement.Parse("<Result Result='Error' />");
             return _instanceList[guid].Start();
         }
 
         internal XElement StopInstance(XElement action)
         {
-            var guid = action.GetAttributeValue(Constants._ID);
+            var guid = ((XElement)action.FirstNode).GetAttributeValue(Constants._ID);
             if (!_instanceList.ContainsKey(guid)) return XElement.Parse("<Result Result='Error' />");
             _instanceList[guid].Stop();
             return XElement.Parse("<Result Result='Error' />");

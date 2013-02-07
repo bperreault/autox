@@ -41,14 +41,18 @@ namespace AutoX.WF.Core
 
         public WorkflowInstance(string workflowId, Dictionary<string, string> upperLevelVariables)
         {
+            Variables = Configuration.Clone().GetList();
             if (upperLevelVariables != null)
                 foreach (var upperLevelVariable in upperLevelVariables)
                 {
-                    _variables.Add(upperLevelVariable.Key, upperLevelVariable.Value);
+                    if (Variables.ContainsKey(upperLevelVariable.Key))
+                        Variables[upperLevelVariable.Key] = upperLevelVariable.Value;
+                    else
+                        Variables.Add(upperLevelVariable.Key, upperLevelVariable.Value);
                 }
-            var rootId = upperLevelVariables["Root"];
-            var versionName = upperLevelVariables["AUT.Version"] ?? "Test.Version";
-            var buildName = upperLevelVariables["AUT.Build"] ?? "Test.Build";
+            var rootId = Variables["Root"];
+            var versionName = Variables.ContainsKey("AUT.Version") ? Variables["AUT.Version"] : "Test.Version";
+            var buildName = Variables.ContainsKey("AUT.Build") ? Variables["AUT.Build"] : "Test.Build";
             if (!string.IsNullOrEmpty(rootId))
             {
                 var _1stLevelKid = Data.Read(rootId);

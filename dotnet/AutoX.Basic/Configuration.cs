@@ -119,8 +119,9 @@ namespace AutoX.Basic
         public static Config Clone()
         {
             var cfg = new Config();
-            var config =
-                ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+           
+            //var config =
+            //    ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 
             foreach (object key in ConfigurationManager.AppSettings.Keys)
             {
