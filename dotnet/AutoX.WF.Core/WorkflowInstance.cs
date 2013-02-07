@@ -12,13 +12,21 @@ using System.Xml.Linq;
 
 namespace AutoX.WF.Core
 {
-    public class WorkflowInstance : IHost, IObserable
+    public class WorkflowInstance : IHost
     {
         private Dictionary<string, string> _variables = new Dictionary<string, string>();
         private volatile XElement _command;
         private volatile XElement _result;
         private List<IObserver> _observers = new List<IObserver>();
         private string _instanceId = Guid.NewGuid().ToString();
+
+        public ClientInstance Client { get; set; }
+
+        public Dictionary<string, string> Variables
+        {
+            get { return _variables; }
+            set { _variables = value; }
+        }
 
         public string InstanceId
         {
@@ -40,7 +48,6 @@ namespace AutoX.WF.Core
                 }
             var rootId = upperLevelVariables["Root"];
             var versionName = upperLevelVariables["AUT.Version"] ?? "Test.Version";
-
             var buildName = upperLevelVariables["AUT.Build"] ?? "Test.Build";
             if (!string.IsNullOrEmpty(rootId))
             {
@@ -55,11 +62,9 @@ namespace AutoX.WF.Core
                     _result = null;
                     _command = null;
                     if (script != null)
-                        StartActivity(script.GetAttributeValue(Constants.CONTENT), buildId);
+                        CreateActivity(script.GetAttributeValue(Constants.CONTENT), buildId);
                 }
-
             }
-
         }
 
         private static string FindOrCreateSubResultFolder(string versionName, string resultId)
@@ -68,7 +73,6 @@ namespace AutoX.WF.Core
             string versionId = null;
             if (results != null)
             {
-
                 foreach (var result in results.Descendants())
                 {
                     if (versionName.Equals(result.GetAttributeValue("Name")))
@@ -77,7 +81,6 @@ namespace AutoX.WF.Core
                         break;
                     }
                 }
-
             }
             if (string.IsNullOrEmpty(versionId))
             {
@@ -90,10 +93,9 @@ namespace AutoX.WF.Core
         private readonly StatusTracker _statusTracker = new StatusTracker();
         private WorkflowApplication _workflowApplication;
         private string _parentId;
-
         public string Status { get; set; }
 
-        private void StartActivity(string workflow, string resultParentId)
+        private void CreateActivity(string workflow, string resultParentId)
         {
             var activity = ActivityXamlServices.Load(new StringReader(workflow)) as AutomationActivity;
             if (activity != null)
@@ -103,8 +105,19 @@ namespace AutoX.WF.Core
                 activity.SetParentResultId(resultParentId);
                 _workflowApplication = GetWorkflowApplication(activity);
                 _workflowApplication.Extensions.Add(_statusTracker);
-                _workflowApplication.Run();
+                //_workflowApplication.Run();
             }
+        }
+
+        public XElement Start()
+        {
+            if (_workflowApplication != null)
+                if (!IsFinished())
+                {
+                    _workflowApplication.Run();
+                    return XElement.Parse("<Result Result='Success' />");
+                }
+            return XElement.Parse("<Result Result='Error' />");
         }
 
         public XElement GetDataObject(string id)
@@ -135,7 +148,6 @@ namespace AutoX.WF.Core
         public void SetResult(XElement result)
         {
             _result = result;
-            Notify(result);
         }
 
         public XElement GetCommand()
@@ -153,25 +165,11 @@ namespace AutoX.WF.Core
             return XElement.Parse(commandString);
         }
 
-        public void Register(IObserver observer)
-        {
-            if (!_observers.Contains(observer))
-                _observers.Add(observer);
-        }
-
-        public void Notify(XElement change)
-        {
-            foreach (var observer in _observers)
-            {
-                observer.Update(change);
-            }
-        }
-
         const string FINISHED_STATUSES = "Completed|Aborted|Canceled|Faulted";
 
         public bool IsFinished()
         {
-            return (FINISHED_STATUSES.Contains(Status));
+            return Status == null || (FINISHED_STATUSES.Contains(Status));
         }
 
         public void Stop()
@@ -189,42 +187,24 @@ namespace AutoX.WF.Core
                     switch (e.CompletionState)
                     {
                         case ActivityInstanceState.Faulted:
-
-                            //Logger.GetInstance().Log().Error("workflow " +
-                            //                                 scriptGuid +
-                            //                                 " stopped! Error Message:\n"
-                            //                                 +
-                            //                                 e.TerminationException.
-                            //                                     GetType().FullName +
-                            //                                 "\n"
-                            //                                 +
-                            //                                 e.TerminationException.
-                            //                                     Message);
+                            Log.Error("workflow [" + activity.Id + "] " + activity.DisplayName + " stopped! Error Message:\n" + e.TerminationException.GetType().FullName + "\n" + e.TerminationException.Message);
                             Status = "Terminated";
                             break;
 
                         case ActivityInstanceState.Canceled:
-
-                            //Logger.GetInstance().Log().Warn("workflow " + scriptGuid +
-                            //                                " Cancel.");
+                            Log.Error("workflow [" + activity.Id + "] " + activity.DisplayName + " Cancel.");
                             Status = "Canceled";
                             break;
 
                         default:
-
-                            //Logger.GetInstance().Log().Info("workflow " + scriptGuid +
-                            //                                " Completed.");
+                            Log.Error("workflow [" + activity.Id + "] " + activity.DisplayName + " Completed.");
                             Status = "Completed";
                             break;
                     }
                 },
-                Aborted = delegate
+                Aborted = delegate(WorkflowApplicationAbortedEventArgs e)
                 {
-                    //Logger.GetInstance().Log().Error("workflow " +
-                    //                                 scriptGuid
-                    //                                 + " aborted! Error Message:\n"
-                    //                                 + e.Reason.GetType().FullName + "\n" +
-                    //                                 e.Reason.Message);
+                    Log.Error(" aborted! Error Message:\n" + e.Reason.GetType().FullName + "\n" + e.Reason.Message);
                     Status = "Aborted";
                 }
             };

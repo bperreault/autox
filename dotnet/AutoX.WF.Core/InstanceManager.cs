@@ -25,20 +25,17 @@ namespace AutoX.WF.Core
 
         public bool UpdateInstance(XElement instanceInfo)
         {
-            var name = instanceInfo.GetAttributeValue("TestName");
-            var scriptGuid = instanceInfo.GetAttributeValue("ScriptGUID");
-            var computer = instanceInfo.GetAttributeValue("ClientName");
+            //var name = instanceInfo.GetAttributeValue("TestName");
+            //var scriptGuid = instanceInfo.GetAttributeValue("ScriptGUID");
+            //var computer = instanceInfo.GetAttributeValue("ClientName");
             var guid = instanceInfo.GetAttributeValue(Constants._ID);
-            var status = instanceInfo.GetAttributeValue("Status");
-            var language = instanceInfo.GetAttributeValue("Language");
-            var suiteName = instanceInfo.GetAttributeValue("SuiteName");
+            //var status = instanceInfo.GetAttributeValue("Status");
+            //var language = instanceInfo.GetAttributeValue("Language");
+            //var suiteName = instanceInfo.GetAttributeValue("SuiteName");
             if (_instanceList.ContainsKey(guid))
             {
                 var instance = _instanceList[guid];
-                //instance.ClientName = computer;
-                instance.Status = status;
-                //instance.TestName = name;
-
+                instance.Variables = instanceInfo.GetAttributeList();
                 return !instance.Status.Equals("Invalid");
             }
             else
@@ -67,7 +64,31 @@ namespace AutoX.WF.Core
         public void RemoveTestInstance(string guid)
         {
             if (!_instanceList.ContainsKey(guid)) return;
+            _instanceList[guid].Stop();
             _instanceList.Remove(guid);
+        }
+
+        internal XElement SetResult(XElement action)
+        {
+            var guid = action.GetAttributeValue(Constants._ID);
+            if (!_instanceList.ContainsKey(guid)) return XElement.Parse("<Result Result='Error' />");
+            _instanceList[guid].SetResult(action);
+            return XElement.Parse("<Result Result='Error' />");
+        }
+
+        internal XElement StartInstance(XElement action)
+        {
+            var guid = action.GetAttributeValue(Constants._ID);
+            if (!_instanceList.ContainsKey(guid)) return XElement.Parse("<Result Result='Error' />");
+            return _instanceList[guid].Start();
+        }
+
+        internal XElement StopInstance(XElement action)
+        {
+            var guid = action.GetAttributeValue(Constants._ID);
+            if (!_instanceList.ContainsKey(guid)) return XElement.Parse("<Result Result='Error' />");
+            _instanceList[guid].Stop();
+            return XElement.Parse("<Result Result='Error' />");
         }
     }
 }

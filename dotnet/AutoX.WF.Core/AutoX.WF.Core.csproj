@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="ActionsFactory.cs" />
     <Compile Include="Actions\IAction.cs" />
+    <Compile Include="ClientInstance.cs" />
     <Compile Include="ClientInstancesManager.cs" />
     <Compile Include="InstanceManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

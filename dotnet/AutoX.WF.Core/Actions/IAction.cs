@@ -75,7 +75,8 @@ namespace AutoX.WF.Core.Actions
     {
         public XElement Do(XElement action)
         {
-            throw new System.NotImplementedException();
+            if (InstanceManager.GetInstance().UpdateInstance(action)) return XElement.Parse("<Result Result='Success' />");
+            else return XElement.Parse("<Result Result='Error' />");
         }
     }
 
@@ -83,7 +84,7 @@ namespace AutoX.WF.Core.Actions
     {
         public XElement Do(XElement action)
         {
-            throw new System.NotImplementedException();
+            return InstanceManager.GetInstance().SetResult(action);           
         }
     }
 
@@ -91,7 +92,7 @@ namespace AutoX.WF.Core.Actions
     {
         public XElement Do(XElement action)
         {
-            throw new System.NotImplementedException();
+            return InstanceManager.GetInstance().StartInstance(action); 
         }
     }
 
@@ -99,7 +100,7 @@ namespace AutoX.WF.Core.Actions
     {
         public XElement Do(XElement action)
         {
-            throw new System.NotImplementedException();
+            return InstanceManager.GetInstance().StopInstance(action);
         }
     }
 }
