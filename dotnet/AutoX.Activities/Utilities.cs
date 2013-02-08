@@ -77,17 +77,46 @@ namespace AutoX.Activities
                 var xSteps = XElement.Parse(userData);
 
                 var xStep = new XElement(Constants.STEP);
+                var name = data.GetAttributeValue(Constants.NAME);
                 xStep.SetAttributeValue(Constants._ID, Guid.NewGuid().ToString());
                 xStep.SetAttributeValue(Constants.UI_ID, data.GetAttributeValue(Constants._ID));
-                xStep.SetAttributeValue(Constants.UI_OBJECT, data.GetAttributeValue(Constants.NAME));
+                xStep.SetAttributeValue(Constants.UI_OBJECT, name);
                 xStep.SetAttributeValue(Constants.ENABLE, "False");
                 xStep.SetAttributeValue(Constants.DATA, "");
                 xStep.SetAttributeValue(Constants.DEFAULT_DATA, "");
                 xStep.SetAttributeValue(Constants.ACTION, "");
                 xSteps.Add(xStep);
                 userData = xSteps.ToString();
+                AddVariable(navtiveModelItem, name);
             }
             modelProperty.SetValue(userData);
+            
+        }
+
+        public static void AddVariable(ModelItem navtiveModelItem, string name)
+        {
+            if (!string.IsNullOrEmpty(name))
+            {
+                var variablesProperty = navtiveModelItem.Properties["Variables"];
+                if (variablesProperty != null)
+                {
+
+                    bool existed = false;
+                    foreach (var v in variablesProperty.Collection)
+                    {
+                        if (v.Properties["Name"].Value.ToString().Equals(name))
+                        {
+                            existed = true;
+                            break;
+                        }
+                    }
+                    if (!existed)
+                    {
+                        var variable = new Variable<string>(name);
+                        variablesProperty.Collection.Add(variable);
+                    }
+                }
+            }
         }
 
         public static bool CheckValidDrop(XElement data, params string[] types)
@@ -116,7 +145,9 @@ namespace AutoX.Activities
                             TestCaseId = data.GetAttributeValue(Constants._ID),
                             TestCaseName = data.GetAttributeValue(Constants.NAME),
                             DisplayName = "Call Test Case: " + data.GetAttributeValue(Constants.NAME)
+                            
                         };
+                    
                     activity.SetHost(host);
                     return activity;
                 }

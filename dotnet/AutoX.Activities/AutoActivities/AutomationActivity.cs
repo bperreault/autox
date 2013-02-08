@@ -11,6 +11,7 @@ using System.ComponentModel;
 using System.Xml.Linq;
 using AutoX.Basic;
 using AutoX.DB;
+using System.Collections.ObjectModel;
 
 #endregion
 
@@ -35,6 +36,15 @@ namespace AutoX.Activities.AutoActivities
             }
             ParentResultId = parentResultId;
             ResultId = Guid.NewGuid().ToString();
+        }
+        public string Name { get; set; }
+        Collection<Variable> variables = new Collection<Variable>();
+        public Collection<Variable> Variables
+        {
+            get
+            {
+                return this.variables;
+            }
         }
 
         protected void SetResult(XElement result)

@@ -45,6 +45,7 @@ namespace AutoX.Activities
                         var mi = Context.Services.GetService<ModelTreeManager>().CreateModelItem(ModelItem,
                                                                                                  activity);
                         var dO = new DataObject(DragDropHelper.ModelItemDataFormat, mi);
+                        Utilities.AddVariable(mi, data.GetAttributeValue(Constants.NAME).Replace(" ", "_"));
                         try
                         {
                             DragDrop.DoDragDrop(this, dO, DragDropEffects.Move);
