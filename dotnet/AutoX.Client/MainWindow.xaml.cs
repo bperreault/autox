@@ -190,10 +190,10 @@ namespace AutoX.Client
 
         private void OnMenuItemStartClick(object sender, EventArgs e)
         {
-            string hostType = Configuration.Settings("Host.Type", "Sauce");
+            string hostType = Configuration.Settings("HostType", "Sauce");
             if (hostType.Equals("Sauce"))
             {
-                int concurrency = int.Parse(Configuration.Settings("Host.Concurrent.Instances", "3"));
+                int concurrency = int.Parse(Configuration.Settings("HostConcurrentInstances", "3"));
                 for (int i = 0; i < concurrency - _instances.Count; i++)
                 {
                     var instance = new AutoClient();

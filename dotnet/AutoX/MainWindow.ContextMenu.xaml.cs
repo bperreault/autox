@@ -50,11 +50,11 @@ namespace AutoX
             browsersDialog.ShowDialog();
             if (browsersDialog.DialogResult == true)
             {
-                _config.Set("AUT.Version", browsersDialog.BrowserSetting.GetAttributeValue("AUT.Version"));
-                _config.Set("AUT.Build", browsersDialog.BrowserSetting.GetAttributeValue("AUT.Build"));
-                _config.Set("Browser.Type", browsersDialog.BrowserSetting.Name.ToString());
-                _config.Set("Browser.Platform", browsersDialog.BrowserSetting.GetAttributeValue("Platform"));
-                _config.Set("Browser.Version", browsersDialog.BrowserSetting.GetAttributeValue("Version"));
+                _config.Set("AUTVersion", browsersDialog.BrowserSetting.GetAttributeValue("AUT.Version"));
+                _config.Set("AUTBuild", browsersDialog.BrowserSetting.GetAttributeValue("AUT.Build"));
+                _config.Set("BrowserType", browsersDialog.BrowserSetting.Name.ToString());
+                _config.Set("BrowserPlatform", browsersDialog.BrowserSetting.GetAttributeValue("Platform"));
+                _config.Set("BrowserVersion", browsersDialog.BrowserSetting.GetAttributeValue("Version"));
             }
         }
 
@@ -93,7 +93,7 @@ namespace AutoX
             }
             //popup a dialog to get the browser os version
             PopupBrowsersDialogSetDefaultConfig();
-            _config.Set("Host.Type", "Sauce");
+            _config.Set("HostType", "Sauce");
             _autoClient = new AutoClient(_config);
             RunWorkflowById(workflowId);
             //when finished, show a message
@@ -119,7 +119,7 @@ namespace AutoX
                 return;
             }
             /**********This is a simple instance***********/
-            _autoClient.Config.Set("Host.Type", "Local");
+            _autoClient.Config.Set("HostType", "Local");
             RunWorkflowById(workflowId);
             /***********end of instance*******************/
             //when finished, show a message
@@ -133,7 +133,7 @@ namespace AutoX
             var workflowInstance = new WorkflowInstance(workflowId, _config.GetList());
 
             workflowInstance.Start();
-            bool debugMode = _config.Get("Mode.Debug", "True").Equals("True", StringComparison.CurrentCultureIgnoreCase);
+            bool debugMode = _config.Get("ModeDebug", "True").Equals("True", StringComparison.CurrentCultureIgnoreCase);
             while (true)
             {
                 var xCommand = workflowInstance.GetCommand();

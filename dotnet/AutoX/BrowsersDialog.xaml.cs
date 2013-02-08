@@ -37,16 +37,16 @@ namespace AutoX
 
         private void OkButtonClick(object sender, RoutedEventArgs e)
         {
-            BrowserSetting.SetAttributeValue("AUT.Version", AUT_Version.Text);
-            BrowserSetting.SetAttributeValue("AUT.Build", AUT_Build.Text);
-            if (Configuration.Settings("AUT.Version", null) == null)
+            BrowserSetting.SetAttributeValue("AUTVersion", AUT_Version.Text);
+            BrowserSetting.SetAttributeValue("AUTBuild", AUT_Build.Text);
+            if (Configuration.Settings("AUTVersion", null) == null)
             {
-                Configuration.Set("AUT.Version", AUT_Version.Text);
+                Configuration.Set("AUTVersion", AUT_Version.Text);
                 Configuration.SaveSettings();
             }
-            if (Configuration.Settings("AUT.Build", null) == null)
+            if (Configuration.Settings("AUTBuild", null) == null)
             {
-                Configuration.Set("AUT.Build", AUT_Build.Text);
+                Configuration.Set("AUTBuild", AUT_Build.Text);
                 Configuration.SaveSettings();
             }
             

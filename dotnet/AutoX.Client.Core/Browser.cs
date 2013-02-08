@@ -277,7 +277,7 @@ namespace AutoX.Client.Core
 
         private void StartBrowser()
         {
-            var clientType = _config.Get("Host.Type", "Sauce");
+            var clientType = _config.Get("HostType", "Sauce");
             if (String.Compare(clientType, "Sauce", StringComparison.OrdinalIgnoreCase) == 0)
                 StartSauceBrowser();
             else
@@ -298,7 +298,7 @@ namespace AutoX.Client.Core
         private DesiredCapabilities ConfigSauceCapabilities()
         {
             DesiredCapabilities capabillities;
-            var browserType = _config.Get("Browser.Type", "Firefox");
+            var browserType = _config.Get("BrowserType", "Firefox");
             if (browserType.Equals("IE"))
                 capabillities = DesiredCapabilities.InternetExplorer();
             else if (browserType.Equals("Chrome"))
@@ -319,14 +319,14 @@ namespace AutoX.Client.Core
             else
                 capabillities = DesiredCapabilities.Firefox();
 
-            capabillities.SetCapability(CapabilityType.Version, _config.Get("Browser.Version", "10"));
-            capabillities.SetCapability(CapabilityType.Platform, _config.Get("Browser.Platform", "Windows 2008"));
-            var versionName = _config.Get("AUT.Version") ?? "Test.Version";
+            capabillities.SetCapability(CapabilityType.Version, _config.Get("BrowserVersion", "10"));
+            capabillities.SetCapability(CapabilityType.Platform, _config.Get("BrowserPlatform", "Windows 2008"));
+            var versionName = _config.Get("AUTVersion") ?? "Test.Version";
 
-            var buildName = _config.Get("AUT.Build") ?? "Test.Build";
-            capabillities.SetCapability(Constants._NAME, _config.Get("Sauce.Name", versionName+"/"+buildName));
-            capabillities.SetCapability("username", _config.Get("Sauce.UserName", "autox"));
-            capabillities.SetCapability("accessKey", _config.Get("Sauce.AccessKey", "b3842073-5a7a-4782-abbc-e7234e09f8ac"));
+            var buildName = _config.Get("AUTBuild") ?? "Test.Build";
+            capabillities.SetCapability(Constants._NAME, _config.Get("SauceName", versionName+"/"+buildName));
+            capabillities.SetCapability("username", _config.Get("SauceUserName", "autox"));
+            capabillities.SetCapability("accessKey", _config.Get("SauceAccessKey", "b3842073-5a7a-4782-abbc-e7234e09f8ac"));
             capabillities.SetCapability("idle-timeout", 300);
             capabillities.SetCapability("max-duration", 3600);
             capabillities.SetCapability("command-timeout", 300);
@@ -339,12 +339,12 @@ namespace AutoX.Client.Core
         {
             if (string.IsNullOrEmpty(_sId))
                 return null;
-            if (_config.Get("Sauce.Free", "true").ToLower().Equals("true"))
+            if (_config.Get("SauceFree", "true").ToLower().Equals("true"))
             {
                 return "https://saucelabs.com/tests/" + _sId;
             }
-            var key = _config.Get("Sauce.User", "autox") + ":" +
-                      _config.Get("Sauce.Key", "b3842073-5a7a-4782-abbc-e7234e09f8ac");
+            var key = _config.Get("SauceUser", "autox") + ":" +
+                      _config.Get("SauceKey", "b3842073-5a7a-4782-abbc-e7234e09f8ac");
             var jobId = AsymmetricEncryption.Hmacmd5(key, _sId);
             return "https://saucelabs.com/jobs/" + _sId + "?auth=" + jobId;
         }
@@ -402,7 +402,7 @@ namespace AutoX.Client.Core
             }
 
             //browser = null;
-            var clientType = _config.Get("Host.Type", "Sauce");
+            var clientType = _config.Get("HostType", "Sauce");
             if (String.Compare(clientType, "Sauce", System.StringComparison.OrdinalIgnoreCase) != 0)
             {
                 if (_browser != null) _browser.Dispose();
