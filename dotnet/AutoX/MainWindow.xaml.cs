@@ -66,7 +66,7 @@ namespace AutoX
             throw new NotImplementedException("This method should never be called.");
         }
 
-        public XElement GetResult( string guid)
+        public XElement GetResult()
         {
             throw new NotImplementedException("This method should never be called.");
         }

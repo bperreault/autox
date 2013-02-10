@@ -59,8 +59,12 @@ namespace AutoX.Client.Core
 
                 //TODO notify the observer
                 var result = Execute(command);
+                
                 if (command.Attribute(Constants._ID) != null)
+                {
+                    Log.Debug(result.ToString());
                     SendResult(result);
+                }
                 else
                 {
                     Thread.Sleep(6 * 1000);
@@ -93,8 +97,7 @@ namespace AutoX.Client.Core
         public XElement RequestCommand(string clientId)
         {
             var ret = Communication.GetInstance().RequestCommand(clientId);
-            Log.Debug(ret);
-
+            
             var steps = XElement.Parse(ret);
             var result = Execute(steps);
             return result;

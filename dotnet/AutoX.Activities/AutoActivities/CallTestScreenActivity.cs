@@ -126,7 +126,7 @@ namespace AutoX.Activities.AutoActivities
             Log.Info("in CallTestScreenActivity internalexecute");
             var steps = GetSteps();
             Host.SetCommand(steps);
-            var rElement = Host.GetResult(GUID);
+            var rElement = Host.GetResult();
             //TODO Log should be done at the Host side, we use this result to get some variables to use in the workflow
             Log.Info(rElement.ToString());
             SetResult(rElement);

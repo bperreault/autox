@@ -12,7 +12,7 @@ namespace AutoX.WF.Core.Actions
     {
         public XElement Do(XElement action)
         {
-            throw new System.NotImplementedException();
+            return InstanceManager.GetInstance().DeleteInstance(action);
         }
     }
 
@@ -42,7 +42,7 @@ namespace AutoX.WF.Core.Actions
     {
         public XElement Do(XElement action)
         {
-            throw new System.NotImplementedException();
+            return InstanceManager.GetInstance().GetInstances();
         }
     }
 

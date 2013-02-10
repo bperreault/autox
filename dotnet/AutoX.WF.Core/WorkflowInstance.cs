@@ -1,5 +1,6 @@
 ﻿using AutoX.Activities.AutoActivities;
 using AutoX.Basic;
+using AutoX.Basic.Model;
 using AutoX.DB;
 using System;
 using System.Activities;
@@ -12,13 +13,47 @@ using System.Xml.Linq;
 
 namespace AutoX.WF.Core
 {
-    public class WorkflowInstance : IHost
+    public class WorkflowInstance : IHost, IDataObject
     {
         private Dictionary<string, string> _variables = new Dictionary<string, string>();
         private volatile XElement _command;
         private volatile XElement _result;
         private List<IObserver> _observers = new List<IObserver>();
-        private string _instanceId = Guid.NewGuid().ToString();
+        private string _instanceId;
+        private readonly StatusTracker _statusTracker = new StatusTracker();
+        private WorkflowApplication _workflowApplication;
+        public string _parentId { get; set; }
+
+        public string ClientId { get; set; }
+        
+        public string TestName { get; set; }
+
+        public string SuiteName { get; set; }
+
+        public string Status { get; set; }
+
+        public string ClientName { get; set; }
+
+        public string Language { get; set; }
+
+        public string ScriptGUID { get; set; }
+        public string _id
+        {
+            get { return _instanceId; }
+            set { _instanceId = value; }
+        }
+
+        public DateTime Created
+        {
+            get;
+            set;
+        }
+
+        public DateTime Updated
+        {
+            get;
+            set;
+        }
 
         public ClientInstance Client { get; set; }
 
@@ -31,6 +66,7 @@ namespace AutoX.WF.Core
         public string InstanceId
         {
             get { return _instanceId; }
+            set { _instanceId = value; }
         }
 
         public string ParentId
@@ -39,8 +75,27 @@ namespace AutoX.WF.Core
             set { _parentId = value; }
         }
 
-        public WorkflowInstance(string workflowId, Dictionary<string, string> upperLevelVariables)
+        public XElement ToXElement()
         {
+            var xInstance = this.GetXElementFromObject();
+            foreach (var _var in Variables)
+            {
+                if (_var.Key.Contains(":")) continue;
+                xInstance.SetAttributeValue(_var.Key, _var.Value);
+            }
+            return xInstance;
+        }
+
+        public static Instance FromXElement(XElement element)
+        {
+            return element.GetObjectFromXElement() as Instance;
+        }
+
+        public WorkflowInstance(string instanceId,string workflowId, Dictionary<string, string> upperLevelVariables)
+        {
+            InstanceId = instanceId;
+            Status = "Invalid";
+            ScriptGUID = workflowId;
             Variables = Configuration.Clone().GetList();
             if (upperLevelVariables != null)
                 foreach (var upperLevelVariable in upperLevelVariables)
@@ -51,8 +106,9 @@ namespace AutoX.WF.Core
                         Variables.Add(upperLevelVariable.Key, upperLevelVariable.Value);
                 }
             var rootId = Variables["Root"];
-            var versionName = Variables.ContainsKey("AUT.Version") ? Variables["AUT.Version"] : "Test.Version";
-            var buildName = Variables.ContainsKey("AUT.Build") ? Variables["AUT.Build"] : "Test.Build";
+            ClientId = Variables.ContainsKey("ClientId")? Variables["ClientId"]:null;
+            var versionName = Variables.ContainsKey("AUTVersion") ? Variables["AUTVersion"] : "TestVersion";
+            var buildName = Variables.ContainsKey("AUTBuild") ? Variables["AUTBuild"] : "TestBuild";
             if (!string.IsNullOrEmpty(rootId))
             {
                 var _1stLevelKid = Data.Read(rootId);
@@ -66,7 +122,9 @@ namespace AutoX.WF.Core
                     _result = null;
                     _command = null;
                     if (script != null)
-                        CreateActivity(script.GetAttributeValue(Constants.CONTENT), buildId);
+                        _workflowApplication = CreateActivity(script.GetAttributeValue(Constants.CONTENT), buildId);
+                    if (_workflowApplication != null)
+                        Status = "Ready";
                 }
             }
         }
@@ -94,12 +152,9 @@ namespace AutoX.WF.Core
             return versionId;
         }
 
-        private readonly StatusTracker _statusTracker = new StatusTracker();
-        private WorkflowApplication _workflowApplication;
-        private string _parentId;
-        public string Status { get; set; }
+        
 
-        private void CreateActivity(string workflow, string resultParentId)
+        private WorkflowApplication CreateActivity(string workflow, string resultParentId)
         {
             var activity = ActivityXamlServices.Load(new StringReader(workflow)) as AutomationActivity;
             if (activity != null)
@@ -109,8 +164,10 @@ namespace AutoX.WF.Core
                 activity.SetParentResultId(resultParentId);
                 _workflowApplication = GetWorkflowApplication(activity);
                 _workflowApplication.Extensions.Add(_statusTracker);
+                return _workflowApplication;
                 //_workflowApplication.Run();
             }
+            return null;
         }
 
         public XElement Start()
@@ -131,17 +188,22 @@ namespace AutoX.WF.Core
 
         public void SetCommand(XElement steps)
         {
-            _command = steps;
+            
+            if (!string.IsNullOrEmpty(ClientId))
+            {
+                ClientInstancesManager.GetInstance().GetComputer(ClientId).SetCommand(steps.ToString());
+            }else
+                _command = steps;
         }
 
-        public XElement GetResult(string guid)
+        public XElement GetResult()
         {
             int count = 0;
             while (_result == null)
             {
                 Thread.Sleep(1000);
                 count++;
-                if (count > 300)
+                if (count > 3000)
                     return null;
             }
             string resultString = _result.ToString();
@@ -201,7 +263,7 @@ namespace AutoX.WF.Core
                             break;
 
                         default:
-                            Log.Error("workflow [" + activity.Id + "] " + activity.DisplayName + " Completed.");
+                            Log.Info("workflow [" + activity.Id + "] " + activity.DisplayName + " Completed.");
                             Status = "Completed";
                             break;
                     }
@@ -214,6 +276,8 @@ namespace AutoX.WF.Core
             };
             return workflowApplication;
         }
+
+        
     }
 
     public class StatusTracker : TrackingParticipant

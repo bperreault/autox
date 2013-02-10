@@ -50,8 +50,8 @@ namespace AutoX
             browsersDialog.ShowDialog();
             if (browsersDialog.DialogResult == true)
             {
-                _config.Set("AUTVersion", browsersDialog.BrowserSetting.GetAttributeValue("AUT.Version"));
-                _config.Set("AUTBuild", browsersDialog.BrowserSetting.GetAttributeValue("AUT.Build"));
+                _config.Set("AUTVersion", browsersDialog.BrowserSetting.GetAttributeValue("AUTVersion"));
+                _config.Set("AUTBuild", browsersDialog.BrowserSetting.GetAttributeValue("AUTBuild"));
                 _config.Set("BrowserType", browsersDialog.BrowserSetting.Name.ToString());
                 _config.Set("BrowserPlatform", browsersDialog.BrowserSetting.GetAttributeValue("Platform"));
                 _config.Set("BrowserVersion", browsersDialog.BrowserSetting.GetAttributeValue("Version"));
@@ -130,7 +130,7 @@ namespace AutoX
         private void RunWorkflowById(string workflowId)
         {
             
-            var workflowInstance = new WorkflowInstance(workflowId, _config.GetList());
+            var workflowInstance = new WorkflowInstance(Guid.NewGuid().ToString(),workflowId, _config.GetList());
 
             workflowInstance.Start();
             bool debugMode = _config.Get("ModeDebug", "True").Equals("True", StringComparison.CurrentCultureIgnoreCase);

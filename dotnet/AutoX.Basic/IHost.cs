@@ -16,6 +16,6 @@ namespace AutoX.Basic
 
         void SetCommand(XElement steps);
 
-        XElement GetResult(string guid);
+        XElement GetResult();
     }
 }

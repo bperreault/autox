@@ -19,6 +19,7 @@ namespace AutoX.Client.Core
         public static XElement Execute(XElement steps, Browser browser, Config config)
         {
             var ret = new XElement(Constants.RESULT);
+            ret.SetAttributeValue(Constants._ID,Guid.NewGuid().ToString());
             var instanceId = steps.GetAttributeValue(Constants.INSTANCE_ID);
             var runtimeId = steps.GetAttributeValue(Constants.RUNTIME_ID);
             var onError = steps.GetAttributeValue(Constants.ON_ERROR);
@@ -42,6 +43,7 @@ namespace AutoX.Client.Core
             }
             if (!string.IsNullOrEmpty(link))
                 ret.SetAttributeValue(LINK, link);
+            Log.Debug("return result:\n" + ret.ToString());
             return ret;
         }
 

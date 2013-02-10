@@ -117,6 +117,7 @@ namespace AutoX.Activities.AutoActivities
             if (nextChild is AutomationActivity)
             {
                 ((AutomationActivity)nextChild).SetHost(Host);
+                ((AutomationActivity)nextChild).InstanceId = InstanceId;
                 ((AutomationActivity)nextChild).SetParentResultId(ParentResultId);
             }
                 

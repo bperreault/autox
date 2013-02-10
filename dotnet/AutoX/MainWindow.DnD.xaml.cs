@@ -226,13 +226,14 @@ namespace AutoX
 
             var newInstance = new Instance
                 {
+                    ClientId = client._id,
                     ClientName = client.ComputerName,
                     Language = "Default",
                     _id = Guid.NewGuid().ToString(),
                     ScriptGUID = data.GetAttributeValue(Constants._ID),
                     SuiteName = data.GetAttributeValue(Constants.NAME),
                     Status = "STOP",
-                    TestName = "New Test"
+                    TestName = "NewTest"
                 };
             var sRoot = Communication.GetInstance().SetInstanceInfo(newInstance.GetXElementFromObject());
             var xRoot = XElement.Parse(sRoot);

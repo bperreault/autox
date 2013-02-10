@@ -40,8 +40,6 @@ namespace AutoX.Web
         [WebMethod]
         public string Command(string xmlFormatCommand)
         {
-            Log.Debug(xmlFormatCommand);
-
             return ActionsFactory.Handle(xmlFormatCommand).ToString(SaveOptions.None);
         }
     }

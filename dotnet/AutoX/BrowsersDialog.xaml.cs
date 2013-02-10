@@ -15,8 +15,8 @@ namespace AutoX
         public BrowsersDialog()
         {
             InitializeComponent();
-            AUT_Version.Text = Configuration.Settings("AUT.Version", "AutoX v0.45");
-            AUT_Build.Text = Configuration.Settings("AUT.Build", "0.1.1");
+            AUT_Version.Text = Configuration.Settings("AUTVersion", "AutoX v0.45");
+            AUT_Build.Text = Configuration.Settings("AUTBuild", "0.1.1");
             //load data from browsers.xml
             string browsers = File.ReadAllText("Browsers.xml");
             _choices = XElement.Parse(browsers);
