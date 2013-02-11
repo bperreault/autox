@@ -75,7 +75,7 @@ namespace AutoX.WF.Core
             if(guid==null)
                 return XElement.Parse("<Result Result='Success' />");
             if (!_instanceList.ContainsKey(guid)) return XElement.Parse("<Result Result='Error' />");
-            _instanceList[guid].SetResult(action);
+            _instanceList[guid].SetResult(((XElement)action.FirstNode));
             return XElement.Parse("<Result Result='Success' />");
         }
 

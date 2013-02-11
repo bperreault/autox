@@ -58,12 +58,12 @@ namespace AutoX.Client.Core
                 var command = RequestCommand();
 
                 //TODO notify the observer
-                var result = Execute(command);
+                //var result = Execute(command);
                 
-                if (command.Attribute(Constants._ID) != null)
+                if (command.Attribute(Constants.INSTANCE_ID) != null)
                 {
-                    Log.Debug(result.ToString());
-                    SendResult(result);
+                    Log.Debug(command.ToString());
+                    SendResult(command);
                 }
                 else
                 {

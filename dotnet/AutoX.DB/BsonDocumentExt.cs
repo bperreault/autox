@@ -9,6 +9,7 @@ namespace AutoX.DB
     {
         public static BsonDocument ToBsonDocument(this XElement xElement)
         {
+            
             var bsonDocument = new BsonDocument();
 
             var type = xElement.Name.ToString();

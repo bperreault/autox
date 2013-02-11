@@ -38,16 +38,16 @@ namespace AutoX.Client.Core
                 var xId = step.GetAttributeValue(Constants._ID);
                 if (xAttribute != null)
                 {
-                    link = HandleOneStep(browser, config, ret, instanceId, link, step, xAttribute);
+                    link = HandleOneStep(browser, config,  ref ret, instanceId, link, step, xAttribute);
                 }
             }
             if (!string.IsNullOrEmpty(link))
                 ret.SetAttributeValue(LINK, link);
-            Log.Debug("return result:\n" + ret.ToString());
+            
             return ret;
         }
 
-        private static string HandleOneStep(Browser browser, Config config, XElement ret, string instanceId, string link, XElement step, XAttribute xAttribute)
+        private static string HandleOneStep(Browser browser, Config config, ref XElement ret, string instanceId, string link, XElement step, XAttribute xAttribute)
         {
             var action = Configuration.Settings(xAttribute.Value, xAttribute.Value);
 
