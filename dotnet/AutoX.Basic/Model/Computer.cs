@@ -22,6 +22,8 @@ namespace AutoX.Basic.Model
 
         public string _id { get; set; }
 
+        public string Status { get; set; }
+
         public DateTime Created { get; set; }
 
         public DateTime Updated { get; set; }
@@ -82,7 +84,8 @@ namespace AutoX.Basic.Model
                     Updated = DateTime.Parse(xComputer.GetAttributeValue("Updated")),
                     ComputerName = xComputer.GetAttributeValue("ComputerName"),
                     IPAddress = xComputer.GetAttributeValue("IPAddress"),
-                    Version = xComputer.GetAttributeValue("Version")
+                    Version = xComputer.GetAttributeValue("Version"),
+                    Status = xComputer.GetAttributeValue("Status")
                 };
 
             return computer;

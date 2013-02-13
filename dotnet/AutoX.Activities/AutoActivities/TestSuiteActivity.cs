@@ -34,7 +34,7 @@ namespace AutoX.Activities.AutoActivities
         [Browsable(false)]
         public string GUID { get; set; }
 
-        public string Name
+        public new string Name
         {
             get { return _name; }
             set
@@ -138,11 +138,13 @@ namespace AutoX.Activities.AutoActivities
                 }
                 if (ErrorLevel == OnError.JustShowWarning)
                 {
-                    //do nothing, log warning
+                    Log.Warn("Warning:\n" + nextChild.DisplayName + " Error happened, but we ignore it");
+                    _result = true;
                 }
                 if (ErrorLevel == OnError.StopCurrentScript)
                 {
-                    //log error, then return
+                    Log.Error("Error:\n" + nextChild.DisplayName + " Error happened, stop current script.");
+                    return;
                 }
             }
             //increment the currentIndex

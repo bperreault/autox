@@ -16,6 +16,8 @@ namespace AutoX.Basic
 
         void SetCommand(XElement steps);
 
+        void Stop();
+
         XElement GetResult();
     }
 }

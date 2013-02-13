@@ -71,6 +71,11 @@ namespace AutoX
             throw new NotImplementedException("This method should never be called.");
         }
 
+        public void Stop()
+        {
+            throw new NotImplementedException("This method should never be called.");
+        }
+
         #endregion
 
         public void InitScreen()

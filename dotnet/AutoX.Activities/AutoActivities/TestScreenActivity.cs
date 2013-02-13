@@ -35,7 +35,7 @@ namespace AutoX.Activities.AutoActivities
         [Browsable(false)]
         public string GUID { get; set; }
 
-        public string Name
+        public new string Name
         {
             get { return _name; }
             set

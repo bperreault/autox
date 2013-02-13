@@ -43,7 +43,7 @@ namespace AutoX.Client.Core
             }
             if (!string.IsNullOrEmpty(link))
                 ret.SetAttributeValue(LINK, link);
-            
+            //TODO set result Success or Failed
             return ret;
         }
 

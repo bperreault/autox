@@ -77,8 +77,6 @@ namespace AutoX.Comm
         public string Command(string xmlFormatCommand)
         {
             var ret = Client.Command(xmlFormatCommand);
-
-            //Client.Command(xmlFormatCommand);
             return ret;
         }
 

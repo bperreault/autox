@@ -203,6 +203,16 @@ namespace AutoX
             e.Handled = true;
         }
 
+        private void InstanceTableDragEnter(object sender, DragEventArgs e)
+        {
+            var data = e.Data.GetData(Constants.DATA_FORMAT) as XElement;
+            if (data == null)
+                return;
+
+            e.Effects = (DragDropEffects.Link & e.AllowedEffects);
+            e.Handled = true;
+        }
+
         private void ClientTableDragOver(object sender, DragEventArgs e)
         {
             var r = sender as DataGridRow;
@@ -232,9 +242,42 @@ namespace AutoX
                     _id = Guid.NewGuid().ToString(),
                     ScriptGUID = data.GetAttributeValue(Constants._ID),
                     SuiteName = data.GetAttributeValue(Constants.NAME),
-                    Status = "STOP",
+                    Status = "Ready",
                     TestName = "NewTest"
                 };
+            var sRoot = Communication.GetInstance().SetInstanceInfo(newInstance.GetXElementFromObject());
+            var xRoot = XElement.Parse(sRoot);
+            var result = xRoot.GetAttributeValue(Constants.RESULT);
+            if (string.IsNullOrEmpty(result)) return;
+            if (result.Equals("Failed"))
+            {
+                MessageBox.Show("Update Instance failed!\nReason:" +
+                                xRoot.GetAttributeValue("Reason"));
+                return;
+            }
+            _instanceSource.Add(newInstance);
+            InstanceTable.ItemsSource = _instanceSource.Get();
+
+            e.Effects = DragDropEffects.None;
+            e.Handled = true;
+        }
+
+        private void InstanceTableDrop(object sender, DragEventArgs e)
+        {
+            var data = e.Data.GetData(Constants.DATA_FORMAT) as XElement;
+            if (data == null) return;
+            
+
+            var newInstance = new Instance
+            {
+                
+                Language = "Default",
+                _id = Guid.NewGuid().ToString(),
+                ScriptGUID = data.GetAttributeValue(Constants._ID),
+                SuiteName = data.GetAttributeValue(Constants.NAME),
+                Status = "Ready",
+                TestName = "NewTest"
+            };
             var sRoot = Communication.GetInstance().SetInstanceInfo(newInstance.GetXElementFromObject());
             var xRoot = XElement.Parse(sRoot);
             var result = xRoot.GetAttributeValue(Constants.RESULT);

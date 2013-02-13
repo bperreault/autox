@@ -30,6 +30,8 @@ namespace AutoX.WF.Core
             if (xAttribute != null) Version = xAttribute.Value;
             Created = DateTime.Now;
             Updated = DateTime.Now;
+            Status = "Ready";
+            _element.SetAttributeValue("Status", Status);
             _element.SetAttributeValue("Created", Created.ToString());
             _element.SetAttributeValue("Updated", Updated.ToString());
         }
@@ -47,6 +49,10 @@ namespace AutoX.WF.Core
         public DateTime Created { get; set; }
 
         public string _parentId { get; set; }
+
+        //Status can be Ready;Running;
+        private string _status;
+        public string Status { get { if (_status == null) _status = "Ready"; return _status; } set { _status = value; _element.SetAttributeValue("Status", Status); } }
 
         public XElement Element()
         {

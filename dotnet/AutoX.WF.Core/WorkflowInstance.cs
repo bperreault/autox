@@ -25,7 +25,7 @@ namespace AutoX.WF.Core
         public string _parentId { get; set; }
 
         public string ClientId { get; set; }
-        
+
         public string TestName { get; set; }
 
         public string SuiteName { get; set; }
@@ -43,19 +43,13 @@ namespace AutoX.WF.Core
             set { _instanceId = value; }
         }
 
-        public DateTime Created
-        {
-            get;
-            set;
-        }
+        public DateTime Created { get; set; }
 
         public DateTime Updated
         {
             get;
             set;
         }
-
-        public ClientInstance Client { get; set; }
 
         public Dictionary<string, string> Variables
         {
@@ -83,6 +77,7 @@ namespace AutoX.WF.Core
                 if (_var.Key.Contains(":")) continue;
                 xInstance.SetAttributeValue(_var.Key, _var.Value);
             }
+            xInstance.SetAttributeValue("Status", Status);
             return xInstance;
         }
 
@@ -91,7 +86,7 @@ namespace AutoX.WF.Core
             return element.GetObjectFromXElement() as Instance;
         }
 
-        public WorkflowInstance(string instanceId,string workflowId, Dictionary<string, string> upperLevelVariables)
+        public WorkflowInstance(string instanceId, string workflowId, Dictionary<string, string> upperLevelVariables)
         {
             InstanceId = instanceId;
             Status = "Invalid";
@@ -106,7 +101,7 @@ namespace AutoX.WF.Core
                         Variables.Add(upperLevelVariable.Key, upperLevelVariable.Value);
                 }
             var rootId = Variables["Root"];
-            ClientId = Variables.ContainsKey("ClientId")? Variables["ClientId"]:null;
+            ClientId = Variables.ContainsKey("ClientId") ? Variables["ClientId"] : null;
             var versionName = Variables.ContainsKey("AUTVersion") ? Variables["AUTVersion"] : "TestVersion";
             var buildName = Variables.ContainsKey("AUTBuild") ? Variables["AUTBuild"] : "TestBuild";
             if (!string.IsNullOrEmpty(rootId))
@@ -152,8 +147,6 @@ namespace AutoX.WF.Core
             return versionId;
         }
 
-        
-
         private WorkflowApplication CreateActivity(string workflow, string resultParentId)
         {
             var activity = ActivityXamlServices.Load(new StringReader(workflow)) as AutomationActivity;
@@ -162,9 +155,9 @@ namespace AutoX.WF.Core
                 activity.SetHost(this);
                 activity.InstanceId = InstanceId;
                 activity.SetParentResultId(resultParentId);
-                _workflowApplication = GetWorkflowApplication(activity);
-                _workflowApplication.Extensions.Add(_statusTracker);
-                return _workflowApplication;
+                WorkflowApplication workflowApplication = GetWorkflowApplication(activity);
+                workflowApplication.Extensions.Add(_statusTracker);
+                return workflowApplication;
                 //_workflowApplication.Run();
             }
             return null;
@@ -175,6 +168,14 @@ namespace AutoX.WF.Core
             if (_workflowApplication != null)
                 if (!IsFinished())
                 {
+                   
+                    while (ClientId == null)
+                    {
+                        Thread.Sleep(23);
+                        ClientId = ClientInstancesManager.GetInstance().GetAReadyClientInstance();
+                    }
+                    ClientInstancesManager.GetInstance().GetComputer(ClientId).Status = "Running";
+                    Status = "Running";
                     _workflowApplication.Run();
                     return XElement.Parse("<Result Result='Success' />");
                 }
@@ -188,11 +189,12 @@ namespace AutoX.WF.Core
 
         public void SetCommand(XElement steps)
         {
-            
+
             if (!string.IsNullOrEmpty(ClientId))
             {
                 ClientInstancesManager.GetInstance().GetComputer(ClientId).SetCommand(steps.ToString());
-            }else
+            }
+            else
                 _command = steps;
         }
 
@@ -241,7 +243,10 @@ namespace AutoX.WF.Core
         public void Stop()
         {
             if (_workflowApplication != null)
+            {
+                ClientInstancesManager.GetInstance().GetComputer(ClientId).Status = "Ready";
                 _workflowApplication.Cancel();
+            }
         }
 
         public WorkflowApplication GetWorkflowApplication(AutomationActivity activity)
@@ -255,16 +260,19 @@ namespace AutoX.WF.Core
                         case ActivityInstanceState.Faulted:
                             Log.Error("workflow [" + activity.Id + "] " + activity.DisplayName + " stopped! Error Message:\n" + e.TerminationException.GetType().FullName + "\n" + e.TerminationException.Message);
                             Status = "Terminated";
+                            ClientInstancesManager.GetInstance().GetComputer(ClientId).Status = "Ready";
                             break;
 
                         case ActivityInstanceState.Canceled:
                             Log.Error("workflow [" + activity.Id + "] " + activity.DisplayName + " Cancel.");
                             Status = "Canceled";
+                            ClientInstancesManager.GetInstance().GetComputer(ClientId).Status = "Ready";
                             break;
 
                         default:
                             Log.Info("workflow [" + activity.Id + "] " + activity.DisplayName + " Completed.");
                             Status = "Completed";
+                            ClientInstancesManager.GetInstance().GetComputer(ClientId).Status = "Ready";
                             break;
                     }
                 },
@@ -272,12 +280,12 @@ namespace AutoX.WF.Core
                 {
                     Log.Error(" aborted! Error Message:\n" + e.Reason.GetType().FullName + "\n" + e.Reason.Message);
                     Status = "Aborted";
+                    ClientInstancesManager.GetInstance().GetComputer(ClientId).Status = "Ready";
                 }
+                
             };
             return workflowApplication;
         }
-
-        
     }
 
     public class StatusTracker : TrackingParticipant

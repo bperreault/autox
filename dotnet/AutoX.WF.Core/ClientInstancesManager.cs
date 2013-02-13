@@ -83,10 +83,20 @@ namespace AutoX.WF.Core
             return _instance ?? (_instance = new ClientInstancesManager());
         }
 
-        public ClientInstance GetComputer(string nameOfComputer)
+        public string GetAReadyClientInstance()
+        {
+            foreach (var instance in _computerList)
+            {
+                if (instance.Value.Status.Equals("Ready"))
+                    return instance.Key;
+            }
+            return null;
+        }
+
+        public ClientInstance GetComputer(string idOfComputer)
         {
             return
-                (from name in _computerList.Keys where name.Contains(nameOfComputer) select _computerList[name]).
+                (from _id in _computerList.Keys where _id.Contains(idOfComputer) select _computerList[_id]).
                     FirstOrDefault();
         }
 

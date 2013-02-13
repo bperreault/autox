@@ -522,6 +522,7 @@ namespace AutoX
         {
             e.Handled = true;
             var sRoot = Communication.GetInstance().GetInstancesInfo();
+            Log.Debug("Instances:\n" + sRoot);
             var xRoot = XElement.Parse(sRoot);
 
             //update the table
@@ -567,10 +568,10 @@ namespace AutoX
             else
             {
                 var source = InstanceTable.ItemsSource as List<Instance>;
-
                 if (source != null)
                 {
                     source.Remove(selected);
+                    InstanceTable.Items.Clear();
                     InstanceTable.ItemsSource = source;
                 }
             }

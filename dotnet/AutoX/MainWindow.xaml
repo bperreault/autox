@@ -211,6 +211,7 @@
                                                         Header="IP Address" IsReadOnly="True" />
                                     <DataGridTextColumn Width="3*" Binding="{Binding Path=Version}" Header="OS Version"
                                                         IsReadOnly="True" />
+                                    <DataGridTextColumn Width="2*" Binding="{Binding Path=Status}" Header="Status" IsReadOnly="True" />
                                     <DataGridTextColumn Width="3*" Binding="{Binding Path=Updated}" Header="Updated"
                                                         IsReadOnly="True" />
                                     <DataGridTextColumn Width="3*" Binding="{Binding Path=Created}" Header="Created"
@@ -229,8 +230,9 @@
                         <TextBox Grid.Row="0" Name="filterInstance" HorizontalAlignment="Stretch" BorderThickness="0"
                                  KeyUp="InstanceTableEnterFilter" />
                         <DataGrid Background="#FFE5E5E5" Grid.Row="1" Name="InstanceTable" ItemsSource="{Binding}"
-                                  MouseDoubleClick="DoubleClickOnTable" SelectionUnit="FullRow" AutoGenerateColumns="False" CanUserAddRows="False"
-                                  CanUserSortColumns="True" IsTextSearchEnabled="True" BorderThickness="0" CanUserDeleteRows="False">
+                                  MouseDoubleClick="DoubleClickOnTable" SelectionUnit="FullRow" AutoGenerateColumns="False" CanUserAddRows="False" AllowDrop="True"
+                                  CanUserSortColumns="True" IsTextSearchEnabled="True" BorderThickness="0" CanUserDeleteRows="False"
+                                  DragEnter="InstanceTableDragEnter" Drop="InstanceTableDrop">
                             <DataGrid.ContextMenu>
                                 <ContextMenu>
                                     <MenuItem Header="Start" Click="StartSuite" />
@@ -244,6 +246,8 @@
                             <DataGrid.Columns>
                                 <DataGridTextColumn Width="4*" Binding="{Binding Path=TestName}" Header="Test Name" />
                                 <DataGridTextColumn Width="3*" Binding="{Binding Path=ClientName}" Header="Client Name"
+                                                    IsReadOnly="True" />
+                                <DataGridTextColumn Width="4*" Binding="{Binding Path=ClientId}" Header="Client ID"
                                                     IsReadOnly="True" />
                                 <DataGridTextColumn Width="5*" Binding="{Binding Path=SuiteName}" Header="Suite Name"
                                                     IsReadOnly="True" />
@@ -366,9 +370,9 @@
                                                         IsReadOnly="True" />
                                     <DataGridTextColumn Width="4*" Binding="{Binding Reason}"
                                                         Header="Reason" IsReadOnly="True" />
-                                    <DataGridTextColumn Width="4*" Binding="{Binding Duration}"
+                                    <DataGridTextColumn Width="3*" Binding="{Binding Duration}"
                                                         Header="Duration" IsReadOnly="True" />
-                                    <DataGridHyperlinkColumn Binding="{Binding Link}">
+                                    <DataGridHyperlinkColumn Width="5*" Binding="{Binding Link}">
                                         <DataGridHyperlinkColumn.ElementStyle>
                                             <Style>
                                                 <EventSetter Event="Hyperlink.Click" Handler="HyperlinkClick" />
