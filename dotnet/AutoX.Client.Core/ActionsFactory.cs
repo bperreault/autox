@@ -30,6 +30,15 @@ namespace AutoX.Client.Core
                 ret.SetAttributeValue(Constants.INSTANCE_ID, instanceId);
             if (!string.IsNullOrEmpty(runtimeId))
                 ret.SetAttributeValue(Constants.RUNTIME_ID, runtimeId);
+            var setEnv = steps.Element(Constants.SET_ENV);
+            if (setEnv != null)
+            {
+                foreach (var env in setEnv.Attributes())
+                {
+                    config.Set(env.Name.ToString(), env.Value);
+                }
+                return ret;
+            }
             var query = from o in steps.Elements(Constants.STEP)
                         select o;
             foreach (var step in query)

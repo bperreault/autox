@@ -90,17 +90,11 @@ namespace AutoX.Comm
         public string Register(Config config)
         {
             var xCommand = GetCommandXElement("Register");
-            var computer = Computer.GetLocalHost();
-            xCommand.SetAttributeValue(Constants._ID, config.Get(Constants._ID));
-            xCommand.SetAttributeValue("ComputerName", computer.ComputerName);
-            xCommand.SetAttributeValue("IPAddress", computer.IPAddress);
-            xCommand.SetAttributeValue("Version", computer.Version);
-            foreach (var key in config.GetList().Keys)
-            {
-                xCommand.SetAttributeValue(key, config.GetList()[key]);
-            }
+            xCommand = config.SetRegisterBody(xCommand);
             return Command(xCommand.ToString());
         }
+
+        
 
         public string RequestCommand(string clientId)
         {

@@ -59,6 +59,7 @@
     <Compile Include="IAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SauceDriver.cs" />
+    <Compile Include="SetEnv.cs" />
     <Compile Include="Start.cs" />
     <Compile Include="StepResult.cs" />
     <Compile Include="Wait.cs" />

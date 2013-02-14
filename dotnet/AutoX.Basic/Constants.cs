@@ -29,5 +29,6 @@ namespace AutoX.Basic
         public const string UI_ID = "UIId";
         public const string RUNTIME_ID = "RunTimeId";
         public const string SCRIPT_TYPE = "ScriptType";
+        public const string SET_ENV = "SetEnv";
     }
 }

@@ -4,6 +4,7 @@
 
 #region
 
+using AutoX.Basic.Model;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
@@ -127,6 +128,20 @@ namespace AutoX.Basic
                 parent = parent.Parent;
             }
             return parent;
+        }
+
+        public static XElement SetRegisterBody(this Config config, XElement xCommand)
+        {
+            var computer = Computer.GetLocalHost();
+            xCommand.SetAttributeValue(Constants._ID, config.Get(Constants._ID));
+            xCommand.SetAttributeValue("ComputerName", computer.ComputerName);
+            xCommand.SetAttributeValue("IPAddress", computer.IPAddress);
+            xCommand.SetAttributeValue("Version", computer.Version);
+            foreach (var key in config.GetList().Keys)
+            {
+                xCommand.SetAttributeValue(key, config.GetList()[key]);
+            }
+            return xCommand;
         }
     }
 }

@@ -189,13 +189,12 @@ namespace AutoX.WF.Core
 
         public void SetCommand(XElement steps)
         {
-
+            Log.Debug("Set Command:\n" + steps);
             if (!string.IsNullOrEmpty(ClientId))
             {
                 ClientInstancesManager.GetInstance().GetComputer(ClientId).SetCommand(steps.ToString());
             }
-            else
-                _command = steps;
+            _command = steps;
         }
 
         public XElement GetResult()

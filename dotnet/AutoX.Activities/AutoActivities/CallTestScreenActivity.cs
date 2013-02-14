@@ -13,6 +13,7 @@ using System.IO;
 using AutoX.Basic;
 using AutoX.Basic.Model;
 using System.Xml.Linq;
+using System.Collections.ObjectModel;
 
 #endregion
 
@@ -124,7 +125,7 @@ namespace AutoX.Activities.AutoActivities
                 _onChildComplete = InternalExecute;
             }
             Log.Info("in CallTestScreenActivity internalexecute");
-            var steps = GetSteps();
+            var steps = GetSteps(context);
             Host.SetCommand(steps);
             var rElement = Host.GetResult();
             //TODO Log should be done at the Host side, we use this result to get some variables to use in the workflow
@@ -132,7 +133,7 @@ namespace AutoX.Activities.AutoActivities
             SetResult(rElement);
         }
 
-        private XElement GetSteps()
+        private XElement GetSteps(NativeActivityContext context)
         {
             //TODO: use screen id to get the latest steps, compare to the current one, 
             //force enable some steps(if original one enabled), 
@@ -140,12 +141,10 @@ namespace AutoX.Activities.AutoActivities
             //add some steps, update some steps (new and mark enabled, also add the un-enabled items, they would not work anyway)
             //set command to instance, then get the result
             var data = Utilities.GetActualUserData(UserData, Host);
+            
             //Utilities.PrintDictionary(data);
             //update the Steps into the format we want
-            var steps = XElement.Parse("<AutoX.Steps />");
-            steps.SetAttributeValue(Constants.ON_ERROR, ErrorLevel.ToString());
-            steps.SetAttributeValue(Constants.INSTANCE_ID, InstanceId);
-            steps.SetAttributeValue(Constants._ID, GUID);
+            var steps = CreateStepsHeader();
             foreach (XElement descendant in XElement.Parse(_steps).Descendants(Constants.STEP))
             {
                 var enable = descendant.GetAttributeValue(Constants.ENABLE);
@@ -172,10 +171,28 @@ namespace AutoX.Activities.AutoActivities
                     var defaultData = descendant.GetAttributeValue(Constants.DEFAULT_DATA);
                     if (!string.IsNullOrEmpty(defaultData))
                         step.SetAttributeValue(Constants.DATA, defaultData);
+                    
                 }
                 else
                 {
-                    step.SetAttributeValue(Constants.DATA, data.ContainsKey(dataref) ? data[dataref] : "");
+                    if (data.ContainsKey(dataref))
+                        step.SetAttributeValue(Constants.DATA, data[dataref]);
+                    else
+                    {
+                        bool found = false;
+                        foreach (PropertyDescriptor _var in context.DataContext.GetProperties())
+                        {
+                            if (_var.Name.Equals(dataref))
+                            {
+                                step.SetAttributeValue(Constants.DATA, _var.GetValue(context.DataContext));
+                                found = true;
+                                break;
+                            }
+
+                        }
+                        if(!found)
+                            step.SetAttributeValue(Constants.DATA, "");
+                    }
                 }
                 var stepId = descendant.GetAttributeValue(Constants._ID);
                 if (string.IsNullOrEmpty(stepId))
@@ -205,6 +222,15 @@ namespace AutoX.Activities.AutoActivities
                 step.Add(xO);
                 steps.Add(step);
             }
+            return steps;
+        }
+
+        protected XElement CreateStepsHeader()
+        {
+            var steps = XElement.Parse("<AutoX.Steps />");
+            steps.SetAttributeValue(Constants.ON_ERROR, ErrorLevel.ToString());
+            steps.SetAttributeValue(Constants.INSTANCE_ID, InstanceId);
+            steps.SetAttributeValue(Constants._ID, GUID);
             return steps;
         }
     }

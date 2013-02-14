@@ -131,7 +131,8 @@ namespace AutoX
         {
             
             var workflowInstance = new WorkflowInstance(Guid.NewGuid().ToString(),workflowId, _config.GetList());
-
+            workflowInstance.ClientId = _config.Get("_id", Guid.NewGuid().ToString());
+            ClientInstancesManager.GetInstance().Register(_config.SetRegisterBody(XElement.Parse("<Register />")));
             workflowInstance.Start();
             bool debugMode = _config.Get("ModeDebug", "True").Equals("True", StringComparison.CurrentCultureIgnoreCase);
             while (true)

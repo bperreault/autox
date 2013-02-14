@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
 using AutoX.Basic;
+using System.Xml.Linq;
 
 #endregion
 
@@ -88,6 +89,16 @@ namespace AutoX.Activities.AutoActivities
 
         protected override void Execute(NativeActivityContext context)
         {
+            var steps = XElement.Parse("<AutoX.Steps  OnError=\"AlwaysReturnTrue\" InstanceId=\""+InstanceId+"\"/>");
+            var set_env = XElement.Parse("<Step />");
+            set_env.SetAttributeValue(Constants.ACTION, Constants.SET_ENV);
+            foreach (PropertyDescriptor _var in context.DataContext.GetProperties())
+            {
+                set_env.SetAttributeValue(_var.Name,_var.GetValue(context.DataContext));   
+            }
+            steps.Add(set_env);
+            Host.SetCommand(steps);
+            Host.GetResult();
             InternalExecute(context, null);
             //TODO when test suite finished, close the browser (required by sauce)
             //<Step Action="Close" />
