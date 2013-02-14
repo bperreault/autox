@@ -118,8 +118,10 @@ namespace AutoX.WF.Core
                     _command = null;
                     if (script != null)
                         _workflowApplication = CreateActivity(script.GetAttributeValue(Constants.CONTENT), buildId);
-                    if (_workflowApplication != null)
+                    if (_workflowApplication != null){
+			//TODO set Variables to activity Variables
                         Status = "Ready";
+			}
                 }
             }
         }

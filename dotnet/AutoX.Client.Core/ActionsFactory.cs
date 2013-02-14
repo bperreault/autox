@@ -39,6 +39,7 @@ namespace AutoX.Client.Core
                 }
                 return ret;
             }
+browser.DismissUnexpectedAlert();
             var query = from o in steps.Elements(Constants.STEP)
                         select o;
             foreach (var step in query)

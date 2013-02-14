@@ -53,7 +53,7 @@ namespace AutoX.Client.Core
                 CloseBrowser();
                 StartBrowser();
             }
-            DismissUnexpectedAlert();
+//            DismissUnexpectedAlert();
             if (_browser != null)
             {
                 var bs = _browser.WindowHandles;
@@ -251,7 +251,7 @@ namespace AutoX.Client.Core
             //return screenshotResponse.Value.ToString();
         }
 
-        private void DismissUnexpectedAlert()
+        public void DismissUnexpectedAlert()
         {
             var alert = GetAlert();
             if (alert != null)

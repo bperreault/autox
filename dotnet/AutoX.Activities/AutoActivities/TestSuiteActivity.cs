@@ -100,6 +100,11 @@ namespace AutoX.Activities.AutoActivities
             Host.SetCommand(steps);
             Host.GetResult();
             InternalExecute(context, null);
+	steps = XElement.Parse("<AutoX.Steps  OnError=\"AlwaysReturnTrue\" InstanceId=\""+InstanceId+"\"/>");
+	var close = XElement.Parse("<Step Action="Close" />");
+	steps.Add(close);
+Host.SetCommand(steps);
+Host.GetResult();
             //TODO when test suite finished, close the browser (required by sauce)
             //<Step Action="Close" />
         }
