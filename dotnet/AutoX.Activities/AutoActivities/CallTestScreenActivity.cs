@@ -98,24 +98,6 @@ namespace AutoX.Activities.AutoActivities
         // and return the value from the Execute method.
         protected override void Execute(NativeActivityContext context)
         {
-            /******** old way: call test screen *****
-            // Obtain the runtime value of the Text input argument
-
-            //TODO implement it!!!
-            //invoke a test suite here
-            Log.Debug("in CallTestScreen, before Executing Test Sreen: " + TestSreenName);
-            
-            var screen = Host.GetDataObject(TestSreenId);
-            if (screen == null) return;
-            var activity = ActivityXamlServices.Load(new StringReader(screen.GetAttributeValue(Constants.CONTENT))) as TestScreenActivity;
-            if (activity != null)
-            {
-                activity.PassData(InstanceId, UserData);
-                activity.SetHost(Host);
-                activity.SetParentResultId(ParentResultId);
-                Utilities.GetWorkflowApplication(activity).Run();
-            }
-            ********* old way end here **********/
             InternalExecute(context, null);
         }
 
@@ -129,7 +111,6 @@ namespace AutoX.Activities.AutoActivities
             var steps = GetSteps(context);
             Host.SetCommand(steps);
             var rElement = Host.GetResult();
-            //TODO Log should be done at the Host side, we use this result to get some variables to use in the workflow
             Log.Info(rElement.ToString());
             SetResult(rElement);
         }

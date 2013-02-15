@@ -40,8 +40,6 @@ namespace AutoX.Client.Core
         public void Start()
         {
             _task = Task.Factory.StartNew(DoWhile, _tokenSource.Token);
-
-            //task.Start();
         }
 
         private void DoWhile()
@@ -56,10 +54,6 @@ namespace AutoX.Client.Core
                     continue;
                 }
                 var command = RequestCommand();
-
-                //TODO notify the observer
-                //var result = Execute(command);
-                
                 if (command.Attribute(Constants.INSTANCE_ID) != null)
                 {
                     Log.Debug(command.ToString());
@@ -87,10 +81,7 @@ namespace AutoX.Client.Core
         public bool Register()
         {
             var ret = Communication.GetInstance().Register(Config);
-            Log.Debug(ret);
-
-            //Communication.GetInstance().SetResult(Id, ActionsFactory.Execute(XElement.Parse(ret)));
-            //TODO it may be false, just for now
+            //if there is a return, it will always be success
             return true;
         }
 

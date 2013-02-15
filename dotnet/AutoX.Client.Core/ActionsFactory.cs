@@ -19,6 +19,7 @@ namespace AutoX.Client.Core
         public static XElement Execute(XElement steps, Browser browser, Config config)
         {
             var ret = new XElement(Constants.RESULT);
+		ret.SetAttributeValue(Constants.RESULT,"Success");
             ret.SetAttributeValue(Constants._ID,Guid.NewGuid().ToString());
             var instanceId = steps.GetAttributeValue(Constants.INSTANCE_ID);
             var runtimeId = steps.GetAttributeValue(Constants.RUNTIME_ID);
@@ -48,19 +49,17 @@ namespace AutoX.Client.Core
                 var xId = step.GetAttributeValue(Constants._ID);
                 if (xAttribute != null)
                 {
-                    link = HandleOneStep(browser, config,  ref ret, instanceId, link, step, xAttribute);
+                    if(!HandleOneStep(browser, config,  ref ret, instanceId, link, step, xAttribute))
+			break;
                 }
             }
-            if (!string.IsNullOrEmpty(link))
-                ret.SetAttributeValue(LINK, link);
-            //TODO set result Success or Failed
             return ret;
         }
 
-        private static string HandleOneStep(Browser browser, Config config, ref XElement ret, string instanceId, string link, XElement step, XAttribute xAttribute)
+	//return bool to show whether we need to continue the next steps
+        private static bool HandleOneStep(Browser browser, Config config, ref XElement ret, string instanceId, string link, XElement step, XAttribute xAttribute)
         {
             var action = Configuration.Settings(xAttribute.Value, xAttribute.Value);
-
             var xData = step.Attribute(Constants.DATA);
             string data = null;
             if (xData != null)
@@ -91,7 +90,17 @@ namespace AutoX.Client.Core
 
             //result.SetAttributeValue(Constants._ID,xId);
             ret.Add(result);
-            return link;
+	if (!string.IsNullOrEmpty(link))
+                ret.SetAttributeValue(LINK, link);
+	var stepResult = result.GetAttributeValue(Constants.RESULT);
+	var onError = ret.GetAttributeValue(Constants.ON_ERROR);
+	if(!stepResult.Equals("Success")){
+		if(onError.Equals("AlwaysReturnTrue")) return true;
+		ret.SetAttribute(Constants.RESULT,"Failed");
+		if(onError.Equals("StopCurrentScript")||onError.Equals("Terminate"))
+			return false;
+	}
+	return true;
         }
 
         private static void CopyAttribute(XElement ret, XElement step, string attribteName)
