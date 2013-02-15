@@ -29,6 +29,7 @@ namespace AutoX.Activities.AutoActivities
         private string _userData = "";
         private CompletionCallback _onChildComplete;
 
+        
         [DisplayName("Test Screen Name")]
         public string TestSreenName
         {

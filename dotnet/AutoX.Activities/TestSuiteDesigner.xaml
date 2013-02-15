@@ -22,10 +22,27 @@
     </sap:ActivityDesigner.Icon>
     <sap:ActivityDesigner.Resources>
         <DataTemplate x:Key="Collapsed">
-            <TextBlock HorizontalAlignment="Center" Text="{Binding Path=ModelItem.Name}"></TextBlock>
+            <TextBlock Name="title" HorizontalAlignment="Center" Text="{Binding Path=ModelItem.Name}"></TextBlock>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Path=ModelItem.Enabled}" Value="False">
+                    <Setter TargetName="title" Property="Background" >
+                        <Setter.Value>
+                            <SolidColorBrush Color="DarkGray" Opacity="0.99"/>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=ModelItem.Enabled}" Value="True">
+                    <Setter TargetName="title" Property="Background" >
+                        <Setter.Value>
+                            <SolidColorBrush Color="DarkGray" Opacity="0.01"/>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+            </DataTemplate.Triggers>
         </DataTemplate>
+        
         <DataTemplate x:Key="Expanded">
-            <StackPanel>
+            <StackPanel Name="stackPanel">
                 <TextBlock HorizontalAlignment="Center" Text="{Binding Path=ModelItem.Name}"></TextBlock>
 
                 <sap:WorkflowItemsPresenter Items="{Binding Path=ModelItem.children}">
@@ -44,7 +61,24 @@
                     </sap:WorkflowItemsPresenter.ItemsPanel>
                 </sap:WorkflowItemsPresenter>
             </StackPanel>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Path=ModelItem.Enabled}" Value="False">
+                    <Setter TargetName="stackPanel" Property="Background" >
+                        <Setter.Value>
+                            <SolidColorBrush Color="DarkGray" Opacity="0.99"/>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=ModelItem.Enabled}" Value="True">
+                    <Setter TargetName="stackPanel" Property="Background" >
+                        <Setter.Value>
+                            <SolidColorBrush Color="DarkGray" Opacity="0.01"/>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+            </DataTemplate.Triggers>
         </DataTemplate>
+       
         <Style x:Key="ExpandOrCollapsedStyle" TargetType="{x:Type ContentPresenter}">
             <Setter Property="ContentTemplate" Value="{DynamicResource Collapsed}" />
             <Style.Triggers>

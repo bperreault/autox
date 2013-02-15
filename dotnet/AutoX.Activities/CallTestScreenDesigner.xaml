@@ -26,10 +26,28 @@
         <Activities:DatumConverter x:Key="DatumConverter" />
 
         <DataTemplate x:Key="Collapsed">
-            <TextBlock HorizontalAlignment="Center" Text="{Binding Path=ModelItem.TestSreenName}"></TextBlock>
+            <TextBlock Name="title" HorizontalAlignment="Center" Text="{Binding Path=ModelItem.TestSreenName}"></TextBlock>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Path=ModelItem.Enabled}" Value="False">
+                    <Setter TargetName="title" Property="Background" >
+                        <Setter.Value>
+                            <SolidColorBrush Color="DarkGray" Opacity="0.99"/>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=ModelItem.Enabled}" Value="True">
+                    <Setter TargetName="title" Property="Background" >
+                        <Setter.Value>
+                            <SolidColorBrush Color="DarkGray" Opacity="0.01"/>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+            </DataTemplate.Triggers>
         </DataTemplate>
         <DataTemplate x:Key="Expanded">
-            <StackPanel>
+            
+            <StackPanel Name="stackPanel">    
+                
                 <TextBlock HorizontalAlignment="Center" Text="{Binding Path=ModelItem.TestSreenName}"></TextBlock>
                 <DataGrid HorizontalContentAlignment="Stretch"
                     ItemsSource="{Binding Path=ModelItem.Steps, Converter={StaticResource StepsConverter},ConverterParameter=In}"
@@ -79,8 +97,24 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </StackPanel>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Path=ModelItem.Enabled}" Value="False">
+                    <Setter TargetName="stackPanel" Property="Background" >
+                        <Setter.Value>
+                            <SolidColorBrush Color="DarkGray" Opacity="0.99"/>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Path=ModelItem.Enabled}" Value="True">
+                    <Setter TargetName="stackPanel" Property="Background" >
+                        <Setter.Value>
+                            <SolidColorBrush Color="DarkGray" Opacity="0.01"/>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+            </DataTemplate.Triggers>
         </DataTemplate>
-        <Style x:Key="ExpandOrCollapsedStyle" TargetType="{x:Type ContentPresenter}">
+        <Style x:Name="style" x:Key="ExpandOrCollapsedStyle" TargetType="{x:Type ContentPresenter}">
             <Setter Property="ContentTemplate" Value="{DynamicResource Collapsed}" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Path=ShowExpanded}" Value="true">
@@ -90,8 +124,19 @@
         </Style>
     </sap:ActivityDesigner.Resources>
     <Grid>
+        <!--<Grid.Triggers>
+            <DataTrigger Binding="{Binding Path=ModelItem.Enabled}" Value="False">
 
+                <Setter TargetName="grid" Property="Background">
+                    <Setter.Value>
+                        <SolidColorBrush Color="DarkGray" Opacity="0.1"/>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+        </Grid.Triggers>-->
+        
         <Grid.Background>
+            
             <LinearGradientBrush>
                 <GradientStop Color="White" Offset="0.66"></GradientStop>
                 <GradientStop Color="Green" Offset="0.00"></GradientStop>
@@ -100,9 +145,9 @@
         </Grid.Background>
         <Border BorderBrush="Blue" BorderThickness="2">
             <StackPanel>
-
                 <ContentPresenter Style="{DynamicResource ExpandOrCollapsedStyle}" Content="{Binding}" />
             </StackPanel>
         </Border>
+        
     </Grid>
 </sap:ActivityDesigner>

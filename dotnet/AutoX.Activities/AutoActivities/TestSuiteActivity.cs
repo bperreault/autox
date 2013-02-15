@@ -15,8 +15,8 @@ using System.Xml.Linq;
 
 namespace AutoX.Activities.AutoActivities
 {
-    [ToolboxBitmap(typeof (TestSuiteDesigner), "TestSuite.bmp")]
-    [Designer(typeof (TestSuiteDesigner))]
+    [ToolboxBitmap(typeof(TestSuiteDesigner), "TestSuite.bmp")]
+    [Designer(typeof(TestSuiteDesigner))]
     public sealed class TestSuiteActivity : AutomationActivity, IPassData
     {
         private readonly Variable<int> _currentIndex;
@@ -89,22 +89,18 @@ namespace AutoX.Activities.AutoActivities
 
         protected override void Execute(NativeActivityContext context)
         {
-            var steps = XElement.Parse("<AutoX.Steps  OnError=\"AlwaysReturnTrue\" InstanceId=\""+InstanceId+"\"/>");
+            var steps = XElement.Parse("<AutoX.Steps  OnError=\"AlwaysReturnTrue\" InstanceId=\"" + InstanceId + "\"/>");
             var set_env = XElement.Parse("<Step />");
             set_env.SetAttributeValue(Constants.ACTION, Constants.SET_ENV);
             foreach (PropertyDescriptor _var in context.DataContext.GetProperties())
             {
-                set_env.SetAttributeValue(_var.Name,_var.GetValue(context.DataContext));   
+                set_env.SetAttributeValue(_var.Name, _var.GetValue(context.DataContext));
             }
             steps.Add(set_env);
             Host.SetCommand(steps);
             Host.GetResult();
             InternalExecute(context, null);
-	steps = XElement.Parse("<AutoX.Steps  OnError=\"AlwaysReturnTrue\" InstanceId=\""+InstanceId+"\"/>");
-	var close = XElement.Parse("<Step Action="Close" />");
-	steps.Add(close);
-Host.SetCommand(steps);
-Host.GetResult();
+            
             //TODO when test suite finished, close the browser (required by sauce)
             //<Step Action="Close" />
         }
@@ -117,7 +113,12 @@ Host.GetResult();
             if (currentActivityIndex == children.Count)
             {
                 //if the currentActivityIndex is equal to the count of MySequence's Activities
-                //MySequence is complete
+                //Suite is complete
+                var steps = XElement.Parse("<AutoX.Steps  OnError=\"AlwaysReturnTrue\" InstanceId=\"" + InstanceId + "\"/>");
+                var close = XElement.Parse("<Step Action=\"Close\" />");
+                steps.Add(close);
+                Host.SetCommand(steps);
+                Host.GetResult();
                 return;
             }
 
@@ -130,16 +131,18 @@ Host.GetResult();
 
             //grab the next Activity in MySequence.Activities and schedule it
             var nextChild = children[currentActivityIndex];
+            bool childEnabled = false;
             if (nextChild is AutomationActivity)
             {
                 ((AutomationActivity)nextChild).SetHost(Host);
                 ((AutomationActivity)nextChild).InstanceId = InstanceId;
                 ((AutomationActivity)nextChild).SetParentResultId(ParentResultId);
+                childEnabled = ((AutomationActivity)nextChild).Enabled;
             }
-                
+            //TODO if enabled, run it, may need to use while???
             context.ScheduleActivity(nextChild, _onChildComplete);
             //Get result here, it is sync or async????
-            _result = _result && ((IPassData) nextChild).GetResult();
+            _result = _result && ((IPassData)nextChild).GetResult();
             if (!_result)
             {
                 if (ErrorLevel == OnError.AlwaysReturnTrue)

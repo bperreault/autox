@@ -58,6 +58,10 @@ namespace AutoX.Activities.AutoActivities
             //result.SetAttributeValue(Constants.UI_OBJECT, UIObject);
             Data.Save(result);
         }
+        private bool _enabled = true;
+        [DisplayName("Enabled")]
+        [DefaultValue(true)]
+        public bool Enabled { get { return _enabled; } set { _enabled = value; NotifyPropertyChanged("Enabled"); } }
 
         [DisplayName("Local Data First")]
         public bool OwnDataFirst { get; set; }
