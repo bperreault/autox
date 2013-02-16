@@ -27,6 +27,7 @@ namespace AutoX.Activities.AutoActivities
 
         protected string ResultId;
         protected string ParentResultId;
+
         public void SetParentResultId(string parentResultId)
         {
             if (string.IsNullOrEmpty(parentResultId))
@@ -39,6 +40,7 @@ namespace AutoX.Activities.AutoActivities
         }
         public string Name { get; set; }
         Collection<Variable> variables = new Collection<Variable>();
+        [Browsable(false)]
         public Collection<Variable> Variables
         {
             get

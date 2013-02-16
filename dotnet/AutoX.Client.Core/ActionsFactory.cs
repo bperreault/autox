@@ -19,18 +19,24 @@ namespace AutoX.Client.Core
         public static XElement Execute(XElement steps, Browser browser, Config config)
         {
             var ret = new XElement(Constants.RESULT);
-		ret.SetAttributeValue(Constants.RESULT,"Success");
-            ret.SetAttributeValue(Constants._ID,Guid.NewGuid().ToString());
+            ret.SetAttributeValue(Constants.RESULT, "Success");
+            ret.SetAttributeValue(Constants._ID, Guid.NewGuid().ToString());
             var instanceId = steps.GetAttributeValue(Constants.INSTANCE_ID);
             var runtimeId = steps.GetAttributeValue(Constants.RUNTIME_ID);
             var onError = steps.GetAttributeValue(Constants.ON_ERROR);
             string link = null;
+            
+            
             if (!string.IsNullOrEmpty(onError))
                 ret.SetAttributeValue(Constants.ON_ERROR, onError);
             if (!string.IsNullOrEmpty(instanceId))
+            {
                 ret.SetAttributeValue(Constants.INSTANCE_ID, instanceId);
+                browser.DismissUnexpectedAlert();
+            }
             if (!string.IsNullOrEmpty(runtimeId))
                 ret.SetAttributeValue(Constants.RUNTIME_ID, runtimeId);
+
             var setEnv = steps.Element(Constants.SET_ENV);
             if (setEnv != null)
             {
@@ -40,7 +46,7 @@ namespace AutoX.Client.Core
                 }
                 return ret;
             }
-            browser.DismissUnexpectedAlert();
+
             var query = from o in steps.Elements(Constants.STEP)
                         select o;
             foreach (var step in query)
@@ -49,14 +55,14 @@ namespace AutoX.Client.Core
                 var xId = step.GetAttributeValue(Constants._ID);
                 if (xAttribute != null)
                 {
-                    if(!HandleOneStep(browser, config,  ref ret, instanceId, link, step, xAttribute))
-			break;
+                    if (!HandleOneStep(browser, config, ref ret, instanceId, link, step, xAttribute))
+                        break;
                 }
             }
             return ret;
         }
 
-	//return bool to show whether we need to continue the next steps
+        //return bool to show whether we need to continue the next steps
         private static bool HandleOneStep(Browser browser, Config config, ref XElement ret, string instanceId, string link, XElement step, XAttribute xAttribute)
         {
             var action = Configuration.Settings(xAttribute.Value, xAttribute.Value);
@@ -90,17 +96,18 @@ namespace AutoX.Client.Core
 
             //result.SetAttributeValue(Constants._ID,xId);
             ret.Add(result);
-	if (!string.IsNullOrEmpty(link))
+            if (!string.IsNullOrEmpty(link))
                 ret.SetAttributeValue(LINK, link);
-	var stepResult = result.GetAttributeValue(Constants.RESULT);
-	var onError = ret.GetAttributeValue(Constants.ON_ERROR);
-	if(!stepResult.Equals("Success")){
-		if(onError.Equals("AlwaysReturnTrue")) return true;
-		ret.SetAttribute(Constants.RESULT,"Failed");
-		if(onError.Equals("StopCurrentScript")||onError.Equals("Terminate"))
-			return false;
-	}
-	return true;
+            var stepResult = result.GetAttributeValue(Constants.RESULT);
+            var onError = ret.GetAttributeValue(Constants.ON_ERROR);
+            if (!stepResult.Equals("Success"))
+            {
+                if (onError.Equals("AlwaysReturnTrue")) return true;
+                ret.SetAttributeValue(Constants.RESULT, "Error");
+                if (onError.Equals("StopCurrentScript") || onError.Equals("Terminate"))
+                    return false;
+            }
+            return true;
         }
 
         private static void CopyAttribute(XElement ret, XElement step, string attribteName)

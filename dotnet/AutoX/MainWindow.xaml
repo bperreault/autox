@@ -372,7 +372,7 @@
                                                         Header="Reason" IsReadOnly="True" />
                                     <DataGridTextColumn Width="3*" Binding="{Binding Duration}"
                                                         Header="Duration" IsReadOnly="True" />
-                                    <DataGridHyperlinkColumn Width="5*" Binding="{Binding Link}">
+                                    <DataGridHyperlinkColumn Width="5*" Header="Link" IsReadOnly="True" Binding="{Binding Link}">
                                         <DataGridHyperlinkColumn.ElementStyle>
                                             <Style>
                                                 <EventSetter Event="Hyperlink.Click" Handler="HyperlinkClick" />

@@ -11,6 +11,7 @@ using System.Drawing;
 using System.Xml.Linq;
 using AutoX.Basic;
 using AutoX.Basic.Model;
+using System.Collections.ObjectModel;
 
 #endregion
 
@@ -25,7 +26,18 @@ namespace AutoX.Activities.AutoActivities
 
         public TestScreenActivity()
         {
-		Enabled = true;
+		    Enabled = true;
+        }
+
+        public override bool GetResult()
+        {
+            //It should not be called.
+            return false;
+        }
+
+        protected override void Execute(NativeActivityContext context)
+        {
+            //It should not be called.
         }
 
         [Browsable(false)]

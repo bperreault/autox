@@ -317,10 +317,10 @@ namespace AutoX
             var designerView = _workflowDesigner.Context.Services.GetService<DesignerView>();
             //hide the shell bar of designer
             //designerView.WorkflowShellBarItemVisibility = ShellBarItemVisibility.None;
+            designerView.WorkflowShellHeaderItemsVisibility = ShellHeaderItemsVisibility.All;
             designerView.WorkflowShellBarItemVisibility = ShellBarItemVisibility.MiniMap
-                                                          | ShellBarItemVisibility.Zoom |
-                                                          ShellBarItemVisibility.Arguments |
-                                                          ShellBarItemVisibility.Variables;
+                                                          |ShellBarItemVisibility.Zoom |ShellBarItemVisibility.PanMode
+                                                          |ShellBarItemVisibility.Variables;
             //CompileExpressions(activity);
         }
 

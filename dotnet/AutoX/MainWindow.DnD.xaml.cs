@@ -78,7 +78,6 @@ namespace AutoX
                         var parent = toDelete.Parent as TreeViewItem;
                         if (parent != null) parent.Items.Remove(toDelete);
                     }
-
                     item.Items.Add(data.GetTreeViewItemFromXElement());
                 }
             }
@@ -151,7 +150,6 @@ namespace AutoX
                 Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance)
             {
                 // Get the dragged ListViewItem
-
                 var listViewItem =
                     FindAnchestor<TreeViewItem>((DependencyObject) e.OriginalSource);
                 if (listViewItem == null)
@@ -267,10 +265,8 @@ namespace AutoX
             var data = e.Data.GetData(Constants.DATA_FORMAT) as XElement;
             if (data == null) return;
             
-
             var newInstance = new Instance
-            {
-                
+            {                
                 Language = "Default",
                 _id = Guid.NewGuid().ToString(),
                 ScriptGUID = data.GetAttributeValue(Constants._ID),
@@ -293,8 +289,6 @@ namespace AutoX
 
             e.Effects = DragDropEffects.None;
             e.Handled = true;
-        }
-
-        
+        }        
     }
 }

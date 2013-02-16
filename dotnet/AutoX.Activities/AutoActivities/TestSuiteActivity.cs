@@ -48,6 +48,7 @@ namespace AutoX.Activities.AutoActivities
         public string Description { get; set; }
 
         [DisplayName("On Error")]
+        [DefaultValue(OnError.Continue)]
         public OnError ErrorLevel { get; set; }
 
         [Browsable(false)]
@@ -89,7 +90,7 @@ namespace AutoX.Activities.AutoActivities
 
         protected override void Execute(NativeActivityContext context)
         {
-            var steps = XElement.Parse("<AutoX.Steps  OnError=\"AlwaysReturnTrue\" InstanceId=\"" + InstanceId + "\"/>");
+            var steps = XElement.Parse("<AutoX.Steps  OnError=\""+ErrorLevel.ToString()+"\" InstanceId=\"" + InstanceId + "\"/>");
             var set_env = XElement.Parse("<Step />");
             set_env.SetAttributeValue(Constants.ACTION, Constants.SET_ENV);
             foreach (PropertyDescriptor _var in context.DataContext.GetProperties())

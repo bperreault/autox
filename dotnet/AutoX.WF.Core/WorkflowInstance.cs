@@ -118,12 +118,13 @@ namespace AutoX.WF.Core
                     _command = null;
                     if (script != null)
                         _workflowApplication = CreateActivity(script.GetAttributeValue(Constants.CONTENT), buildId);
-                    if (_workflowApplication != null){
-			//TODO set Variables to activity Variables
-			//very important! it make the workflow run in Synchronized way.
-			_workflowApplication.SynchronizationContext = new SynchronousSynchronizationContext();
+                    if (_workflowApplication != null)
+                    {
+                        //TODO set Variables to activity Variables
+                        //very important! it make the workflow run in Synchronized way.
+                        //_workflowApplication.SynchronizationContext = new SynchronizationContext();
                         Status = "Ready";
-			}
+                    }
                 }
             }
         }
@@ -172,13 +173,14 @@ namespace AutoX.WF.Core
             if (_workflowApplication != null)
                 if (!IsFinished())
                 {
-                   
-                    while (ClientId == null)
+                    while (String.IsNullOrEmpty(ClientId))
                     {
                         Thread.Sleep(23);
                         ClientId = ClientInstancesManager.GetInstance().GetAReadyClientInstance();
                     }
                     ClientInstancesManager.GetInstance().GetComputer(ClientId).Status = "Running";
+                    Variables["ClientName"] = ClientInstancesManager.GetInstance().GetComputer(ClientId).Name;
+                    Variables["ClientId"] = ClientId;
                     Status = "Running";
                     _workflowApplication.Run();
                     return XElement.Parse("<Result Result='Success' />");
@@ -285,7 +287,7 @@ namespace AutoX.WF.Core
                     Status = "Aborted";
                     ClientInstancesManager.GetInstance().GetComputer(ClientId).Status = "Ready";
                 }
-                
+
             };
             return workflowApplication;
         }

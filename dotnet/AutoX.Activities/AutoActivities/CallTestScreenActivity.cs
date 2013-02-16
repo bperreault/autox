@@ -123,7 +123,8 @@ namespace AutoX.Activities.AutoActivities
             //add some steps, update some steps (new and mark enabled, also add the un-enabled items, they would not work anyway)
             //set command to instance, then get the result
             var data = Utilities.GetActualUserData(UserData, Host);
-            
+            var screenObj = Host.GetDataObject(TestSreenId);
+            var screen = XElement.Parse( screenObj.GetAttributeValue("Content"));
             //Utilities.PrintDictionary(data);
             //update the Steps into the format we want
             var steps = CreateStepsHeader();
@@ -172,8 +173,28 @@ namespace AutoX.Activities.AutoActivities
                             }
 
                         }
-                        if(!found)
-                            step.SetAttributeValue(Constants.DATA, "");
+                        if (!found)
+                        {
+                            if (screen != null)
+                            {
+                                XNamespace p = "http://schemas.microsoft.com/netfx/2009/xaml/activities";
+                                foreach (var v in screen.Descendants(p+"Variable"))
+                                {
+                                    if (v.GetAttributeValue("Name").Equals(dataref))
+                                    {
+                                        if (!string.IsNullOrEmpty(v.GetAttributeValue("Default")))
+                                        {
+                                            found = true;
+                                            step.SetAttributeValue(Constants.DATA, v.GetAttributeValue("Default"));
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            if(!found)
+                                step.SetAttributeValue(Constants.DATA, "");
+
+                        }
                     }
                 }
                 var stepId = descendant.GetAttributeValue(Constants._ID);
