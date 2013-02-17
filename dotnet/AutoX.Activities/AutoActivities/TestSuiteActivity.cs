@@ -100,6 +100,9 @@ namespace AutoX.Activities.AutoActivities
             steps.Add(set_env);
             Host.SetCommand(steps);
             Host.GetResult();
+            //add a result level here
+            XElement result = new XElement(Constants.RESULT);
+            SetResult(result);
             InternalExecute(context, null);
             
             //TODO when test suite finished, close the browser (required by sauce)
@@ -137,7 +140,7 @@ namespace AutoX.Activities.AutoActivities
             {
                 ((AutomationActivity)nextChild).SetHost(Host);
                 ((AutomationActivity)nextChild).InstanceId = InstanceId;
-                ((AutomationActivity)nextChild).SetParentResultId(ParentResultId);
+                ((AutomationActivity)nextChild).SetParentResultId(ResultId);
                 childEnabled = ((AutomationActivity)nextChild).Enabled;
             }
             //TODO if enabled, run it, may need to use while???

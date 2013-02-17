@@ -311,7 +311,7 @@
                                             <DataTrigger Binding="{Binding FinalResult}" Value="Success">
                                                 <Setter Property="Background" Value="#FFE5E5E5"></Setter>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding FinalResult}" Value="Failed">
+                                            <DataTrigger Binding="{Binding FinalResult}" Value="Error">
                                                 <Setter Property="Background" Value="DarkGray"></Setter>
                                             </DataTrigger>
                                         </Style.Triggers>
@@ -322,7 +322,7 @@
                                                         Header="Original Result" IsReadOnly="True" />
                                     <DataGridTextColumn Width="4*" Binding="{Binding FinalResult}"
                                                         Header="Final Result" IsReadOnly="True" />
-                                    <DataGridHyperlinkColumn Binding="{Binding Link}">
+                                    <DataGridHyperlinkColumn Binding="{Binding Link}" Header="Link">
                                         <DataGridHyperlinkColumn.ElementStyle>
                                             <Style>
                                                 <EventSetter Event="Hyperlink.Click" Handler="HyperlinkClick" />
@@ -330,9 +330,7 @@
                                         </DataGridHyperlinkColumn.ElementStyle>
                                     </DataGridHyperlinkColumn>
                                     <DataGridTextColumn Width="4*" Binding="{Binding StartTime}" Header="Start Time"
-                                                        IsReadOnly="True" />
-                                    <DataGridTextColumn Width="4*" Binding="{Binding Link}" Header="Link"
-                                                        IsReadOnly="True" />
+                                                        IsReadOnly="True" SortDirection="Ascending" />
                                 </DataGrid.Columns>
                             </DataGrid>
                         </Grid>
@@ -353,7 +351,7 @@
                                             <DataTrigger Binding="{Binding Result}" Value="Success">
                                                 <Setter Property="Background" Value="#FFE5E5E5"></Setter>
                                             </DataTrigger>
-                                            <DataTrigger Binding="{Binding Result}" Value="Failed">
+                                            <DataTrigger Binding="{Binding Result}" Value="Error">
                                                 <Setter Property="Background" Value="DarkGray"></Setter>
                                             </DataTrigger>
                                         </Style.Triggers>
@@ -379,7 +377,7 @@
                                             </Style>
                                         </DataGridHyperlinkColumn.ElementStyle>
                                     </DataGridHyperlinkColumn>
-                                    <DataGridTextColumn Width="4*" Binding="{Binding StartTime}"
+                                    <DataGridTextColumn Width="4*" Binding="{Binding StartTime}" SortDirection="Ascending"
                                                         Header="Start At" IsReadOnly="True" />
                                     <DataGridTextColumn Width="4*" Binding="{Binding EndTime}"
                                                         Header="Stop At" IsReadOnly="True" />

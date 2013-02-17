@@ -8,6 +8,7 @@ using AutoX.Basic;
 using AutoX.Basic.Model;
 using AutoX.DB;
 using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -193,13 +194,14 @@ namespace AutoX
         {
             _testCaseResultSource.Clear();
             _testStepSource.Clear();
+            selected.Items.Clear();
             foreach (XElement kid in xRoot.Descendants())
             {
                 string kind = kid.Name.ToString();
                 if (kind.Equals(Constants.RESULT) || kind.Equals("AutoX.Basic.Model.Result"))
                 {
                     var testcaseresult = kid.GetDataObjectFromXElement() as Result;
-                    selected.Items.Add(testcaseresult);
+                    selected.Items.Add(kid.GetTreeViewItemFromXElement());
                     _testCaseResultSource.Add(testcaseresult);
                 }
                 if (kind.Equals("StepResult") || kind.Equals("AutoX.Basic.Model.StepResult"))
@@ -208,6 +210,7 @@ namespace AutoX
                     _testStepSource.Add(testStepResult);
                 }
             }
+          
             TestCaseResultTable.ItemsSource = _testCaseResultSource.Get();
             TestStepsResultTable.ItemsSource = _testStepSource.Get();
         }
@@ -218,7 +221,8 @@ namespace AutoX
             {
                 return;
             }
-            var dialog = new XElementDialog(((XElement)selected.DataContext), false);
+            var element = ((XElement)selected.DataContext);
+            var dialog = new XElementDialog(element, false);
             dialog.ShowDialog();
             if (!dialog.DialogResult.HasValue || !dialog.DialogResult.Value) return;
             var xElement = dialog.GetElement();
@@ -229,6 +233,19 @@ namespace AutoX
                 return;
             }
             selected.UpdateTreeViewItem(xElement);
+        }
+
+        private static void Edit(XElement element)
+        {
+            var dialog = new XElementDialog(element, false);
+            dialog.ShowDialog();
+            if (!dialog.DialogResult.HasValue || !dialog.DialogResult.Value) return;
+            var xElement = dialog.GetElement();
+
+            if (!Data.Save(xElement))
+            {
+                MessageBox.Show("update Tree item Failed.");
+            }
         }
 
         private TreeViewItem GetInitScriptXElement(string type)

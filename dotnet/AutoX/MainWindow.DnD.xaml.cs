@@ -247,7 +247,7 @@ namespace AutoX
             var xRoot = XElement.Parse(sRoot);
             var result = xRoot.GetAttributeValue(Constants.RESULT);
             if (string.IsNullOrEmpty(result)) return;
-            if (result.Equals("Failed"))
+            if (result.Equals("Error"))
             {
                 MessageBox.Show("Update Instance failed!\nReason:" +
                                 xRoot.GetAttributeValue("Reason"));
@@ -278,7 +278,7 @@ namespace AutoX
             var xRoot = XElement.Parse(sRoot);
             var result = xRoot.GetAttributeValue(Constants.RESULT);
             if (string.IsNullOrEmpty(result)) return;
-            if (result.Equals("Failed"))
+            if (result.Equals("Error"))
             {
                 MessageBox.Show("Update Instance failed!\nReason:" +
                                 xRoot.GetAttributeValue("Reason"));

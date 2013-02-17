@@ -20,7 +20,7 @@ namespace AutoX.WF.Core
                 dynamic actDyn = Activator.CreateInstance(act);
                 return actDyn.Do(command);
             }
-            var r = (@"<Result Result='Failed' Reason='Encounter UnKnown Action[" + action + "]' />");
+            var r = (@"<Result Result='Error' Reason='Encounter UnKnown Action[" + action + "]' />");
             return XElement.Parse(r);
         }
 

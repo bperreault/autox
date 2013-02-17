@@ -72,7 +72,8 @@ namespace AutoX.DB
         public List<BsonDocument> Kids(string parentId)
         {
             var children = new List<BsonDocument>();
-            MongoCursor cursor = project.FindAs<BsonDocument>(Query.EQ(Constants.PARENT_ID, parentId));
+            var sort = SortBy.Ascending("Created");
+            MongoCursor cursor = project.FindAs<BsonDocument>(Query.EQ(Constants.PARENT_ID, parentId)).SetSortOrder(sort);
             foreach (BsonDocument variable in cursor)
             {
                 children.Add(variable);

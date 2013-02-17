@@ -36,7 +36,7 @@ namespace AutoX.Activities.AutoActivities
                 return;
             }
             ParentResultId = parentResultId;
-            ResultId = Guid.NewGuid().ToString();
+            ResultId = ResultId==null? Guid.NewGuid().ToString() : ResultId;
         }
         public string Name { get; set; }
         Collection<Variable> variables = new Collection<Variable>();
@@ -49,13 +49,25 @@ namespace AutoX.Activities.AutoActivities
             }
         }
 
+        //protected void AddResultLevel(string parentId, string currentId)
+        //{
+        //    XElement result = new XElement(Constants.RESULT);
+        //    result.SetAttributeValue(Constants.PARENT_ID, parentId);
+        //    result.SetAttributeValue(Constants._ID, currentId);
+        //    result.SetAttributeValue(Constants.INSTANCE_ID, InstanceId);
+        //    result.SetAttributeValue(Constants._TYPE, Constants.RESULT);
+        //    result.SetAttributeValue(Constants.NAME, DisplayName + " " + DateTime.Now.ToShortTimeString());
+        //    result.SetAttributeValue(SCRIPT_ID, Id);
+        //    Data.Save(result);
+        //}
+
         protected void SetResult(XElement result)
         {
             result.SetAttributeValue(Constants.PARENT_ID,ParentResultId);
             result.SetAttributeValue(Constants._ID,ResultId);
             result.SetAttributeValue(Constants.INSTANCE_ID,InstanceId);
             result.SetAttributeValue(Constants._TYPE,Constants.RESULT);
-            result.SetAttributeValue(Constants.NAME,DisplayName);
+            result.SetAttributeValue(Constants.NAME,DisplayName+" "+DateTime.Now.ToShortTimeString());
             result.SetAttributeValue(SCRIPT_ID, Id);
             //result.SetAttributeValue(Constants.UI_OBJECT, UIObject);
             Data.Save(result);

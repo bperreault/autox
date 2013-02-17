@@ -37,6 +37,7 @@ namespace AutoX.Basic.Model
 
         public ObservableCollection<object> Get()
         {
+            
             return _list;
         }
 

@@ -32,7 +32,7 @@ namespace AutoX.Activities
         [Description("Mark Error in Result, but Continue Next Step")]
         Continue,
 
-        [Description("Stop Current Script, Mark it Failed")]
+        [Description("Stop Current Script, Mark it Error")]
         StopCurrentScript,
 
         [Description("Terminate this Test Instance")]

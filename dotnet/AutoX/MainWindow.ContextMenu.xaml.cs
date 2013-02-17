@@ -283,7 +283,7 @@ namespace AutoX
 
         private void EditOnResultTree(object sender, RoutedEventArgs e)
         {
-            var selected = (TreeViewItem) TestResultTree.SelectedItem;
+            var selected = TestResultTree.SelectedItem as TreeViewItem;
             Edit(selected);
         }
 
@@ -480,7 +480,7 @@ namespace AutoX
             var xRoot = XElement.Parse(sRoot);
             var result = xRoot.GetAttributeValue(Constants.RESULT);
             if (string.IsNullOrEmpty(result)) return;
-            if (result.Equals("Failed"))
+            if (result.Equals("Error"))
             {
                 MessageBox.Show("Start Instance failed!\nReason:" +
                                 xRoot.GetAttributeValue("Reason"));
@@ -500,7 +500,7 @@ namespace AutoX
             var xRoot = XElement.Parse(sRoot);
             var result = xRoot.GetAttributeValue(Constants.RESULT);
             if (string.IsNullOrEmpty(result)) return;
-            if (result.Equals("Failed"))
+            if (result.Equals("Error"))
             {
                 MessageBox.Show("Stop Instance failed!\nReason:" +
                                 xRoot.GetAttributeValue("Reason"));
@@ -546,7 +546,7 @@ namespace AutoX
             var xRoot = XElement.Parse(sRoot);
             var result = xRoot.GetAttributeValue(Constants.RESULT);
             if (string.IsNullOrEmpty(result)) return;
-            if (result.Equals("Failed"))
+            if (result.Equals("Error"))
             {
                 MessageBox.Show("Update Instance failed!\nReason:" +
                                 xRoot.GetAttributeValue("Reason"));
@@ -561,7 +561,7 @@ namespace AutoX
             var xRoot = XElement.Parse(sRoot);
             var result = xRoot.GetAttributeValue(Constants.RESULT);
             if (string.IsNullOrEmpty(result)) return;
-            if (result.Equals("Failed"))
+            if (result.Equals("Error"))
             {
                 MessageBox.Show("Delete Instance failed!\nReason:" +
                                 xRoot.GetAttributeValue("Reason"));
