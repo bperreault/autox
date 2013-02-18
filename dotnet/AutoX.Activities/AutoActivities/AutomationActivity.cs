@@ -49,15 +49,49 @@ namespace AutoX.Activities.AutoActivities
             }
         }
 
+	protected Dictionary<string,string> _upperVariables = new Dictionary<string,string>();
         public void SetVariables(Dictionary<string, string> vars)
         {
             foreach (var key in vars.Keys)
             {
                 var value = vars[key];
-                //TODO pass variables to activity
+		if(_upperVariables.ContainsKey(key)){
+			if(!OwnDataFirst)
+				_upperVariables[key] = value;
+		}else{
+			_upperVariables.Add(key,value);
+		}
             }
         }
 
+	protected void SetVariablesBeforeRunning(NativeActivity context){
+		foreach(var key in _upperVariables.Keys){
+			var value = _upperVariables[key];
+			if(ContainsVariableByContext(context,key)){
+				if(!OwnDataFirst)
+					SetVariableByContext(context,key,value);
+			}else{
+				SetVariableByContext(context,key,value);
+			}
+		}
+	}
+	protected string ContainsVariableByContext(NativeActivity context, string key){
+		var input = context.DataContext.GetProperties()[key];
+		return input!=null;
+	}
+	protected string GetVariableValueByContext(NativeActivity context, string key){
+		var input = context.DataContext.GetProperties()[key];
+
+		if(input==null) return null;
+		return input.GetValue(context.DataContext).ToString();
+	}
+	protected bool SetVariableValueByContext(NativeActivity context, string key, string value){
+			
+		var input = context.DataContext.GetProperties()[key];
+		if(input==null) return false;
+		input.SetValue(context.DataContext,value);
+		return true;
+	}
         protected void SetResult(XElement result)
         {
             result.SetAttributeValue(Constants.PARENT_ID,ParentResultId);
@@ -71,7 +105,9 @@ namespace AutoX.Activities.AutoActivities
             {
                 result.SetAttributeValue("Original", ret);
                 result.SetAttributeValue("Final", ret);
-            }
+		_result = ret.Equals("Success");
+            }else
+		_result = false;
             //result.SetAttributeValue(Constants.UI_OBJECT, UIObject);
             Data.Save(result);
         }

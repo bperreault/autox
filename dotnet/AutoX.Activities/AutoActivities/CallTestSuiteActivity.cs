@@ -62,6 +62,7 @@ namespace AutoX.Activities.AutoActivities
         {
             // Obtain the runtime value of the Text input argument
 
+		SetVariablesBeforeRunning(context);
             //TODO implement it!!!
             //invoke a test suite here
             Log.Debug("in CallTestSuite, before Executing Test Suite: " + TestSuiteName);

@@ -98,6 +98,7 @@ namespace AutoX.Activities.AutoActivities
         // and return the value from the Execute method.
         protected override void Execute(NativeActivityContext context)
         {
+		SetVariablesBeforeRunning(context);
             InternalExecute(context, null);
         }
 

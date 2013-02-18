@@ -104,6 +104,7 @@ namespace AutoX.Activities.AutoActivities
             //add a result level here
             XElement result = new XElement(Constants.RESULT);
             SetResult(result);
+		SetVariablesBeforeRunning(context);
             InternalExecute(context, null);
             
             //TODO when test suite finished, close the browser (required by sauce)
@@ -148,6 +149,7 @@ namespace AutoX.Activities.AutoActivities
             context.ScheduleActivity(nextChild, _onChildComplete);
             //Get result here, it is sync or async????
             _result = _result && ((IPassData)nextChild).GetResult();
+		//TODO set variables value ((AutomationActivity)nextChild).Name to _result
             if (!_result)
             {
                 if (ErrorLevel == OnError.AlwaysReturnTrue)

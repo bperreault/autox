@@ -82,6 +82,7 @@ namespace AutoX.Activities.AutoActivities
                         WorkflowInvoker.Invoke(activity);
                         result = ((IPassData) activity).GetResult();
             */
+		SetVariablesBeforeRunning(context);
             var screen = Host.GetDataObject(TestCaseId);
             if (screen == null) return;
             var activity = ActivityXamlServices.Load(new StringReader(screen.GetAttributeValue(Constants.CONTENT)));

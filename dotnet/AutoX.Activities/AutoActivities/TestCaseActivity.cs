@@ -96,6 +96,7 @@ namespace AutoX.Activities.AutoActivities
             //add a result level here
             XElement result = new XElement(Constants.RESULT);
             SetResult(result);
+		SetVariablesBeforeRunning(context);
             InternalExecute(context, null);
         }
 
