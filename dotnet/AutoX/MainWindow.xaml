@@ -318,20 +318,25 @@
                                     </Style>
                                 </DataGrid.RowStyle>
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Width="4*" Binding="{Binding OriginalResult}"
+                                    <DataGridTextColumn Width="2*" Binding="{Binding Original}"
                                                         Header="Original Result" IsReadOnly="True" />
-                                    <DataGridTextColumn Width="4*" Binding="{Binding FinalResult}"
+                                    <DataGridTextColumn Width="2*" Binding="{Binding Final}"
                                                         Header="Final Result" IsReadOnly="True" />
-                                    <DataGridHyperlinkColumn Binding="{Binding Link}" Header="Link">
+                                    <DataGridTextColumn Width="3*" Binding="{Binding Description}"
+                                                        Header="Description" IsReadOnly="True" />
+                                    <DataGridTextColumn Width="3*" Binding="{Binding Created}" Header="Start@"
+                                                        IsReadOnly="True" SortDirection="Ascending" />
+                                    <DataGridTextColumn Width="3*" Binding="{Binding Updated}" Header="Stop@"
+                                                        IsReadOnly="True" />
+                                    <DataGridHyperlinkColumn Width="2*" Binding="{Binding Link}" Header="Link">
                                         <DataGridHyperlinkColumn.ElementStyle>
                                             <Style>
                                                 <EventSetter Event="Hyperlink.Click" Handler="HyperlinkClick" />
                                             </Style>
                                         </DataGridHyperlinkColumn.ElementStyle>
                                     </DataGridHyperlinkColumn>
-                                    <DataGridTextColumn Width="4*" Binding="{Binding StartTime}" Header="Start Time"
-                                                        IsReadOnly="True" SortDirection="Ascending" />
                                 </DataGrid.Columns>
+                                
                             </DataGrid>
                         </Grid>
                         <GridSplitter Grid.Row="1" Name="gridSplitter32" ResizeBehavior="PreviousAndNext"

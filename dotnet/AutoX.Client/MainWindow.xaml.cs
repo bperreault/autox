@@ -34,6 +34,7 @@ namespace AutoX.Client
         {
             InitializeComponent();
             Hide();
+            StartClient();
         }
 
         private void MenuItemExit(object sender, RoutedEventArgs e)
@@ -189,6 +190,11 @@ namespace AutoX.Client
         }
 
         private void OnMenuItemStartClick(object sender, EventArgs e)
+        {
+            StartClient();
+        }
+
+        private void StartClient()
         {
             string hostType = Configuration.Settings("HostType", "Sauce");
             if (hostType.Equals("Sauce"))

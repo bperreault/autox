@@ -19,6 +19,7 @@ namespace AutoX.Client.Core
         public static XElement Execute(XElement steps, Browser browser, Config config)
         {
             var ret = new XElement(Constants.RESULT);
+            ret.SetAttributeValue("Created", DateTime.Now.ToString());
             ret.SetAttributeValue(Constants.RESULT, "Success");
             ret.SetAttributeValue(Constants._ID, Guid.NewGuid().ToString());
             var instanceId = steps.GetAttributeValue(Constants.INSTANCE_ID);

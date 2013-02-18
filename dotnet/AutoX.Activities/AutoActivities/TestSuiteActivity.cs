@@ -90,6 +90,7 @@ namespace AutoX.Activities.AutoActivities
 
         protected override void Execute(NativeActivityContext context)
         {
+            //set env environment variables
             var steps = XElement.Parse("<AutoX.Steps  OnError=\""+ErrorLevel.ToString()+"\" InstanceId=\"" + InstanceId + "\"/>");
             var set_env = XElement.Parse("<Step />");
             set_env.SetAttributeValue(Constants.ACTION, Constants.SET_ENV);

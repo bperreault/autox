@@ -4,11 +4,13 @@
 
 #region
 
+using AutoX.Basic;
 using System.Activities;
 using System.Activities.Presentation.PropertyEditing;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
+using System.Xml.Linq;
 
 #endregion
 
@@ -91,6 +93,9 @@ namespace AutoX.Activities.AutoActivities
 
         protected override void Execute(NativeActivityContext context)
         {
+            //add a result level here
+            XElement result = new XElement(Constants.RESULT);
+            SetResult(result);
             InternalExecute(context, null);
         }
 
@@ -117,7 +122,7 @@ namespace AutoX.Activities.AutoActivities
             if (nextChild is AutomationActivity)
             {
                 ((AutomationActivity)nextChild).SetHost(Host);
-                ((AutomationActivity)nextChild).SetParentResultId(ParentResultId);
+                ((AutomationActivity)nextChild).SetParentResultId(ResultId);
             }
             context.ScheduleActivity(nextChild, _onChildComplete);
             //Get result here, it is sync or async????

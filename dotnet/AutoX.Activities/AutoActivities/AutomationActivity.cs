@@ -49,17 +49,14 @@ namespace AutoX.Activities.AutoActivities
             }
         }
 
-        //protected void AddResultLevel(string parentId, string currentId)
-        //{
-        //    XElement result = new XElement(Constants.RESULT);
-        //    result.SetAttributeValue(Constants.PARENT_ID, parentId);
-        //    result.SetAttributeValue(Constants._ID, currentId);
-        //    result.SetAttributeValue(Constants.INSTANCE_ID, InstanceId);
-        //    result.SetAttributeValue(Constants._TYPE, Constants.RESULT);
-        //    result.SetAttributeValue(Constants.NAME, DisplayName + " " + DateTime.Now.ToShortTimeString());
-        //    result.SetAttributeValue(SCRIPT_ID, Id);
-        //    Data.Save(result);
-        //}
+        public void SetVariables(Dictionary<string, string> vars)
+        {
+            foreach (var key in vars.Keys)
+            {
+                var value = vars[key];
+                //TODO pass variables to activity
+            }
+        }
 
         protected void SetResult(XElement result)
         {
@@ -69,6 +66,12 @@ namespace AutoX.Activities.AutoActivities
             result.SetAttributeValue(Constants._TYPE,Constants.RESULT);
             result.SetAttributeValue(Constants.NAME,DisplayName+" "+DateTime.Now.ToShortTimeString());
             result.SetAttributeValue(SCRIPT_ID, Id);
+            var ret = result.GetAttributeValue(Constants.RESULT);
+            if (!string.IsNullOrEmpty(ret))
+            {
+                result.SetAttributeValue("Original", ret);
+                result.SetAttributeValue("Final", ret);
+            }
             //result.SetAttributeValue(Constants.UI_OBJECT, UIObject);
             Data.Save(result);
         }
