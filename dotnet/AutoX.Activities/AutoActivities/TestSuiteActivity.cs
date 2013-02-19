@@ -22,8 +22,7 @@ namespace AutoX.Activities.AutoActivities
         private readonly Variable<int> _currentIndex;
         private string _name;
         private CompletionCallback _onChildComplete;
-        private bool _result;
-
+       
         public TestSuiteActivity()
         {
             children = new Collection<Activity>();
@@ -59,11 +58,6 @@ namespace AutoX.Activities.AutoActivities
         public void PassData(string instanceId, string outerData)
         {
             InstanceId = instanceId;
-        }
-
-        public override bool GetResult()
-        {
-            return _result;
         }
 
         #endregion
@@ -104,7 +98,7 @@ namespace AutoX.Activities.AutoActivities
             //add a result level here
             XElement result = new XElement(Constants.RESULT);
             SetResult(result);
-		SetVariablesBeforeRunning(context);
+		    SetVariablesBeforeRunning(context);
             InternalExecute(context, null);
             
             //TODO when test suite finished, close the browser (required by sauce)

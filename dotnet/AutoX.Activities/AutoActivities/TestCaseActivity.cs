@@ -23,7 +23,6 @@ namespace AutoX.Activities.AutoActivities
         private readonly Variable<int> _currentIndex;
         private string _name;
         private CompletionCallback _onChildComplete;
-        private bool _result;
         private string _userData = "";
 
         public TestCaseActivity()
@@ -76,11 +75,7 @@ namespace AutoX.Activities.AutoActivities
             UserData = Utilities.PassData(outerData, UserData, OwnDataFirst);
         }
 
-        public override bool GetResult()
-        {
-            return _result;
-        }
-
+        
         #endregion
 
         protected override void CacheMetadata(NativeActivityMetadata metadata)

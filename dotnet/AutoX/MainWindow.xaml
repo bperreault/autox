@@ -277,7 +277,7 @@
                         <TreeView Grid.Row="1" Name="TestResultTree" MouseDoubleClick="DoubleClickOnResultTree"
                                   PreviewMouseLeftButtonDown="TreePreviewMouseLeftButtonDown" PreviewMouseMove="PreviewMouseMoveOnTree" AllowDrop="True"
                                   DragOver="TreeViewDragOver" Drop="TreeViewDrop" HorizontalAlignment="Stretch"
-                                  ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" SelectedItemChanged="TestResultTreeSelectedItemChanged"
                                   ScrollViewer.CanContentScroll="True" BorderThickness="0">
                             <TreeView.ContextMenu>
                                 <ContextMenu>

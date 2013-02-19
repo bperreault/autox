@@ -62,7 +62,7 @@ namespace AutoX.Comm
             {
                 _instance = new Communication();
             }
-            if (Client.State != CommunicationState.Opened)
+            if (Client.State != CommunicationState.Opened&&Client.State!=CommunicationState.Opening)
                 Client.Open();
             return _instance;
         }

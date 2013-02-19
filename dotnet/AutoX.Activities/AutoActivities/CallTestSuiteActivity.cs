@@ -20,7 +20,7 @@ namespace AutoX.Activities.AutoActivities
     [Designer(typeof (CallTestSuiteActivityDesigner))]
     public sealed class CallTestSuiteActivity : AutomationActivity, IPassData
     {
-        private bool _result;
+        
         private string _testSuiteName;
 
         [DisplayName("Test Suite Name")]
@@ -48,10 +48,6 @@ namespace AutoX.Activities.AutoActivities
             InstanceId = instanceId;
         }
 
-        public override bool GetResult()
-        {
-            return _result;
-        }
 
         #endregion
 
@@ -62,7 +58,7 @@ namespace AutoX.Activities.AutoActivities
         {
             // Obtain the runtime value of the Text input argument
 
-		SetVariablesBeforeRunning(context);
+		    SetVariablesBeforeRunning(context);
             //TODO implement it!!!
             //invoke a test suite here
             Log.Debug("in CallTestSuite, before Executing Test Suite: " + TestSuiteName);
@@ -73,8 +69,10 @@ namespace AutoX.Activities.AutoActivities
             {
                 ((AutomationActivity)activity).SetHost(Host);
                 ((AutomationActivity)activity).SetParentResultId(ParentResultId);
+                ((AutomationActivity)activity).InstanceId = InstanceId;
             }
             WorkflowInvoker.Invoke(activity);
+            //TODO calculate result here
             _result = ((IPassData) activity).GetResult();
         }
     }

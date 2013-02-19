@@ -116,10 +116,12 @@ namespace AutoX
                 _testStepSource.Clear();
                 foreach (XElement kid in xRoot.Descendants())
                 {
-                    var testcaseresult = kid.GetDataObjectFromXElement() as Result;
-                    _testStepSource.Add(testcaseresult);
+                    var testcaseresult = kid.GetDataObjectFromXElement() as StepResult;
+                    if(testcaseresult!=null)
+                        _testStepSource.Add(testcaseresult);
                 }
             }
+            TestStepsResultTable.ItemsSource = _testStepSource.Get();
         }
     }
 }

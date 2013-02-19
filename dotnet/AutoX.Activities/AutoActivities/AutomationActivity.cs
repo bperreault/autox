@@ -36,7 +36,7 @@ namespace AutoX.Activities.AutoActivities
                 return;
             }
             ParentResultId = parentResultId;
-            ResultId = ResultId==null? Guid.NewGuid().ToString() : ResultId;
+            ResultId = ResultId == null ? Guid.NewGuid().ToString() : ResultId;
         }
         public string Name { get; set; }
         Collection<Variable> variables = new Collection<Variable>();
@@ -49,65 +49,77 @@ namespace AutoX.Activities.AutoActivities
             }
         }
 
-	protected Dictionary<string,string> _upperVariables = new Dictionary<string,string>();
+        protected Dictionary<string, string> _upperVariables = new Dictionary<string, string>();
         public void SetVariables(Dictionary<string, string> vars)
         {
             foreach (var key in vars.Keys)
             {
                 var value = vars[key];
-		if(_upperVariables.ContainsKey(key)){
-			if(!OwnDataFirst)
-				_upperVariables[key] = value;
-		}else{
-			_upperVariables.Add(key,value);
-		}
+                if (_upperVariables.ContainsKey(key))
+                {
+                    if (!OwnDataFirst)
+                        _upperVariables[key] = value;
+                }
+                else
+                {
+                    _upperVariables.Add(key, value);
+                }
             }
         }
 
-	protected void SetVariablesBeforeRunning(NativeActivity context){
-		foreach(var key in _upperVariables.Keys){
-			var value = _upperVariables[key];
-			if(ContainsVariableByContext(context,key)){
-				if(!OwnDataFirst)
-					SetVariableByContext(context,key,value);
-			}else{
-				SetVariableByContext(context,key,value);
-			}
-		}
-	}
-	protected string ContainsVariableByContext(NativeActivity context, string key){
-		var input = context.DataContext.GetProperties()[key];
-		return input!=null;
-	}
-	protected string GetVariableValueByContext(NativeActivity context, string key){
-		var input = context.DataContext.GetProperties()[key];
+        protected void SetVariablesBeforeRunning(NativeActivityContext context)
+        {
+            foreach (var key in _upperVariables.Keys)
+            {
+                var value = _upperVariables[key];
+                if (ContainsVariableByContext(context, key))
+                {
+                    if (!OwnDataFirst)
+                        SetVariableValueByContext(context, key, value);
+                }
+                else
+                {
+                    SetVariableValueByContext(context, key, value);
+                }
+            }
+        }
+        protected bool ContainsVariableByContext(NativeActivityContext context, string key)
+        {
+            var input = context.DataContext.GetProperties()[key];
+            return input != null;
+        }
+        protected string GetVariableValueByContext(NativeActivityContext context, string key)
+        {
+            var input = context.DataContext.GetProperties()[key];
 
-		if(input==null) return null;
-		return input.GetValue(context.DataContext).ToString();
-	}
-	protected bool SetVariableValueByContext(NativeActivity context, string key, string value){
-			
-		var input = context.DataContext.GetProperties()[key];
-		if(input==null) return false;
-		input.SetValue(context.DataContext,value);
-		return true;
-	}
+            if (input == null) return null;
+            return input.GetValue(context.DataContext).ToString();
+        }
+        protected bool SetVariableValueByContext(NativeActivityContext context, string key, string value)
+        {
+
+            var input = context.DataContext.GetProperties()[key];
+            if (input == null) return false;
+            input.SetValue(context.DataContext, value);
+            return true;
+        }
         protected void SetResult(XElement result)
         {
-            result.SetAttributeValue(Constants.PARENT_ID,ParentResultId);
-            result.SetAttributeValue(Constants._ID,ResultId);
-            result.SetAttributeValue(Constants.INSTANCE_ID,InstanceId);
-            result.SetAttributeValue(Constants._TYPE,Constants.RESULT);
-            result.SetAttributeValue(Constants.NAME,DisplayName+" "+DateTime.Now.ToShortTimeString());
+            result.SetAttributeValue(Constants.PARENT_ID, ParentResultId);
+            result.SetAttributeValue(Constants._ID, ResultId);
+            result.SetAttributeValue(Constants.INSTANCE_ID, InstanceId);
+            result.SetAttributeValue(Constants._TYPE, Constants.RESULT);
+            result.SetAttributeValue(Constants.NAME, DisplayName + " " + DateTime.Now.ToUniversalTime());
             result.SetAttributeValue(SCRIPT_ID, Id);
             var ret = result.GetAttributeValue(Constants.RESULT);
             if (!string.IsNullOrEmpty(ret))
             {
                 result.SetAttributeValue("Original", ret);
                 result.SetAttributeValue("Final", ret);
-		_result = ret.Equals("Success");
-            }else
-		_result = false;
+                _result = ret.Equals("Success")&&_result;
+            }
+            else
+                _result = false;
             //result.SetAttributeValue(Constants.UI_OBJECT, UIObject);
             Data.Save(result);
         }
@@ -131,12 +143,12 @@ namespace AutoX.Activities.AutoActivities
         }
 
 
-
+        protected bool _result = true;
         /// <summary>
         ///   you must call this method after workflowinvoker.invoke
         /// </summary>
         /// <returns> </returns>
-        public abstract bool GetResult();
+        public bool GetResult() { return _result; }
 
         protected void NotifyPropertyChanged(string p)
         {

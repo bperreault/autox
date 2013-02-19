@@ -527,15 +527,16 @@ namespace AutoX
             var xRoot = XElement.Parse(sRoot);
 
             //update the table
-            var instances = new List<Instance>();
+            _instanceSource.Clear();
+            //var instances = new List<Instance>();
 
             foreach (XElement descendant in xRoot.Descendants())
             {
                 descendant.Name = "AutoX.Basic.Model.Instance";
                 var instance = descendant.GetObjectFromXElement() as Instance;
-                if (instance != null) instances.Add(instance);
+                if (instance != null) _instanceSource.Add(instance);
             }
-            InstanceTable.ItemsSource = instances;
+            InstanceTable.ItemsSource = _instanceSource.Get();
         }
 
         private void SaveSuite(object sender, RoutedEventArgs e)

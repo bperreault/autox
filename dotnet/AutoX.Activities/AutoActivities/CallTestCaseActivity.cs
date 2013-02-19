@@ -20,7 +20,6 @@ namespace AutoX.Activities.AutoActivities
     [Designer(typeof(CallTestCaseDesigner))]
     public sealed class CallTestCaseActivity : AutomationActivity
     {
-        private bool _result;
         private string _testCaseName;
         private string _userData = "";
 
@@ -64,11 +63,6 @@ namespace AutoX.Activities.AutoActivities
             UserData = Utilities.PassData(outerData, UserData, OwnDataFirst);
         }
 
-        public override bool GetResult()
-        {
-            return _result;
-        }
-
         protected override void Execute(NativeActivityContext nativeActivityContext)
         {
             //TODO implement it!!!
@@ -82,7 +76,7 @@ namespace AutoX.Activities.AutoActivities
                         WorkflowInvoker.Invoke(activity);
                         result = ((IPassData) activity).GetResult();
             */
-		SetVariablesBeforeRunning(context);
+            SetVariablesBeforeRunning(nativeActivityContext);
             var screen = Host.GetDataObject(TestCaseId);
             if (screen == null) return;
             var activity = ActivityXamlServices.Load(new StringReader(screen.GetAttributeValue(Constants.CONTENT)));

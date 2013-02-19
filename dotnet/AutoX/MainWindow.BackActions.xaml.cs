@@ -164,7 +164,7 @@ namespace AutoX
             if (parent.Name.ToString().Equals(Constants.RESULT))
             {
                 //load its children to TestCaseResultTable
-                LoadResultTableOfTreeViewItem(selected, xRoot);
+                //LoadResultTableOfTreeViewItem(selected, xRoot);
 
                 return;
             }
@@ -215,6 +215,27 @@ namespace AutoX
             TestStepsResultTable.ItemsSource = _testStepSource.Get();
         }
 
+        private void TestResultTreeSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            var selected = this.TestResultTree.SelectedItem as TreeViewItem;
+            if (selected == null)
+            {
+                return;
+            }
+            var parent = selected.DataContext as XElement;
+            if (parent == null) return;
+            var parentId = parent.GetAttributeValue(Constants._ID);
+            var xRoot = Data.GetChildren(parentId);
+
+            if (parent.Name.ToString().Equals(Constants.RESULT))
+            {
+                //load its children to TestCaseResultTable
+                LoadResultTableOfTreeViewItem(selected, xRoot);
+
+                return;
+            }
+        }
+
         private static void Edit(TreeViewItem selected)
         {
             if (selected == null)
@@ -252,7 +273,7 @@ namespace AutoX
         {
             var xElement =
                 XElement.Parse(
-                    @"<Script Name='New Test " + type + "' ScriptType='Test" + type +
+                    @"<Script Name='NewTest " + type + "' ScriptType='Test" + type +
                     "' Description='Please add description here' _type='Script' Content='' _id='" +
                     Guid.NewGuid() + "' />");
             var ret = AddNewItemToTree(ProjectTreeView, xElement);

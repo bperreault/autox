@@ -29,12 +29,6 @@ namespace AutoX.Activities.AutoActivities
 		    Enabled = true;
         }
 
-        public override bool GetResult()
-        {
-            //It should not be called.
-            return false;
-        }
-
         protected override void Execute(NativeActivityContext context)
         {
             //It should not be called.

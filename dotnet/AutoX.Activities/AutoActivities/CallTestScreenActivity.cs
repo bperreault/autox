@@ -24,7 +24,6 @@ namespace AutoX.Activities.AutoActivities
     public sealed class CallTestScreenActivity : AutomationActivity, IPassData
     {
         // Define an activity input argument of type string
-        private bool _result;
         private string _testScreenName;
         private string _userData = "";
         private CompletionCallback _onChildComplete;
@@ -83,14 +82,6 @@ namespace AutoX.Activities.AutoActivities
         //            metadata.AddImplementationVariable(result);
         //        }
 
-        /// <summary>
-        ///   you must call this method after workflowinvoker.invoke
-        /// </summary>
-        /// <returns> </returns>
-        public override bool GetResult()
-        {
-            return _result;
-        }
 
         #endregion
 
@@ -98,7 +89,7 @@ namespace AutoX.Activities.AutoActivities
         // and return the value from the Execute method.
         protected override void Execute(NativeActivityContext context)
         {
-		SetVariablesBeforeRunning(context);
+		    SetVariablesBeforeRunning(context);
             InternalExecute(context, null);
         }
 
