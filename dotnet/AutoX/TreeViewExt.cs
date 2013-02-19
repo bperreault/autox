@@ -26,13 +26,25 @@ namespace AutoX
             return treeViewItem;
         }
 
+	private static string iconType GetIconType(this XElement xElement){
+		string typeOrder = "ScriptType;Type;type;_type";
+		string[] types = typeOrder.Split(";");
+		foreach(var iconType in types){
+			string t = xElement.GetAttribute(iconType);
+			if(!string.IsNullOrEmpty(t))
+				return t;
+		}
+		return null;
+	}
+
         public static void UpdateTreeViewItem(this TreeViewItem treeViewItem, XElement xElement)
         {
             treeViewItem.DataContext = xElement;
             var head = new StackPanel { Orientation = Orientation.Horizontal };
             Image image = null;
             var text = new TextBlock();
-            var type = xElement.GetAttributeValue(Constants._TYPE);
+//TODO ScriptType->Type->type->_Type
+            var type = xElement.GetIconType();
             var name = xElement.GetAttributeValue(Constants.NAME);
 
             if (!string.IsNullOrWhiteSpace(type))
@@ -45,46 +57,19 @@ namespace AutoX
                         {
                             image = new Image
                                 {
-                                    Source
-                                        =
-                                        bitmap,
-                                    Stretch
-                                        =
-                                        Stretch
-                                            .
-                                            Uniform,
-                                    Width
-                                        =
-                                        text
-                                            .
-                                            FontSize,
-                                    Height
-                                        =
-                                        text
-                                            .
-                                            FontSize,
-                                    MinHeight
-                                        =
-                                        16,
-                                    MinWidth
-                                        =
-                                        16,
-                                    ToolTip
-                                        =
-                                        xElement
-                                            .
-                                            GetAttributeValue
-                                            ("Description")
+                                    Source = bitmap,
+                                    Stretch = Stretch .  Uniform,
+                                    Width = text .  FontSize,
+                                    Height = text .  FontSize,
+                                    MinHeight = 16,
+				 MinWidth = 16,
+                                    ToolTip = xElement .  GetAttributeValue ("Description")
                                 };
 
                             //head.Children.Add(image);
-                            head.
-                                Children
-                                .Insert
-                                (0,
-                                 image);
+                            head.  Children .Insert (0, image);
                         }
-                                                                                                   ));
+                   ));
                 }
             }
 

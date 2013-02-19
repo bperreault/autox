@@ -318,8 +318,9 @@ namespace AutoX.Client.Core
                 capabillities = DesiredCapabilities.InternetExplorer();
             else
                 capabillities = DesiredCapabilities.Firefox();
-
-            capabillities.SetCapability(CapabilityType.Version, _config.Get("BrowserVersion", "10"));
+                var _browserVersion =  _config.Get("BrowserVersion");
+                if(!string.IsNullOrEmpty(_browserVersion))
+                    capabillities.SetCapability(CapabilityType.Version, _browserVersion);
             capabillities.SetCapability(CapabilityType.Platform, _config.Get("BrowserPlatform", "Windows 2008"));
             var versionName = _config.Get("AUTVersion") ?? "Test.Version";
 
@@ -337,7 +338,9 @@ namespace AutoX.Client.Core
 
         public string GetResultLink()
         {
-            if (string.IsNullOrEmpty(_sId))
+            var clientType = _config.Get("HostType", "Sauce");
+            if (String.Compare(clientType, "Sauce", StringComparison.OrdinalIgnoreCase) == 0){
+                if (string.IsNullOrEmpty(_sId))
                 return null;
             if (_config.Get("SauceFree", "true").ToLower().Equals("true"))
             {
@@ -347,6 +350,10 @@ namespace AutoX.Client.Core
                       _config.Get("SauceKey", "b3842073-5a7a-4782-abbc-e7234e09f8ac");
             var jobId = AsymmetricEncryption.Hmacmd5(key, _sId);
             return "https://saucelabs.com/jobs/" + _sId + "?auth=" + jobId;
+            }else{
+                return Snapshot();
+            }
+            
         }
 
         private void StartLocalBrowser()

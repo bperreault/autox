@@ -82,7 +82,15 @@ namespace AutoX
         private void HyperlinkClick(object sender, RoutedEventArgs e)
         {
             Hyperlink link = e.OriginalSource as Hyperlink;
+		if(link==null)
+		//this is a snapshot BASE64 string, show it
+		var image = e.OriginalSource as string;
+		string fileName = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".htm";
+		File.WriteAllText(fileName,"<html><body><img src='data:image/jpg;base64,"+image+"' /></body></html>");
+		Process.Start(fileName);
+		}else
             Process.Start(link.NavigateUri.AbsoluteUri);
+
         }
 
         private void DoubleClickOnTable(object sender, MouseButtonEventArgs e)

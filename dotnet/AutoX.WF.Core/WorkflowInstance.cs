@@ -117,7 +117,7 @@ namespace AutoX.WF.Core
                     _result = null;
                     _command = null;
                     if (script != null)
-                        _workflowApplication = CreateActivity(script.GetAttributeValue(Constants.CONTENT), buildId);
+                        _workflowApplication = CreateActivity(script.GetAttributeValue(Constants.CONTENT), buildId, Variables);
                     if (_workflowApplication != null)
                     {
                         //TODO set Variables to activity Variables
@@ -152,7 +152,7 @@ namespace AutoX.WF.Core
             return versionId;
         }
 
-        private WorkflowApplication CreateActivity(string workflow, string resultParentId)
+        private WorkflowApplication CreateActivity(string workflow, string resultParentId, Dictionary<string, string> upperLevelVariables)
         {
             var activity = ActivityXamlServices.Load(new StringReader(workflow)) as AutomationActivity;
             if (activity != null)
@@ -160,6 +160,7 @@ namespace AutoX.WF.Core
                 activity.SetHost(this);
                 activity.InstanceId = InstanceId;
                 activity.SetParentResultId(resultParentId);
+                activity.SetVariables(upperLevelVariables);
                 WorkflowApplication workflowApplication = GetWorkflowApplication(activity);
                 workflowApplication.Extensions.Add(_statusTracker);
                 return workflowApplication;
