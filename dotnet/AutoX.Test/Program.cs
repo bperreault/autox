@@ -21,7 +21,7 @@ namespace AutoX.Test
         {
             //Dictionary<string,string> parameters = new Dictionary<string,string>();
 
-            for (int i = 0; i < args.Length; i++)
+            for (int i = 0; i < args.Length -1; i++)
             {
                 if (args[i].StartsWith("-"))
                 {

@@ -64,6 +64,13 @@ namespace AutoX.Comm
             }
             if (Client.State != CommunicationState.Opened&&Client.State!=CommunicationState.Opening)
                 Client.Open();
+            int count = 0;
+            while(count<30){
+                count++;
+                if(Client.State== CommunicationState.Opened)
+                    break;
+                Thread.Sleep(500);
+            }
             return _instance;
         }
 

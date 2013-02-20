@@ -79,15 +79,7 @@ namespace AutoX.Client.Core
             var startTime = DateTime.Now;
             var result = CallAction(action, data, uiObj, browser, config);
             var endTime = DateTime.Now;
-            var currentLink = browser.GetResultLink();
-            if (!string.IsNullOrEmpty(currentLink))
-            {
-                if (!currentLink.Equals(link))
-                {
-                    link = currentLink;
-                    result.SetAttributeValue(LINK, link);
-                }
-            }
+            
             result.SetAttributeValue("StartTime", startTime);
             result.SetAttributeValue("EndTime", endTime);
             result.SetAttributeValue("Duration", string.Format("{0:0.000}", (endTime.Ticks - startTime.Ticks) / 10000000.00));
@@ -103,6 +95,15 @@ namespace AutoX.Client.Core
             var onError = ret.GetAttributeValue(Constants.ON_ERROR);
             if (!stepResult.Equals("Success"))
             {
+                var currentLink = browser.GetResultLink();
+            if (!string.IsNullOrEmpty(currentLink))
+            {
+                if (!currentLink.Equals(link))
+                {
+                    link = currentLink;
+                    result.SetAttributeValue(LINK, link);
+                }
+            }
                 if (onError.Equals("AlwaysReturnTrue")) return true;
                 ret.SetAttributeValue(Constants.RESULT, "Error");
                 if (onError.Equals("StopCurrentScript") || onError.Equals("Terminate"))
