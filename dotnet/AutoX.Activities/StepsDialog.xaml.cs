@@ -38,13 +38,25 @@ namespace AutoX.Activities
             ArrayList newList = new ArrayList();
             foreach (Step currentStep in current)
             {
-                foreach (Step original in steps)
-                {
-                    //TODO currentStep must existed in steps, if not, means globally deleted;
-                    //if in steps, and it is marked Enable, then mark current one Enable, it is globally enabled.
-                }
+                if (InSteps(currentStep, steps))
+                    newList.Add(currentStep);
             }
-            StepsTable.ItemsSource = steps;
+            foreach (Step original in steps)
+            {
+                if (!InSteps(original, newList))
+                    newList.Add(original);
+            }
+            StepsTable.ItemsSource = newList;
+        }
+
+        private bool InSteps(Step oneStep,ArrayList steps)
+        {
+            foreach (Step step in steps)
+            {
+                if (step._id.Equals(oneStep._id))
+                    return true;
+            }
+            return false;
         }
 
         private void ButtonOKClick(object sender, RoutedEventArgs e)

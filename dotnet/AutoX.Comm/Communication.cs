@@ -10,6 +10,7 @@ using AutoX.Comm.AutoXService;
 using System;
 using System.Net;
 using System.ServiceModel;
+using System.Threading;
 using System.Xml.Linq;
 
 #endregion
