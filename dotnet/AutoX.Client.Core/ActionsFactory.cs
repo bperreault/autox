@@ -26,8 +26,8 @@ namespace AutoX.Client.Core
             var runtimeId = steps.GetAttributeValue(Constants.RUNTIME_ID);
             var onError = steps.GetAttributeValue(Constants.ON_ERROR);
             string link = null;
-            
-            
+
+
             if (!string.IsNullOrEmpty(onError))
                 ret.SetAttributeValue(Constants.ON_ERROR, onError);
             if (!string.IsNullOrEmpty(instanceId))
@@ -79,14 +79,14 @@ namespace AutoX.Client.Core
             var startTime = DateTime.Now;
             var result = CallAction(action, data, uiObj, browser, config);
             var endTime = DateTime.Now;
-            
+
             result.SetAttributeValue("StartTime", startTime);
             result.SetAttributeValue("EndTime", endTime);
             result.SetAttributeValue("Duration", string.Format("{0:0.000}", (endTime.Ticks - startTime.Ticks) / 10000000.00));
             result.SetAttributeValue(Constants.INSTANCE_ID, instanceId);
             CopyAttribute(result, step, Constants.UI_ID);
             CopyAttribute(result, step, Constants.UI_OBJECT);
-
+            link = TakeSnapshot(browser, link, result);
             //result.SetAttributeValue(Constants._ID,xId);
             ret.Add(result);
             if (!string.IsNullOrEmpty(link))
@@ -95,7 +95,18 @@ namespace AutoX.Client.Core
             var onError = ret.GetAttributeValue(Constants.ON_ERROR);
             if (!stepResult.Equals("Success"))
             {
-                var currentLink = browser.GetResultLink();
+                
+                if (onError.Equals("AlwaysReturnTrue")) return true;
+                ret.SetAttributeValue(Constants.RESULT, "Error");
+                if (onError.Equals("StopCurrentScript") || onError.Equals("Terminate"))
+                    return false;
+            }
+            return true;
+        }
+
+        private static string TakeSnapshot(Browser browser, string link, XElement result)
+        {
+            var currentLink = browser.GetResultLink();
             if (!string.IsNullOrEmpty(currentLink))
             {
                 if (!currentLink.Equals(link))
@@ -104,12 +115,7 @@ namespace AutoX.Client.Core
                     result.SetAttributeValue(LINK, link);
                 }
             }
-                if (onError.Equals("AlwaysReturnTrue")) return true;
-                ret.SetAttributeValue(Constants.RESULT, "Error");
-                if (onError.Equals("StopCurrentScript") || onError.Equals("Terminate"))
-                    return false;
-            }
-            return true;
+            return link;
         }
 
         private static void CopyAttribute(XElement ret, XElement step, string attribteName)
