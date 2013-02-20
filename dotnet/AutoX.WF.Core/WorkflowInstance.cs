@@ -120,7 +120,6 @@ namespace AutoX.WF.Core
                         _workflowApplication = CreateActivity(script.GetAttributeValue(Constants.CONTENT), buildId, Variables);
                     if (_workflowApplication != null)
                     {
-                        //TODO set Variables to activity Variables
                         //very important! it make the workflow run in Synchronized way.
                         //_workflowApplication.SynchronizationContext = new SynchronizationContext();
                         Status = "Ready";

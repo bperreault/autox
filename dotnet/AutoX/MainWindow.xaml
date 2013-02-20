@@ -313,8 +313,9 @@
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding FinalResult}" Value="Error">
                                                 <Setter Property="Background" Value="DarkGray"></Setter>
-                                            </DataTrigger>
+                                            </DataTrigger>                                            
                                         </Style.Triggers>
+                                        <Setter Property="MaxHeight" Value="16" />
                                     </Style>
                                 </DataGrid.RowStyle>
                                 <DataGrid.Columns>
@@ -352,6 +353,7 @@
                                       MouseDoubleClick="DoubleClickOnTable" BorderThickness="0" ItemsSource="{Binding}" SelectionUnit="FullRow">
                                 <DataGrid.RowStyle>
                                     <Style TargetType="DataGridRow">
+                                        <Setter Property="MaxHeight" Value="16" />
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Result}" Value="Success">
                                                 <Setter Property="Background" Value="#FFE5E5E5"></Setter>

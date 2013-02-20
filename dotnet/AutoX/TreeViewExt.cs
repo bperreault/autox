@@ -26,11 +26,13 @@ namespace AutoX
             return treeViewItem;
         }
 
-	private static string iconType GetIconType(this XElement xElement){
+	private static string GetIconType(this XElement xElement){
+
 		string typeOrder = "ScriptType;Type;type;_type";
-		string[] types = typeOrder.Split(";");
+        
+		string[] types = typeOrder.Split(';');
 		foreach(var iconType in types){
-			string t = xElement.GetAttribute(iconType);
+			string t = xElement.GetAttributeValue(iconType);
 			if(!string.IsNullOrEmpty(t))
 				return t;
 		}

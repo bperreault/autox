@@ -7,8 +7,10 @@
 using AutoX.Basic.Model;
 using AutoX.Comm;
 using AutoX.DB;
+using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -81,16 +83,18 @@ namespace AutoX
 
         private void HyperlinkClick(object sender, RoutedEventArgs e)
         {
-            Hyperlink link = e.OriginalSource as Hyperlink;
-		if(link==null)
-		//this is a snapshot BASE64 string, show it
-		var image = e.OriginalSource as string;
-		string fileName = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".htm";
-		File.WriteAllText(fileName,"<html><body><img src='data:image/jpg;base64,"+image+"' /></body></html>");
-		Process.Start(fileName);
-		}else
-            Process.Start(link.NavigateUri.AbsoluteUri);
-
+            var r = sender as TextBlock;
+            if (r == null) return;
+            dynamic data = r.DataContext;
+            string content = data.Link;
+            if(!content.StartsWith("http"))           
+            {                
+                string fileName = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".htm";
+                File.WriteAllText(fileName, "<html><body><img src='data:image/jpg;base64," + content + "' /></body></html>");
+                Process.Start(fileName);
+            }
+            else
+                Process.Start(content);
         }
 
         private void DoubleClickOnTable(object sender, MouseButtonEventArgs e)
@@ -125,7 +129,7 @@ namespace AutoX
                 foreach (XElement kid in xRoot.Descendants())
                 {
                     var testcaseresult = kid.GetDataObjectFromXElement() as StepResult;
-                    if(testcaseresult!=null)
+                    if (testcaseresult != null)
                         _testStepSource.Add(testcaseresult);
                 }
             }
