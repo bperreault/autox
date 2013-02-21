@@ -27,7 +27,9 @@
                         </MenuItem>
                         <MenuItem Header="Automation">
                             <MenuItem Header="Browser Setting" Click="BrowserSetting"></MenuItem>
+                            <MenuItem Header="Start Browser" Click="StartBrowser"></MenuItem>
                             <MenuItem Header="Get UI Objects" Click="GetUIObjectsSaveToFile" ></MenuItem>
+                            <MenuItem Header="Close Browser" Click="CloseBrowser"></MenuItem>
                             <MenuItem Header="Debug Test (Local)" Click="RunTest"></MenuItem>
                             <MenuItem Header="Debug Test (Sauce)" Click="RunSauceTest"></MenuItem>
                         </MenuItem>

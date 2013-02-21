@@ -59,6 +59,11 @@ namespace AutoX
         }
 
         AutoClient _autoClient = new AutoClient();
+        private void StartBrowser(object sender, RoutedEventArgs e)
+        {
+            _autoClient.Browser.StartBrowser();
+        }   
+
         private void GetUIObjectsSaveToFile(object sender, RoutedEventArgs e)
         {
             var uiObjectsString = _autoClient.Browser.GetAllValuableObjects();
@@ -72,6 +77,12 @@ namespace AutoX
                 File.WriteAllText(fileName, uiObjectsString);
             }
         }
+
+        private void CloseBrowser(object sender, RoutedEventArgs e)
+        {
+            _autoClient.Browser.CloseBrowser();
+        }  
+
         private void RunSauceTest(object sender, RoutedEventArgs e)
         {
             //get workflowid from project tree
