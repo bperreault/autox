@@ -275,7 +275,7 @@ namespace AutoX.Client.Core
             return alert;
         }
 
-        private void StartBrowser()
+        public void StartBrowser()
         {
             var clientType = _config.Get("HostType", "Sauce");
             if (String.Compare(clientType, "Sauce", StringComparison.OrdinalIgnoreCase) == 0)
@@ -311,9 +311,8 @@ namespace AutoX.Client.Core
                 capabillities = DesiredCapabilities.IPhone();
             else if (browserType.Equals("Opera"))
                 capabillities = DesiredCapabilities.Opera();
-
-            //            else if (browserType.Equals("Safari"))
-            //                capabillities = DesiredCapabilities.Safari();
+            else if (browserType.Equals("Safari"))
+                capabillities = DesiredCapabilities.Safari();
             else if (browserType.Equals("InternetExplorer"))
                 capabillities = DesiredCapabilities.InternetExplorer();
             else
