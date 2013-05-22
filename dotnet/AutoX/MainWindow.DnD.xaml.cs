@@ -63,8 +63,8 @@ namespace AutoX
                 var xTarget = item.DataContext as XElement;
                 var parentId = xTarget.GetAttributeValue(Constants._ID);
                 data.SetAttributeValue(Constants.PARENT_ID, parentId);
-                
-                if (!Data.Save(data))
+
+                if (!DBFactory.GetData().Save(data))
                 {
                     MessageBox.Show("update Tree item Failed.");
                 }

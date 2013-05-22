@@ -45,12 +45,13 @@ namespace AutoX
                 MessageBox.Show("Check your configuration settings, no Root entry");
                 return;
             }
-            XElement xRoot = Data.Read(rootId);
-            Configuration.Set("ProjectRoot", xRoot.GetAttributeValue("Project"));
-            Configuration.Set("ResultsRoot", xRoot.GetAttributeValue(Constants.RESULT));
-            Configuration.Set("DataRoot", xRoot.GetAttributeValue(Constants.DATA));
-            Configuration.Set("ObjectPool", xRoot.GetAttributeValue("UI"));
-            Configuration.Set("TranslationRoot", xRoot.GetAttributeValue("Translation"));
+            XElement xRoot = DBFactory.GetData().GetChildren(rootId);
+
+            Configuration.Set("ProjectRoot", xRoot.GetSubElement("Name", "Project").GetAttributeValue("_id"));
+            Configuration.Set("ResultsRoot", xRoot.GetSubElement("Name", Constants.RESULT).GetAttributeValue("_id"));
+            Configuration.Set("DataRoot", xRoot.GetSubElement("Name", Constants.DATA).GetAttributeValue("_id"));
+            Configuration.Set("ObjectPool", xRoot.GetSubElement("Name", "UI").GetAttributeValue("_id"));
+            Configuration.Set("TranslationRoot", xRoot.GetSubElement("Name", "Translation").GetAttributeValue("_id"));
             Configuration.SaveSettings();
             InitScreen();
             //InitializeProject();

@@ -430,7 +430,7 @@ namespace AutoX
 
         private static void InitTree(ItemsControl tree, string rootId)
         {
-            var xRoot = Data.Read(rootId);
+            var xRoot = DBFactory.GetData().Read(rootId);
             if (xRoot==null)
             {
                 MessageBox.Show("Get Tree Root Failed. id=" + rootId);

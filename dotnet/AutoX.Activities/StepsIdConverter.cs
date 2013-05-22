@@ -19,7 +19,7 @@ namespace AutoX.Activities
             var textValue = value as string;
             if (string.IsNullOrEmpty(textValue))
                 return null;
-            string content = Data.Read(textValue).GetAttributeValue(Constants.CONTENT);
+            string content = DBFactory.GetData().Read(textValue).GetAttributeValue(Constants.CONTENT);
             if (string.IsNullOrEmpty(content))
                 return null;
             var steps = XElement.Parse(content).GetAttributeValue("Steps");

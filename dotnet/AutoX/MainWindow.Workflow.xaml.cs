@@ -346,7 +346,7 @@ namespace AutoX
 
             xElement.SetAttributeValue(Constants.CONTENT, content);
 
-            var sRoot = Data.Save(xElement);
+            var sRoot = DBFactory.GetData().Save(xElement);
             
             if (!sRoot)
             {

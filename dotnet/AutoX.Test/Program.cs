@@ -28,14 +28,14 @@ namespace AutoX.Test
                     parameters.Add(args[i], args[i + 1]);
                 }
             }
-            if (parameters.ContainsKey("-C"))
-            {
-                CleanProject();
-            }
-            if (parameters.ContainsKey("-R"))
-            {
-                RemoveResults();
-            }
+            //if (parameters.ContainsKey("-C"))
+            //{
+            //    CleanProject();
+            //}
+            //if (parameters.ContainsKey("-R"))
+            //{
+            //    RemoveResults();
+            //}
             if (parameters.ContainsKey("-G"))
             {
                 //create a project for a new user
@@ -94,34 +94,34 @@ namespace AutoX.Test
             Console.WriteLine("\t-b\tBuild");
         }
 
-        private static void RemoveResults()
-        {
-            //find root element
-            var xRoot = Data.Read(Constants._TYPE, "Root");
-            var resultId = xRoot.GetAttributeValue(Constants.RESULT);
-            var results = Data.GetChildren(resultId);
-            foreach (var kids in results.Descendants())
-            {
-                Data.Delete(kids.GetAttributeValue(Constants._ID));
-            }
-        }
+        //private static void RemoveResults()
+        //{
+        //    //find root element
+        //    var xRoot = DBFactory.GetData().Read(Constants._TYPE, "Root");
+        //    var resultId = xRoot.GetAttributeValue(Constants.RESULT);
+        //    var results = DBFactory.GetData().GetChildren(resultId);
+        //    foreach (var kids in results.Descendants())
+        //    {
+        //        DBFactory.GetData().Delete(kids.GetAttributeValue(Constants._ID));
+        //    }
+        //}
 
-        private static void CleanProject()
-        {
-            //find root element
-            var xRoot = Data.Read(Constants._TYPE, "Root");
-            var root = Data.GetChildren(xRoot.GetAttributeValue(Constants._ID));
-            foreach (var kid in root.Descendants())
-            {
-                var id = kid.GetAttributeValue(Constants._ID);
-                if (id.Equals(xRoot.GetAttributeValue(Constants._ID)))
-                    continue;
-                foreach (var grandKid in Data.GetChildren(id).Descendants())
-                {
-                    Data.Delete(grandKid.GetAttributeValue(Constants._ID));
-                }
-            }
-        }
+        //private static void CleanProject()
+        //{
+        //    //find root element
+        //    var xRoot = DBFactory.GetData().Read(Constants._TYPE, "Root");
+        //    var root = DBFactory.GetData().GetChildren(xRoot.GetAttributeValue(Constants._ID));
+        //    foreach (var kid in root.Descendants())
+        //    {
+        //        var id = kid.GetAttributeValue(Constants._ID);
+        //        if (id.Equals(xRoot.GetAttributeValue(Constants._ID)))
+        //            continue;
+        //        foreach (var grandKid in DBFactory.GetData().GetChildren(id).Descendants())
+        //        {
+        //            DBFactory.GetData().Delete(grandKid.GetAttributeValue(Constants._ID));
+        //        }
+        //    }
+        //}
 
         private static void TestWorkflow()
         {
@@ -141,22 +141,22 @@ namespace AutoX.Test
             string fileContent = File.ReadAllText("yazhi.pang.pem");
             XElement forSake = XElement.Parse(fileContent);
             string projectName = forSake.GetAttributeValue("ProjectName");
-            if (DBManager.GetInstance().IsProjectExisted(projectName))
+            if (MongoDBManager.GetInstance().IsProjectExisted(projectName))
             {
                 Console.WriteLine("Project already existed, continue?(y/n):");
                 if (!Console.ReadKey().KeyChar.Equals('y'))
                     return;
             }
-            DBManager.GetInstance().SetProject(projectName);
+            MongoDBManager.GetInstance().SetProject(projectName);
             var root = forSake.Element("Root");
             string publicAndPrivateKey = root.GetAttributeValue("PublicAndPrivateKey");
             string secret = root.GetAttributeValue("Secret");
             string decrypted = AsymmetricEncryption.DecryptText(secret, 2048, publicAndPrivateKey);
             string userName = root.GetAttributeValue("UserName");
-            DBManager.GetInstance().AddUser(userName, decrypted);
+            
             foreach (var descendant in forSake.Descendants())
             {
-                Data.Save(descendant);
+                DBFactory.GetData().Save(descendant);
             }
         }
 
@@ -193,8 +193,8 @@ namespace AutoX.Test
             //            Configuration.Set("UserName", userName);
             //            Configuration.Set("PublicKey", publicKey);
             //            Configuration.SaveSettings();
-            Data.Save(root);
-            Console.WriteLine(Data.Read("a02cf4ad-ba0c-4c69-9f7c-e7d73a8fecad"));
+            DBFactory.GetData().Save(root);
+            Console.WriteLine(DBFactory.GetData().Read("a02cf4ad-ba0c-4c69-9f7c-e7d73a8fecad"));
         }
     }
 }

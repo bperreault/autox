@@ -121,7 +121,7 @@ namespace AutoX.Activities.AutoActivities
             else
                 _result = false;
             //result.SetAttributeValue(Constants.UI_OBJECT, UIObject);
-            Data.Save(result);
+            DBFactory.GetData().Save(result);
         }
         private bool _enabled = true;
         [DisplayName("Enabled")]

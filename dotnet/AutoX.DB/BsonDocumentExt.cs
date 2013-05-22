@@ -35,7 +35,7 @@ namespace AutoX.DB
                 else
                 {
                     kid.SetAttributeValue(Constants.PARENT_ID, mainId);
-                    Data.Save(kid);
+                    DBFactory.GetData().Save(kid);
                 }
             }
             return bsonDocument;

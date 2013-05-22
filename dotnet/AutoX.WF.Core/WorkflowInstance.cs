@@ -106,7 +106,7 @@ namespace AutoX.WF.Core
             var buildName = Variables.ContainsKey("AUTBuild") ? Variables["AUTBuild"] : "TestBuild";
             if (!string.IsNullOrEmpty(rootId))
             {
-                var _1stLevelKid = Data.Read(rootId);
+                var _1stLevelKid = DBFactory.GetData().Read(rootId);
                 var resultId = _1stLevelKid.GetAttributeValue("Result");
 
                 if (!string.IsNullOrEmpty(resultId))
@@ -130,7 +130,7 @@ namespace AutoX.WF.Core
 
         private static string FindOrCreateSubResultFolder(string versionName, string resultId)
         {
-            var results = Data.GetChildren(resultId);
+            var results = DBFactory.GetData().GetChildren(resultId);
             string versionId = null;
             if (results != null)
             {
@@ -146,7 +146,7 @@ namespace AutoX.WF.Core
             if (string.IsNullOrEmpty(versionId))
             {
                 versionId = Guid.NewGuid().ToString();
-                Data.Save(XElement.Parse("<Result Name='" + versionName + "' _id='" + versionId + "' _parentId='" + resultId + "' _type='Folder' Created='" + DateTime.Now.ToString() + "' Updated='" + DateTime.Now.ToString() + "' />"));
+                DBFactory.GetData().Save(XElement.Parse("<Result Name='" + versionName + "' _id='" + versionId + "' _parentId='" + resultId + "' _type='Folder' Created='" + DateTime.Now.ToString() + "' Updated='" + DateTime.Now.ToString() + "' />"));
             }
             return versionId;
         }
@@ -190,7 +190,7 @@ namespace AutoX.WF.Core
 
         public XElement GetDataObject(string id)
         {
-            return Data.Read(id);
+            return DBFactory.GetData().Read(id);
         }
 
         public void SetCommand(XElement steps)

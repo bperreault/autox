@@ -113,7 +113,7 @@ namespace AutoX
             var updated = dialog.GetElement().GetObjectFromXElement();
             source[index] = updated;
             table.ItemsSource = source;
-            Data.Save(dialog.GetElement());
+            DBFactory.GetData().Save(dialog.GetElement());
         }
 
         private void TestCaseResultTableSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -122,7 +122,7 @@ namespace AutoX
             var selected = TestCaseResultTable.SelectedItem as Result;
             if (selected == null) return;
 
-            var xRoot = Data.GetChildren(selected._id);
+            var xRoot = DBFactory.GetData().GetChildren(selected._id);
             if (xRoot.HasElements)
             {
                 _testStepSource.Clear();

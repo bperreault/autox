@@ -30,7 +30,7 @@ namespace AutoX.Activities
 
         private void ButtonReload(object sender, RoutedEventArgs e)
         {
-            var p = XElement.Parse(Data.Read(StepId).GetAttributeValue(Constants.CONTENT)).GetAttributeValue("Steps");
+            var p = XElement.Parse(DBFactory.GetData().Read(StepId).GetAttributeValue(Constants.CONTENT)).GetAttributeValue("Steps");
             var steps = Utilities.GetStepsList(p, Actions, Host);
             var current = StepsTable.ItemsSource as ArrayList;
 

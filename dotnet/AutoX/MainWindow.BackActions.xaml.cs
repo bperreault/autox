@@ -22,7 +22,7 @@ namespace AutoX
     {
         public XElement GetDataObject(string id)
         {
-            return Data.Read(id);
+            return DBFactory.GetData().Read(id);
         }
 
         private bool BeforeActionCheck(TreeView treeView, string action, string objName)
@@ -53,7 +53,7 @@ namespace AutoX
             var rootPart = element.GetRootPartElement();
             rootPart.SetAttributeValue(Constants.PARENT_ID, parentId);
 
-            if (!Data.Save(rootPart))
+            if (!DBFactory.GetData().Save(rootPart))
             {
                 MessageBox.Show("update Tree item Failed.");
             }
@@ -99,7 +99,7 @@ namespace AutoX
             var toBeDeletedId = xElement.GetAttributeValue(Constants._ID);
 
             // xElement.SetAttributeValue(Constants.PARENT_ID, "Deleted");
-            Data.Delete(toBeDeletedId);
+            DBFactory.GetData().Delete(toBeDeletedId);
             parentItem.Items.Remove(selected);
             return;
         }
@@ -116,7 +116,7 @@ namespace AutoX
 
             xE.SetAttributeValue(Constants.PARENT_ID, parentId);
 
-            if (!Data.Save(xE))
+            if (!DBFactory.GetData().Save(xE))
             {
                 MessageBox.Show("Add Tree item Failed.");
                 return null;
@@ -159,7 +159,7 @@ namespace AutoX
                 AddTestDesigner(selected);
                 return;
             }
-            var xRoot = Data.GetChildren(parentId);
+            var xRoot = DBFactory.GetData().GetChildren(parentId);
 
             if (parent.Name.ToString().Equals(Constants.RESULT))
             {
@@ -225,7 +225,7 @@ namespace AutoX
             var parent = selected.DataContext as XElement;
             if (parent == null) return;
             var parentId = parent.GetAttributeValue(Constants._ID);
-            var xRoot = Data.GetChildren(parentId);
+            var xRoot = DBFactory.GetData().GetChildren(parentId);
 
             if (parent.Name.ToString().Equals(Constants.RESULT))
             {
@@ -248,7 +248,7 @@ namespace AutoX
             if (!dialog.DialogResult.HasValue || !dialog.DialogResult.Value) return;
             var xElement = dialog.GetElement();
 
-            if (!Data.Save(xElement))
+            if (!DBFactory.GetData().Save(xElement))
             {
                 MessageBox.Show("update Tree item Failed.");
                 return;
@@ -263,7 +263,7 @@ namespace AutoX
             if (!dialog.DialogResult.HasValue || !dialog.DialogResult.Value) return;
             var xElement = dialog.GetElement();
 
-            if (!Data.Save(xElement))
+            if (!DBFactory.GetData().Save(xElement))
             {
                 MessageBox.Show("update Tree item Failed.");
             }

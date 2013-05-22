@@ -116,6 +116,16 @@ namespace AutoX.Basic
                     .Aggregate(retString, (current, a) => current + (" " + a.Name + " : " + a.Value + "\n"));
         }
 
+        public static XElement GetSubElement(this XElement current, string key, string value)
+        {
+            foreach (var e in current.Descendants())
+            {
+                if (e.GetAttributeValue(key).Equals(value))
+                    return e;
+            }
+            return null;
+        }
+
         public static XElement GetRootElement(this XElement current)
         {
             var parent = current;
