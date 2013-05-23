@@ -35,6 +35,7 @@ namespace AutoX
 	<Rule Action='CreateFolder' Type='Folder' Object='Data' />
 	<Rule Action='CreateFolder' Type='Folder' Object='UI' />
     <Rule Action='CreateData' Type='Folder' Object='Data' />
+    <Rule Action='CreateData' Type='Folder' Object='Folder' />
 </Validation>"
             );
 
@@ -487,19 +488,26 @@ namespace AutoX
         {
             var selected = InstanceTable.SelectedItem as Instance;
             if (selected == null) return;
-            var sRoot = Communication.GetInstance().StartInstance(selected._id);
-            var xRoot = XElement.Parse(sRoot);
-            var result = xRoot.GetAttributeValue(Constants.RESULT);
-            if (string.IsNullOrEmpty(result)) return;
-            if (result.Equals("Error"))
+            try
             {
-                MessageBox.Show("Start Instance failed!\nReason:" +
-                                xRoot.GetAttributeValue("Reason"));
+                var sRoot = Communication.GetInstance().StartInstance(selected._id);
+                var xRoot = XElement.Parse(sRoot);
+                var result = xRoot.GetAttributeValue(Constants.RESULT);
+                if (string.IsNullOrEmpty(result)) return;
+                if (result.Equals("Error"))
+                {
+                    MessageBox.Show("Start Instance failed!\nReason:" +
+                                    xRoot.GetAttributeValue("Reason"));
+                }
+                else
+                {
+                    //update the table
+                    RefreshSuite(sender, e);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                //update the table
-                RefreshSuite(sender, e);
+                MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -507,61 +515,82 @@ namespace AutoX
         {
             var selected = InstanceTable.SelectedItem as Instance;
             if (selected == null) return;
-            var sRoot = Communication.GetInstance().StopInstance(selected._id);
-            var xRoot = XElement.Parse(sRoot);
-            var result = xRoot.GetAttributeValue(Constants.RESULT);
-            if (string.IsNullOrEmpty(result)) return;
-            if (result.Equals("Error"))
+            try
             {
-                MessageBox.Show("Stop Instance failed!\nReason:" +
-                                xRoot.GetAttributeValue("Reason"));
-            }
-            else
-            {
-                //update the table
-                var source = InstanceTable.ItemsSource as List<Instance>;
-                if (source != null)
+                var sRoot = Communication.GetInstance().StopInstance(selected._id);
+                var xRoot = XElement.Parse(sRoot);
+                var result = xRoot.GetAttributeValue(Constants.RESULT);
+                if (string.IsNullOrEmpty(result)) return;
+                if (result.Equals("Error"))
                 {
-                    var index = source.IndexOf(selected);
-                    (source[index]).Status = "Stop";
+                    MessageBox.Show("Stop Instance failed!\nReason:" +
+                                    xRoot.GetAttributeValue("Reason"));
                 }
-                InstanceTable.ItemsSource = source;
-                InstanceTable.Items.Refresh();
+                else
+                {
+                    //update the table
+                    var source = InstanceTable.ItemsSource as List<Instance>;
+                    if (source != null)
+                    {
+                        var index = source.IndexOf(selected);
+                        (source[index]).Status = "Stop";
+                    }
+                    InstanceTable.ItemsSource = source;
+                    InstanceTable.Items.Refresh();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
         private void RefreshSuite(object sender, RoutedEventArgs e)
         {
             e.Handled = true;
-            var sRoot = Communication.GetInstance().GetInstancesInfo();
-            Log.Debug("Instances:\n" + sRoot);
-            var xRoot = XElement.Parse(sRoot);
-
-            //update the table
-            _instanceSource.Clear();
-            //var instances = new List<Instance>();
-
-            foreach (XElement descendant in xRoot.Descendants())
+            try
             {
-                descendant.Name = "AutoX.Basic.Model.Instance";
-                var instance = descendant.GetObjectFromXElement() as Instance;
-                if (instance != null) _instanceSource.Add(instance);
+                var sRoot = Communication.GetInstance().GetInstancesInfo();
+                Log.Debug("Instances:\n" + sRoot);
+                var xRoot = XElement.Parse(sRoot);
+
+                //update the table
+                _instanceSource.Clear();
+                //var instances = new List<Instance>();
+
+                foreach (XElement descendant in xRoot.Descendants())
+                {
+                    descendant.Name = "AutoX.Basic.Model.Instance";
+                    var instance = descendant.GetObjectFromXElement() as Instance;
+                    if (instance != null) _instanceSource.Add(instance);
+                }
+                InstanceTable.ItemsSource = _instanceSource.Get();
             }
-            InstanceTable.ItemsSource = _instanceSource.Get();
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void SaveSuite(object sender, RoutedEventArgs e)
         {
             var selected = InstanceTable.SelectedItem as Instance;
             if (selected == null) return;
-            var sRoot = Communication.GetInstance().SetInstanceInfo(selected.GetXElementFromObject());
-            var xRoot = XElement.Parse(sRoot);
-            var result = xRoot.GetAttributeValue(Constants.RESULT);
-            if (string.IsNullOrEmpty(result)) return;
-            if (result.Equals("Error"))
+            try
             {
-                MessageBox.Show("Update Instance failed!\nReason:" +
-                                xRoot.GetAttributeValue("Reason"));
+                var sRoot = Communication.GetInstance().SetInstanceInfo(selected.GetXElementFromObject());
+                var xRoot = XElement.Parse(sRoot);
+                var result = xRoot.GetAttributeValue(Constants.RESULT);
+                if (string.IsNullOrEmpty(result)) return;
+                if (result.Equals("Error"))
+                {
+                    MessageBox.Show("Update Instance failed!\nReason:" +
+                                    xRoot.GetAttributeValue("Reason"));
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -569,24 +598,31 @@ namespace AutoX
         {
             var selected = InstanceTable.SelectedItem as Instance;
             if (selected == null) return;
-            var sRoot = Communication.GetInstance().DeleteInstance(selected._id);
-            var xRoot = XElement.Parse(sRoot);
-            var result = xRoot.GetAttributeValue(Constants.RESULT);
-            if (string.IsNullOrEmpty(result)) return;
-            if (result.Equals("Error"))
+            try
             {
-                MessageBox.Show("Delete Instance failed!\nReason:" +
-                                xRoot.GetAttributeValue("Reason"));
-            }
-            else
-            {
-                var source = InstanceTable.ItemsSource as List<Instance>;
-                if (source != null)
+                var sRoot = Communication.GetInstance().DeleteInstance(selected._id);
+                var xRoot = XElement.Parse(sRoot);
+                var result = xRoot.GetAttributeValue(Constants.RESULT);
+                if (string.IsNullOrEmpty(result)) return;
+                if (result.Equals("Error"))
                 {
-                    source.Remove(selected);
-                    InstanceTable.Items.Clear();
-                    InstanceTable.ItemsSource = source;
+                    MessageBox.Show("Delete Instance failed!\nReason:" +
+                                    xRoot.GetAttributeValue("Reason"));
                 }
+                else
+                {
+                    var source = InstanceTable.ItemsSource as List<Instance>;
+                    if (source != null)
+                    {
+                        source.Remove(selected);
+                        InstanceTable.Items.Clear();
+                        InstanceTable.ItemsSource = source;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

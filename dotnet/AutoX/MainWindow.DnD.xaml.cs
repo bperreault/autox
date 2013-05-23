@@ -243,21 +243,28 @@ namespace AutoX
                     Status = "Ready",
                     TestName = "NewTest"
                 };
-            var sRoot = Communication.GetInstance().SetInstanceInfo(newInstance.GetXElementFromObject());
-            var xRoot = XElement.Parse(sRoot);
-            var result = xRoot.GetAttributeValue(Constants.RESULT);
-            if (string.IsNullOrEmpty(result)) return;
-            if (result.Equals("Error"))
+            try
             {
-                MessageBox.Show("Update Instance failed!\nReason:" +
-                                xRoot.GetAttributeValue("Reason"));
-                return;
-            }
-            _instanceSource.Add(newInstance);
-            InstanceTable.ItemsSource = _instanceSource.Get();
+                var sRoot = Communication.GetInstance().SetInstanceInfo(newInstance.GetXElementFromObject());
+                var xRoot = XElement.Parse(sRoot);
+                var result = xRoot.GetAttributeValue(Constants.RESULT);
+                if (string.IsNullOrEmpty(result)) return;
+                if (result.Equals("Error"))
+                {
+                    MessageBox.Show("Update Instance failed!\nReason:" +
+                                    xRoot.GetAttributeValue("Reason"));
+                    return;
+                }
+                _instanceSource.Add(newInstance);
+                InstanceTable.ItemsSource = _instanceSource.Get();
 
-            e.Effects = DragDropEffects.None;
-            e.Handled = true;
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void InstanceTableDrop(object sender, DragEventArgs e)
@@ -274,21 +281,28 @@ namespace AutoX
                 Status = "Ready",
                 TestName = "NewTest"
             };
-            var sRoot = Communication.GetInstance().SetInstanceInfo(newInstance.GetXElementFromObject());
-            var xRoot = XElement.Parse(sRoot);
-            var result = xRoot.GetAttributeValue(Constants.RESULT);
-            if (string.IsNullOrEmpty(result)) return;
-            if (result.Equals("Error"))
+            try
             {
-                MessageBox.Show("Update Instance failed!\nReason:" +
-                                xRoot.GetAttributeValue("Reason"));
-                return;
-            }
-            _instanceSource.Add(newInstance);
-            InstanceTable.ItemsSource = _instanceSource.Get();
+                var sRoot = Communication.GetInstance().SetInstanceInfo(newInstance.GetXElementFromObject());
+                var xRoot = XElement.Parse(sRoot);
+                var result = xRoot.GetAttributeValue(Constants.RESULT);
+                if (string.IsNullOrEmpty(result)) return;
+                if (result.Equals("Error"))
+                {
+                    MessageBox.Show("Update Instance failed!\nReason:" +
+                                    xRoot.GetAttributeValue("Reason"));
+                    return;
+                }
+                _instanceSource.Add(newInstance);
+                InstanceTable.ItemsSource = _instanceSource.Get();
 
-            e.Effects = DragDropEffects.None;
-            e.Handled = true;
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }        
     }
 }

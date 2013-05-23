@@ -179,7 +179,7 @@ namespace AutoX
                 if (treeViewName.Equals("SuiteTree"))
                 {
                     var type = kid.GetAttributeValue(Constants._TYPE);
-                    if (type.Equals(Constants.SCRIPT))
+                    if (type!=null && type.Equals(Constants.SCRIPT))
                     {
                         var scriptType = kid.GetAttributeValue(Constants.SCRIPT_TYPE);
                         if (!scriptType.Equals("TestSuite")) continue;

@@ -15,10 +15,9 @@ namespace AutoX.DB
             xElement.SetAttributeValue("Updated", DateTime.UtcNow.ToString());
             string id = xElement.GetAttributeValue("_id");
             string parentId = xElement.GetAttributeValue("_parentId");
-            if (xElement.Attribute("Created") == null)
+            if (MysqlDBManager.GetInstance().Find(id) == null)
             {
                 xElement.SetAttributeValue("Created", DateTime.UtcNow.ToString());
-
                 MysqlDBManager.GetInstance().CreateContent(id, xElement.ToString());
                 
             }

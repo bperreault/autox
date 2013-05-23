@@ -32,13 +32,20 @@ namespace AutoX
 
         private void RefreshClientTable(object sender, RoutedEventArgs e)
         {
-            var ret = Communication.GetInstance().GetComputersInfo();
-            _clientSource.Clear();
-            foreach (XElement computer in XElement.Parse(ret).Descendants())
+            try
             {
-                _clientSource.Add(Computer.FromXElement(computer));
+                var ret = Communication.GetInstance().GetComputersInfo();                
+                _clientSource.Clear();                
+                foreach (XElement computer in XElement.Parse(ret).Descendants())
+                {
+                    _clientSource.Add(Computer.FromXElement(computer));
+                }
+                ClientTable.ItemsSource = _clientSource.Get();
             }
-            ClientTable.ItemsSource = _clientSource.Get();
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void ClientTableEnterFilter(object sender, KeyEventArgs e)
