@@ -124,7 +124,7 @@ namespace AutoX
             }
         }
 
-        private static void LoadCustomActivities(ToolboxControl tbc, Assembly customAss, string categoryTitle)
+        private void LoadCustomActivities(ToolboxControl tbc, Assembly customAss, string categoryTitle)
         {
             var types = customAss.GetTypes().
                                   Where(t => (typeof (Activity).IsAssignableFrom(t) ||

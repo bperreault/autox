@@ -115,7 +115,7 @@
                                     </TreeView>
                                 </Grid>
                             </TabItem>
-                            <TabItem Header="XML Source " Name="tabItem1">
+                            <TabItem Header="XML Source " Name="tabItem1" Visibility="Hidden">
                                 <Grid>
                                     <TextBox Name="debugInfo" HorizontalScrollBarVisibility="Auto"
                                              VerticalScrollBarVisibility="Auto" />
@@ -396,7 +396,7 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="Translation" BorderThickness="2" Width="128">
+            <TabItem Header="Translation" BorderThickness="2" Width="128" Visibility="Hidden">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />

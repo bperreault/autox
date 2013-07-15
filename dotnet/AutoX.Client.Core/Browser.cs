@@ -150,13 +150,27 @@ namespace AutoX.Client.Core
             else
             {
                 var id = xe.GetAttributeValue("id");
-                if (string.IsNullOrEmpty(id))
+                var value = xe.GetAttributeValue("value");
+                var name = xe.GetAttributeValue("name");
+                if (!string.IsNullOrEmpty(id))
                 {
-                    xe.SetAttributeValue(Constants.NAME, "EmptyName");
+                    xe.SetAttributeValue(Constants.NAME, "Id_" + id);
+                }
+                else if (!string.IsNullOrEmpty(name))
+                {
+                    xe.SetAttributeValue(Constants.NAME, name);
+                }
+                else if (!string.IsNullOrEmpty(value))
+                {
+                    xe.SetAttributeValue(Constants.NAME, value);
+                }
+                else if (!string.IsNullOrEmpty(eText))
+                {
+                    xe.SetAttributeValue(Constants.NAME, eText);
                 }
                 else
                 {
-                    xe.SetAttributeValue(Constants.NAME, "Id_" + id);
+                    xe.SetAttributeValue(Constants.NAME, "EmptyName");
                 }
             }
             return xe;

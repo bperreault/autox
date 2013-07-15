@@ -106,8 +106,9 @@ namespace AutoX.WF.Core
             var buildName = Variables.ContainsKey("AUTBuild") ? Variables["AUTBuild"] : "TestBuild";
             if (!string.IsNullOrEmpty(rootId))
             {
-                var _1stLevelKid = DBFactory.GetData().Read(rootId);
-                var resultId = _1stLevelKid.GetAttributeValue("Result");
+                XElement xRoot = DBFactory.GetData().GetChildren(rootId);
+
+                var resultId = xRoot.GetSubElement("Name", Constants.RESULT).GetAttributeValue("_id");
 
                 if (!string.IsNullOrEmpty(resultId))
                 {
