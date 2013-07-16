@@ -18,18 +18,18 @@
             <ColumnDefinition Width="1.8*" />
             <ColumnDefinition Width="3*" />
         </Grid.ColumnDefinitions>
-        <Label Margin="5"  Grid.Row="0" Grid.ColumnSpan="2" Content="Input Version and Build Number."></Label>
-        <Label Margin="5"  Grid.Row="1" Grid.ColumnSpan="2" Content="Choose the platform, browser type and version"></Label>
+        <Label Margin="5"  Grid.Row="0" Grid.ColumnSpan="2" Content="Input Version and Build Number." />
+        <Label Margin="5"  Grid.Row="1" Grid.ColumnSpan="2" Content="Choose the platform, browser type and version" />
         <Label Margin="5" Grid.Row="2" Grid.Column="0" Content="Version:"/>
         <TextBox Margin="5" Grid.Row="2" Grid.Column="1" Name="AUT_Version"/>
         <Label Margin="5" Grid.Row="3" Grid.Column="0" Content="Build:"/>
         <TextBox Margin="5" Grid.Row="3" Grid.Column="1" Name="AUT_Build" />
         <Label Margin="5" Grid.Row="4" Grid.Column="0" Content="Browser Type:" />
-        <ComboBox Margin="5" Grid.Row="4" Grid.Column="1" Name="BrowserType" SelectionChanged="BrowserType_OnSelectionChanged"  ></ComboBox>
+        <ComboBox Margin="5" Grid.Row="4" Grid.Column="1" Name="BrowserType" SelectionChanged="BrowserType_OnSelectionChanged" />
         <Label Margin="5" Grid.Row="5" Grid.Column="0" Content="OS / Platform:" />
-        <ComboBox Margin="5" Grid.Row="5" Grid.Column="1" Name="Platform" SelectionChanged="Platform_OnSelectionChanged"></ComboBox>
+        <ComboBox Margin="5" Grid.Row="5" Grid.Column="1" Name="Platform" SelectionChanged="Platform_OnSelectionChanged" />
         <Label Margin="5" Grid.Row="6" Grid.Column="0" Content="Browser Version:" ToolTip="Some Browser only use latest version as default."/>
-        <ComboBox Margin="5" Grid.Row="6" Grid.Column="1"  Name="Version" SelectionChanged="Version_OnSelectionChanged"></ComboBox>
+        <ComboBox Margin="5" Grid.Row="6" Grid.Column="1"  Name="Version" SelectionChanged="Version_OnSelectionChanged" />
 
         <StackPanel Grid.Row="7" Grid.ColumnSpan="2" Orientation="Horizontal">
             <Button Name="OkButton" IsDefault="True" Width="135" Click="OkButtonClick" Margin="5">OK</Button>

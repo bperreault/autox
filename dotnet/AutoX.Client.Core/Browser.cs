@@ -30,7 +30,7 @@ namespace AutoX.Client.Core
         private readonly Hashtable _pool = new Hashtable();
 
         private IWebDriver _browser;
-        private Config _config;
+        private readonly Config _config;
 
         public Browser(Config config)
         {

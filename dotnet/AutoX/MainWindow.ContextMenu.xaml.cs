@@ -1,4 +1,6 @@
-﻿// Hapa Project, CC
+﻿#region
+
+// Hapa Project, CC
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
@@ -7,18 +9,20 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Xml.Linq;
 using AutoX.Basic;
 using AutoX.Basic.Model;
+using AutoX.Client.Core;
 using AutoX.Comm;
 using AutoX.DB;
-using Microsoft.Win32;
 using AutoX.WF.Core;
-using AutoX.Client.Core;
-using System.Threading;
+using Microsoft.Win32;
+
+#endregion
 
 #endregion
 
@@ -39,9 +43,10 @@ namespace AutoX
 </Validation>"
             );
 
+        private AutoClient _autoClient = new AutoClient();
+
         private void BrowserSetting(object sender, RoutedEventArgs e)
         {
-
             PopupBrowsersDialogSetDefaultConfig();
         }
 
@@ -59,11 +64,10 @@ namespace AutoX
             }
         }
 
-        AutoClient _autoClient = new AutoClient();
         private void StartBrowser(object sender, RoutedEventArgs e)
         {
             _autoClient.Browser.StartBrowser();
-        }   
+        }
 
         private void GetUIObjectsSaveToFile(object sender, RoutedEventArgs e)
         {
@@ -82,7 +86,7 @@ namespace AutoX
         private void CloseBrowser(object sender, RoutedEventArgs e)
         {
             _autoClient.Browser.CloseBrowser();
-        }  
+        }
 
         private void RunSauceTest(object sender, RoutedEventArgs e)
         {
@@ -111,6 +115,7 @@ namespace AutoX
             //when finished, show a message
             MessageBox.Show("Your Test finished.");
         }
+
         private void RunTest(object sender, RoutedEventArgs e)
         {
             //get workflowid from project tree
@@ -125,7 +130,7 @@ namespace AutoX
             var workflowId = selectedItem.GetAttributeValue(Constants._ID);
             var type = selectedItem.GetAttributeValue(Constants._TYPE);
             var scriptType = selectedItem.GetAttributeValue(Constants.SCRIPT_TYPE);
-            if (!type.Equals(Constants.SCRIPT)||!scriptType.Equals("TestSuite"))
+            if (!type.Equals(Constants.SCRIPT) || !scriptType.Equals("TestSuite"))
             {
                 MessageBox.Show("Selected Item MUST be a Test Script!");
                 return;
@@ -136,17 +141,15 @@ namespace AutoX
             /***********end of instance*******************/
             //when finished, show a message
             MessageBox.Show("Your Test finished.");
-            
         }
 
         private void RunWorkflowById(string workflowId)
         {
-            
-            var workflowInstance = new WorkflowInstance(Guid.NewGuid().ToString(),workflowId, _config.GetList());
+            var workflowInstance = new WorkflowInstance(Guid.NewGuid().ToString(), workflowId, _config.GetList());
             workflowInstance.ClientId = _config.Get("_id", Guid.NewGuid().ToString());
             ClientInstancesManager.GetInstance().Register(_config.SetRegisterBody(XElement.Parse("<Register />")));
             workflowInstance.Start();
-            bool debugMode = _config.Get("ModeDebug", "True").Equals("True", StringComparison.CurrentCultureIgnoreCase);
+            var debugMode = _config.Get("ModeDebug", "True").Equals("True", StringComparison.CurrentCultureIgnoreCase);
             while (true)
             {
                 var xCommand = workflowInstance.GetCommand();
@@ -169,7 +172,6 @@ namespace AutoX
 
         private void GenerateKeyFile(object sender, RoutedEventArgs e)
         {
-            
             if (AsymmetricEncryption.GenerateRegisterFile())
             {
                 MessageBox.Show(
@@ -179,7 +181,7 @@ namespace AutoX
             else
             {
                 MessageBox.Show("Please add your user name to the config file, remove entry of \"PublicKey\"",
-                                "Failed, Check and Do Again");
+                    "Failed, Check and Do Again");
             }
         }
 
@@ -388,7 +390,7 @@ namespace AutoX
             var selected = DataTree.SelectedItem as TreeViewItem;
             if (selected == null)
                 return;
-            
+
             if (!BeforeActionCheck(DataTree, "CreateData", Constants.DATA))
             {
                 MessageBox.Show("Not Valid Operation");
@@ -412,11 +414,11 @@ namespace AutoX
             }
             var xParent = selected.DataContext as XElement;
             var dialog = new OpenFileDialog
-                {
-                    Filter = "Screen GUI File (.xml)|*.xml|All Files (*.*)|*.*",
-                    FilterIndex = 1,
-                    Multiselect = false
-                };
+            {
+                Filter = "Screen GUI File (.xml)|*.xml|All Files (*.*)|*.*",
+                FilterIndex = 1,
+                Multiselect = false
+            };
             // Set filter options and filter index.
 
             var dialogResult = dialog.ShowDialog(this);
@@ -432,7 +434,7 @@ namespace AutoX
         private static void InitTree(ItemsControl tree, string rootId)
         {
             var xRoot = DBFactory.GetData().Read(rootId);
-            if (xRoot==null)
+            if (xRoot == null)
             {
                 MessageBox.Show("Get Tree Root Failed. id=" + rootId);
                 return;

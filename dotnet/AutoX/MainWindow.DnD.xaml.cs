@@ -1,4 +1,6 @@
-﻿// Hapa Project, CC
+﻿#region
+
+// Hapa Project, CC
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
@@ -14,6 +16,8 @@ using AutoX.Basic;
 using AutoX.Basic.Model;
 using AutoX.Comm;
 using AutoX.DB;
+
+#endregion
 
 #endregion
 
@@ -72,7 +76,7 @@ namespace AutoX
                 {
                     //sender to find the source item, then delete it
                     var toDelete = FindItemOnTree((sender as TreeView), Constants._ID,
-                                                  data.GetAttributeValue(Constants._ID));
+                        data.GetAttributeValue(Constants._ID));
                     if (toDelete != null)
                     {
                         var parent = toDelete.Parent as TreeViewItem;
@@ -233,47 +237,9 @@ namespace AutoX
             if (client == null) return;
 
             var newInstance = new Instance
-                {
-                    ClientId = client._id,
-                    ClientName = client.ComputerName,
-                    Language = "Default",
-                    _id = Guid.NewGuid().ToString(),
-                    ScriptGUID = data.GetAttributeValue(Constants._ID),
-                    SuiteName = data.GetAttributeValue(Constants.NAME),
-                    Status = "Ready",
-                    TestName = "NewTest"
-                };
-            try
             {
-                var sRoot = Communication.GetInstance().SetInstanceInfo(newInstance.GetXElementFromObject());
-                var xRoot = XElement.Parse(sRoot);
-                var result = xRoot.GetAttributeValue(Constants.RESULT);
-                if (string.IsNullOrEmpty(result)) return;
-                if (result.Equals("Error"))
-                {
-                    MessageBox.Show("Update Instance failed!\nReason:" +
-                                    xRoot.GetAttributeValue("Reason"));
-                    return;
-                }
-                _instanceSource.Add(newInstance);
-                InstanceTable.ItemsSource = _instanceSource.Get();
-
-                e.Effects = DragDropEffects.None;
-                e.Handled = true;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private void InstanceTableDrop(object sender, DragEventArgs e)
-        {
-            var data = e.Data.GetData(Constants.DATA_FORMAT) as XElement;
-            if (data == null) return;
-            
-            var newInstance = new Instance
-            {                
+                ClientId = client._id,
+                ClientName = client.ComputerName,
                 Language = "Default",
                 _id = Guid.NewGuid().ToString(),
                 ScriptGUID = data.GetAttributeValue(Constants._ID),
@@ -303,6 +269,44 @@ namespace AutoX
             {
                 MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-        }        
+        }
+
+        private void InstanceTableDrop(object sender, DragEventArgs e)
+        {
+            var data = e.Data.GetData(Constants.DATA_FORMAT) as XElement;
+            if (data == null) return;
+
+            var newInstance = new Instance
+            {
+                Language = "Default",
+                _id = Guid.NewGuid().ToString(),
+                ScriptGUID = data.GetAttributeValue(Constants._ID),
+                SuiteName = data.GetAttributeValue(Constants.NAME),
+                Status = "Ready",
+                TestName = "NewTest"
+            };
+            try
+            {
+                var sRoot = Communication.GetInstance().SetInstanceInfo(newInstance.GetXElementFromObject());
+                var xRoot = XElement.Parse(sRoot);
+                var result = xRoot.GetAttributeValue(Constants.RESULT);
+                if (string.IsNullOrEmpty(result)) return;
+                if (result.Equals("Error"))
+                {
+                    MessageBox.Show("Update Instance failed!\nReason:" +
+                                    xRoot.GetAttributeValue("Reason"));
+                    return;
+                }
+                _instanceSource.Add(newInstance);
+                InstanceTable.ItemsSource = _instanceSource.Get();
+
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
     }
 }

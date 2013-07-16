@@ -1,4 +1,6 @@
-﻿// Hapa Project, CC
+﻿#region
+
+// Hapa Project, CC
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
@@ -10,9 +12,9 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Media.Animation;
 using System.Xml.Linq;
 using AutoX.Basic;
-using AutoX.Comm;
 using AutoX.DB;
-using IDataObject = AutoX.Basic.Model.IDataObject;
+
+#endregion
 
 #endregion
 
@@ -23,7 +25,8 @@ namespace AutoX
     /// </summary>
     public partial class MainWindow : IHost
     {
-        private Config _config = Configuration.Clone();
+        private readonly Config _config = Configuration.Clone();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -45,7 +48,7 @@ namespace AutoX
                 MessageBox.Show("Check your configuration settings, no Root entry");
                 return;
             }
-            XElement xRoot = DBFactory.GetData().GetChildren(rootId);
+            var xRoot = DBFactory.GetData().GetChildren(rootId);
 
             Configuration.Set("ProjectRoot", xRoot.GetSubElement("Name", "Project").GetAttributeValue("_id"));
             Configuration.Set("ResultsRoot", xRoot.GetSubElement("Name", Constants.RESULT).GetAttributeValue("_id"));
@@ -62,7 +65,7 @@ namespace AutoX
 
         #region IHost Members
 
-        public void SetCommand( XElement steps)
+        public void SetCommand(XElement steps)
         {
             throw new NotImplementedException("This method should never be called.");
         }
@@ -113,7 +116,5 @@ namespace AutoX
         }
 
         #endregion Progress bar
-
-        
     }
 }

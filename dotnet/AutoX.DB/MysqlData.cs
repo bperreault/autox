@@ -1,25 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿#region
+
+using System;
+using System.Globalization;
 using System.Xml.Linq;
 using AutoX.Basic;
+
+#endregion
 
 namespace AutoX.DB
 {
     public class MysqlData : IData
     {
-        public bool Save(System.Xml.Linq.XElement xElement)
+        public bool Save(XElement xElement)
         {
-            xElement.SetAttributeValue("Updated", DateTime.UtcNow.ToString());
-            string id = xElement.GetAttributeValue("_id");
-            string parentId = xElement.GetAttributeValue("_parentId");
+            xElement.SetAttributeValue("Updated", DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
+            var id = xElement.GetAttributeValue("_id");
+            var parentId = xElement.GetAttributeValue("_parentId");
             if (MysqlDBManager.GetInstance().Find(id) == null)
             {
-                xElement.SetAttributeValue("Created", DateTime.UtcNow.ToString());
+                xElement.SetAttributeValue("Created", DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
                 MysqlDBManager.GetInstance().CreateContent(id, xElement.ToString());
-                
             }
             else
             {
@@ -30,7 +30,7 @@ namespace AutoX.DB
             return true;
         }
 
-        public System.Xml.Linq.XElement Read(string id)
+        public XElement Read(string id)
         {
             return MysqlDBManager.GetInstance().Find(id);
         }
@@ -40,7 +40,7 @@ namespace AutoX.DB
             MysqlDBManager.GetInstance().Remove(id);
         }
 
-        public System.Xml.Linq.XElement GetChildren(string id)
+        public XElement GetChildren(string id)
         {
             return MysqlDBManager.GetInstance().GetChildren(id);
         }

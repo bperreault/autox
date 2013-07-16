@@ -1,27 +1,26 @@
-﻿using AutoX.Basic;
-using MySql.Data.MySqlClient;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Globalization;
 using System.Xml.Linq;
+using AutoX.Basic;
+using MySql.Data.MySqlClient;
 
 namespace AutoX.DB
 {
     public class MysqlDBManager
     {
         private static MysqlDBManager _instance;
-        private MySqlConnection connection;
+        private readonly MySqlConnection _connection;
 
 
         private MysqlDBManager()
         {
-            connection = new MySqlConnection(Configuration.Settings("DBConnectionString", "Server=localhost;Database=autox;Uid=root;Pwd=Gene4hje;"));
-            connection.Open();
+            _connection =
+                new MySqlConnection(Configuration.Settings("DBConnectionString",
+                    "Server=localhost;Database=autox;Uid=root;Pwd=Gene4hje;"));
+            _connection.Open();
             //check: if table is empty, create basic data
-            MySqlCommand cmd = new MySqlCommand("select count(*) from content", connection);
+            var cmd = new MySqlCommand("select count(*) from content", _connection);
             Int32 count = Convert.ToInt32(cmd.ExecuteScalar());
             if (count > 0)
                 return;
@@ -33,7 +32,6 @@ namespace AutoX.DB
             CreateSubItem(rootId, "Folder", "Result");
 
             CreateSubItem("", "Project", "Root", rootId);
-
         }
 
         private void CreateSubItem(string parentId, string type, string name)
@@ -44,17 +42,17 @@ namespace AutoX.DB
 
         private void CreateSubItem(string parentId, string type, string name, string id)
         {
-            XElement xElement = new XElement(type);
+            var xElement = new XElement(type);
             xElement.SetAttributeValue("_id", id);
             xElement.SetAttributeValue("_parentId", parentId);
             xElement.SetAttributeValue("_type", type);
             xElement.SetAttributeValue("Name", name);
-            xElement.SetAttributeValue("Created", DateTime.UtcNow.ToString());
-            xElement.SetAttributeValue("Updated", DateTime.UtcNow.ToString());
+            xElement.SetAttributeValue("Created", DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
+            xElement.SetAttributeValue("Updated", DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
             CreateContent(id, xElement.ToString());
             CreateRelationship(parentId, "Parent-Kid", id);
         }
-        
+
         public static MysqlDBManager GetInstance()
         {
             return _instance ?? (_instance = new MysqlDBManager());
@@ -62,17 +60,17 @@ namespace AutoX.DB
 
         public void RemoveRelationship(string id)
         {
-            MySqlCommand comm2 = new MySqlCommand("delete from relationship where slave=@id", connection);
+            var comm2 = new MySqlCommand("delete from relationship where slave=@id", _connection);
             comm2.Parameters.AddWithValue("@id", id);
             comm2.ExecuteNonQuery();
         }
 
         public void Remove(string id)
         {
-            MySqlCommand comm1 = new MySqlCommand("delete from content where id=@id", connection);
+            var comm1 = new MySqlCommand("delete from content where id=@id", _connection);
             comm1.Parameters.AddWithValue("@id", id);
             comm1.ExecuteNonQuery();
-            MySqlCommand comm2 = new MySqlCommand("delete from relationship where master=@id or slave=@id", connection);
+            var comm2 = new MySqlCommand("delete from relationship where master=@id or slave=@id", _connection);
             comm2.Parameters.AddWithValue("@id", id);
             comm2.ExecuteNonQuery();
         }
@@ -80,7 +78,7 @@ namespace AutoX.DB
         public XElement Find(string id)
         {
             string content = null;
-            MySqlCommand cmd = new MySqlCommand("select data from content where id=@id", connection);
+            var cmd = new MySqlCommand("select data from content where id=@id", _connection);
             cmd.Parameters.AddWithValue("@id", id);
             MySqlDataReader reader = cmd.ExecuteReader();
             if (reader.Read())
@@ -93,12 +91,13 @@ namespace AutoX.DB
             return XElement.Parse(content);
         }
 
-        public List<string> GetKids(string parentId)
+        private IEnumerable<string> GetKids(string parentId)
         {
-            List<string> list = new List<string>();
-            MySqlCommand cmd = new MySqlCommand("select slave from relationship where master=@parentId and type='Parent-Kid'", connection);
+            var list = new List<string>();
+            var cmd = new MySqlCommand("select slave from relationship where master=@parentId and type='Parent-Kid'",
+                _connection);
             cmd.Parameters.AddWithValue("@parentId", parentId);
-            MySqlDataReader reader = cmd.ExecuteReader();
+            var reader = cmd.ExecuteReader();
             while (reader.Read())
                 list.Add(reader.GetString(0));
             reader.Close();
@@ -108,8 +107,8 @@ namespace AutoX.DB
         public XElement GetChildren(string parentId)
         {
             var kids = new XElement("Children");
-            var directKids = GetKids(parentId);
-            foreach (var directKid in directKids)
+            IEnumerable<string> directKids = GetKids(parentId);
+            foreach (string directKid in directKids)
             {
                 kids.Add(Find(directKid));
             }
@@ -118,7 +117,7 @@ namespace AutoX.DB
 
         public void UpdateContent(string id, string content)
         {
-            MySqlCommand comm1 = new MySqlCommand("update content set data=@content  where id=@id", connection);
+            var comm1 = new MySqlCommand("update content set data=@content  where id=@id", _connection);
             comm1.Parameters.AddWithValue("@id", id);
             comm1.Parameters.AddWithValue("@content", content);
             comm1.ExecuteNonQuery();
@@ -126,7 +125,8 @@ namespace AutoX.DB
 
         public void UpdateRelationship(string masterId, string type, string slaveId)
         {
-            MySqlCommand comm1 = new MySqlCommand("update relationship set type=@type, slave=@slave where master=@master", connection);
+            var comm1 = new MySqlCommand("update relationship set type=@type, slave=@slave where master=@master",
+                _connection);
             comm1.Parameters.AddWithValue("@master", masterId);
             comm1.Parameters.AddWithValue("@type", type);
             comm1.Parameters.AddWithValue("@slave", slaveId);
@@ -137,7 +137,7 @@ namespace AutoX.DB
         {
             try
             {
-                MySqlCommand comm1 = new MySqlCommand("insert into content values(@id,@content)", connection);
+                var comm1 = new MySqlCommand("insert into content values(@id,@content)", _connection);
                 comm1.Parameters.AddWithValue("@id", id);
                 comm1.Parameters.AddWithValue("@content", content);
                 comm1.ExecuteNonQuery();
@@ -150,7 +150,7 @@ namespace AutoX.DB
 
         public void CreateRelationship(string master, string type, string slave)
         {
-            MySqlCommand comm1 = new MySqlCommand("insert into relationship values(@master,@type,@slave)", connection);
+            var comm1 = new MySqlCommand("insert into relationship values(@master,@type,@slave)", _connection);
             comm1.Parameters.AddWithValue("@master", master);
             comm1.Parameters.AddWithValue("@type", type);
             comm1.Parameters.AddWithValue("@slave", slave);

@@ -10,9 +10,9 @@
             <RowDefinition Height="4*" />
             <RowDefinition Height="2*" />
         </Grid.RowDefinitions>
-        <Label Grid.Column="0" Grid.Row="0" Margin="5" Content="Information:"></Label>
+        <Label Grid.Column="0" Grid.Row="0" Margin="5" Content="Information:" />
         <TextBox Grid.Column="1" Grid.Row="0" Name="infomationContent" BorderThickness="2" TextWrapping="Wrap"
-                 AcceptsReturn="True" AcceptsTab="True" Margin="5"></TextBox>
+                 AcceptsReturn="True" AcceptsTab="True" Margin="5" />
         <StackPanel Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal">
             <Button Name="okButton" IsDefault="True" Width="80" Click="OkButtonClick" Margin="5">OK</Button>
             <Button Name="cancelButton" IsCancel="True" Width="80" Click="CancelButtonClick" Margin="5">Cancel</Button>

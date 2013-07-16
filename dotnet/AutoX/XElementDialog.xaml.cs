@@ -1,15 +1,19 @@
-﻿// Hapa Project, CC
+﻿#region
+
+// Hapa Project, CC
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
 #region
 
-using AutoX.Basic;
 using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml.Linq;
+using AutoX.Basic;
+
+#endregion
 
 #endregion
 
@@ -112,12 +116,12 @@ namespace AutoX
                 )
             {
                 var label = new TextBlock
-                    {
-                        Text = a.Name.ToString(),
-                        TextWrapping = TextWrapping.Wrap,
-                        FontWeight = FontWeights.Bold
-                    };
-                var value = new TextBlock { Text = a.Value, TextWrapping = TextWrapping.Wrap };
+                {
+                    Text = a.Name.ToString(),
+                    TextWrapping = TextWrapping.Wrap,
+                    FontWeight = FontWeights.Bold
+                };
+                var value = new TextBlock {Text = a.Value, TextWrapping = TextWrapping.Wrap};
                 ContentGrid.Children.Add(label);
                 ContentGrid.Children.Add(value);
             }
@@ -131,20 +135,20 @@ namespace AutoX
                 //                    TextWrapping = TextWrapping.Wrap
                 //                };
                 //label.TextChanged += LabelTextChanged;
-                var label = new TextBlock { Text = a.Name.ToString(), FontWeight = FontWeights.Bold };
+                var label = new TextBlock {Text = a.Name.ToString(), FontWeight = FontWeights.Bold};
                 ContentGrid.Children.Add(label);
 
                 var value = new TextBox
-                    {
-                        Text = a.Value,
-                        Tag = a.Name.ToString(),
-                        MaxWidth = 768,
-                        MaxHeight = 256,
-                        TextWrapping = TextWrapping.WrapWithOverflow,
-                        VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
-                        HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
-                        AcceptsReturn = true
-                    };
+                {
+                    Text = a.Value,
+                    Tag = a.Name.ToString(),
+                    MaxWidth = 768,
+                    MaxHeight = 256,
+                    TextWrapping = TextWrapping.WrapWithOverflow,
+                    VerticalScrollBarVisibility = ScrollBarVisibility.Auto,
+                    HorizontalScrollBarVisibility = ScrollBarVisibility.Auto,
+                    AcceptsReturn = true
+                };
                 value.TextChanged += ValueTextChanged;
                 ContentGrid.Children.Add(value);
             }
@@ -154,8 +158,8 @@ namespace AutoX
 
         private void ValueTextChanged(object sender, TextChangedEventArgs e)
         {
-            var nameX = ((TextBox)sender).Tag.ToString();
-            var valueX = ((TextBox)sender).Text;
+            var nameX = ((TextBox) sender).Tag.ToString();
+            var valueX = ((TextBox) sender).Text;
             _content.SetAttributeValue(nameX, valueX);
         }
 
@@ -185,13 +189,13 @@ namespace AutoX
                 newAttrName = "NewAttribute" + i.ToString(CultureInfo.InvariantCulture).Trim();
                 i++;
             }
-            var iDlg = new InfoDialog { InfoContent = newAttrName };
+            var iDlg = new InfoDialog {InfoContent = newAttrName};
             iDlg.ShowDialog();
             if (iDlg.DialogResult == true)
             {
                 newAttrName = iDlg.InfoContent;
                 var newAttribute = new XAttribute(newAttrName,
-                                                  "NewValue" + i.ToString(CultureInfo.InvariantCulture).Trim());
+                    "NewValue" + i.ToString(CultureInfo.InvariantCulture).Trim());
                 _content.Add(newAttribute);
 
                 //ContentGrid.Rows += 1;

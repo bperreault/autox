@@ -1,18 +1,21 @@
-﻿// Hapa Project, CC
+﻿#region
+
+// Hapa Project, CC
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
 #region
 
-using AutoX.Basic;
-using AutoX.Basic.Model;
-using AutoX.DB;
 using System;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml.Linq;
+using AutoX.Basic;
+using AutoX.Basic.Model;
+using AutoX.DB;
+
+#endregion
 
 #endregion
 
@@ -20,6 +23,14 @@ namespace AutoX
 {
     public partial class MainWindow : IDisposable
     {
+        private bool disposed; // to detect redundant calls
+
+        public void Dispose()
+        {
+            Dispose(true);
+            //GC.SupressFinalize(this);
+        }
+
         public XElement GetDataObject(string id)
         {
             return DBFactory.GetData().Read(id);
@@ -27,22 +38,22 @@ namespace AutoX
 
         private bool BeforeActionCheck(TreeView treeView, string action, string objName)
         {
-            var selected = (TreeViewItem)treeView.SelectedItem;
+            var selected = (TreeViewItem) treeView.SelectedItem;
             if (selected != null)
             {
-                var type = ((XElement)selected.DataContext).GetAttributeValue(Constants._TYPE);
+                var type = ((XElement) selected.DataContext).GetAttributeValue(Constants._TYPE);
                 var query = from o in _xValidation.Descendants()
-                            where o.GetAttributeValue(Constants.ACTION).Equals(action)
-                                  && o.GetAttributeValue("Type").Equals(type)
-                                  && o.GetAttributeValue("Object").Equals(objName)
-                            select o;
+                    where o.GetAttributeValue(Constants.ACTION).Equals(action)
+                          && o.GetAttributeValue("Type").Equals(type)
+                          && o.GetAttributeValue("Object").Equals(objName)
+                    select o;
                 return (query.Any());
             }
 
             return false;
         }
 
-        public static TreeViewItem GetItemFromXElement(XElement element, string parentId)
+        private static TreeViewItem GetItemFromXElement(XElement element, string parentId)
         {
             var guid = element.GetAttributeValue(Constants._ID);
             if (string.IsNullOrEmpty(guid))
@@ -73,7 +84,7 @@ namespace AutoX
 
         private static void Delete(TreeView parent)
         {
-            var selected = (TreeViewItem)parent.SelectedItem;
+            var selected = (TreeViewItem) parent.SelectedItem;
             if (selected == null)
             {
                 return;
@@ -83,7 +94,7 @@ namespace AutoX
                 MessageBoxButton.YesNo);
 
             if (messageBoxResult != MessageBoxResult.Yes) return;
-            var xElement = (XElement)selected.DataContext;
+            var xElement = (XElement) selected.DataContext;
             if (Equals(selected.Parent, parent))
             {
                 MessageBox.Show("Cannot Delete Root Item!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -93,7 +104,7 @@ namespace AutoX
             if (parentItem == null)
             {
                 MessageBox.Show("Cannot Delete an Item without correct xml format data context!", "Warning",
-                                MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             var toBeDeletedId = xElement.GetAttributeValue(Constants._ID);
@@ -101,7 +112,6 @@ namespace AutoX
             // xElement.SetAttributeValue(Constants.PARENT_ID, "Deleted");
             DBFactory.GetData().Delete(toBeDeletedId);
             parentItem.Items.Remove(selected);
-            return;
         }
 
         private static TreeViewItem AddNewItemToTree(TreeView tree, XElement xElement)
@@ -110,8 +120,8 @@ namespace AutoX
             dialog.ShowDialog();
             if (!dialog.DialogResult.HasValue || !dialog.DialogResult.Value) return null;
             var xE = dialog.GetElement();
-            var selected = (TreeViewItem)tree.SelectedItem;
-            var xParent = (XElement)selected.DataContext;
+            var selected = (TreeViewItem) tree.SelectedItem;
+            var xParent = (XElement) selected.DataContext;
             var parentId = xParent.GetAttributeValue(Constants._ID);
 
             xE.SetAttributeValue(Constants.PARENT_ID, parentId);
@@ -174,18 +184,18 @@ namespace AutoX
         private static void HandleDoubleClick(TreeViewItem selected, string treeViewName, XElement xRoot)
         {
             selected.Items.Clear();
-            foreach (var kid in xRoot.Descendants())
+            foreach (XElement kid in xRoot.Descendants())
             {
                 if (treeViewName.Equals("SuiteTree"))
                 {
                     var type = kid.GetAttributeValue(Constants._TYPE);
-                    if (type!=null && type.Equals(Constants.SCRIPT))
+                    if (type != null && type.Equals(Constants.SCRIPT))
                     {
                         var scriptType = kid.GetAttributeValue(Constants.SCRIPT_TYPE);
                         if (!scriptType.Equals("TestSuite")) continue;
                     }
                 }
-                TreeViewItem newItem = kid.GetTreeViewItemFromXElement();
+                var newItem = kid.GetTreeViewItemFromXElement();
                 selected.Items.Add(newItem);
             }
         }
@@ -197,7 +207,7 @@ namespace AutoX
             selected.Items.Clear();
             foreach (XElement kid in xRoot.Descendants())
             {
-                string kind = kid.Name.ToString();
+                var kind = kid.Name.ToString();
                 if (kind.Equals(Constants.RESULT) || kind.Equals("AutoX.Basic.Model.Result"))
                 {
                     var testcaseresult = kid.GetDataObjectFromXElement() as Result;
@@ -206,18 +216,18 @@ namespace AutoX
                 }
                 if (kind.Equals("StepResult") || kind.Equals("AutoX.Basic.Model.StepResult"))
                 {
-                    var testStepResult = kid.GetDataObjectFromXElement() as Basic.Model.StepResult;
+                    var testStepResult = kid.GetDataObjectFromXElement() as StepResult;
                     _testStepSource.Add(testStepResult);
                 }
             }
-          
+
             TestCaseResultTable.ItemsSource = _testCaseResultSource.Get();
             TestStepsResultTable.ItemsSource = _testStepSource.Get();
         }
 
         private void TestResultTreeSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            var selected = this.TestResultTree.SelectedItem as TreeViewItem;
+            var selected = TestResultTree.SelectedItem as TreeViewItem;
             if (selected == null)
             {
                 return;
@@ -231,8 +241,6 @@ namespace AutoX
             {
                 //load its children to TestCaseResultTable
                 LoadResultTableOfTreeViewItem(selected, xRoot);
-
-                return;
             }
         }
 
@@ -242,7 +250,7 @@ namespace AutoX
             {
                 return;
             }
-            var element = ((XElement)selected.DataContext);
+            var element = ((XElement) selected.DataContext);
             var dialog = new XElementDialog(element, false);
             dialog.ShowDialog();
             if (!dialog.DialogResult.HasValue || !dialog.DialogResult.Value) return;
@@ -280,13 +288,6 @@ namespace AutoX
             return ret;
         }
 
-        private bool disposed = false; // to detect redundant calls
-        public void Dispose()
-        {
-            Dispose(true);
-            //GC.SupressFinalize(this);
-        }
-
         protected virtual void Dispose(bool disposing)
         {
             if (!disposed)
@@ -297,7 +298,6 @@ namespace AutoX
                     {
                         _autoClient.Dispose();
                     }
-                    
                 }
 
                 disposed = true;

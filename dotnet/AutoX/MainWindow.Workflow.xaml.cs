@@ -1,4 +1,6 @@
-﻿// Hapa Project, CC
+﻿#region
+
+// Hapa Project, CC
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
@@ -25,8 +27,8 @@ using AutoX.Activities.AutoActivities;
 using AutoX.Basic;
 using AutoX.DB;
 using Image = System.Drawing.Image;
-using System.Activities.Expressions;
-using System.Activities.XamlIntegration;
+
+#endregion
 
 #endregion
 
@@ -94,12 +96,12 @@ namespace AutoX
         protected void LoadToolBox()
         {
             var tbc = new ToolboxControl
+            {
+                CategoryItemStyle = new Style(typeof (TreeViewItem))
                 {
-                    CategoryItemStyle = new Style(typeof (TreeViewItem))
-                        {
-                            Setters = {new Setter(TreeViewItem.IsExpandedProperty, false)}
-                        }
-                };
+                    Setters = {new Setter(TreeViewItem.IsExpandedProperty, false)}
+                }
+            };
 
             Dispatcher.BeginInvoke(new Action(() => ToolboxBorder.Child = tbc));
             Dispatcher.BeginInvoke(new Action(() => LoadDefaultActivities(tbc)));
@@ -127,10 +129,10 @@ namespace AutoX
         private void LoadCustomActivities(ToolboxControl tbc, Assembly customAss, string categoryTitle)
         {
             var types = customAss.GetTypes().
-                                  Where(t => (typeof (Activity).IsAssignableFrom(t) ||
-                                              typeof (IActivityTemplateFactory).IsAssignableFrom(t)) &&
-                                             !t.IsAbstract && t.IsPublic &&
-                                             !t.IsNested);
+                Where(t => (typeof (Activity).IsAssignableFrom(t) ||
+                            typeof (IActivityTemplateFactory).IsAssignableFrom(t)) &&
+                           !t.IsAbstract && t.IsPublic &&
+                           !t.IsNested);
             var cat = new ToolboxCategory(categoryTitle);
             foreach (Type type in types.OrderBy(t => t.Name))
             {
@@ -149,19 +151,19 @@ namespace AutoX
         private void LoadDefaultActivities(ToolboxControl tbc)
         {
             var dict = new ResourceDictionary
-                {
-                    Source =
-                        new Uri(
-                            "pack://application:,,,/System.Activities.Presentation;component/themes/icons.xaml")
-                };
+            {
+                Source =
+                    new Uri(
+                        "pack://application:,,,/System.Activities.Presentation;component/themes/icons.xaml")
+            };
             Resources.MergedDictionaries.Add(dict);
 
             var standtypes = typeof (Activity).Assembly.GetTypes().
-                                               Where(t => (typeof (Activity).IsAssignableFrom(t) ||
-                                                           typeof (IActivityTemplateFactory)
-                                                               .IsAssignableFrom(t)) && !t.IsAbstract &&
-                                                          t.IsPublic &&
-                                                          !t.IsNested && HasDefaultConstructor(t));
+                Where(t => (typeof (Activity).IsAssignableFrom(t) ||
+                            typeof (IActivityTemplateFactory)
+                                .IsAssignableFrom(t)) && !t.IsAbstract &&
+                           t.IsPublic &&
+                           !t.IsNested && HasDefaultConstructor(t));
 
             var primary = new ToolboxCategory("Native Activities");
 
@@ -189,7 +191,7 @@ namespace AutoX
             var tbaType = typeof (ToolboxBitmapAttribute);
             var imageType = typeof (Image);
             var constructor = tbaType.GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null,
-                                                     new[] {imageType, imageType}, null);
+                new[] {imageType, imageType}, null);
 
             var resourceKey = type.IsGenericType ? type.GetGenericTypeDefinition().Name : type.Name;
             var index = resourceKey.IndexOf('`');
@@ -319,8 +321,8 @@ namespace AutoX
             //designerView.WorkflowShellBarItemVisibility = ShellBarItemVisibility.None;
             designerView.WorkflowShellHeaderItemsVisibility = ShellHeaderItemsVisibility.All;
             designerView.WorkflowShellBarItemVisibility = ShellBarItemVisibility.MiniMap
-                                                          |ShellBarItemVisibility.Zoom |ShellBarItemVisibility.PanMode
-                                                          |ShellBarItemVisibility.Variables;
+                                                          | ShellBarItemVisibility.Zoom | ShellBarItemVisibility.PanMode
+                                                          | ShellBarItemVisibility.Variables;
             //CompileExpressions(activity);
         }
 
@@ -347,7 +349,7 @@ namespace AutoX
             xElement.SetAttributeValue(Constants.CONTENT, content);
 
             var sRoot = DBFactory.GetData().Save(xElement);
-            
+
             if (!sRoot)
             {
                 MessageBox.Show("update Tree item Failed. ");

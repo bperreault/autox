@@ -1,4 +1,6 @@
-﻿// Hapa Project, CC
+﻿#region
+
+// Hapa Project, CC
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
@@ -8,6 +10,8 @@ using System;
 using System.IO;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
+
+#endregion
 
 #endregion
 
@@ -69,7 +73,7 @@ namespace AutoX
             bImage.BeginInit();
             bImage.StreamSource = ms;
             bImage.EndInit();
-            var retImage = new Image { Source = bImage };
+            var retImage = new Image {Source = bImage};
             ms.Close();
 
             return retImage;

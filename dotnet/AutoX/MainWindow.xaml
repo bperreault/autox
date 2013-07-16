@@ -16,7 +16,7 @@
                     <Menu Grid.Row="0" HorizontalAlignment="Left" Name="MainMenu" VerticalAlignment="Top"
                           BorderThickness="2">
                         <MenuItem Header="File" Name="FileMenu">
-                            <MenuItem Header="Generate Key File" Click="GenerateKeyFile"></MenuItem>
+                            <MenuItem Header="Generate Key File" Click="GenerateKeyFile" />
                             <MenuItem Header="Settings" Click="Settings" />
 
                             <MenuItem Header="Exit" Click="Exit" />
@@ -26,12 +26,12 @@
                             <MenuItem Header="Redo" Name="redoMenu" IsEnabled="False" />
                         </MenuItem>
                         <MenuItem Header="Automation">
-                            <MenuItem Header="Browser Setting" Click="BrowserSetting"></MenuItem>
-                            <MenuItem Header="Start Browser" Click="StartBrowser"></MenuItem>
-                            <MenuItem Header="Get UI Objects" Click="GetUIObjectsSaveToFile" ></MenuItem>
-                            <MenuItem Header="Close Browser" Click="CloseBrowser"></MenuItem>
-                            <MenuItem Header="Debug Test (Local)" Click="RunTest"></MenuItem>
-                            <MenuItem Header="Debug Test (Sauce)" Click="RunSauceTest"></MenuItem>
+                            <MenuItem Header="Browser Setting" Click="BrowserSetting" />
+                            <MenuItem Header="Start Browser" Click="StartBrowser" />
+                            <MenuItem Header="Get UI Objects" Click="GetUIObjectsSaveToFile" />
+                            <MenuItem Header="Close Browser" Click="CloseBrowser" />
+                            <MenuItem Header="Debug Test (Local)" Click="RunTest" />
+                            <MenuItem Header="Debug Test (Sauce)" Click="RunSauceTest" />
                         </MenuItem>
                     </Menu>
                     <Grid Grid.Row="1" Name="grid1">
@@ -71,12 +71,12 @@
                                 </Grid>
                             </TabItem>
                             <TabItem Header="Workflow" Width="96">
-                                <Border Name="ToolboxBorder" BorderThickness="2"></Border>
+                                <Border Name="ToolboxBorder" BorderThickness="2" />
                             </TabItem>
                         </TabControl>
                         <GridSplitter Grid.Column="1" Name="gridSplitter2" Width="8" ResizeBehavior="PreviousAndNext"
                                       BorderThickness="1" />
-                        <Border Grid.Column="2" Name="DesignerBorder" BorderThickness="2"></Border>
+                        <Border Grid.Column="2" Name="DesignerBorder" BorderThickness="2" />
                         <GridSplitter Grid.Column="3" Name="gridSplitter1" Width="8" ResizeBehavior="PreviousAndNext"
                                       BorderThickness="1" />
                         <Border Grid.Column="4" Name="PropertyBorder" BorderThickness="2" />
@@ -152,7 +152,7 @@
                             </TabItem>
                         </TabControl>
                     </Grid>
-                    <ProgressBar Name="Progressing" Grid.Row="4" Height="16" Visibility="Visible"></ProgressBar>
+                    <ProgressBar Name="Progressing" Grid.Row="4" Height="16" Visibility="Visible" />
                 </Grid>
             </TabItem>
             <TabItem Header="Monitor" BorderThickness="2" Width="128">
@@ -311,10 +311,10 @@
                                     <Style TargetType="DataGridRow">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding FinalResult}" Value="Success">
-                                                <Setter Property="Background" Value="#FFE5E5E5"></Setter>
+                                                <Setter Property="Background" Value="#FFE5E5E5" />
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding FinalResult}" Value="Error">
-                                                <Setter Property="Background" Value="DarkGray"></Setter>
+                                                <Setter Property="Background" Value="DarkGray" />
                                             </DataTrigger>                                            
                                         </Style.Triggers>
                                         <Setter Property="MaxHeight" Value="16" />
@@ -358,10 +358,10 @@
                                         <Setter Property="MaxHeight" Value="16" />
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding Result}" Value="Success">
-                                                <Setter Property="Background" Value="#FFE5E5E5"></Setter>
+                                                <Setter Property="Background" Value="#FFE5E5E5" />
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding Result}" Value="Error">
-                                                <Setter Property="Background" Value="DarkGray"></Setter>
+                                                <Setter Property="Background" Value="DarkGray" />
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>

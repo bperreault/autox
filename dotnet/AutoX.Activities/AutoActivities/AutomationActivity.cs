@@ -39,7 +39,7 @@ namespace AutoX.Activities.AutoActivities
             ResultId = ResultId == null ? Guid.NewGuid().ToString() : ResultId;
         }
         public string Name { get; set; }
-        Collection<Variable> variables = new Collection<Variable>();
+        readonly Collection<Variable> variables = new Collection<Variable>();
         [Browsable(false)]
         public Collection<Variable> Variables
         {

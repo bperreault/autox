@@ -1,22 +1,25 @@
-﻿// Hapa Project, CC
+﻿#region
+
+// Hapa Project, CC
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
 #region
 
-using AutoX.Basic.Model;
-using AutoX.Comm;
-using AutoX.DB;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Xml.Linq;
+using AutoX.Basic.Model;
+using AutoX.Comm;
+using AutoX.DB;
 using IDataObject = AutoX.Basic.Model.IDataObject;
+
+#endregion
 
 #endregion
 
@@ -34,8 +37,8 @@ namespace AutoX
         {
             try
             {
-                var ret = Communication.GetInstance().GetComputersInfo();                
-                _clientSource.Clear();                
+                var ret = Communication.GetInstance().GetComputersInfo();
+                _clientSource.Clear();
                 foreach (XElement computer in XElement.Parse(ret).Descendants())
                 {
                     _clientSource.Add(Computer.FromXElement(computer));
@@ -94,10 +97,11 @@ namespace AutoX
             if (r == null) return;
             dynamic data = r.DataContext;
             string content = data.Link;
-            if(!content.StartsWith("http"))           
-            {                
-                string fileName = System.IO.Path.GetTempPath() + Guid.NewGuid().ToString() + ".htm";
-                File.WriteAllText(fileName, "<html><body><img src='data:image/jpg;base64," + content + "' /></body></html>");
+            if (!content.StartsWith("http"))
+            {
+                var fileName = Path.GetTempPath() + Guid.NewGuid() + ".htm";
+                File.WriteAllText(fileName,
+                    "<html><body><img src='data:image/jpg;base64," + content + "' /></body></html>");
                 Process.Start(fileName);
             }
             else
