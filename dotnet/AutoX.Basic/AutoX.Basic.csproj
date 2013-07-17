@@ -33,6 +33,12 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="JasonRoberts.FeatureToggle">
+      <HintPath>..\packages\FeatureToggle.1.2.0\lib\net40\JasonRoberts.FeatureToggle.dll</HintPath>
+    </Reference>
+    <Reference Include="JasonRoberts.FeatureToggle.WpfExtensions">
+      <HintPath>..\packages\FeatureToggle.WPFExtensions.1.1.1\lib\net40\JasonRoberts.FeatureToggle.WpfExtensions.dll</HintPath>
+    </Reference>
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
     </Reference>
@@ -57,6 +63,7 @@
     <Compile Include="Config.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="FeatureToggles\SampleFeatureToggle.cs" />
     <Compile Include="HostManager.cs" />
     <Compile Include="IHost.cs" />
     <Compile Include="ImageList.cs" />
@@ -79,6 +86,7 @@
     <Compile Include="XElementExt.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

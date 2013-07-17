@@ -67,6 +67,12 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="JasonRoberts.FeatureToggle">
+      <HintPath>..\packages\FeatureToggle.1.2.0\lib\net40\JasonRoberts.FeatureToggle.dll</HintPath>
+    </Reference>
+    <Reference Include="JasonRoberts.FeatureToggle.WpfExtensions">
+      <HintPath>..\packages\FeatureToggle.WPFExtensions.1.1.1\lib\net40\JasonRoberts.FeatureToggle.WpfExtensions.dll</HintPath>
+    </Reference>
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
     </Reference>
@@ -95,6 +101,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="FeatureToggles\SampleFeatureToggle.cs" />
     <Compile Include="NotificationAreaIcon.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

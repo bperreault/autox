@@ -25,7 +25,7 @@ namespace AutoX.WF.Core
         private readonly WorkflowApplication _workflowApplication;
         private volatile XElement _command;
         private string _instanceId;
-        private List<IObserver> _observers = new List<IObserver>();
+        //private List<IObserver> _observers = new List<IObserver>();
         private volatile XElement _result;
         private Dictionary<string, string> _variables = new Dictionary<string, string>();
 
@@ -159,10 +159,10 @@ namespace AutoX.WF.Core
         public XElement ToXElement()
         {
             var xInstance = this.GetXElementFromObject();
-            foreach (KeyValuePair<string, string> _var in Variables)
+            foreach (KeyValuePair<string, string> pair in Variables)
             {
-                if (_var.Key.Contains(":")) continue;
-                xInstance.SetAttributeValue(_var.Key, _var.Value);
+                if (pair.Key.Contains(":")) continue;
+                xInstance.SetAttributeValue(pair.Key, pair.Value);
             }
             xInstance.SetAttributeValue("Status", Status);
             return xInstance;
