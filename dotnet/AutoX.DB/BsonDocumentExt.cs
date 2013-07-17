@@ -1,7 +1,11 @@
-﻿using AutoX.Basic;
-using MongoDB.Bson;
+﻿#region
+
 using System;
 using System.Xml.Linq;
+using AutoX.Basic;
+using MongoDB.Bson;
+
+#endregion
 
 namespace AutoX.DB
 {
@@ -9,14 +13,13 @@ namespace AutoX.DB
     {
         public static BsonDocument ToBsonDocument(this XElement xElement)
         {
-            
             var bsonDocument = new BsonDocument();
 
             var type = xElement.Name.ToString();
             bsonDocument.Add(Constants._TYPE, type);
             var mainId = xElement.Attribute(Constants._ID) != null ? xElement.Attribute(Constants._ID).Value : null;
 
-            foreach (var attribure in xElement.Attributes())
+            foreach (XAttribute attribure in xElement.Attributes())
             {
                 var key = attribure.Name.ToString();
                 var value = attribure.Value;
@@ -25,7 +28,7 @@ namespace AutoX.DB
                 else
                     bsonDocument.Add(key, value);
             }
-            foreach (var kid in xElement.Descendants())
+            foreach (XElement kid in xElement.Descendants())
             {
                 var id = kid.Attribute(Constants._ID);
                 if (id == null || mainId == null)
@@ -61,7 +64,7 @@ namespace AutoX.DB
                 xElement.SetAttributeValue(Constants._ID, id);
             }
 
-            foreach (var key in dictionary.Keys)
+            foreach (string key in dictionary.Keys)
             {
                 var value = dictionary[key];
                 if (key.Equals(Constants._ID))

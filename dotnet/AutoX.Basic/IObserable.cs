@@ -1,4 +1,8 @@
-﻿using System.Xml.Linq;
+﻿#region
+
+using System.Xml.Linq;
+
+#endregion
 
 namespace AutoX.Basic
 {

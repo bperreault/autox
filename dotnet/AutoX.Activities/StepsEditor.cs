@@ -1,4 +1,6 @@
-﻿// Hapa Project, CC
+﻿#region
+
+// Hapa Project, CC
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
@@ -9,6 +11,8 @@ using System.Activities.Presentation.Model;
 using System.Activities.Presentation.PropertyEditing;
 using System.Windows;
 using System.Windows.Controls;
+
+#endregion
 
 #endregion
 
@@ -51,7 +55,7 @@ namespace AutoX.Activities
             //var userData = "";
             //if (property.Value != null) userData = property.Value.ToString();
             var stepId = modelItem.Properties["TestSreenId"];
-            
+
             var stepsDialog = new StepsDialog();
             if (stepId != null)
                 stepsDialog.Set(stepId.Value.ToString());

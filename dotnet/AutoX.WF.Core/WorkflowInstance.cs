@@ -1,28 +1,77 @@
-﻿using AutoX.Activities.AutoActivities;
-using AutoX.Basic;
-using AutoX.Basic.Model;
-using AutoX.DB;
+﻿#region
+
 using System;
 using System.Activities;
 using System.Activities.Tracking;
 using System.Activities.XamlIntegration;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Threading;
 using System.Xml.Linq;
+using AutoX.Activities.AutoActivities;
+using AutoX.Basic;
+using AutoX.Basic.Model;
+using AutoX.DB;
+
+#endregion
 
 namespace AutoX.WF.Core
 {
     public class WorkflowInstance : IHost, IDataObject
     {
-        private Dictionary<string, string> _variables = new Dictionary<string, string>();
-        private volatile XElement _command;
-        private volatile XElement _result;
-        private List<IObserver> _observers = new List<IObserver>();
-        private string _instanceId;
+        private const string FINISHED_STATUSES = "Completed|Aborted|Canceled|Faulted";
         private readonly StatusTracker _statusTracker = new StatusTracker();
-        private WorkflowApplication _workflowApplication;
-        public string _parentId { get; set; }
+        private readonly WorkflowApplication _workflowApplication;
+        private volatile XElement _command;
+        private string _instanceId;
+        private List<IObserver> _observers = new List<IObserver>();
+        private volatile XElement _result;
+        private Dictionary<string, string> _variables = new Dictionary<string, string>();
+
+        public WorkflowInstance(string instanceId, string workflowId, Dictionary<string, string> upperLevelVariables)
+        {
+            InstanceId = instanceId;
+            Status = "Invalid";
+            ScriptGUID = workflowId;
+            Variables = Configuration.Clone().GetList();
+            if (upperLevelVariables != null)
+                foreach (KeyValuePair<string, string> upperLevelVariable in upperLevelVariables)
+                {
+                    if (Variables.ContainsKey(upperLevelVariable.Key))
+                        Variables[upperLevelVariable.Key] = upperLevelVariable.Value;
+                    else
+                        Variables.Add(upperLevelVariable.Key, upperLevelVariable.Value);
+                }
+            var rootId = Variables["Root"];
+            ClientId = Variables.ContainsKey("ClientId") ? Variables["ClientId"] : null;
+            var versionName = Variables.ContainsKey("AUTVersion") ? Variables["AUTVersion"] : "TestVersion";
+            var buildName = Variables.ContainsKey("AUTBuild") ? Variables["AUTBuild"] : "TestBuild";
+            if (!string.IsNullOrEmpty(rootId))
+            {
+                var xRoot = DBFactory.GetData().GetChildren(rootId);
+
+                var resultId = xRoot.GetSubElement("Name", Constants.RESULT).GetAttributeValue("_id");
+
+                if (!string.IsNullOrEmpty(resultId))
+                {
+                    var versionId = FindOrCreateSubResultFolder(versionName, resultId);
+                    var buildId = FindOrCreateSubResultFolder(buildName, versionId);
+                    var script = GetDataObject(workflowId);
+                    _result = null;
+                    _command = null;
+                    if (script != null)
+                        _workflowApplication = CreateActivity(script.GetAttributeValue(Constants.CONTENT), buildId,
+                            Variables);
+                    if (_workflowApplication != null)
+                    {
+                        //very important! it make the workflow run in Synchronized way.
+                        //_workflowApplication.SynchronizationContext = new SynchronizationContext();
+                        Status = "Ready";
+                    }
+                }
+            }
+        }
 
         public string ClientId { get; set; }
 
@@ -37,19 +86,6 @@ namespace AutoX.WF.Core
         public string Language { get; set; }
 
         public string ScriptGUID { get; set; }
-        public string _id
-        {
-            get { return _instanceId; }
-            set { _instanceId = value; }
-        }
-
-        public DateTime Created { get; set; }
-
-        public DateTime Updated
-        {
-            get;
-            set;
-        }
 
         public Dictionary<string, string> Variables
         {
@@ -69,10 +105,61 @@ namespace AutoX.WF.Core
             set { _parentId = value; }
         }
 
+        public string _parentId { get; set; }
+
+        public string _id
+        {
+            get { return _instanceId; }
+            set { _instanceId = value; }
+        }
+
+        public DateTime Created { get; set; }
+
+        public DateTime Updated { get; set; }
+
+        public XElement GetDataObject(string id)
+        {
+            return DBFactory.GetData().Read(id);
+        }
+
+        public void SetCommand(XElement steps)
+        {
+            Log.Debug("Set Command:\n" + steps);
+            if (!string.IsNullOrEmpty(ClientId))
+            {
+                ClientInstancesManager.GetInstance().GetComputer(ClientId).SetCommand(steps.ToString());
+            }
+            _command = steps;
+        }
+
+        public XElement GetResult()
+        {
+            var count = 0;
+            while (_result == null)
+            {
+                Thread.Sleep(1000);
+                count++;
+                if (count > 3000)
+                    return null;
+            }
+            var resultString = _result.ToString();
+            _result = null;
+            return XElement.Parse(resultString);
+        }
+
+        public void Stop()
+        {
+            if (_workflowApplication != null)
+            {
+                ClientInstancesManager.GetInstance().GetComputer(ClientId).Status = "Ready";
+                _workflowApplication.Cancel();
+            }
+        }
+
         public XElement ToXElement()
         {
             var xInstance = this.GetXElementFromObject();
-            foreach (var _var in Variables)
+            foreach (KeyValuePair<string, string> _var in Variables)
             {
                 if (_var.Key.Contains(":")) continue;
                 xInstance.SetAttributeValue(_var.Key, _var.Value);
@@ -86,56 +173,13 @@ namespace AutoX.WF.Core
             return element.GetObjectFromXElement() as Instance;
         }
 
-        public WorkflowInstance(string instanceId, string workflowId, Dictionary<string, string> upperLevelVariables)
-        {
-            InstanceId = instanceId;
-            Status = "Invalid";
-            ScriptGUID = workflowId;
-            Variables = Configuration.Clone().GetList();
-            if (upperLevelVariables != null)
-                foreach (var upperLevelVariable in upperLevelVariables)
-                {
-                    if (Variables.ContainsKey(upperLevelVariable.Key))
-                        Variables[upperLevelVariable.Key] = upperLevelVariable.Value;
-                    else
-                        Variables.Add(upperLevelVariable.Key, upperLevelVariable.Value);
-                }
-            var rootId = Variables["Root"];
-            ClientId = Variables.ContainsKey("ClientId") ? Variables["ClientId"] : null;
-            var versionName = Variables.ContainsKey("AUTVersion") ? Variables["AUTVersion"] : "TestVersion";
-            var buildName = Variables.ContainsKey("AUTBuild") ? Variables["AUTBuild"] : "TestBuild";
-            if (!string.IsNullOrEmpty(rootId))
-            {
-                XElement xRoot = DBFactory.GetData().GetChildren(rootId);
-
-                var resultId = xRoot.GetSubElement("Name", Constants.RESULT).GetAttributeValue("_id");
-
-                if (!string.IsNullOrEmpty(resultId))
-                {
-                    string versionId = FindOrCreateSubResultFolder(versionName, resultId);
-                    string buildId = FindOrCreateSubResultFolder(buildName, versionId);
-                    XElement script = GetDataObject(workflowId);
-                    _result = null;
-                    _command = null;
-                    if (script != null)
-                        _workflowApplication = CreateActivity(script.GetAttributeValue(Constants.CONTENT), buildId, Variables);
-                    if (_workflowApplication != null)
-                    {
-                        //very important! it make the workflow run in Synchronized way.
-                        //_workflowApplication.SynchronizationContext = new SynchronizationContext();
-                        Status = "Ready";
-                    }
-                }
-            }
-        }
-
         private static string FindOrCreateSubResultFolder(string versionName, string resultId)
         {
             var results = DBFactory.GetData().GetChildren(resultId);
             string versionId = null;
             if (results != null)
             {
-                foreach (var result in results.Descendants())
+                foreach (XElement result in results.Descendants())
                 {
                     if (versionName.Equals(result.GetAttributeValue("Name")))
                     {
@@ -147,12 +191,18 @@ namespace AutoX.WF.Core
             if (string.IsNullOrEmpty(versionId))
             {
                 versionId = Guid.NewGuid().ToString();
-                DBFactory.GetData().Save(XElement.Parse("<Result Name='" + versionName + "' _id='" + versionId + "' _parentId='" + resultId + "' _type='Folder' Created='" + DateTime.Now.ToString() + "' Updated='" + DateTime.Now.ToString() + "' />"));
+                DBFactory.GetData()
+                    .Save(
+                        XElement.Parse("<Result Name='" + versionName + "' _id='" + versionId + "' _parentId='" +
+                                       resultId + "' _type='Folder' Created='" +
+                                       DateTime.Now.ToString(CultureInfo.InvariantCulture) + "' Updated='" +
+                                       DateTime.Now.ToString(CultureInfo.InvariantCulture) + "' />"));
             }
             return versionId;
         }
 
-        private WorkflowApplication CreateActivity(string workflow, string resultParentId, Dictionary<string, string> upperLevelVariables)
+        private WorkflowApplication CreateActivity(string workflow, string resultParentId,
+            Dictionary<string, string> upperLevelVariables)
         {
             var activity = ActivityXamlServices.Load(new StringReader(workflow)) as AutomationActivity;
             if (activity != null)
@@ -161,7 +211,7 @@ namespace AutoX.WF.Core
                 activity.InstanceId = InstanceId;
                 activity.SetParentResultId(resultParentId);
                 activity.SetVariables(upperLevelVariables);
-                WorkflowApplication workflowApplication = GetWorkflowApplication(activity);
+                var workflowApplication = GetWorkflowApplication(activity);
                 workflowApplication.Extensions.Add(_statusTracker);
                 return workflowApplication;
                 //_workflowApplication.Run();
@@ -189,36 +239,6 @@ namespace AutoX.WF.Core
             return XElement.Parse("<Result Result='Error' />");
         }
 
-        public XElement GetDataObject(string id)
-        {
-            return DBFactory.GetData().Read(id);
-        }
-
-        public void SetCommand(XElement steps)
-        {
-            Log.Debug("Set Command:\n" + steps);
-            if (!string.IsNullOrEmpty(ClientId))
-            {
-                ClientInstancesManager.GetInstance().GetComputer(ClientId).SetCommand(steps.ToString());
-            }
-            _command = steps;
-        }
-
-        public XElement GetResult()
-        {
-            int count = 0;
-            while (_result == null)
-            {
-                Thread.Sleep(1000);
-                count++;
-                if (count > 3000)
-                    return null;
-            }
-            string resultString = _result.ToString();
-            _result = null;
-            return XElement.Parse(resultString);
-        }
-
         public void SetResult(XElement result)
         {
             _result = result;
@@ -226,7 +246,7 @@ namespace AutoX.WF.Core
 
         public XElement GetCommand()
         {
-            int count = 0;
+            var count = 0;
             while (_command == null)
             {
                 Thread.Sleep(1000);
@@ -234,25 +254,14 @@ namespace AutoX.WF.Core
                 if (count > 300)
                     return null;
             }
-            string commandString = _command.ToString();
+            var commandString = _command.ToString();
             _command = null;
             return XElement.Parse(commandString);
         }
 
-        const string FINISHED_STATUSES = "Completed|Aborted|Canceled|Faulted";
-
         public bool IsFinished()
         {
             return Status == null || (FINISHED_STATUSES.Contains(Status));
-        }
-
-        public void Stop()
-        {
-            if (_workflowApplication != null)
-            {
-                ClientInstancesManager.GetInstance().GetComputer(ClientId).Status = "Ready";
-                _workflowApplication.Cancel();
-            }
         }
 
         public WorkflowApplication GetWorkflowApplication(AutomationActivity activity)
@@ -264,7 +273,9 @@ namespace AutoX.WF.Core
                     switch (e.CompletionState)
                     {
                         case ActivityInstanceState.Faulted:
-                            Log.Error("workflow [" + activity.Id + "] " + activity.DisplayName + " stopped! Error Message:\n" + e.TerminationException.GetType().FullName + "\n" + e.TerminationException.Message);
+                            Log.Error("workflow [" + activity.Id + "] " + activity.DisplayName +
+                                      " stopped! Error Message:\n" + e.TerminationException.GetType().FullName + "\n" +
+                                      e.TerminationException.Message);
                             Status = "Terminated";
                             ClientInstancesManager.GetInstance().GetComputer(ClientId).Status = "Ready";
                             break;
@@ -288,7 +299,6 @@ namespace AutoX.WF.Core
                     Status = "Aborted";
                     ClientInstancesManager.GetInstance().GetComputer(ClientId).Status = "Ready";
                 }
-
             };
             return workflowApplication;
         }
@@ -296,32 +306,33 @@ namespace AutoX.WF.Core
 
     public class StatusTracker : TrackingParticipant
     {
-        public string Status { get; private set; }
-        TrackingProfile trackingProfile = new TrackingProfile();
+        private readonly TrackingProfile trackingProfile = new TrackingProfile();
 
         public StatusTracker()
         {
-
             trackingProfile.Queries.Add(new ActivityStateQuery
             {
                 ActivityName = "*",
-                States = { "*" },
-                Variables = { "*" },
-                Arguments = { "*" }
+                States = {"*"},
+                Variables = {"*"},
+                Arguments = {"*"}
             });
             trackingProfile.Queries.Add(new WorkflowInstanceQuery
             {
-                States = { "*" },
+                States = {"*"},
             });
 
-            this.TrackingProfile = trackingProfile;
+            TrackingProfile = trackingProfile;
         }
 
-        protected override void Track(TrackingRecord record, System.TimeSpan timeout)
+        public string Status { get; private set; }
+
+        protected override void Track(TrackingRecord record, TimeSpan timeout)
         {
-            if (record is WorkflowInstanceRecord)
+            var instanceRecord = record as WorkflowInstanceRecord;
+            if (instanceRecord != null)
             {
-                Status = ((WorkflowInstanceRecord)record).State;
+                Status = instanceRecord.State;
             }
         }
     }

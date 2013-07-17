@@ -1,16 +1,20 @@
-﻿// Hapa Project, CC
+﻿#region
+
+// Hapa Project, CC
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
 #region
 
-using AutoX.Basic;
 using System;
 using System.Activities;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
 using System.Windows;
 using System.Xml.Linq;
+using AutoX.Basic;
+
+#endregion
 
 #endregion
 
@@ -24,12 +28,17 @@ namespace AutoX.Activities
             InitializeComponent();
         }
 
+        public void Connect(int connectionId, object target)
+        {
+            throw new NotImplementedException();
+        }
+
         protected override void OnDragEnter(DragEventArgs e)
         {
             if (DragDropHelper.AllowDrop(
                 e.Data,
                 Context,
-                typeof(Activity)))
+                typeof (Activity)))
             {
                 e.Effects = (DragDropEffects.Move & e.AllowedEffects);
                 e.Handled = true;
@@ -43,7 +52,7 @@ namespace AutoX.Activities
                     if (activity != null)
                     {
                         var mi = Context.Services.GetService<ModelTreeManager>().CreateModelItem(ModelItem,
-                                                                                                 activity);
+                            activity);
                         var dO = new DataObject(DragDropHelper.ModelItemDataFormat, mi);
                         Utilities.AddVariable(mi, data.GetAttributeValue(Constants.NAME).Replace(" ", "_"));
                         try
@@ -66,7 +75,7 @@ namespace AutoX.Activities
             if (DragDropHelper.AllowDrop(
                 e.Data,
                 Context,
-                typeof(Activity)))
+                typeof (Activity)))
             {
                 e.Effects = (DragDropEffects.Move & e.AllowedEffects);
                 e.Handled = true;
@@ -89,15 +98,14 @@ namespace AutoX.Activities
 
             //TODO not a graceful implementation, think about change it.
             var canvasActivity = ModelItem;
-            var droppedItems =DragDropHelper.GetDroppedObjects(this, e, Context);
+            var droppedItems = DragDropHelper.GetDroppedObjects(this, e, Context);
             //var droppedItem = DragDropHelper.GetDroppedObject(this, e, Context);
-            foreach (var droppedItem in droppedItems)
+            foreach (object droppedItem in droppedItems)
             {
                 canvasActivity.Properties["children"].Collection.Add(droppedItem);
             }
-           
-            
-            
+
+
             //DragDropHelper.SetDragDropCompletedEffects(e, DragDropEffects.Move);
 
             base.OnDrop(e);

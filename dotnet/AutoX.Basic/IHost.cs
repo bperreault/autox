@@ -1,10 +1,14 @@
-﻿// Hapa Project, CC
+﻿#region
+
+// Hapa Project, CC
 // Created @2012 08 29 08:09
 // Last Updated  by Huang, Jien @2012 08 29 08:09
 
 #region
 
 using System.Xml.Linq;
+
+#endregion
 
 #endregion
 

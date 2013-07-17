@@ -331,9 +331,9 @@ namespace AutoX.Client.Core
                 capabillities = DesiredCapabilities.InternetExplorer();
             else
                 capabillities = DesiredCapabilities.Firefox();
-                var _browserVersion =  _config.Get("BrowserVersion");
-                if(!string.IsNullOrEmpty(_browserVersion))
-                    capabillities.SetCapability(CapabilityType.Version, _browserVersion);
+                var browserVersion =  _config.Get("BrowserVersion");
+                if(!string.IsNullOrEmpty(browserVersion))
+                    capabillities.SetCapability(CapabilityType.Version, browserVersion);
             capabillities.SetCapability(CapabilityType.Platform, _config.Get("BrowserPlatform", "Windows 2008"));
             var versionName = _config.Get("AUTVersion") ?? "Test.Version";
 
@@ -363,10 +363,8 @@ namespace AutoX.Client.Core
                       _config.Get("SauceKey", "b3842073-5a7a-4782-abbc-e7234e09f8ac");
             var jobId = AsymmetricEncryption.Hmacmd5(key, _sId);
             return "https://saucelabs.com/jobs/" + _sId + "?auth=" + jobId;
-            }else{
-                return Snapshot();
             }
-            
+            return Snapshot();
         }
 
         private void StartLocalBrowser()
@@ -390,7 +388,7 @@ namespace AutoX.Client.Core
                     File.Copy(Directory.GetCurrentDirectory() + "\\IEDriverServer32.exe",
                               Directory.GetCurrentDirectory() + "\\IEDriverServer.exe");
                 }
-                var capabilities = DesiredCapabilities.InternetExplorer();
+                //var capabilities = DesiredCapabilities.InternetExplorer();
 
                 _browser = new InternetExplorerDriver();
             }
@@ -423,7 +421,7 @@ namespace AutoX.Client.Core
 
             //browser = null;
             var clientType = _config.Get("HostType", "Sauce");
-            if (String.Compare(clientType, "Sauce", System.StringComparison.OrdinalIgnoreCase) != 0)
+            if (String.Compare(clientType, "Sauce", StringComparison.OrdinalIgnoreCase) != 0)
             {
                 if (_browser != null) _browser.Dispose();
                 CloseLocalBrowser();

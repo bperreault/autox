@@ -1,5 +1,9 @@
-﻿using AutoX.Basic;
+﻿#region
+
 using System.Xml.Linq;
+using AutoX.Basic;
+
+#endregion
 
 namespace AutoX.WF.Core.Actions
 {
@@ -59,7 +63,7 @@ namespace AutoX.WF.Core.Actions
     {
         public XElement Do(XElement action)
         {
-            string clientInstanceId = action.Attribute(Constants._ID).Value;
+            var clientInstanceId = action.Attribute(Constants._ID).Value;
             return ClientInstancesManager.GetInstance().GetComputer(clientInstanceId).GetCommand();
         }
     }
@@ -75,8 +79,9 @@ namespace AutoX.WF.Core.Actions
     {
         public XElement Do(XElement action)
         {
-            if (InstanceManager.GetInstance().UpdateInstance(action)) return XElement.Parse("<Result Result='Success' />");
-            else return XElement.Parse("<Result Result='Error' />");
+            if (InstanceManager.GetInstance().UpdateInstance(action))
+                return XElement.Parse("<Result Result='Success' />");
+            return XElement.Parse("<Result Result='Error' />");
         }
     }
 
@@ -84,7 +89,7 @@ namespace AutoX.WF.Core.Actions
     {
         public XElement Do(XElement action)
         {
-            return InstanceManager.GetInstance().SetResult(action);           
+            return InstanceManager.GetInstance().SetResult(action);
         }
     }
 
@@ -92,7 +97,7 @@ namespace AutoX.WF.Core.Actions
     {
         public XElement Do(XElement action)
         {
-            return InstanceManager.GetInstance().StartInstance(action); 
+            return InstanceManager.GetInstance().StartInstance(action);
         }
     }
 

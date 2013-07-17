@@ -1,4 +1,6 @@
-﻿// Hapa Project, CC
+﻿#region
+
+// Hapa Project, CC
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
@@ -6,9 +8,10 @@
 
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+
+#endregion
 
 #endregion
 
@@ -37,7 +40,6 @@ namespace AutoX.Basic.Model
 
         public ObservableCollection<object> Get()
         {
-            
             return _list;
         }
 
@@ -63,7 +65,7 @@ namespace AutoX.Basic.Model
             var ret = new ObservableCollection<object>();
             foreach (
                 IDataObject rowItem in
-                    _list.Where(rowItem => ((IDataObject)rowItem).GetXElementFromObject().ToString().Contains(filter)))
+                    _list.Where(rowItem => ((IDataObject) rowItem).GetXElementFromObject().ToString().Contains(filter)))
             {
                 ret.Add(rowItem);
             }

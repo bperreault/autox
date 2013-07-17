@@ -1,3 +1,5 @@
+#region
+
 // Hapa Project, CC
 // Created @2012 09 18 14:34
 // Last Updated  by Huang, Jien @2012 09 18 14:34
@@ -6,11 +8,12 @@
 
 using System.Activities;
 using System.Activities.Presentation.PropertyEditing;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Xml.Linq;
 using AutoX.Basic;
+
+#endregion
 
 #endregion
 
@@ -27,7 +30,7 @@ namespace AutoX.Activities.AutoActivities
         private string _userData = "";
 
 
-        [DisplayName("Test Screen Name")]
+        [DisplayName(@"Test Screen Name")]
         public string TestSreenName
         {
             get { return _testScreenName; }
@@ -40,7 +43,7 @@ namespace AutoX.Activities.AutoActivities
             }
         }
 
-        [DisplayName("On Error")]
+        [DisplayName(@"On Error")]
         public OnError ErrorLevel { get; set; }
 
         [Browsable(false)]
@@ -49,7 +52,7 @@ namespace AutoX.Activities.AutoActivities
         [Browsable(false)]
         public string TestSreenId { get; set; }
 
-        [DisplayName("Test Steps")]
+        [DisplayName(@"Test Steps")]
         [Editor(typeof (StepsEditor), typeof (DialogPropertyValueEditor))]
         public string Steps
         {
@@ -57,7 +60,7 @@ namespace AutoX.Activities.AutoActivities
             set { _steps = value; }
         }
 
-        [DisplayName("User Data")]
+        [DisplayName(@"User Data")]
         [Editor(typeof (UserDataEditor), typeof (DialogPropertyValueEditor))]
         public string UserData
         {
@@ -100,9 +103,9 @@ namespace AutoX.Activities.AutoActivities
                 _onChildComplete = InternalExecute;
             }
             Log.Info("in CallTestScreenActivity internalexecute");
-            XElement steps = GetSteps(context);
+            var steps = GetSteps(context);
             Host.SetCommand(steps);
-            XElement rElement = Host.GetResult();
+            var rElement = Host.GetResult();
             Log.Info(rElement.ToString());
             SetResult(rElement);
         }
@@ -114,22 +117,22 @@ namespace AutoX.Activities.AutoActivities
             //delete some steps (if original one gone), 
             //add some steps, update some steps (new and mark enabled, also add the un-enabled items, they would not work anyway)
             //set command to instance, then get the result
-            Dictionary<string, string> data = Utilities.GetActualUserData(UserData, Host);
-            XElement screenObj = Host.GetDataObject(TestSreenId);
-            XElement screen = XElement.Parse(screenObj.GetAttributeValue("Content"));
+            var data = Utilities.GetActualUserData(UserData, Host);
+            var screenObj = Host.GetDataObject(TestSreenId);
+            var screen = XElement.Parse(screenObj.GetAttributeValue("Content"));
             //Utilities.PrintDictionary(data);
             //update the Steps into the format we want
-            XElement steps = CreateStepsHeader();
+            var steps = CreateStepsHeader();
             foreach (XElement descendant in XElement.Parse(_steps).Descendants(Constants.STEP))
             {
-                string enable = descendant.GetAttributeValue(Constants.ENABLE);
+                var enable = descendant.GetAttributeValue(Constants.ENABLE);
                 if (string.IsNullOrEmpty(enable))
                 {
                     enable = "True";
                 }
                 if (!enable.ToLower().Equals("true"))
                     continue;
-                string action = descendant.GetAttributeValue(Constants.ACTION);
+                var action = descendant.GetAttributeValue(Constants.ACTION);
 
                 if (string.IsNullOrEmpty(action))
                 {
@@ -137,13 +140,13 @@ namespace AutoX.Activities.AutoActivities
                     continue;
                 }
 
-                XElement step = XElement.Parse("<Step />");
+                var step = XElement.Parse("<Step />");
 
                 step.SetAttributeValue(Constants.ACTION, action);
-                string dataref = descendant.GetAttributeValue(Constants.DATA);
+                var dataref = descendant.GetAttributeValue(Constants.DATA);
                 if (string.IsNullOrEmpty(dataref))
                 {
-                    string defaultData = descendant.GetAttributeValue(Constants.DEFAULT_DATA);
+                    var defaultData = descendant.GetAttributeValue(Constants.DEFAULT_DATA);
                     if (!string.IsNullOrEmpty(defaultData))
                         step.SetAttributeValue(Constants.DATA, defaultData);
                 }
@@ -153,7 +156,7 @@ namespace AutoX.Activities.AutoActivities
                         step.SetAttributeValue(Constants.DATA, data[dataref]);
                     else
                     {
-                        bool found = false;
+                        var found = false;
                         foreach (PropertyDescriptor _var in context.DataContext.GetProperties())
                         {
                             if (_var.Name.Equals(dataref))
@@ -186,7 +189,7 @@ namespace AutoX.Activities.AutoActivities
                         }
                     }
                 }
-                string stepId = descendant.GetAttributeValue(Constants._ID);
+                var stepId = descendant.GetAttributeValue(Constants._ID);
                 if (string.IsNullOrEmpty(stepId))
                 {
                     Log.Error("Step id is empty.");
@@ -195,8 +198,8 @@ namespace AutoX.Activities.AutoActivities
                 {
                     step.SetAttributeValue("StepId", stepId);
                 }
-                string uiid = descendant.GetAttributeValue(Constants.UI_ID);
-                string uiObject = descendant.GetAttributeValue(Constants.UI_OBJECT);
+                var uiid = descendant.GetAttributeValue(Constants.UI_ID);
+                var uiObject = descendant.GetAttributeValue(Constants.UI_OBJECT);
                 if (!string.IsNullOrEmpty(uiObject))
                 {
                     step.SetAttributeValue(Constants.UI_OBJECT, uiObject);
@@ -204,10 +207,10 @@ namespace AutoX.Activities.AutoActivities
                 //TODO we have NOT handle the parent here, add it later; for now, it can work.
                 if (string.IsNullOrEmpty(uiid)) continue;
                 step.SetAttributeValue(Constants.UI_ID, uiid);
-                XElement uio = Host.GetDataObject(uiid);
+                var uio = Host.GetDataObject(uiid);
                 if (uio == null) continue;
-                XElement xO = XElement.Parse("<UIObject />");
-                string xpath = uio.GetAttributeValue("XPath");
+                var xO = XElement.Parse("<UIObject />");
+                var xpath = uio.GetAttributeValue("XPath");
                 //TODO add name, id, css later!!!
                 if (!string.IsNullOrEmpty(xpath))
                     xO.SetAttributeValue("XPath", xpath);
@@ -219,7 +222,7 @@ namespace AutoX.Activities.AutoActivities
 
         private XElement CreateStepsHeader()
         {
-            XElement steps = XElement.Parse("<AutoX.Steps />");
+            var steps = XElement.Parse("<AutoX.Steps />");
             steps.SetAttributeValue(Constants.ON_ERROR, ErrorLevel.ToString());
             steps.SetAttributeValue(Constants.INSTANCE_ID, InstanceId);
             steps.SetAttributeValue(Constants._ID, GUID);

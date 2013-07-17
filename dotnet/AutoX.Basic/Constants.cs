@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AutoX.Basic
+﻿namespace AutoX.Basic
 {
-    public class Constants
+    public static class Constants
     {
         public const string CONTENT = "Content";
         public const string ON_ERROR = "OnError";

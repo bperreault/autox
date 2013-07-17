@@ -1,14 +1,19 @@
-﻿// Hapa Project, CC
+﻿#region
+
+// Hapa Project, CC
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
 #region
 
-using AutoX.Basic;
-using AutoX.DB;
+using System;
 using System.Collections;
 using System.Windows;
 using System.Xml.Linq;
+using AutoX.Basic;
+using AutoX.DB;
+
+#endregion
 
 #endregion
 
@@ -21,6 +26,7 @@ namespace AutoX.Activities
     {
         protected ArrayList Actions = Configuration.GetSupportedAction();
         public IHost Host = HostManager.GetInstance().GetHost();
+        private string StepId;
         protected ArrayList UserData = new ArrayList();
 
         public StepsDialog()
@@ -28,14 +34,21 @@ namespace AutoX.Activities
             InitializeComponent();
         }
 
+        public void Connect(int connectionId, object target)
+        {
+            throw new NotImplementedException();
+        }
+
         private void ButtonReload(object sender, RoutedEventArgs e)
         {
-            var p = XElement.Parse(DBFactory.GetData().Read(StepId).GetAttributeValue(Constants.CONTENT)).GetAttributeValue("Steps");
+            var p =
+                XElement.Parse(DBFactory.GetData().Read(StepId).GetAttributeValue(Constants.CONTENT))
+                    .GetAttributeValue("Steps");
             var steps = Utilities.GetStepsList(p, Actions, Host);
             var current = StepsTable.ItemsSource as ArrayList;
 
             //TODO add new things and remove something
-            ArrayList newList = new ArrayList();
+            var newList = new ArrayList();
             foreach (Step currentStep in current)
             {
                 if (InSteps(currentStep, steps))
@@ -49,7 +62,7 @@ namespace AutoX.Activities
             StepsTable.ItemsSource = newList;
         }
 
-        private bool InSteps(Step oneStep,ArrayList steps)
+        private bool InSteps(Step oneStep, ArrayList steps)
         {
             foreach (Step step in steps)
             {
@@ -139,8 +152,6 @@ namespace AutoX.Activities
                 }
             return xSteps.ToString();
         }
-
-        private string StepId;
 
         internal void Set(string stepId)
         {

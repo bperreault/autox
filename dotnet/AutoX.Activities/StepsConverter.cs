@@ -1,4 +1,6 @@
-﻿// Hapa Project, CC
+﻿#region
+
+// Hapa Project, CC
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
@@ -9,8 +11,8 @@ using System.Collections;
 using System.Globalization;
 using System.Windows.Data;
 using AutoX.Basic;
-using AutoX.DB;
-using System.Xml.Linq;
+
+#endregion
 
 #endregion
 
@@ -37,5 +39,4 @@ namespace AutoX.Activities
 
         #endregion
     }
-    
 }

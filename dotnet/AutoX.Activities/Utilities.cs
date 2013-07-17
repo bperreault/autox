@@ -1,11 +1,11 @@
-﻿// Hapa Project, CC
+﻿#region
+
+// Hapa Project, CC
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
 #region
 
-using AutoX.Activities.AutoActivities;
-using AutoX.Basic;
 using System;
 using System.Activities;
 using System.Activities.Presentation.Model;
@@ -16,6 +16,10 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using AutoX.Activities.AutoActivities;
+using AutoX.Basic;
+
+#endregion
 
 #endregion
 
@@ -23,33 +27,29 @@ namespace AutoX.Activities
 {
     public enum OnError
     {
-        [Description("Always Return Success, Ignore All Errors")]
-        AlwaysReturnTrue,
+        [Description("Always Return Success, Ignore All Errors")] AlwaysReturnTrue,
 
-        [Description("Only Show Warning in Result, Even Error")]
-        JustShowWarning,
+        [Description("Only Show Warning in Result, Even Error")] JustShowWarning,
 
-        [Description("Mark Error in Result, but Continue Next Step")]
-        Continue,
+        [Description("Mark Error in Result, but Continue Next Step")] Continue,
 
-        [Description("Stop Current Script, Mark it Error")]
-        StopCurrentScript,
+        [Description("Stop Current Script, Mark it Error")] StopCurrentScript,
 
-        [Description("Terminate this Test Instance")]
-        Terminate
+        [Description("Terminate this Test Instance")] Terminate
     }
 
     public static class Utilities
     {
         public const string Filter = "Name;Type;Description;Type;_id;";
+        public const string ReservedList = "_id|_type|_parentId|Created|Updated|";
 
         public static string GetEnumDescription(Enum value)
         {
             var fi = value.GetType().GetField(value.ToString());
 
             var attributes =
-                (DescriptionAttribute[])fi.GetCustomAttributes(
-                    typeof(DescriptionAttribute),
+                (DescriptionAttribute[]) fi.GetCustomAttributes(
+                    typeof (DescriptionAttribute),
                     false);
 
             return attributes.Length > 0 ? attributes[0].Description : value.ToString();
@@ -90,7 +90,6 @@ namespace AutoX.Activities
                 AddVariable(navtiveModelItem, name);
             }
             modelProperty.SetValue(userData);
-            
         }
 
         public static void AddVariable(ModelItem navtiveModelItem, string name)
@@ -100,9 +99,8 @@ namespace AutoX.Activities
                 var variablesProperty = navtiveModelItem.Properties["Variables"];
                 if (variablesProperty != null)
                 {
-
-                    bool existed = false;
-                    foreach (var v in variablesProperty.Collection)
+                    var existed = false;
+                    foreach (ModelItem v in variablesProperty.Collection)
                     {
                         if (v.Properties["Name"].Value.ToString().Equals(name))
                         {
@@ -141,37 +139,36 @@ namespace AutoX.Activities
                 if (scriptType.Equals("TestCase"))
                 {
                     var activity = new CallTestCaseActivity
-                        {
-                            TestCaseId = data.GetAttributeValue(Constants._ID),
-                            TestCaseName = data.GetAttributeValue(Constants.NAME),
-                            DisplayName = "Call Test Case: " + data.GetAttributeValue(Constants.NAME)
-                            
-                        };
-                    
+                    {
+                        TestCaseId = data.GetAttributeValue(Constants._ID),
+                        TestCaseName = data.GetAttributeValue(Constants.NAME),
+                        DisplayName = "Call Test Case: " + data.GetAttributeValue(Constants.NAME)
+                    };
+
                     activity.SetHost(host);
                     return activity;
                 }
                 if (scriptType.Equals("TestScreen"))
                 {
                     var activity = new CallTestScreenActivity
-                        {
-                            TestSreenId = data.GetAttributeValue(Constants._ID),
-                            TestSreenName = data.GetAttributeValue(Constants.NAME),
-                            DisplayName = "Call Test Screen: " + data.GetAttributeValue(Constants.NAME),
-                            Steps = XElement.Parse(data.GetAttributeValue(Constants.CONTENT)).GetAttributeValue("Steps")
-                        };
+                    {
+                        TestSreenId = data.GetAttributeValue(Constants._ID),
+                        TestSreenName = data.GetAttributeValue(Constants.NAME),
+                        DisplayName = "Call Test Screen: " + data.GetAttributeValue(Constants.NAME),
+                        Steps = XElement.Parse(data.GetAttributeValue(Constants.CONTENT)).GetAttributeValue("Steps")
+                    };
                     activity.SetHost(host);
                     return activity;
                 }
                 if (scriptType.Equals("TestSuite"))
                 {
                     var activity = new CallTestSuiteActivity
-                        {
-                            TestSuiteId = data.GetAttributeValue(Constants._ID),
-                            TestSuiteName = data.GetAttributeValue(Constants.NAME),
-                            TestSuiteDescription = data.GetAttributeValue("Description"),
-                            DisplayName = "Call Test Suite: " + data.GetAttributeValue(Constants.NAME)
-                        };
+                    {
+                        TestSuiteId = data.GetAttributeValue(Constants._ID),
+                        TestSuiteName = data.GetAttributeValue(Constants.NAME),
+                        TestSuiteDescription = data.GetAttributeValue("Description"),
+                        DisplayName = "Call Test Suite: " + data.GetAttributeValue(Constants.NAME)
+                    };
                     activity.SetHost(host);
                     return activity;
                 }
@@ -208,12 +205,12 @@ namespace AutoX.Activities
                         if (Filter.Contains(name)) continue;
                         var dataValue = xAttribute.Value;
                         var data = new UserData
-                            {
-                                DataSet = dataSetName,
-                                Name = name,
-                                Value = dataValue,
-                                DataSetId = dataString
-                            };
+                        {
+                            DataSet = dataSetName,
+                            Name = name,
+                            Value = dataValue,
+                            DataSetId = dataString
+                        };
 
                         //remove the duplicate value
                         if (dic.ContainsKey(name))
@@ -265,7 +262,7 @@ namespace AutoX.Activities
         public static void PrintDictionary(Dictionary<string, string> dict)
         {
             var pS = dict.Aggregate("\n",
-                                    (current, variable) => current + (variable.Key + "=" + variable.Value + "\n"));
+                (current, variable) => current + (variable.Key + "=" + variable.Value + "\n"));
             Log.Debug(pS);
         }
 
@@ -292,16 +289,16 @@ namespace AutoX.Activities
                     var stepId = element.GetAttributeValue(Constants._ID);
                     var action = element.GetAttributeValue(Constants.ACTION) ?? "";
                     var step = new Step
-                        {
-                            _id = stepId,
-                            Action = action,
-                            UIId = uiId,
-                            UIObject = uiObject,
-                            Enable = enable,
-                            DefaultData = defaultDataValue,
-                            Data = dataName,
-                            PossibleAction = possibleAction
-                        };
+                    {
+                        _id = stepId,
+                        Action = action,
+                        UIId = uiId,
+                        UIObject = uiObject,
+                        Enable = enable,
+                        DefaultData = defaultDataValue,
+                        Data = dataName,
+                        PossibleAction = possibleAction
+                    };
                     ret.Add(step);
                 }
             }
@@ -320,56 +317,54 @@ namespace AutoX.Activities
             return finalRet;
         }
 
-        public const string ReservedList = "_id|_type|_parentId|Created|Updated|";
-
         public static WorkflowApplication GetWorkflowApplication(AutomationActivity activity)
         {
             var workflowApplication = new WorkflowApplication(activity)
+            {
+                Completed = delegate(WorkflowApplicationCompletedEventArgs e)
                 {
-                    Completed = delegate(WorkflowApplicationCompletedEventArgs e)
-                        {
-                            switch (e.CompletionState)
-                            {
-                                case ActivityInstanceState.Faulted:
+                    switch (e.CompletionState)
+                    {
+                        case ActivityInstanceState.Faulted:
 
-                                    //Logger.GetInstance().Log().Error("workflow " +
-                                    //                                 scriptGuid +
-                                    //                                 " stopped! Error Message:\n"
-                                    //                                 +
-                                    //                                 e.TerminationException.
-                                    //                                     GetType().FullName +
-                                    //                                 "\n"
-                                    //                                 +
-                                    //                                 e.TerminationException.
-                                    //                                     Message);
-                                    //Status = "Terminated";
-                                    break;
-
-                                case ActivityInstanceState.Canceled:
-
-                                    //Logger.GetInstance().Log().Warn("workflow " + scriptGuid +
-                                    //                                " Cancel.");
-                                    //Status = "Canceled";
-                                    break;
-
-                                default:
-
-                                    //Logger.GetInstance().Log().Info("workflow " + scriptGuid +
-                                    //                                " Completed.");
-                                    //Status = "Completed";
-                                    break;
-                            }
-                        },
-                    Aborted = delegate
-                        {
                             //Logger.GetInstance().Log().Error("workflow " +
-                            //                                 scriptGuid
-                            //                                 + " aborted! Error Message:\n"
-                            //                                 + e.Reason.GetType().FullName + "\n" +
-                            //                                 e.Reason.Message);
-                            //Status = "Aborted";
-                        }
-                };
+                            //                                 scriptGuid +
+                            //                                 " stopped! Error Message:\n"
+                            //                                 +
+                            //                                 e.TerminationException.
+                            //                                     GetType().FullName +
+                            //                                 "\n"
+                            //                                 +
+                            //                                 e.TerminationException.
+                            //                                     Message);
+                            //Status = "Terminated";
+                            break;
+
+                        case ActivityInstanceState.Canceled:
+
+                            //Logger.GetInstance().Log().Warn("workflow " + scriptGuid +
+                            //                                " Cancel.");
+                            //Status = "Canceled";
+                            break;
+
+                        default:
+
+                            //Logger.GetInstance().Log().Info("workflow " + scriptGuid +
+                            //                                " Completed.");
+                            //Status = "Completed";
+                            break;
+                    }
+                },
+                Aborted = delegate
+                {
+                    //Logger.GetInstance().Log().Error("workflow " +
+                    //                                 scriptGuid
+                    //                                 + " aborted! Error Message:\n"
+                    //                                 + e.Reason.GetType().FullName + "\n" +
+                    //                                 e.Reason.Message);
+                    //Status = "Aborted";
+                }
+            };
             return workflowApplication;
         }
     }

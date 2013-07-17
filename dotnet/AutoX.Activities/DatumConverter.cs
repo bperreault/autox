@@ -1,14 +1,18 @@
+#region
+
 // Hapa Project, CC
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
 #region
 
-using AutoX.Basic;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Data;
+using AutoX.Basic;
+
+#endregion
 
 #endregion
 
@@ -21,9 +25,9 @@ namespace AutoX.Activities
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var rawData = value as string;
-            var userDataList = Utilities.GetUserData(rawData, HostManager.GetInstance().GetHost()) as List<UserData>;
+            var userDataList = Utilities.GetUserData(rawData, HostManager.GetInstance().GetHost());
             var retList = new List<UserData>();
-            foreach (var userData in userDataList)
+            foreach (UserData userData in userDataList)
             {
                 if (!Utilities.ReservedList.Contains(userData.Name))
                     retList.Add(userData);

@@ -1,11 +1,11 @@
 ﻿#region
 
+using System;
+using System.Collections.Generic;
 using AutoX.Basic;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
-using System;
-using System.Collections.Generic;
 
 #endregion
 
@@ -22,9 +22,10 @@ namespace AutoX.DB
         {
             try
             {
-                string userName = Configuration.Settings("UserName", "jien.huang");
-                string productId = AsymmetricEncryption.GetProductId();
-                var connectionString = Configuration.Settings("DBConnectionString", "mongodb://@localhost"); //mongodb://uname:pwd@localhost
+                var userName = Configuration.Settings("UserName", "jien.huang");
+                var productId = AsymmetricEncryption.GetProductId();
+                var connectionString = Configuration.Settings("DBConnectionString", "mongodb://@localhost");
+                    //mongodb://uname:pwd@localhost
 
                 //var connectionString = Configuration.Settings("DBConnectionString", "mongodb://" + userName + ":" + productId + "@localhost"); //mongodb://uname:pwd@localhost
                 var client = new MongoClient(connectionString);
@@ -46,7 +47,7 @@ namespace AutoX.DB
             return _instance ?? (_instance = new MongoDBManager());
         }
 
-        
+
         public bool IsProjectExisted(string projectName)
         {
             return _database.GetCollection(projectName).Count() > 0;
@@ -59,7 +60,9 @@ namespace AutoX.DB
 
         public BsonDocument Find(string id)
         {
-            return project.FindOneAs<BsonDocument>(Query.And(Query.EQ(Constants._ID, id), Query.Exists(Constants.PARENT_ID), Query.NE(Constants.PARENT_ID, "Deleted")));
+            return
+                project.FindOneAs<BsonDocument>(Query.And(Query.EQ(Constants._ID, id), Query.Exists(Constants.PARENT_ID),
+                    Query.NE(Constants.PARENT_ID, "Deleted")));
 
             //             project.FindOneByIdAs<BsonDocument>(id);
         }
@@ -73,7 +76,8 @@ namespace AutoX.DB
         {
             var children = new List<BsonDocument>();
             var sort = SortBy.Ascending("Created");
-            MongoCursor cursor = project.FindAs<BsonDocument>(Query.EQ(Constants.PARENT_ID, parentId)).SetSortOrder(sort);
+            MongoCursor cursor = project.FindAs<BsonDocument>(Query.EQ(Constants.PARENT_ID, parentId))
+                .SetSortOrder(sort);
             foreach (BsonDocument variable in cursor)
             {
                 children.Add(variable);

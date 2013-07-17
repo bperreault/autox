@@ -1,13 +1,18 @@
+#region
+
 // Hapa Project, CC
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
 #region
 
-using Newtonsoft.Json;
 using System;
+using System.Globalization;
 using System.Reflection;
 using System.Xml.Linq;
+using Newtonsoft.Json;
+
+#endregion
 
 #endregion
 
@@ -78,10 +83,12 @@ namespace AutoX.Basic.Model
                         {
                             if (prop.PropertyType.Name.Equals("DateTime"))
                             {
-                                prop.SetValue(entity, DateTime.Parse(xa.Value.ToString()), null);
+                                prop.SetValue(entity, DateTime.Parse(xa.Value.ToString(CultureInfo.InvariantCulture)),
+                                    null);
                             }
                             else if (prop.PropertyType.Name.Equals("TimeSpan"))
-                                prop.SetValue(entity, TimeSpan.Parse(xa.Value.ToString()), null);
+                                prop.SetValue(entity, TimeSpan.Parse(xa.Value.ToString(CultureInfo.InvariantCulture)),
+                                    null);
                             else
                                 prop.SetValue(entity, xa.Value, null);
 
@@ -111,7 +118,7 @@ namespace AutoX.Basic.Model
                 if (constructor != null)
                 {
                     var entity = constructor.Invoke(new Object[0]);
-                    var ido = (IDataObject)entity;
+                    var ido = (IDataObject) entity;
                     foreach (XAttribute xa in element.Attributes())
                     {
                         ido.SetAttributeValue(xa.Name.ToString(), xa.Value);
@@ -140,10 +147,7 @@ namespace AutoX.Basic.Model
             {
                 var name = prop.Name;
                 var value = prop.GetValue(dataObject, null);
-                if (value == null)
-                    ret.SetAttributeValue(name, "");
-                else
-                    ret.SetAttributeValue(name, value.ToString());
+                ret.SetAttributeValue(name, value == null ? "" : value.ToString());
             }
             return ret;
         }

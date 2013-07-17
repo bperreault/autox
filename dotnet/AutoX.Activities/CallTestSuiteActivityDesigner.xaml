@@ -20,14 +20,14 @@
     <Grid>
         <Grid.Background>
             <LinearGradientBrush>
-                <GradientStop Color="White" Offset="0.33"></GradientStop>
-                <GradientStop Color="Green" Offset="0.00"></GradientStop>
-                <GradientStop Color="Orange" Offset="0.99"></GradientStop>
+                <GradientStop Color="White" Offset="0.33" />
+                <GradientStop Color="Green" Offset="0.00" />
+                <GradientStop Color="Orange" Offset="0.99" />
             </LinearGradientBrush>
         </Grid.Background>
         <Border BorderBrush="Blue" BorderThickness="2">
             <StackPanel>
-                <Label HorizontalAlignment="Center" Content="{Binding Path=ModelItem.TestSuiteName}" Name="DisplayName"></Label>
+                <Label HorizontalAlignment="Center" Content="{Binding Path=ModelItem.TestSuiteName}" Name="DisplayName" />
             </StackPanel>
         </Border>
     </Grid>

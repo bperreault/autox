@@ -1,4 +1,6 @@
-﻿// Hapa Project, CC
+﻿#region
+
+// Hapa Project, CC
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
@@ -9,6 +11,8 @@ using System.Collections.Specialized;
 using System.Configuration;
 using System.Linq;
 using System.Xml.Linq;
+
+#endregion
 
 #endregion
 
@@ -71,19 +75,19 @@ namespace AutoX.Basic
         public static ArrayList GetSupportedAction()
         {
             var ret = new ArrayList
-                {
-                    "Enter",
-                    "Click",
-                    "Check",
-                    "Close",
-                    "Command",
-                    "Start",
-                    "Wait",
-                    "GetValue",
-                    "Existed",
-                    "Not Existed",
-                    "Verify Value"
-                };
+            {
+                "Enter",
+                "Click",
+                "Check",
+                "Close",
+                "Command",
+                "Start",
+                "Wait",
+                "GetValue",
+                "Existed",
+                "Not Existed",
+                "Verify Value"
+            };
             var support = Settings("SupportedActions", "");
             var ss = support.Split(',', ';', '|');
             var sa = new ArrayList();
@@ -119,7 +123,7 @@ namespace AutoX.Basic
         public static Config Clone()
         {
             var cfg = new Config();
-           
+
             //var config =
             //    ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
 

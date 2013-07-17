@@ -1,16 +1,20 @@
+#region
+
 // Hapa Project, CC
 // Created @2012 09 18 14:34
 // Last Updated  by Huang, Jien @2012 09 18 14:34
 
 #region
 
-using AutoX.Basic;
 using System.Activities;
 using System.Activities.Presentation.PropertyEditing;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
 using System.Xml.Linq;
+using AutoX.Basic;
+
+#endregion
 
 #endregion
 
@@ -49,10 +53,10 @@ namespace AutoX.Activities.AutoActivities
 
         public string Description { get; set; }
 
-        [DisplayName("On Error")]
+        [DisplayName(@"On Error")]
         public OnError ErrorLevel { get; set; }
 
-        [DisplayName("User Data")]
+        [DisplayName(@"User Data")]
         [Editor(typeof (UserDataEditor), typeof (DialogPropertyValueEditor))]
         public string UserData
         {
@@ -75,7 +79,6 @@ namespace AutoX.Activities.AutoActivities
             UserData = Utilities.PassData(outerData, UserData, OwnDataFirst);
         }
 
-        
         #endregion
 
         protected override void CacheMetadata(NativeActivityMetadata metadata)
@@ -89,9 +92,9 @@ namespace AutoX.Activities.AutoActivities
         protected override void Execute(NativeActivityContext context)
         {
             //add a result level here
-            XElement result = new XElement(Constants.RESULT);
+            var result = new XElement(Constants.RESULT);
             SetResult(result);
-		SetVariablesBeforeRunning(context);
+            SetVariablesBeforeRunning(context);
             InternalExecute(context, null);
         }
 
@@ -117,8 +120,8 @@ namespace AutoX.Activities.AutoActivities
             ((IPassData) nextChild).PassData(InstanceId, UserData);
             if (nextChild is AutomationActivity)
             {
-                ((AutomationActivity)nextChild).SetHost(Host);
-                ((AutomationActivity)nextChild).SetParentResultId(ResultId);
+                ((AutomationActivity) nextChild).SetHost(Host);
+                ((AutomationActivity) nextChild).SetParentResultId(ResultId);
             }
             context.ScheduleActivity(nextChild, _onChildComplete);
             //Get result here, it is sync or async????

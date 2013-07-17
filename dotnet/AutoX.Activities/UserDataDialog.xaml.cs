@@ -1,13 +1,18 @@
-﻿// Hapa Project, CC
+﻿#region
+
+// Hapa Project, CC
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
 #region
 
-using AutoX.Basic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
+using AutoX.Basic;
+
+#endregion
 
 #endregion
 
@@ -27,11 +32,16 @@ namespace AutoX.Activities
             InitializeComponent();
         }
 
+        public void Connect(int connectionId, object target)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Set(string userDataIds)
         {
             Data = Utilities.GetUserData(userDataIds, Host);
             var filtered = new List<UserData>();
-            foreach (var userData in Data)
+            foreach (UserData userData in Data)
             {
                 if (!Utilities.ReservedList.Contains(userData.Name))
                     filtered.Add(userData);

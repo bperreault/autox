@@ -1,3 +1,5 @@
+#region
+
 // Hapa Project, CC
 // Created @2012 09 18 15:26
 // Last Updated  by Huang, Jien @2012 09 18 15:26
@@ -7,11 +9,13 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Xml.Linq;
 using AutoX.Basic;
 using AutoX.DB;
-using System.Collections.ObjectModel;
+
+#endregion
 
 #endregion
 
@@ -19,14 +23,47 @@ namespace AutoX.Activities.AutoActivities
 {
     public abstract class AutomationActivity : NativeActivity, INotifyPropertyChanged
     {
-        const string SCRIPT_ID = "ScriptId";
+        private const string SCRIPT_ID = "ScriptId";
+        private readonly Collection<Variable> _variables = new Collection<Variable>();
         protected IHost Host = null;
+
+        protected string ParentResultId;
+        protected string ResultId;
+        private bool _enabled = true;
+        protected bool _result = true;
+        protected Dictionary<string, string> _upperVariables = new Dictionary<string, string>();
 
         [Browsable(false)]
         public string InstanceId { get; set; }
 
-        protected string ResultId;
-        protected string ParentResultId;
+        public string Name { get; set; }
+
+        [Browsable(false)]
+        public Collection<Variable> Variables
+        {
+            get { return _variables; }
+        }
+
+        [DisplayName(@"Enabled")]
+        [DefaultValue(true)]
+        public bool Enabled
+        {
+            get { return _enabled; }
+            set
+            {
+                _enabled = value;
+                NotifyPropertyChanged("Enabled");
+            }
+        }
+
+        [DisplayName(@"Local Data First")]
+        public bool OwnDataFirst { get; set; }
+
+        #region INotifyPropertyChanged Members
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        #endregion
 
         public void SetParentResultId(string parentResultId)
         {
@@ -36,23 +73,12 @@ namespace AutoX.Activities.AutoActivities
                 return;
             }
             ParentResultId = parentResultId;
-            ResultId = ResultId == null ? Guid.NewGuid().ToString() : ResultId;
-        }
-        public string Name { get; set; }
-        readonly Collection<Variable> variables = new Collection<Variable>();
-        [Browsable(false)]
-        public Collection<Variable> Variables
-        {
-            get
-            {
-                return this.variables;
-            }
+            ResultId = ResultId ?? Guid.NewGuid().ToString();
         }
 
-        protected Dictionary<string, string> _upperVariables = new Dictionary<string, string>();
         public void SetVariables(Dictionary<string, string> vars)
         {
-            foreach (var key in vars.Keys)
+            foreach (string key in vars.Keys)
             {
                 var value = vars[key];
                 if (_upperVariables.ContainsKey(key))
@@ -69,7 +95,7 @@ namespace AutoX.Activities.AutoActivities
 
         protected void SetVariablesBeforeRunning(NativeActivityContext context)
         {
-            foreach (var key in _upperVariables.Keys)
+            foreach (string key in _upperVariables.Keys)
             {
                 var value = _upperVariables[key];
                 if (ContainsVariableByContext(context, key))
@@ -83,11 +109,13 @@ namespace AutoX.Activities.AutoActivities
                 }
             }
         }
+
         protected bool ContainsVariableByContext(NativeActivityContext context, string key)
         {
             var input = context.DataContext.GetProperties()[key];
             return input != null;
         }
+
         protected string GetVariableValueByContext(NativeActivityContext context, string key)
         {
             var input = context.DataContext.GetProperties()[key];
@@ -95,14 +123,15 @@ namespace AutoX.Activities.AutoActivities
             if (input == null) return null;
             return input.GetValue(context.DataContext).ToString();
         }
+
         protected bool SetVariableValueByContext(NativeActivityContext context, string key, string value)
         {
-
             var input = context.DataContext.GetProperties()[key];
             if (input == null) return false;
             input.SetValue(context.DataContext, value);
             return true;
         }
+
         protected void SetResult(XElement result)
         {
             result.SetAttributeValue(Constants.PARENT_ID, ParentResultId);
@@ -116,26 +145,13 @@ namespace AutoX.Activities.AutoActivities
             {
                 result.SetAttributeValue("Original", ret);
                 result.SetAttributeValue("Final", ret);
-                _result = ret.Equals("Success")&&_result;
+                _result = ret.Equals("Success") && _result;
             }
             else
                 _result = false;
             //result.SetAttributeValue(Constants.UI_OBJECT, UIObject);
             DBFactory.GetData().Save(result);
         }
-        private bool _enabled = true;
-        [DisplayName("Enabled")]
-        [DefaultValue(true)]
-        public bool Enabled { get { return _enabled; } set { _enabled = value; NotifyPropertyChanged("Enabled"); } }
-
-        [DisplayName("Local Data First")]
-        public bool OwnDataFirst { get; set; }
-
-        #region INotifyPropertyChanged Members
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion
 
         public void SetHost(IHost host)
         {
@@ -143,12 +159,14 @@ namespace AutoX.Activities.AutoActivities
         }
 
 
-        protected bool _result = true;
         /// <summary>
         ///   you must call this method after workflowinvoker.invoke
         /// </summary>
         /// <returns> </returns>
-        public bool GetResult() { return _result; }
+        public bool GetResult()
+        {
+            return _result;
+        }
 
         protected void NotifyPropertyChanged(string p)
         {

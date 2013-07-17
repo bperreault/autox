@@ -1,3 +1,5 @@
+#region
+
 // Hapa Project, CC
 // Created @2012 09 18 14:34
 // Last Updated  by Huang, Jien @2012 09 18 14:34
@@ -8,21 +10,23 @@ using System.Activities;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
-using AutoX.Basic;
 using System.Xml.Linq;
+using AutoX.Basic;
+
+#endregion
 
 #endregion
 
 namespace AutoX.Activities.AutoActivities
 {
-    [ToolboxBitmap(typeof(TestSuiteDesigner), "TestSuite.bmp")]
-    [Designer(typeof(TestSuiteDesigner))]
+    [ToolboxBitmap(typeof (TestSuiteDesigner), "TestSuite.bmp")]
+    [Designer(typeof (TestSuiteDesigner))]
     public sealed class TestSuiteActivity : AutomationActivity, IPassData
     {
         private readonly Variable<int> _currentIndex;
         private string _name;
         private CompletionCallback _onChildComplete;
-       
+
         public TestSuiteActivity()
         {
             children = new Collection<Activity>();
@@ -32,7 +36,11 @@ namespace AutoX.Activities.AutoActivities
 
 
         [Browsable(false)]
-        public string GUID { get; set; }
+        public string GUID
+        {
+            get;
+            set;
+        }
 
         public new string Name
         {
@@ -46,12 +54,20 @@ namespace AutoX.Activities.AutoActivities
 
         public string Description { get; set; }
 
-        [DisplayName("On Error")]
+        [DisplayName(@"On Error")]
         [DefaultValue(OnError.Continue)]
-        public OnError ErrorLevel { get; set; }
+        public OnError ErrorLevel
+        {
+            get;
+            set;
+        }
 
         [Browsable(false)]
-        public Collection<Activity> children { get; set; }
+        public Collection<Activity> children
+        {
+            get;
+            set;
+        }
 
         #region IPassData Members
 
@@ -85,7 +101,8 @@ namespace AutoX.Activities.AutoActivities
         protected override void Execute(NativeActivityContext context)
         {
             //set env environment variables
-            var steps = XElement.Parse("<AutoX.Steps  OnError=\""+ErrorLevel.ToString()+"\" InstanceId=\"" + InstanceId + "\"/>");
+            var steps =
+                XElement.Parse("<AutoX.Steps  OnError=\"" + ErrorLevel + "\" InstanceId=\"" + InstanceId + "\"/>");
             var set_env = XElement.Parse("<Step />");
             set_env.SetAttributeValue(Constants.ACTION, Constants.SET_ENV);
             foreach (PropertyDescriptor _var in context.DataContext.GetProperties())
@@ -96,11 +113,11 @@ namespace AutoX.Activities.AutoActivities
             Host.SetCommand(steps);
             Host.GetResult();
             //add a result level here
-            XElement result = new XElement(Constants.RESULT);
+            var result = new XElement(Constants.RESULT);
             SetResult(result);
-		    SetVariablesBeforeRunning(context);
+            SetVariablesBeforeRunning(context);
             InternalExecute(context, null);
-            
+
             //TODO when test suite finished, close the browser (required by sauce)
             //<Step Action="Close" />
         }
@@ -114,7 +131,8 @@ namespace AutoX.Activities.AutoActivities
             {
                 //if the currentActivityIndex is equal to the count of MySequence's Activities
                 //Suite is complete
-                var steps = XElement.Parse("<AutoX.Steps  OnError=\"AlwaysReturnTrue\" InstanceId=\"" + InstanceId + "\"/>");
+                var steps =
+                    XElement.Parse("<AutoX.Steps  OnError=\"AlwaysReturnTrue\" InstanceId=\"" + InstanceId + "\"/>");
                 var close = XElement.Parse("<Step Action=\"Close\" />");
                 steps.Add(close);
                 Host.SetCommand(steps);
@@ -131,19 +149,19 @@ namespace AutoX.Activities.AutoActivities
 
             //grab the next Activity in MySequence.Activities and schedule it
             var nextChild = children[currentActivityIndex];
-            bool childEnabled = false;
+            var childEnabled = false;
             if (nextChild is AutomationActivity)
             {
-                ((AutomationActivity)nextChild).SetHost(Host);
-                ((AutomationActivity)nextChild).InstanceId = InstanceId;
-                ((AutomationActivity)nextChild).SetParentResultId(ResultId);
-                childEnabled = ((AutomationActivity)nextChild).Enabled;
+                ((AutomationActivity) nextChild).SetHost(Host);
+                ((AutomationActivity) nextChild).InstanceId = InstanceId;
+                ((AutomationActivity) nextChild).SetParentResultId(ResultId);
+                childEnabled = ((AutomationActivity) nextChild).Enabled;
             }
             //TODO if enabled, run it, may need to use while???
             context.ScheduleActivity(nextChild, _onChildComplete);
             //Get result here, it is sync or async????
-            _result = _result && ((IPassData)nextChild).GetResult();
-		//TODO set variables value ((AutomationActivity)nextChild).Name to _result
+            _result = _result && ((IPassData) nextChild).GetResult();
+            //TODO set variables value ((AutomationActivity)nextChild).Name to _result
             if (!_result)
             {
                 if (ErrorLevel == OnError.AlwaysReturnTrue)

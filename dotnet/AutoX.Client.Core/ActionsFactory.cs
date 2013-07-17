@@ -4,6 +4,7 @@
 
 #region
 
+using System.Globalization;
 using AutoX.Basic;
 using System;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace AutoX.Client.Core
         public static XElement Execute(XElement steps, Browser browser, Config config)
         {
             var ret = new XElement(Constants.RESULT);
-            ret.SetAttributeValue("Created", DateTime.Now.ToString());
+            ret.SetAttributeValue("Created", DateTime.Now.ToString(CultureInfo.InvariantCulture));
             ret.SetAttributeValue(Constants.RESULT, "Success");
             ret.SetAttributeValue(Constants._ID, Guid.NewGuid().ToString());
             var instanceId = steps.GetAttributeValue(Constants.INSTANCE_ID);
@@ -53,7 +54,7 @@ namespace AutoX.Client.Core
             foreach (var step in query)
             {
                 var xAttribute = step.Attribute(Constants.ACTION);
-                var xId = step.GetAttributeValue(Constants._ID);
+                //var xId = step.GetAttributeValue(Constants._ID);
                 if (xAttribute != null)
                 {
                     if (!HandleOneStep(browser, config, ref ret, instanceId, link, step, xAttribute))

@@ -1,9 +1,13 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Xml.Linq;
 using AutoX.Basic;
 using MySql.Data.MySqlClient;
+
+#endregion
 
 namespace AutoX.DB
 {
@@ -21,10 +25,10 @@ namespace AutoX.DB
             _connection.Open();
             //check: if table is empty, create basic data
             var cmd = new MySqlCommand("select count(*) from content", _connection);
-            Int32 count = Convert.ToInt32(cmd.ExecuteScalar());
+            var count = Convert.ToInt32(cmd.ExecuteScalar());
             if (count > 0)
                 return;
-            string rootId = Configuration.Settings("Root", "42c5eb51-0e1c-4de1-976d-733bde24220a");
+            var rootId = Configuration.Settings("Root", "42c5eb51-0e1c-4de1-976d-733bde24220a");
             CreateSubItem(rootId, "Folder", "Data");
             CreateSubItem(rootId, "Folder", "UI");
             CreateSubItem(rootId, "Folder", "Translation");
@@ -36,7 +40,7 @@ namespace AutoX.DB
 
         private void CreateSubItem(string parentId, string type, string name)
         {
-            string id = Guid.NewGuid().ToString();
+            var id = Guid.NewGuid().ToString();
             CreateSubItem(parentId, type, name, id);
         }
 
@@ -80,7 +84,7 @@ namespace AutoX.DB
             string content = null;
             var cmd = new MySqlCommand("select data from content where id=@id", _connection);
             cmd.Parameters.AddWithValue("@id", id);
-            MySqlDataReader reader = cmd.ExecuteReader();
+            var reader = cmd.ExecuteReader();
             if (reader.Read())
             {
                 content = reader.GetString(0);
@@ -107,7 +111,7 @@ namespace AutoX.DB
         public XElement GetChildren(string parentId)
         {
             var kids = new XElement("Children");
-            IEnumerable<string> directKids = GetKids(parentId);
+            var directKids = GetKids(parentId);
             foreach (string directKid in directKids)
             {
                 kids.Add(Find(directKid));

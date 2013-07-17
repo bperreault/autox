@@ -60,9 +60,7 @@
                 </DataGridComboBoxColumn>-->
                 <DataGridTextColumn Width="3*" Binding="{Binding DefaultData}" Header="Default Data" IsReadOnly="False"
                                     ToolTipService.ToolTip="When Data is not provided, use this as default input data." />
-                <DataGridCheckBoxColumn Width="0.7*" Binding="{Binding Enable}" Header="Enable" >
-                   
-                </DataGridCheckBoxColumn>
+                <DataGridCheckBoxColumn Width="0.7*" Binding="{Binding Enable}" Header="Enable" />
             </DataGrid.Columns>
       </DataGrid>
         <Grid Grid.Row="1">

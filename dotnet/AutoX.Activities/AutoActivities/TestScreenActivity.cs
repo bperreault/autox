@@ -1,3 +1,5 @@
+#region
+
 // Hapa Project, CC
 // Created @2012 09 18 14:34
 // Last Updated  by Huang, Jien @2012 09 18 14:34
@@ -8,10 +10,8 @@ using System.Activities;
 using System.Activities.Presentation.PropertyEditing;
 using System.ComponentModel;
 using System.Drawing;
-using System.Xml.Linq;
-using AutoX.Basic;
-using AutoX.Basic.Model;
-using System.Collections.ObjectModel;
+
+#endregion
 
 #endregion
 
@@ -26,12 +26,7 @@ namespace AutoX.Activities.AutoActivities
 
         public TestScreenActivity()
         {
-		    Enabled = true;
-        }
-
-        protected override void Execute(NativeActivityContext context)
-        {
-            //It should not be called.
+            Enabled = true;
         }
 
         [Browsable(false)]
@@ -50,7 +45,7 @@ namespace AutoX.Activities.AutoActivities
 
         public string Description { get; set; }
 
-        [DisplayName("Test Steps")]
+        [DisplayName(@"Test Steps")]
         [Editor(typeof (StepsEditor), typeof (DialogPropertyValueEditor))]
         public string Steps
         {
@@ -58,5 +53,9 @@ namespace AutoX.Activities.AutoActivities
             set { _steps = value; }
         }
 
+        protected override void Execute(NativeActivityContext context)
+        {
+            //It should not be called.
+        }
     }
 }

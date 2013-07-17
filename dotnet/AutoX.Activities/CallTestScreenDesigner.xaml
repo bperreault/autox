@@ -26,7 +26,7 @@
         <Activities:DatumConverter x:Key="DatumConverter" />
 
         <DataTemplate x:Key="Collapsed">
-            <TextBlock Name="title" HorizontalAlignment="Center" Text="{Binding Path=ModelItem.TestSreenName}"></TextBlock>
+            <TextBlock Name="title" HorizontalAlignment="Center" Text="{Binding Path=ModelItem.TestSreenName}" />
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding Path=ModelItem.Enabled}" Value="False">
                     <Setter TargetName="title" Property="Background" >
@@ -48,7 +48,7 @@
             
             <StackPanel Name="stackPanel">    
                 
-                <TextBlock HorizontalAlignment="Center" Text="{Binding Path=ModelItem.TestSreenName}"></TextBlock>
+                <TextBlock HorizontalAlignment="Center" Text="{Binding Path=ModelItem.TestSreenName}" />
                 <DataGrid HorizontalContentAlignment="Stretch"
                     ItemsSource="{Binding Path=ModelItem.Steps, Converter={StaticResource StepsConverter},ConverterParameter=In}"
                     Background="Transparent" AllowDrop="True" Name="StepsTable" AutoGenerateColumns="False" CanUserAddRows="False"
@@ -57,10 +57,10 @@
                         <Style TargetType="DataGridRow">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Enable}" Value="False">
-                                    <Setter Property="Visibility" Value="Collapsed"></Setter>
+                                    <Setter Property="Visibility" Value="Collapsed" />
                                 </DataTrigger>
                                 <DataTrigger Binding="{Binding Enable}" Value="True">
-                                    <Setter Property="Visibility" Value="Visible"></Setter>
+                                    <Setter Property="Visibility" Value="Visible" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -138,9 +138,9 @@
         <Grid.Background>
             
             <LinearGradientBrush>
-                <GradientStop Color="White" Offset="0.66"></GradientStop>
-                <GradientStop Color="Green" Offset="0.00"></GradientStop>
-                <GradientStop Color="Orange" Offset="0.99"></GradientStop>
+                <GradientStop Color="White" Offset="0.66" />
+                <GradientStop Color="Green" Offset="0.00" />
+                <GradientStop Color="Orange" Offset="0.99" />
             </LinearGradientBrush>
         </Grid.Background>
         <Border BorderBrush="Blue" BorderThickness="2">

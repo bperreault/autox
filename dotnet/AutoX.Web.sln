@@ -1,7 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2012 for Web
+# Visual Studio 2013
+VisualStudioVersion = 12.0.20617.1 PREVIEW
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoX.Web", "AutoX.Web\AutoX.Web.csproj", "{4B8F5366-D270-45A5-9CD3-9D7A2CF831CB}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6A598CBB-A54F-4272-82AA-0DD64428E3C6} = {6A598CBB-A54F-4272-82AA-0DD64428E3C6}
+		{7D09A7D8-2A35-49CB-936E-58919BB4A5F9} = {7D09A7D8-2A35-49CB-936E-58919BB4A5F9}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoX.DB", "AutoX.DB\AutoX.DB.csproj", "{7D09A7D8-2A35-49CB-936E-58919BB4A5F9}"
 EndProject

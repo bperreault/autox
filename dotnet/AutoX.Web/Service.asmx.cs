@@ -1,15 +1,18 @@
-﻿// Hapa Project, CC
+﻿#region
+
+// Hapa Project, CC
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
 #region
 
-using AutoX.Basic;
-using AutoX.WF.Core;
 using System.ComponentModel;
 using System.Web.Script.Services;
 using System.Web.Services;
 using System.Xml.Linq;
+using AutoX.WF.Core;
+
+#endregion
 
 #endregion
 
@@ -21,7 +24,6 @@ namespace AutoX.Web
     [WebService(Namespace = "http://tempuri.org/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [ToolboxItem(false)]
-
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line.
     [ScriptService]
     public class Service : WebService

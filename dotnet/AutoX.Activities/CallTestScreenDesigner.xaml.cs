@@ -1,13 +1,17 @@
-﻿// Hapa Project, CC
+﻿#region
+
+// Hapa Project, CC
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
 #region
 
-using AutoX.Basic;
-using System.Activities.Presentation;
+using System;
 using System.Windows;
 using System.Xml.Linq;
+using AutoX.Basic;
+
+#endregion
 
 #endregion
 
@@ -19,6 +23,11 @@ namespace AutoX.Activities
         public CallTestScreenDesigner()
         {
             InitializeComponent();
+        }
+
+        public void Connect(int connectionId, object target)
+        {
+            throw new NotImplementedException();
         }
 
         protected override void OnDragEnter(DragEventArgs e)

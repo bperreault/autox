@@ -1,10 +1,14 @@
-﻿using System;
+﻿#region
+
+using System;
 using System.Collections;
 using System.Globalization;
 using System.Windows.Data;
+using System.Xml.Linq;
 using AutoX.Basic;
 using AutoX.DB;
-using System.Xml.Linq;
+
+#endregion
 
 namespace AutoX.Activities
 {
@@ -19,7 +23,7 @@ namespace AutoX.Activities
             var textValue = value as string;
             if (string.IsNullOrEmpty(textValue))
                 return null;
-            string content = DBFactory.GetData().Read(textValue).GetAttributeValue(Constants.CONTENT);
+            var content = DBFactory.GetData().Read(textValue).GetAttributeValue(Constants.CONTENT);
             if (string.IsNullOrEmpty(content))
                 return null;
             var steps = XElement.Parse(content).GetAttributeValue("Steps");
@@ -34,7 +38,5 @@ namespace AutoX.Activities
         }
 
         #endregion
-
-        
     }
 }

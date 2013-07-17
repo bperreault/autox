@@ -1,19 +1,21 @@
+#region
+
 // Hapa Project, CC
 // Created @2012 08 29 08:33
 // Last Updated  by Huang, Jien @2012 08 29 08:33
 
 #region
 
-using AutoX.Basic;
-using AutoX.Basic.Model;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using AutoX.Basic;
+
+#endregion
 
 #endregion
 
@@ -31,24 +33,24 @@ namespace AutoX.WF.Core
             var cancell = new CancellationTokenSource();
             var token = cancell.Token;
             _task = new Task(() =>
+            {
+                while (true)
                 {
-                    while (true)
+                    var cancelled = token.WaitHandle.WaitOne(5*60*1000);
+                    var now = DateTime.Now;
+                    foreach (string nameOfComputer in _computerList.Keys)
                     {
-                        var cancelled = token.WaitHandle.WaitOne(5 * 60 * 1000);
-                        var now = DateTime.Now;
-                        foreach (string nameOfComputer in _computerList.Keys)
-                        {
-                            var computer = _computerList[nameOfComputer];
-                            var lostMessage = now - computer.Updated;
-                            if (lostMessage.Hours >= 1)
-                                _computerList.Remove(nameOfComputer);
-                        }
-                        if (cancelled)
-                        {
-                            throw new OperationCanceledException(token);
-                        }
+                        var computer = _computerList[nameOfComputer];
+                        var lostMessage = now - computer.Updated;
+                        if (lostMessage.Hours >= 1)
+                            _computerList.Remove(nameOfComputer);
                     }
-                }, token);
+                    if (cancelled)
+                    {
+                        throw new OperationCanceledException(token);
+                    }
+                }
+            }, token);
             _task.Start();
         }
 
@@ -85,7 +87,7 @@ namespace AutoX.WF.Core
 
         public string GetAReadyClientInstance()
         {
-            foreach (var instance in _computerList)
+            foreach (KeyValuePair<string, ClientInstance> instance in _computerList)
             {
                 if (instance.Value.Status.Equals("Ready"))
                     return instance.Key;
@@ -96,7 +98,7 @@ namespace AutoX.WF.Core
         public ClientInstance GetComputer(string idOfComputer)
         {
             return
-                (from _id in _computerList.Keys where _id.Contains(idOfComputer) select _computerList[_id]).
+                (from id in _computerList.Keys where id.Contains(idOfComputer) select _computerList[id]).
                     FirstOrDefault();
         }
 

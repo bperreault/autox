@@ -1,4 +1,6 @@
-﻿// Hapa Project, CC
+﻿#region
+
+// Hapa Project, CC
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
@@ -7,6 +9,8 @@
 using System;
 using System.Net;
 using System.Xml.Linq;
+
+#endregion
 
 #endregion
 
@@ -20,9 +24,8 @@ namespace AutoX.Basic.Model
 
         public string Version { get; set; }
 
-        public string _id { get; set; }
-
         public string Status { get; set; }
+        public string _id { get; set; }
 
         public DateTime Created { get; set; }
 
@@ -33,11 +36,11 @@ namespace AutoX.Basic.Model
         public static Computer GetLocalHost()
         {
             var computer = new Computer
-                {
-                    ComputerName = Dns.GetHostName(),
-                    Version = Environment.OSVersion.VersionString,
-                    IPAddress = LocalIPAddress()
-                };
+            {
+                ComputerName = Dns.GetHostName(),
+                Version = Environment.OSVersion.VersionString,
+                IPAddress = LocalIPAddress()
+            };
             return computer;
         }
 
@@ -78,15 +81,15 @@ namespace AutoX.Basic.Model
         {
             //return xComputer.GetObjectFromXElement() as Computer;
             var computer = new Computer
-                {
-                    _id = xComputer.GetAttributeValue(Constants._ID),
-                    Created = DateTime.Parse(xComputer.GetAttributeValue("Created")),
-                    Updated = DateTime.Parse(xComputer.GetAttributeValue("Updated")),
-                    ComputerName = xComputer.GetAttributeValue("ComputerName"),
-                    IPAddress = xComputer.GetAttributeValue("IPAddress"),
-                    Version = xComputer.GetAttributeValue("Version"),
-                    Status = xComputer.GetAttributeValue("Status")
-                };
+            {
+                _id = xComputer.GetAttributeValue(Constants._ID),
+                Created = DateTime.Parse(xComputer.GetAttributeValue("Created")),
+                Updated = DateTime.Parse(xComputer.GetAttributeValue("Updated")),
+                ComputerName = xComputer.GetAttributeValue("ComputerName"),
+                IPAddress = xComputer.GetAttributeValue("IPAddress"),
+                Version = xComputer.GetAttributeValue("Version"),
+                Status = xComputer.GetAttributeValue("Status")
+            };
 
             return computer;
         }

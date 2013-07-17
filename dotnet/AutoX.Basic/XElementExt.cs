@@ -1,13 +1,17 @@
-﻿// Hapa Project, CC
+﻿#region
+
+// Hapa Project, CC
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
 #region
 
-using AutoX.Basic.Model;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using AutoX.Basic.Model;
+
+#endregion
 
 #endregion
 
@@ -97,7 +101,7 @@ namespace AutoX.Basic
 
         public static Dictionary<string, string> GetAttributeList(this XElement e)
         {
-            Dictionary<string, string> attributeList = new Dictionary<string, string>();
+            var attributeList = new Dictionary<string, string>();
             foreach (XAttribute attr in e.Attributes())
             {
                 attributeList.Add(attr.Name.ToString(), attr.Value);
@@ -113,12 +117,12 @@ namespace AutoX.Basic
             if (!string.IsNullOrWhiteSpace(e.Value))
                 retString += e.Value + "\n";
             return e.Attributes()
-                    .Aggregate(retString, (current, a) => current + (" " + a.Name + " : " + a.Value + "\n"));
+                .Aggregate(retString, (current, a) => current + (" " + a.Name + " : " + a.Value + "\n"));
         }
 
         public static XElement GetSubElement(this XElement current, string key, string value)
         {
-            foreach (var e in current.Descendants())
+            foreach (XElement e in current.Descendants())
             {
                 if (e.GetAttributeValue(key).Equals(value))
                     return e;
@@ -147,7 +151,7 @@ namespace AutoX.Basic
             xCommand.SetAttributeValue("ComputerName", computer.ComputerName);
             xCommand.SetAttributeValue("IPAddress", computer.IPAddress);
             xCommand.SetAttributeValue("Version", computer.Version);
-            foreach (var key in config.GetList().Keys)
+            foreach (string key in config.GetList().Keys)
             {
                 xCommand.SetAttributeValue(key, config.GetList()[key]);
             }

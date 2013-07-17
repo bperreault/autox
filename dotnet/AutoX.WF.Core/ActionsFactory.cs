@@ -1,6 +1,10 @@
-﻿using AutoX.Basic;
+﻿#region
+
 using System;
 using System.Xml.Linq;
+using AutoX.Basic;
+
+#endregion
 
 namespace AutoX.WF.Core
 {

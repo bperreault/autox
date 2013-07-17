@@ -1,3 +1,5 @@
+#region
+
 // Hapa Project, CC
 // Created @2012 09 18 14:34
 // Last Updated  by Huang, Jien @2012 09 18 14:34
@@ -10,7 +12,8 @@ using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using AutoX.Basic;
-using AutoX.Basic.Model;
+
+#endregion
 
 #endregion
 
@@ -20,10 +23,9 @@ namespace AutoX.Activities.AutoActivities
     [Designer(typeof (CallTestSuiteActivityDesigner))]
     public sealed class CallTestSuiteActivity : AutomationActivity, IPassData
     {
-        
         private string _testSuiteName;
 
-        [DisplayName("Test Suite Name")]
+        [DisplayName(@"Test Suite Name")]
         public string TestSuiteName
         {
             get { return _testSuiteName; }
@@ -38,7 +40,7 @@ namespace AutoX.Activities.AutoActivities
         [Browsable(false)]
         public string TestSuiteId { get; set; }
 
-        [DisplayName("Description")]
+        [DisplayName(@"Description")]
         public string TestSuiteDescription { get; set; }
 
         #region IPassData Members
@@ -47,7 +49,6 @@ namespace AutoX.Activities.AutoActivities
         {
             InstanceId = instanceId;
         }
-
 
         #endregion
 
@@ -58,19 +59,19 @@ namespace AutoX.Activities.AutoActivities
         {
             // Obtain the runtime value of the Text input argument
 
-		    SetVariablesBeforeRunning(context);
+            SetVariablesBeforeRunning(context);
             //TODO implement it!!!
             //invoke a test suite here
             Log.Debug("in CallTestSuite, before Executing Test Suite: " + TestSuiteName);
             var screen = Host.GetDataObject(TestSuiteId);
-            
+
             if (screen == null) return;
             var activity = ActivityXamlServices.Load(new StringReader(screen.GetAttributeValue(Constants.CONTENT)));
             if (activity is AutomationActivity)
             {
-                ((AutomationActivity)activity).SetHost(Host);
-                ((AutomationActivity)activity).SetParentResultId(ParentResultId);
-                ((AutomationActivity)activity).InstanceId = InstanceId;
+                ((AutomationActivity) activity).SetHost(Host);
+                ((AutomationActivity) activity).SetParentResultId(ParentResultId);
+                ((AutomationActivity) activity).InstanceId = InstanceId;
             }
             WorkflowInvoker.Invoke(activity);
             //TODO calculate result here

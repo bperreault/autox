@@ -20,7 +20,7 @@
     <sap:ActivityDesigner.Resources>
         <Activities:DatumConverter x:Key="DatumConverter" />
         <DataTemplate x:Key="Collapsed">
-            <TextBlock Name="title" HorizontalAlignment="Center" Text="{Binding Path=ModelItem.TestCaseName}"></TextBlock>
+            <TextBlock Name="title" HorizontalAlignment="Center" Text="{Binding Path=ModelItem.TestCaseName}" />
             <DataTemplate.Triggers>
                 <DataTrigger Binding="{Binding Path=ModelItem.Enabled}" Value="False">
                     <Setter TargetName="title" Property="Background" >
@@ -41,7 +41,7 @@
         
         <DataTemplate x:Key="Expanded">
             <StackPanel Name="stackPanel">
-                <TextBlock HorizontalAlignment="Center" Text="{Binding Path=ModelItem.TestCaseName}"></TextBlock>
+                <TextBlock HorizontalAlignment="Center" Text="{Binding Path=ModelItem.TestCaseName}" />
 
                 <DataGrid
                     ItemsSource="{Binding Path=ModelItem.UserData, Converter={StaticResource DatumConverter},ConverterParameter=In}"
@@ -88,9 +88,9 @@
 
         <Grid.Background>
             <LinearGradientBrush>
-                <GradientStop Color="White" Offset="0.66"></GradientStop>
-                <GradientStop Color="Green" Offset="0.00"></GradientStop>
-                <GradientStop Color="Orange" Offset="0.99"></GradientStop>
+                <GradientStop Color="White" Offset="0.66" />
+                <GradientStop Color="Green" Offset="0.00" />
+                <GradientStop Color="Orange" Offset="0.99" />
             </LinearGradientBrush>
         </Grid.Background>
         <!--<Border BorderBrush="Blue" BorderThickness="2">

@@ -1,11 +1,10 @@
-﻿using AutoX.Basic.Model;
-using AutoX.Basic;
-using System;
+﻿#region
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
+using AutoX.Basic;
+
+#endregion
 
 namespace AutoX.WF.Core
 {
@@ -25,25 +24,27 @@ namespace AutoX.WF.Core
 
         public bool UpdateInstance(XElement instanceInfo)
         {
-            XElement _1stNode = ((XElement)instanceInfo.FirstNode);
+            var _1StNode = ((XElement) instanceInfo.FirstNode);
             //var name = instanceInfo.GetAttributeValue("TestName");
-            var scriptGuid = _1stNode.GetAttributeValue("ScriptGUID");
-            var clientId = _1stNode.GetAttributeValue("ClientId");
-            var guid = _1stNode.GetAttributeValue(Constants._ID);
+            var scriptGuid = _1StNode.GetAttributeValue("ScriptGUID");
+            //var clientId = _1StNode.GetAttributeValue("ClientId");
+            var guid = _1StNode.GetAttributeValue(Constants._ID);
             //var status = instanceInfo.GetAttributeValue("Status");
             //var language = instanceInfo.GetAttributeValue("Language");
             //var suiteName = instanceInfo.GetAttributeValue("SuiteName");
             if (_instanceList.ContainsKey(guid))
             {
                 var instance = _instanceList[guid];
-                instance.Variables = ((XElement)instanceInfo.FirstNode).GetAttributeList();
+                instance.Variables = ((XElement) instanceInfo.FirstNode).GetAttributeList();
                 return instance.Status == null || !instance.Status.Equals("Invalid");
             }
             else
             {
-                var instance = new WorkflowInstance(guid,scriptGuid, ((XElement)instanceInfo.FirstNode).GetAttributeList());//new WorkflowInstance(guid, scriptGuid, name, computer, suiteName, language);
+                var instance = new WorkflowInstance(guid, scriptGuid,
+                    ((XElement) instanceInfo.FirstNode).GetAttributeList());
+                //new WorkflowInstance(guid, scriptGuid, name, computer, suiteName, language);
                 _instanceList.Add(guid, instance);
-                return instance.Status==null||!instance.Status.Equals("Invalid");
+                return instance.Status == null || !instance.Status.Equals("Invalid");
             }
         }
 
@@ -71,11 +72,11 @@ namespace AutoX.WF.Core
 
         internal XElement SetResult(XElement action)
         {
-            var guid = ((XElement)action.FirstNode).GetAttributeValue(Constants.INSTANCE_ID);
-            if(guid==null)
+            var guid = ((XElement) action.FirstNode).GetAttributeValue(Constants.INSTANCE_ID);
+            if (guid == null)
                 return XElement.Parse("<Result Result='Success' />");
             if (!_instanceList.ContainsKey(guid)) return XElement.Parse("<Result Result='Error' />");
-            _instanceList[guid].SetResult(((XElement)action.FirstNode));
+            _instanceList[guid].SetResult(((XElement) action.FirstNode));
             return XElement.Parse("<Result Result='Success' />");
         }
 

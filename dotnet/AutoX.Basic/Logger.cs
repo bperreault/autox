@@ -1,12 +1,16 @@
-﻿// Hapa Project, CC
+﻿#region
+
+// Hapa Project, CC
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
 #region
 
+using System;
 using log4net;
 using log4net.Config;
-using System;
+
+#endregion
 
 #endregion
 

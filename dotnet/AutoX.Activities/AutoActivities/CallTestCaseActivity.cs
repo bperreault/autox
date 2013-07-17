@@ -1,23 +1,27 @@
+#region
+
 // Hapa Project, CC
 // Created @2012 09 18 14:34
 // Last Updated  by Huang, Jien @2012 09 18 14:34
 
 #region
 
-using AutoX.Basic;
 using System.Activities;
 using System.Activities.Presentation.PropertyEditing;
 using System.Activities.XamlIntegration;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
+using AutoX.Basic;
+
+#endregion
 
 #endregion
 
 namespace AutoX.Activities.AutoActivities
 {
-    [ToolboxBitmap(typeof(CallTestCaseDesigner), "TestCase.bmp")]
-    [Designer(typeof(CallTestCaseDesigner))]
+    [ToolboxBitmap(typeof (CallTestCaseDesigner), "TestCase.bmp")]
+    [Designer(typeof (CallTestCaseDesigner))]
     public sealed class CallTestCaseActivity : AutomationActivity
     {
         private string _testCaseName;
@@ -28,7 +32,7 @@ namespace AutoX.Activities.AutoActivities
             OwnDataFirst = true;
         }
 
-        [DisplayName("Test Case Name")]
+        [DisplayName(@"Test Case Name")]
         public string TestCaseName
         {
             get { return _testCaseName; }
@@ -42,8 +46,8 @@ namespace AutoX.Activities.AutoActivities
         [Browsable(false)]
         public string TestCaseId { get; set; }
 
-        [DisplayName("User Data")]
-        [Editor(typeof(UserDataEditor), typeof(DialogPropertyValueEditor))]
+        [DisplayName(@"User Data")]
+        [Editor(typeof (UserDataEditor), typeof (DialogPropertyValueEditor))]
         public string UserData
         {
             get { return _userData; }
@@ -82,11 +86,11 @@ namespace AutoX.Activities.AutoActivities
             var activity = ActivityXamlServices.Load(new StringReader(screen.GetAttributeValue(Constants.CONTENT)));
             if (activity is AutomationActivity)
             {
-                ((AutomationActivity)activity).SetHost(Host);
-                ((AutomationActivity)activity).SetParentResultId(ParentResultId);
+                ((AutomationActivity) activity).SetHost(Host);
+                ((AutomationActivity) activity).SetParentResultId(ParentResultId);
             }
             WorkflowInvoker.Invoke(activity);
-            _result = ((IPassData)activity).GetResult();
+            _result = ((IPassData) activity).GetResult();
         }
     }
 }

@@ -1,13 +1,14 @@
-﻿using AutoX.Basic;
-using AutoX.Basic.Model;
+﻿#region
+
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
+using System.Globalization;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Xml.Linq;
+using AutoX.Basic;
+using AutoX.Basic.Model;
+
+#endregion
 
 namespace AutoX.WF.Core
 {
@@ -15,6 +16,7 @@ namespace AutoX.WF.Core
     {
         private readonly ArrayList _commandList = new ArrayList();
         private readonly XElement _element;
+        private string _status;
 
         public ClientInstance(XElement info)
         {
@@ -32,8 +34,8 @@ namespace AutoX.WF.Core
             Updated = DateTime.Now;
             Status = "Ready";
             _element.SetAttributeValue("Status", Status);
-            _element.SetAttributeValue("Created", Created.ToString());
-            _element.SetAttributeValue("Updated", Updated.ToString());
+            _element.SetAttributeValue("Created", Created.ToString(CultureInfo.InvariantCulture));
+            _element.SetAttributeValue("Updated", Updated.ToString(CultureInfo.InvariantCulture));
         }
 
         public string Name { set; get; }
@@ -41,6 +43,16 @@ namespace AutoX.WF.Core
         public string IPAddress { set; get; } //computer's role
 
         public string Version { get; set; }
+
+        public string Status
+        {
+            get { return _status ?? (_status = "Ready"); }
+            set
+            {
+                _status = value;
+                _element.SetAttributeValue("Status", Status);
+            }
+        }
 
         public DateTime Updated { set; get; }
 
@@ -51,8 +63,6 @@ namespace AutoX.WF.Core
         public string _parentId { get; set; }
 
         //Status can be Ready;Running;
-        private string _status;
-        public string Status { get { if (_status == null) _status = "Ready"; return _status; } set { _status = value; _element.SetAttributeValue("Status", Status); } }
 
         public XElement Element()
         {
@@ -73,7 +83,7 @@ namespace AutoX.WF.Core
                 //Monitor.Wait(CommandList);
                 _commandList.Add(command);
                 Updated = DateTime.Now;
-                _element.SetAttributeValue("Updated", Updated.ToString());
+                _element.SetAttributeValue("Updated", Updated.ToString(CultureInfo.InvariantCulture));
                 Monitor.Pulse(_commandList);
             }
         }
@@ -96,7 +106,7 @@ namespace AutoX.WF.Core
                     _commandList.RemoveAt(0);
                 }
                 Updated = DateTime.Now;
-                _element.SetAttributeValue("Updated", Updated.ToString());
+                _element.SetAttributeValue("Updated", Updated.ToString(CultureInfo.InvariantCulture));
                 Monitor.Pulse(_commandList);
             }
             return XElement.Parse(retCommand);

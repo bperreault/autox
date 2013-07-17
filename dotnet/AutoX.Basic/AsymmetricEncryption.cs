@@ -1,9 +1,13 @@
-﻿using Microsoft.Win32;
+﻿#region
+
 using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Xml.Linq;
+using Microsoft.Win32;
+
+#endregion
 
 namespace AutoX.Basic
 {
@@ -29,13 +33,13 @@ namespace AutoX.Basic
 
             var productid = GetProductId();
 
-            string text = userName + productid;
-            string encrypted = EncryptText(text, keySize, publicKey);
+            var text = userName + productid;
+            var encrypted = EncryptText(text, keySize, publicKey);
 
             //send encrypted data to service
-            XElement forSave = new XElement("Register");
+            var forSave = new XElement("Register");
             forSave.SetAttributeValue("ProjectName", collectionName);
-            XElement root = new XElement("Root");
+            var root = new XElement("Root");
 
             var rootId = Guid.NewGuid().ToString();
             var projectId = Guid.NewGuid().ToString();
@@ -58,11 +62,18 @@ namespace AutoX.Basic
 
             //            File.WriteAllText(userName + ".pem", "UserName:\n" + userName + "\nPublic Key:\n" + publicKey + "\nPublic and Private Key:\n" +
             //                            publicAndPrivateKey + "\nSecrect:\n" + encrypted + "\nFor Test:\n" + productid);
-            forSave.Add(XElement.Parse("<Project _type='Folder' Name='Project' _id='" + projectId + "' _parentId='" + rootId + "' />"));
-            forSave.Add(XElement.Parse("<Data  _type='Folder' Name='Data' _id='" + dataId + "' _parentId='" + rootId + "'  />"));
+            forSave.Add(
+                XElement.Parse("<Project _type='Folder' Name='Project' _id='" + projectId + "' _parentId='" + rootId +
+                               "' />"));
+            forSave.Add(
+                XElement.Parse("<Data  _type='Folder' Name='Data' _id='" + dataId + "' _parentId='" + rootId + "'  />"));
             forSave.Add(XElement.Parse("<UI  _type='Folder' Name='UI' _id='" + uiId + "' _parentId='" + rootId + "'  />"));
-            forSave.Add(XElement.Parse("<Translation  Name='Translation' _id='" + translationId + "' _parentId='" + rootId + "'  />"));
-            forSave.Add(XElement.Parse("<Result  _type='Folder' Name='Result' _id='" + resultId + "' _parentId='" + rootId + "'  />"));
+            forSave.Add(
+                XElement.Parse("<Translation  Name='Translation' _id='" + translationId + "' _parentId='" + rootId +
+                               "'  />"));
+            forSave.Add(
+                XElement.Parse("<Result  _type='Folder' Name='Result' _id='" + resultId + "' _parentId='" + rootId +
+                               "'  />"));
             File.WriteAllText(userName + ".pem", forSave.ToString());
             Configuration.Set("UserName", userName);
             Configuration.Set("PublicKey", publicKey);
@@ -89,7 +100,7 @@ namespace AutoX.Basic
         public static string Sign(string text, int keySize, string publicAndPrivateKeyXml)
         {
             SHA1 sha1 = new SHA1Managed();
-            byte[] data = sha1.ComputeHash(sha1.ComputeHash(Encoding.UTF8.GetBytes(text)));
+            var data = sha1.ComputeHash(sha1.ComputeHash(Encoding.UTF8.GetBytes(text)));
             var decrypted = Sign(data, keySize, publicAndPrivateKeyXml);
             return Convert.ToBase64String(decrypted);
 
@@ -100,7 +111,8 @@ namespace AutoX.Basic
         {
             if (data == null || data.Length == 0) throw new ArgumentException("Data are empty", "data");
             if (!IsKeySizeValid(keySize)) throw new ArgumentException("Key size is not valid", "keySize");
-            if (String.IsNullOrEmpty(publicAndPrivateKeyXml)) throw new ArgumentException("Key is null or empty", "publicAndPrivateKeyXml");
+            if (String.IsNullOrEmpty(publicAndPrivateKeyXml))
+                throw new ArgumentException("Key is null or empty", "publicAndPrivateKeyXml");
 
             using (var provider = new RSACryptoServiceProvider(keySize))
             {
@@ -118,7 +130,7 @@ namespace AutoX.Basic
 
         public static bool VerifySign(string signature, string origin, int keySize, string publicKeyXml)
         {
-            byte[] data = Convert.FromBase64String(signature);
+            var data = Convert.FromBase64String(signature);
             if (data == null || data.Length == 0) throw new ArgumentException("Data are empty", "signature");
 
             // int maxLength = GetMaxDataLength(keySize);
@@ -131,7 +143,7 @@ namespace AutoX.Basic
                 provider.FromXmlString(publicKeyXml);
 
                 SHA1 sha1 = new SHA1Managed();
-                byte[] buffer = sha1.ComputeHash(sha1.ComputeHash(Encoding.UTF8.GetBytes(origin)));
+                var buffer = sha1.ComputeHash(sha1.ComputeHash(Encoding.UTF8.GetBytes(origin)));
                 return provider.VerifyData(buffer, new SHA1CryptoServiceProvider(), data);
 
                 //return RSADeformatter.VerifySignature(Encoding.UTF8.GetBytes(origin), data);
@@ -148,8 +160,9 @@ namespace AutoX.Basic
         public static byte[] Encrypt(byte[] data, int keySize, string publicKeyXml)
         {
             if (data == null || data.Length == 0) throw new ArgumentException("Data are empty", "data");
-            int maxLength = GetMaxDataLength(keySize);
-            if (data.Length > maxLength) throw new ArgumentException(String.Format("Maximum data length is {0}", maxLength), "data");
+            var maxLength = GetMaxDataLength(keySize);
+            if (data.Length > maxLength)
+                throw new ArgumentException(String.Format("Maximum data length is {0}", maxLength), "data");
             if (!IsKeySizeValid(keySize)) throw new ArgumentException("Key size is not valid", "keySize");
             if (String.IsNullOrEmpty(publicKeyXml)) throw new ArgumentException("Key is null or empty", "publicKeyXml");
 
@@ -170,7 +183,8 @@ namespace AutoX.Basic
         {
             if (data == null || data.Length == 0) throw new ArgumentException("Data are empty", "data");
             if (!IsKeySizeValid(keySize)) throw new ArgumentException("Key size is not valid", "keySize");
-            if (String.IsNullOrEmpty(publicAndPrivateKeyXml)) throw new ArgumentException("Key is null or empty", "publicAndPrivateKeyXml");
+            if (String.IsNullOrEmpty(publicAndPrivateKeyXml))
+                throw new ArgumentException("Key is null or empty", "publicAndPrivateKeyXml");
 
             using (var provider = new RSACryptoServiceProvider(keySize))
             {
@@ -182,14 +196,14 @@ namespace AutoX.Basic
 
         public static int GetMaxDataLength(int keySize)
         {
-            return ((keySize - 384) / 8) + 37;
+            return ((keySize - 384)/8) + 37;
         }
 
         public static bool IsKeySizeValid(int keySize)
         {
             return keySize >= 384 &&
-                    keySize <= 16384 &&
-                    keySize % 8 == 0;
+                   keySize <= 16384 &&
+                   keySize%8 == 0;
         }
 
         public static string GetProductId()
