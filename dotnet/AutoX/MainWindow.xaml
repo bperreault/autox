@@ -1,8 +1,14 @@
 ﻿<Window x:Class="AutoX.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xml:lang="en-US" Title="Controller"
-        WindowStartupLocation="CenterScreen" WindowStyle="ThreeDBorderWindow" SnapsToDevicePixels="True" ResizeMode="CanResize"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:wpfExtensions="clr-namespace:JasonRoberts.FeatureToggle.WpfExtensions;assembly=JasonRoberts.FeatureToggle.WpfExtensions"
+        xml:lang="en-US" Title="Controller"
+        WindowStartupLocation="CenterScreen" WindowStyle="ThreeDBorderWindow" SnapsToDevicePixels="True" ResizeMode="CanResize" 
         UseLayoutRounding="True" WindowState="Maximized" Icon="pack://siteoforigin:,,,/Resources/Project.jpg">
+    <Window.Resources>
+        <wpfExtensions:FeatureToggleToVisibilityConverter x:Key="ToggleVisibilityConverter"/>
+    </Window.Resources>
     <Grid>
+        
         <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="2,2,2,2">
             <TabItem Header="Edit" BorderThickness="2" Width="128">
                 <Grid>
@@ -31,7 +37,7 @@
                             <MenuItem Header="Get UI Objects" Click="GetUIObjectsSaveToFile" />
                             <MenuItem Header="Close Browser" Click="CloseBrowser" />
                             <MenuItem Header="Debug Test (Local)" Click="RunTest" />
-                            <MenuItem Header="Debug Test (Sauce)" Click="RunSauceTest" />
+                            <MenuItem Header="Debug Test (Sauce)" Click="RunSauceTest" Visibility="{Binding Path=SaucelabFeature, Converter={StaticResource ToggleVisibilityConverter} }" />
                         </MenuItem>
                     </Menu>
                     <Grid Grid.Row="1" Name="grid1">
@@ -396,7 +402,7 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="Translation" BorderThickness="2" Width="128" Visibility="Hidden">
+            <TabItem Visibility="{Binding Path=TranslationFeature, Converter={StaticResource ToggleVisibilityConverter} }" Header="Translation" BorderThickness="2" Width="128" >
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />

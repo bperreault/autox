@@ -90,6 +90,12 @@ namespace AutoX
 
         private void RunSauceTest(object sender, RoutedEventArgs e)
         {
+            var saucelabFeature = new SaucelabFeature();
+            if (!saucelabFeature.FeatureEnabled)
+            {
+                MessageBox.Show("This feature is not enabled.");
+                return;
+            }
             //get workflowid from project tree
             var selected = ProjectTreeView.SelectedItem as TreeViewItem;
             if (selected == null)

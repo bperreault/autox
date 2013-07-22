@@ -112,7 +112,6 @@
   <ItemGroup>
     <Compile Include="App.xaml.cs" />
     <Compile Include="BrowsersDialog.xaml.cs" />
-    <Compile Include="FeatureToggles\SampleFeatureToggle.cs" />
     <Compile Include="ImageDialog.xaml.cs" />
     <Compile Include="InfoDialog.xaml.cs" />
     <Compile Include="MainWindow.BackActions.xaml.cs" />
@@ -134,6 +133,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="SaucelabFeature.cs" />
+    <Compile Include="TranslationFeature.cs" />
     <Compile Include="TreeViewExt.cs" />
     <Compile Include="XElementDialog.xaml.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -338,6 +339,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="FeatureToggles\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
