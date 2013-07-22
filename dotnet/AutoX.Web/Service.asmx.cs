@@ -31,7 +31,7 @@ namespace AutoX.Web
         [WebMethod]
         public string Hello(string input)
         {
-            return "You sent us :" + input;
+            return "You ping us :" + input;
         }
 
         /// <summary>
