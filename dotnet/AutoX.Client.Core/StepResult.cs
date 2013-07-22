@@ -1,7 +1,3 @@
-// Hapa Project, CC
-// Created @2012 08 24 09:25
-// Last Updated  by Huang, Jien @2012 08 24 09:25
-
 #region
 
 using System;
@@ -18,8 +14,7 @@ namespace AutoX.Client.Core
 
         public StepResult(AbstractAction action)
         {
-            
-            _result.SetAttributeValue(Constants._ID,Guid.NewGuid().ToString());
+            _result.SetAttributeValue(Constants._ID, Guid.NewGuid().ToString());
             _result.SetAttributeValue(Constants.ACTION, action.GetType().Name);
             _result.SetAttributeValue(Constants.DATA, action.Data);
             Success();

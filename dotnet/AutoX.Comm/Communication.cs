@@ -1,17 +1,13 @@
-﻿// Hapa Project, CC
-// Created @2012 08 24 09:25
-// Last Updated  by Huang, Jien @2012 08 24 09:25
+﻿#region
 
-#region
-
-using AutoX.Basic;
-using AutoX.Basic.Model;
-using AutoX.Comm.AutoXService;
 using System;
 using System.Net;
 using System.ServiceModel;
 using System.Threading;
 using System.Xml.Linq;
+using AutoX.Basic;
+using AutoX.Basic.Model;
+using AutoX.Comm.AutoXService;
 
 #endregion
 
@@ -42,7 +38,7 @@ namespace AutoX.Comm
         {
             var ret = GetInstance().GetById(id);
             var obj = XElement.Parse(ret).GetObjectFromXElement();
-            return (IDataObject)obj;
+            return (IDataObject) obj;
         }
 
         public void SetCommand(string instanceId, XElement steps)
@@ -63,12 +59,13 @@ namespace AutoX.Comm
             {
                 _instance = new Communication();
             }
-            if (Client.State != CommunicationState.Opened&&Client.State!=CommunicationState.Opening)
+            if (Client.State != CommunicationState.Opened && Client.State != CommunicationState.Opening)
                 Client.Open();
-            int count = 0;
-            while(count<30){
+            var count = 0;
+            while (count < 30)
+            {
                 count++;
-                if(Client.State== CommunicationState.Opened)
+                if (Client.State == CommunicationState.Opened)
                     break;
                 Thread.Sleep(500);
             }
@@ -102,7 +99,6 @@ namespace AutoX.Comm
             return Command(xCommand.ToString());
         }
 
-        
 
         public string RequestCommand(string clientId)
         {

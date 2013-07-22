@@ -1,21 +1,17 @@
-// Hapa Project, CC
-// Created @2012 08 24 09:25
-// Last Updated  by Huang, Jien @2012 08 24 09:25
-
 #region
 
-using AutoX.Basic;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Firefox;
-using OpenQA.Selenium.IE;
-using OpenQA.Selenium.Remote;
 using System;
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using AutoX.Basic;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.IE;
+using OpenQA.Selenium.Remote;
 
 #endregion
 
@@ -24,13 +20,15 @@ namespace AutoX.Client.Core
     public sealed class Browser : IDisposable
     {
         //CSS types that we care
+        private readonly Config _config;
+
         private readonly string _cssxPath = Configuration.Settings("CSSType",
-                                                                   "//*[@class='ROW1' or @class='ROW2' or @class='EDIT' or @class='VIEWBOXCAPTION' or @class='TABON' or @class='TABOFF' or @class='ButtonItem' or @class='TOPBC' or @type='checkbox' or @type='text' or @class='Logonbutton' or @type='password']");
+            "//*[@class='ROW1' or @class='ROW2' or @class='EDIT' or @class='VIEWBOXCAPTION' or @class='TABON' or @class='TABOFF' or @class='ButtonItem' or @class='TOPBC' or @type='checkbox' or @type='text' or @class='Logonbutton' or @type='password']");
 
         private readonly Hashtable _pool = new Hashtable();
 
         private IWebDriver _browser;
-        private readonly Config _config;
+        private string _sId;
 
         public Browser(Config config)
         {
@@ -225,7 +223,7 @@ namespace AutoX.Client.Core
             {
                 if (item.GetType().Name.Contains("Hashtable"))
                 {
-                    ((Hashtable)item).Clear();
+                    ((Hashtable) item).Clear();
                 }
             }
             _pool.Clear();
@@ -258,7 +256,7 @@ namespace AutoX.Client.Core
 
         public string Snapshot()
         {
-            return ((ITakesScreenshot)GetCurrentBrowser()).GetScreenshot().AsBase64EncodedString;
+            return ((ITakesScreenshot) GetCurrentBrowser()).GetScreenshot().AsBase64EncodedString;
 
             //IJavaScriptExecutor js = GetCurrentBrowser() as IJavaScriptExecutor;
             //Response screenshotResponse = js.ExecuteScript(DriverCommand.Screenshot, null);
@@ -300,13 +298,13 @@ namespace AutoX.Client.Core
 
         private void StartSauceBrowser()
         {
-            DesiredCapabilities capabillities = ConfigSauceCapabilities();
+            var capabillities = ConfigSauceCapabilities();
             _browser = new SauceDriver(
-                      new Uri("http://ondemand.saucelabs.com:80/wd/hub"), capabillities);
+                new Uri("http://ondemand.saucelabs.com:80/wd/hub"), capabillities);
 
             _browser.Navigate().GoToUrl(_config.Get("DefaultURL", "about:blank"));
             MaximiseBrowser();
-            _sId = ((SauceDriver)_browser).GetSessionId();
+            _sId = ((SauceDriver) _browser).GetSessionId();
         }
 
         private DesiredCapabilities ConfigSauceCapabilities()
@@ -331,38 +329,38 @@ namespace AutoX.Client.Core
                 capabillities = DesiredCapabilities.InternetExplorer();
             else
                 capabillities = DesiredCapabilities.Firefox();
-                var browserVersion =  _config.Get("BrowserVersion");
-                if(!string.IsNullOrEmpty(browserVersion))
-                    capabillities.SetCapability(CapabilityType.Version, browserVersion);
+            var browserVersion = _config.Get("BrowserVersion");
+            if (!string.IsNullOrEmpty(browserVersion))
+                capabillities.SetCapability(CapabilityType.Version, browserVersion);
             capabillities.SetCapability(CapabilityType.Platform, _config.Get("BrowserPlatform", "Windows 2008"));
             var versionName = _config.Get("AUTVersion") ?? "Test.Version";
 
             var buildName = _config.Get("AUTBuild") ?? "Test.Build";
-            capabillities.SetCapability(Constants._NAME, _config.Get("SauceName", versionName+"/"+buildName));
+            capabillities.SetCapability(Constants._NAME, _config.Get("SauceName", versionName + "/" + buildName));
             capabillities.SetCapability("username", _config.Get("SauceUserName", "autox"));
-            capabillities.SetCapability("accessKey", _config.Get("SauceAccessKey", "b3842073-5a7a-4782-abbc-e7234e09f8ac"));
+            capabillities.SetCapability("accessKey",
+                _config.Get("SauceAccessKey", "b3842073-5a7a-4782-abbc-e7234e09f8ac"));
             capabillities.SetCapability("idle-timeout", 300);
             capabillities.SetCapability("max-duration", 3600);
             capabillities.SetCapability("command-timeout", 300);
             return capabillities;
         }
 
-        private string _sId;
-
         public string GetResultLink()
         {
             var clientType = _config.Get("HostType", "Sauce");
-            if (String.Compare(clientType, "Sauce", StringComparison.OrdinalIgnoreCase) == 0){
-                if (string.IsNullOrEmpty(_sId))
-                return null;
-            if (_config.Get("SauceFree", "true").ToLower().Equals("true"))
+            if (String.Compare(clientType, "Sauce", StringComparison.OrdinalIgnoreCase) == 0)
             {
-                return "https://saucelabs.com/tests/" + _sId;
-            }
-            var key = _config.Get("SauceUser", "autox") + ":" +
-                      _config.Get("SauceKey", "b3842073-5a7a-4782-abbc-e7234e09f8ac");
-            var jobId = AsymmetricEncryption.Hmacmd5(key, _sId);
-            return "https://saucelabs.com/jobs/" + _sId + "?auth=" + jobId;
+                if (string.IsNullOrEmpty(_sId))
+                    return null;
+                if (_config.Get("SauceFree", "true").ToLower().Equals("true"))
+                {
+                    return "https://saucelabs.com/tests/" + _sId;
+                }
+                var key = _config.Get("SauceUser", "autox") + ":" +
+                          _config.Get("SauceKey", "b3842073-5a7a-4782-abbc-e7234e09f8ac");
+                var jobId = AsymmetricEncryption.Hmacmd5(key, _sId);
+                return "https://saucelabs.com/jobs/" + _sId + "?auth=" + jobId;
             }
             return Snapshot();
         }
@@ -376,17 +374,17 @@ namespace AutoX.Client.Core
                 if (processor != null && !processor.Contains("x86"))
                 {
                     Environment.SetEnvironmentVariable("webdriver.ie.driver",
-                                                       Directory.GetCurrentDirectory() + "\\IEDriverServer64.exe");
+                        Directory.GetCurrentDirectory() + "\\IEDriverServer64.exe");
                     File.Copy(Directory.GetCurrentDirectory() + "\\IEDriverServer64.exe",
-                              Directory.GetCurrentDirectory() + "\\IEDriverServer.exe");
+                        Directory.GetCurrentDirectory() + "\\IEDriverServer.exe");
                 }
 
                 else
                 {
                     Environment.SetEnvironmentVariable("webdriver.ie.driver",
-                                                       Directory.GetCurrentDirectory() + "\\IEDriverServer32.exe");
+                        Directory.GetCurrentDirectory() + "\\IEDriverServer32.exe");
                     File.Copy(Directory.GetCurrentDirectory() + "\\IEDriverServer32.exe",
-                              Directory.GetCurrentDirectory() + "\\IEDriverServer.exe");
+                        Directory.GetCurrentDirectory() + "\\IEDriverServer.exe");
                 }
                 //var capabilities = DesiredCapabilities.InternetExplorer();
 
@@ -398,7 +396,7 @@ namespace AutoX.Client.Core
             if (browserType.Equals("Chrome"))
             {
                 Environment.SetEnvironmentVariable("webdriver.ie.driver",
-                                                   Directory.GetCurrentDirectory() + "\\chromedriver.exe");
+                    Directory.GetCurrentDirectory() + "\\chromedriver.exe");
                 _browser = new ChromeDriver();
             }
 

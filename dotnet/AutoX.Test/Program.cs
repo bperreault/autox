@@ -1,13 +1,13 @@
 ﻿#region
 
-using AutoX.Basic;
-using AutoX.Client.Core;
-using AutoX.DB;
-using AutoX.WF.Core;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
+using AutoX.Basic;
+using AutoX.Client.Core;
+using AutoX.DB;
+using AutoX.WF.Core;
 
 #endregion
 
@@ -15,13 +15,13 @@ namespace AutoX.Test
 {
     internal class Program
     {
-        private static Dictionary<string, string> parameters = new Dictionary<string, string>();
+        private static readonly Dictionary<string, string> parameters = new Dictionary<string, string>();
 
         private static int Main(string[] args)
         {
             //Dictionary<string,string> parameters = new Dictionary<string,string>();
 
-            for (int i = 0; i < args.Length -1; i++)
+            for (var i = 0; i < args.Length - 1; i++)
             {
                 if (args[i].StartsWith("-"))
                 {
@@ -125,8 +125,9 @@ namespace AutoX.Test
 
         private static void TestWorkflow()
         {
-            AutoClient auto = new AutoClient();
-            WorkflowInstance workflowInstance = new WorkflowInstance(Guid.NewGuid().ToString(),"7fdcbd7a-b30e-4c36-aa46-58ba74b02401", Configuration.Clone().GetList());
+            var auto = new AutoClient();
+            var workflowInstance = new WorkflowInstance(Guid.NewGuid().ToString(),
+                "7fdcbd7a-b30e-4c36-aa46-58ba74b02401", Configuration.Clone().GetList());
             var xCommand = workflowInstance.GetCommand();
 
             Console.WriteLine(xCommand.ToString());
@@ -138,9 +139,9 @@ namespace AutoX.Test
         private static void CreateProject()
         {
             //AsymmetricEncryption.GenerateRegisterFile("yazhi.pang", "autox");
-            string fileContent = File.ReadAllText("yazhi.pang.pem");
-            XElement forSake = XElement.Parse(fileContent);
-            string projectName = forSake.GetAttributeValue("ProjectName");
+            var fileContent = File.ReadAllText("yazhi.pang.pem");
+            var forSake = XElement.Parse(fileContent);
+            var projectName = forSake.GetAttributeValue("ProjectName");
             if (MongoDBManager.GetInstance().IsProjectExisted(projectName))
             {
                 Console.WriteLine("Project already existed, continue?(y/n):");
@@ -149,12 +150,12 @@ namespace AutoX.Test
             }
             MongoDBManager.GetInstance().SetProject(projectName);
             var root = forSake.Element("Root");
-            string publicAndPrivateKey = root.GetAttributeValue("PublicAndPrivateKey");
-            string secret = root.GetAttributeValue("Secret");
-            string decrypted = AsymmetricEncryption.DecryptText(secret, 2048, publicAndPrivateKey);
-            string userName = root.GetAttributeValue("UserName");
-            
-            foreach (var descendant in forSake.Descendants())
+            var publicAndPrivateKey = root.GetAttributeValue("PublicAndPrivateKey");
+            var secret = root.GetAttributeValue("Secret");
+            var decrypted = AsymmetricEncryption.DecryptText(secret, 2048, publicAndPrivateKey);
+            var userName = root.GetAttributeValue("UserName");
+
+            foreach (XElement descendant in forSake.Descendants())
             {
                 DBFactory.GetData().Save(descendant);
             }
@@ -165,7 +166,7 @@ namespace AutoX.Test
             const int keySize = 2048;
             string publicAndPrivateKey;
             string publicKey;
-            XElement root = new XElement("Root");
+            var root = new XElement("Root");
             root.SetAttributeValue(Constants._ID, Guid.NewGuid().ToString());
             AsymmetricEncryption.GenerateKeys(keySize, out publicKey, out publicAndPrivateKey);
             Console.WriteLine("public key:" + publicKey);
@@ -176,16 +177,16 @@ namespace AutoX.Test
             root.SetAttributeValue("ProductId", productid);
 
             //string userName = "jien.huang";
-            string text = userName + productid;
-            string encrypted = AsymmetricEncryption.EncryptText(text, keySize, publicKey);
+            var text = userName + productid;
+            var encrypted = AsymmetricEncryption.EncryptText(text, keySize, publicKey);
 
             Console.WriteLine("Encrypted: {0}", encrypted);
 
             //send encrypted data to service
             File.WriteAllText(userName + ".pem",
-                              "UserName:\n" + userName + "\nPublic Key:" + publicKey + "\nPublic and Private Key:\n" +
-                              publicAndPrivateKey + "Secrect:\n" + encrypted + "\nFor Test:\n" + productid);
-            string decrypted = AsymmetricEncryption.DecryptText(encrypted, keySize, publicAndPrivateKey);
+                "UserName:\n" + userName + "\nPublic Key:" + publicKey + "\nPublic and Private Key:\n" +
+                publicAndPrivateKey + "Secrect:\n" + encrypted + "\nFor Test:\n" + productid);
+            var decrypted = AsymmetricEncryption.DecryptText(encrypted, keySize, publicAndPrivateKey);
 
             //service person do below
             Console.WriteLine("Decrypted: {0}", decrypted);

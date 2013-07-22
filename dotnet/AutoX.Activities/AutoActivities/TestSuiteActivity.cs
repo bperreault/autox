@@ -36,11 +36,7 @@ namespace AutoX.Activities.AutoActivities
 
 
         [Browsable(false)]
-        public string GUID
-        {
-            get;
-            set;
-        }
+        public string GUID { get; set; }
 
         public new string Name
         {
@@ -56,18 +52,10 @@ namespace AutoX.Activities.AutoActivities
 
         [DisplayName(@"On Error")]
         [DefaultValue(OnError.Continue)]
-        public OnError ErrorLevel
-        {
-            get;
-            set;
-        }
+        public OnError ErrorLevel { get; set; }
 
         [Browsable(false)]
-        public Collection<Activity> children
-        {
-            get;
-            set;
-        }
+        public Collection<Activity> children { get; set; }
 
         #region IPassData Members
 

@@ -1,14 +1,10 @@
-// Hapa Project, CC
-// Created @2012 08 24 09:25
-// Last Updated  by Huang, Jien @2012 08 24 09:25
-
 #region
 
-using System.Globalization;
-using AutoX.Basic;
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
+using AutoX.Basic;
 
 #endregion
 
@@ -16,7 +12,8 @@ namespace AutoX.Client.Core
 {
     internal class ActionsFactory
     {
-        const string LINK = "Link";
+        private const string LINK = "Link";
+
         public static XElement Execute(XElement steps, Browser browser, Config config)
         {
             var ret = new XElement(Constants.RESULT);
@@ -42,7 +39,7 @@ namespace AutoX.Client.Core
             var setEnv = steps.Element(Constants.SET_ENV);
             if (setEnv != null)
             {
-                foreach (var env in setEnv.Attributes())
+                foreach (XAttribute env in setEnv.Attributes())
                 {
                     config.Set(env.Name.ToString(), env.Value);
                 }
@@ -50,8 +47,8 @@ namespace AutoX.Client.Core
             }
 
             var query = from o in steps.Elements(Constants.STEP)
-                        select o;
-            foreach (var step in query)
+                select o;
+            foreach (XElement step in query)
             {
                 var xAttribute = step.Attribute(Constants.ACTION);
                 //var xId = step.GetAttributeValue(Constants._ID);
@@ -65,7 +62,8 @@ namespace AutoX.Client.Core
         }
 
         //return bool to show whether we need to continue the next steps
-        private static bool HandleOneStep(Browser browser, Config config, ref XElement ret, string instanceId, string link, XElement step, XAttribute xAttribute)
+        private static bool HandleOneStep(Browser browser, Config config, ref XElement ret, string instanceId,
+            string link, XElement step, XAttribute xAttribute)
         {
             var action = Configuration.Settings(xAttribute.Value, xAttribute.Value);
             var xData = step.Attribute(Constants.DATA);
@@ -83,7 +81,8 @@ namespace AutoX.Client.Core
 
             result.SetAttributeValue("StartTime", startTime);
             result.SetAttributeValue("EndTime", endTime);
-            result.SetAttributeValue("Duration", string.Format("{0:0.000}", (endTime.Ticks - startTime.Ticks) / 10000000.00));
+            result.SetAttributeValue("Duration",
+                string.Format("{0:0.000}", (endTime.Ticks - startTime.Ticks)/10000000.00));
             result.SetAttributeValue(Constants.INSTANCE_ID, instanceId);
             CopyAttribute(result, step, Constants.UI_ID);
             CopyAttribute(result, step, Constants.UI_OBJECT);
@@ -96,7 +95,6 @@ namespace AutoX.Client.Core
             var onError = ret.GetAttributeValue(Constants.ON_ERROR);
             if (!stepResult.Equals("Success"))
             {
-                
                 if (onError.Equals("AlwaysReturnTrue")) return true;
                 ret.SetAttributeValue(Constants.RESULT, "Error");
                 if (onError.Equals("StopCurrentScript") || onError.Equals("Terminate"))

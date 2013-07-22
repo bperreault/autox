@@ -1,13 +1,9 @@
-// Hapa Project, CC
-// Created @2012 08 24 09:25
-// Last Updated  by Huang, Jien @2012 08 24 09:25
-
 #region
 
-using AutoX.Basic;
-using OpenQA.Selenium;
 using System.Collections.ObjectModel;
 using System.Xml.Linq;
+using AutoX.Basic;
+using OpenQA.Selenium;
 
 #endregion
 
@@ -21,6 +17,10 @@ namespace AutoX.Client.Core
 
         //public string _id { get; set; }
 
+        public Browser Browser { set; get; }
+
+        public Config Config { set; get; }
+
         #region IAction Members
 
         public XElement Do(string data, XElement uiObj)
@@ -31,10 +31,6 @@ namespace AutoX.Client.Core
         }
 
         #endregion
-
-        public Browser Browser { set; get; }
-
-        public Config Config { set; get; }
 
         public void FindUIObject(XElement uiObj)
         {

@@ -112,11 +112,15 @@
   <ItemGroup>
     <Compile Include="App.xaml.cs" />
     <Compile Include="BrowsersDialog.xaml.cs" />
+    <Compile Include="FeatureToggles\EncryptFeature.cs" />
+    <Compile Include="FeatureToggles\SaucelabFeature.cs" />
+    <Compile Include="FeatureToggles\TranslationFeature.cs" />
     <Compile Include="ImageDialog.xaml.cs" />
     <Compile Include="InfoDialog.xaml.cs" />
     <Compile Include="MainWindow.BackActions.xaml.cs" />
     <Compile Include="MainWindow.ContextMenu.xaml.cs" />
     <Compile Include="MainWindow.DnD.xaml.cs" />
+    <Compile Include="MainWindow.FeatureToggle.xaml.cs" />
     <Compile Include="MainWindow.Tables.xaml.cs" />
     <Compile Include="MainWindow.Workflow.xaml.cs" />
     <Compile Include="MainWindow.xaml.cs" />
@@ -133,8 +137,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="SaucelabFeature.cs" />
-    <Compile Include="TranslationFeature.cs" />
     <Compile Include="TreeViewExt.cs" />
     <Compile Include="XElementDialog.xaml.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -340,9 +342,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="FeatureToggles\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

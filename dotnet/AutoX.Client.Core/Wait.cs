@@ -1,7 +1,3 @@
-// Hapa Project, CC
-// Created @2012 08 24 09:25
-// Last Updated  by Huang, Jien @2012 08 24 09:25
-
 #region
 
 using System;
@@ -22,7 +18,7 @@ namespace AutoX.Client.Core
             {
                 time = Convert.ToInt32(Data);
             }
-            Thread.Sleep(time * 1000);
+            Thread.Sleep(time*1000);
             return sr.GetResult();
         }
     }

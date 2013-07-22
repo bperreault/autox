@@ -1,6 +1,10 @@
+#region
+
 using JasonRoberts.FeatureToggle;
 
-namespace AutoX
+#endregion
+
+namespace AutoX.FeatureToggles
 {
     public class TranslationFeature : SimpleFeatureToggle
     {

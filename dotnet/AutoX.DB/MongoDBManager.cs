@@ -25,7 +25,7 @@ namespace AutoX.DB
                 var userName = Configuration.Settings("UserName", "jien.huang");
                 var productId = AsymmetricEncryption.GetProductId();
                 var connectionString = Configuration.Settings("DBConnectionString", "mongodb://@localhost");
-                    //mongodb://uname:pwd@localhost
+                //mongodb://uname:pwd@localhost
 
                 //var connectionString = Configuration.Settings("DBConnectionString", "mongodb://" + userName + ":" + productId + "@localhost"); //mongodb://uname:pwd@localhost
                 var client = new MongoClient(connectionString);

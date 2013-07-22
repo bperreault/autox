@@ -22,7 +22,7 @@
                     <Menu Grid.Row="0" HorizontalAlignment="Left" Name="MainMenu" VerticalAlignment="Top"
                           BorderThickness="2">
                         <MenuItem Header="File" Name="FileMenu">
-                            <MenuItem Header="Generate Key File" Click="GenerateKeyFile" />
+                            <MenuItem Header="Generate Key File" Click="GenerateKeyFile" Visibility="{Binding Path=EncryptFeature, Converter={StaticResource ToggleVisibilityConverter} }"  />
                             <MenuItem Header="Settings" Click="Settings" />
 
                             <MenuItem Header="Exit" Click="Exit" />
@@ -36,7 +36,7 @@
                             <MenuItem Header="Start Browser" Click="StartBrowser" />
                             <MenuItem Header="Get UI Objects" Click="GetUIObjectsSaveToFile" />
                             <MenuItem Header="Close Browser" Click="CloseBrowser" />
-                            <MenuItem Header="Debug Test (Local)" Click="RunTest" />
+                            <MenuItem Header="Debug Test" Click="RunTest" />
                             <MenuItem Header="Debug Test (Sauce)" Click="RunSauceTest" Visibility="{Binding Path=SaucelabFeature, Converter={StaticResource ToggleVisibilityConverter} }" />
                         </MenuItem>
                     </Menu>

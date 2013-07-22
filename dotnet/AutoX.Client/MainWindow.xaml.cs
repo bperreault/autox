@@ -1,12 +1,5 @@
-﻿// Hapa Project, CC
-// Created @2012 08 24 09:25
-// Last Updated  by Huang, Jien @2012 08 24 09:25
+﻿#region
 
-#region
-
-using AutoX.Basic;
-using AutoX.Client.Core;
-using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,6 +7,9 @@ using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using System.Xml.Linq;
+using AutoX.Basic;
+using AutoX.Client.Core;
+using Microsoft.Win32;
 
 #endregion
 
@@ -22,19 +18,26 @@ namespace AutoX.Client
     /// <summary>
     ///   Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow :IDisposable
+    public partial class MainWindow : IDisposable
     {
+        private readonly AutoClient _defaultClientInstance = new AutoClient();
+        private readonly List<AutoClient> _instances = new List<AutoClient>();
         private WindowState _lastWindowState;
 
         private bool _shouldClose;
-        private readonly AutoClient _defaultClientInstance = new AutoClient();
-        private readonly List<AutoClient> _instances = new List<AutoClient>();
+        private bool disposed; // to detect redundant calls
 
         public MainWindow()
         {
             InitializeComponent();
             Hide();
             StartClient();
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            //GC.SupressFinalize(this);
         }
 
         private void MenuItemExit(object sender, RoutedEventArgs e)
@@ -142,6 +145,27 @@ namespace AutoX.Client
             return content;
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    if (_instances.Count > 0)
+                    {
+                        foreach (AutoClient instance in _instances)
+                            instance.Dispose();
+                    }
+                    if (_defaultClientInstance != null)
+                    {
+                        _defaultClientInstance.Dispose();
+                    }
+                }
+
+                disposed = true;
+            }
+        }
+
         #region UI things
 
         protected override void OnStateChanged(EventArgs e)
@@ -196,11 +220,11 @@ namespace AutoX.Client
 
         private void StartClient()
         {
-            string hostType = Configuration.Settings("HostType", "Sauce");
+            var hostType = Configuration.Settings("HostType", "Sauce");
             if (hostType.Equals("Sauce"))
             {
-                int concurrency = int.Parse(Configuration.Settings("HostConcurrentInstances", "3"));
-                for (int i = 0; i < concurrency - _instances.Count; i++)
+                var concurrency = int.Parse(Configuration.Settings("HostConcurrentInstances", "3"));
+                for (var i = 0; i < concurrency - _instances.Count; i++)
                 {
                     var instance = new AutoClient();
                     _instances.Add(instance);
@@ -214,7 +238,7 @@ namespace AutoX.Client
         private void OnMenuItemStopClick(object sender, EventArgs e)
         {
             _defaultClientInstance.Stop();
-            foreach (var clientInstance in _instances)
+            foreach (AutoClient clientInstance in _instances)
             {
                 clientInstance.Stop();
             }
@@ -228,33 +252,5 @@ namespace AutoX.Client
         }
 
         #endregion UI things
-
-        private bool disposed = false; // to detect redundant calls
-        public void Dispose()
-        {
-            Dispose(true);
-            //GC.SupressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposed)
-            {
-                if (disposing)
-                {
-                    if (_instances.Count>0)
-                    {
-                        foreach (var instance in _instances)
-                            instance.Dispose();
-                    }
-                    if (_defaultClientInstance != null)
-                    {
-                        _defaultClientInstance.Dispose();
-                    }
-                }
-
-                disposed = true;
-            }
-        }
     }
 }

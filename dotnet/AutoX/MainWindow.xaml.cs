@@ -4,8 +4,6 @@
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
-using System.ComponentModel;
-
 #region
 
 using System;
@@ -32,8 +30,7 @@ namespace AutoX
         public MainWindow()
         {
             InitializeComponent();
-            TranslationFeature = new TranslationFeature();
-            SaucelabFeature = new SaucelabFeature();
+            InitFeatureToggle();
             DataContext = this;
             HostManager.GetInstance().Register(this);
             StartProgressBar();
@@ -66,37 +63,6 @@ namespace AutoX
             //LoadProject();
 
             StopProgressBar();
-        }
-
-        private TranslationFeature _translationFeature;
-        private SaucelabFeature _saucelabFeature;
-
-        public TranslationFeature TranslationFeature
-        {
-            get { return _translationFeature; }
-            set
-            {
-                _translationFeature = value;
-                Notify("TranslationFeature");
-            }
-        }
-
-        public SaucelabFeature SaucelabFeature
-        {
-            get { return _saucelabFeature; }
-            set
-            {
-                _saucelabFeature = value;
-                Notify("SaucelabFeature");
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void Notify(string propertyName)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #region IHost Members

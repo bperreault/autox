@@ -1,26 +1,24 @@
-﻿using AutoX.Basic;
-using AutoX.Comm;
+﻿#region
+
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using AutoX.Basic;
+using AutoX.Comm;
+
+#endregion
 
 namespace AutoX.Client.Core
 {
     public class AutoClient : IDisposable
     {
-        public Config Config { get; private set; }
-
+        private readonly CancellationTokenSource _tokenSource = new CancellationTokenSource();
         private Browser _browser;
-
-        public Browser Browser
-        {
-            get { return _browser ?? (_browser = new Browser(Config)); }
-        }
 
         private volatile bool _registered;
         private Task _task;
-        private readonly CancellationTokenSource _tokenSource = new CancellationTokenSource();
+        private bool disposed; // to detect redundant calls
 
         public AutoClient(Config config)
         {
@@ -30,6 +28,19 @@ namespace AutoX.Client.Core
         public AutoClient()
         {
             Config = Configuration.Clone();
+        }
+
+        public Config Config { get; private set; }
+
+        public Browser Browser
+        {
+            get { return _browser ?? (_browser = new Browser(Config)); }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            //GC.SupressFinalize(this);
         }
 
         public XElement Execute(XElement steps)
@@ -50,7 +61,7 @@ namespace AutoX.Client.Core
                     _registered = Register();
                 if (!_registered)
                 {
-                    Thread.Sleep(17 * 1000);
+                    Thread.Sleep(17*1000);
                     continue;
                 }
                 var command = RequestCommand();
@@ -61,7 +72,7 @@ namespace AutoX.Client.Core
                 }
                 else
                 {
-                    Thread.Sleep(6 * 1000);
+                    Thread.Sleep(6*1000);
                 }
             }
         }
@@ -88,7 +99,7 @@ namespace AutoX.Client.Core
         public XElement RequestCommand(string clientId)
         {
             var ret = Communication.GetInstance().RequestCommand(clientId);
-            
+
             var steps = XElement.Parse(ret);
             var result = Execute(steps);
             return result;
@@ -97,13 +108,6 @@ namespace AutoX.Client.Core
         public string SendResult(XElement stepResult)
         {
             return Communication.GetInstance().SetResult(Config.Get(Constants._ID), stepResult);
-        }
-
-        private bool disposed = false; // to detect redundant calls
-        public void Dispose()
-        {
-            Dispose(true);
-            //GC.SupressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)

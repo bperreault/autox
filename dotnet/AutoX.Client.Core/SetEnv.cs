@@ -1,4 +1,8 @@
-﻿using System.Xml.Linq;
+﻿#region
+
+using System.Xml.Linq;
+
+#endregion
 
 namespace AutoX.Client.Core
 {
@@ -7,7 +11,7 @@ namespace AutoX.Client.Core
         public override XElement Act()
         {
             var sr = new StepResult(this);
-            
+
             return sr.GetResult();
         }
     }
