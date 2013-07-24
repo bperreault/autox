@@ -1,11 +1,13 @@
 ﻿#region
 
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Xml.Linq;
 using AutoX.Basic;
+using AutoX.FeatureToggles;
 
 #endregion
 
@@ -21,10 +23,14 @@ namespace AutoX
         public BrowsersDialog()
         {
             InitializeComponent();
+            InitFeatureToggle();
+            DataContext = this;
             AUT_Version.Text = Configuration.Settings("AUTVersion", "AutoX v0.45");
             AUT_Build.Text = Configuration.Settings("AUTBuild", "0.1.1");
-            //load data from browsers.xml
+            //load data from browsers.xml or LocalBrowser.xml
             var browsers = File.ReadAllText("Browsers.xml");
+            if(!SaucelabFeature.FeatureEnabled)
+                browsers = File.ReadAllText("LocalBrowser.xml");
             _choices = XElement.Parse(browsers);
             //set default data
             BrowserType.Items.Clear();
@@ -37,10 +43,39 @@ namespace AutoX
             }
         }
 
+        private SaucelabFeature _saucelabFeature;
+
+        public SaucelabFeature SaucelabFeature
+        {
+            get { return _saucelabFeature; }
+            set
+            {
+                _saucelabFeature = value;
+                Notify("SaucelabFeature");
+            }
+        }
+
+        public void InitFeatureToggle()
+        {
+            
+            SaucelabFeature = new SaucelabFeature();
+            
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void Notify(string propertyName)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         public XElement BrowserSetting { get; private set; }
 
         private void OkButtonClick(object sender, RoutedEventArgs e)
         {
+            var browser = ((ListBoxItem)BrowserType.SelectedItem).Content.ToString();
+            if (BrowserSetting == null) BrowserSetting = new XElement(browser);
             BrowserSetting.SetAttributeValue("AUTVersion", AUT_Version.Text);
             BrowserSetting.SetAttributeValue("AUTBuild", AUT_Build.Text);
             if (Configuration.Settings("AUTVersion", null) == null)

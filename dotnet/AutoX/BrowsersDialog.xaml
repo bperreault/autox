@@ -1,7 +1,11 @@
 ﻿<Window x:Class="AutoX.BrowsersDialog"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="BrowsersDialog" Height="300" Width="300" Margin="5">
+        xmlns:wpfExtensions="clr-namespace:JasonRoberts.FeatureToggle.WpfExtensions;assembly=JasonRoberts.FeatureToggle.WpfExtensions"
+        Title="BrowsersDialog" Height="300" Width="320" Margin="5">
+    <Window.Resources>
+        <wpfExtensions:FeatureToggleToVisibilityConverter x:Key="ToggleVisibilityConverter"/>
+    </Window.Resources>
     <Grid>
         
         <Grid.RowDefinitions>
@@ -26,10 +30,10 @@
         <TextBox Margin="5" Grid.Row="3" Grid.Column="1" Name="AUT_Build" />
         <Label Margin="5" Grid.Row="4" Grid.Column="0" Content="Browser Type:" />
         <ComboBox Margin="5" Grid.Row="4" Grid.Column="1" Name="BrowserType" SelectionChanged="BrowserType_OnSelectionChanged" />
-        <Label Margin="5" Grid.Row="5" Grid.Column="0" Content="OS / Platform:" />
-        <ComboBox Margin="5" Grid.Row="5" Grid.Column="1" Name="Platform" SelectionChanged="Platform_OnSelectionChanged" />
-        <Label Margin="5" Grid.Row="6" Grid.Column="0" Content="Browser Version:" ToolTip="Some Browser only use latest version as default."/>
-        <ComboBox Margin="5" Grid.Row="6" Grid.Column="1"  Name="Version" SelectionChanged="Version_OnSelectionChanged" />
+        <Label Margin="5" Grid.Row="5" Grid.Column="0" Content="OS / Platform:"  Visibility="{Binding Path=SaucelabFeature, Converter={StaticResource ToggleVisibilityConverter} }" />
+        <ComboBox Margin="5" Grid.Row="5" Grid.Column="1" Name="Platform" SelectionChanged="Platform_OnSelectionChanged" Visibility="{Binding Path=SaucelabFeature, Converter={StaticResource ToggleVisibilityConverter} }"  />
+        <Label Margin="5" Grid.Row="6" Grid.Column="0" Content="Browser Version:" ToolTip="Some Browser only use latest version as default." Visibility="{Binding Path=SaucelabFeature, Converter={StaticResource ToggleVisibilityConverter} }" />
+        <ComboBox Margin="5" Grid.Row="6" Grid.Column="1"  Name="Version" SelectionChanged="Version_OnSelectionChanged" Visibility="{Binding Path=SaucelabFeature, Converter={StaticResource ToggleVisibilityConverter} }"  />
 
         <StackPanel Grid.Row="7" Grid.ColumnSpan="2" Orientation="Horizontal">
             <Button Name="OkButton" IsDefault="True" Width="135" Click="OkButtonClick" Margin="5">OK</Button>

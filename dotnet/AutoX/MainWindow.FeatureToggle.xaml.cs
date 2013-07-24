@@ -12,6 +12,17 @@ namespace AutoX
         private EncryptFeature _encryptFeature;
         private SaucelabFeature _saucelabFeature;
         private TranslationFeature _translationFeature;
+        private AmazonEC2Feature _amazonEc2Feature;
+
+        public AmazonEC2Feature AmazonEC2Feature
+        {
+            get { return _amazonEc2Feature; }
+            set
+            {
+                _amazonEc2Feature = value;
+                Notify("AmazonEC2Feature");
+            }
+        }
 
         public EncryptFeature EncryptFeature
         {
@@ -48,6 +59,7 @@ namespace AutoX
             TranslationFeature = new TranslationFeature();
             SaucelabFeature = new SaucelabFeature();
             EncryptFeature = new EncryptFeature();
+            AmazonEC2Feature = new AmazonEC2Feature();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

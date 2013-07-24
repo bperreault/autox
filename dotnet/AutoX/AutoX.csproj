@@ -112,6 +112,7 @@
   <ItemGroup>
     <Compile Include="App.xaml.cs" />
     <Compile Include="BrowsersDialog.xaml.cs" />
+    <Compile Include="FeatureToggles\AmazonEC2Feature.cs" />
     <Compile Include="FeatureToggles\EncryptFeature.cs" />
     <Compile Include="FeatureToggles\SaucelabFeature.cs" />
     <Compile Include="FeatureToggles\TranslationFeature.cs" />
@@ -342,7 +343,11 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="LocalBrowser.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
