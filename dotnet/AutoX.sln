@@ -28,6 +28,8 @@ Project("{6141683F-8A12-4E36-9623-2EB02B2C2303}") = "SetupClient", "SetupClient\
 		{A1648D0A-0075-4509-A967-D9652FEFC99B} = {A1648D0A-0075-4509-A967-D9652FEFC99B}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoX.WindowsService", "AutoX.WindowsService\AutoX.WindowsService.csproj", "{B5B9DCE6-F252-446C-A9F3-0A14117D6CF5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		CD_ROM|Any CPU = CD_ROM|Any CPU
@@ -147,11 +149,18 @@ Global
 		{F2F72216-41D0-4ED8-8D20-FEB62D619C0D}.Release|Any CPU.Build.0 = SingleImage
 		{F2F72216-41D0-4ED8-8D20-FEB62D619C0D}.SingleImage|Any CPU.ActiveCfg = SingleImage
 		{F2F72216-41D0-4ED8-8D20-FEB62D619C0D}.SingleImage|Any CPU.Build.0 = SingleImage
+		{B5B9DCE6-F252-446C-A9F3-0A14117D6CF5}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
+		{B5B9DCE6-F252-446C-A9F3-0A14117D6CF5}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
+		{B5B9DCE6-F252-446C-A9F3-0A14117D6CF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5B9DCE6-F252-446C-A9F3-0A14117D6CF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5B9DCE6-F252-446C-A9F3-0A14117D6CF5}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5B9DCE6-F252-446C-A9F3-0A14117D6CF5}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
+		{B5B9DCE6-F252-446C-A9F3-0A14117D6CF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5B9DCE6-F252-446C-A9F3-0A14117D6CF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5B9DCE6-F252-446C-A9F3-0A14117D6CF5}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
+		{B5B9DCE6-F252-446C-A9F3-0A14117D6CF5}.SingleImage|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal

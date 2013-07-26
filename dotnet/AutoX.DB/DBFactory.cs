@@ -24,13 +24,16 @@ namespace AutoX.DB
         {
             if (_data != null)
                 return _data;
-            var connectionString = Configuration.Settings("DBConnectionString",
-                "Server=localhost;Database=autox;Uid=root;Pwd=Gene4hje;");
-            if (connectionString.Contains("mongo"))
-                _data = new MongoData();
-            else
-                _data = new MysqlData();
-            return _data;
+            if (Configuration.HasKey("PostgreSQLDBConnectionString"))
+                return new PostgreSQLData();
+            if (Configuration.HasKey("MySQLDBConnectionString"))
+                return new MysqlData();
+            if(Configuration.HasKey("MongoDBConnectionString"))
+                return new MongoData();
+            
+            return null;
         }
     }
+
+   
 }

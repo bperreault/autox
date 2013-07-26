@@ -72,6 +72,12 @@ namespace AutoX.Basic
             return string.IsNullOrEmpty(sClass) ? "AutoX.Client." + action : sClass;
         }
 
+        public static bool HasKey(string key)
+        {
+            var keyValue = Settings(key);
+            return keyValue != null;
+        }
+
         public static ArrayList GetSupportedAction()
         {
             var ret = new ArrayList
