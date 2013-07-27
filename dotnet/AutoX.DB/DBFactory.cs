@@ -18,7 +18,7 @@ namespace AutoX.DB
 
     public static class DBFactory
     {
-        private static IData _data;
+        private static IData _data = null;
         //return proper IData according the config (MongoDB or mysql)
         public static IData GetData()
         {
