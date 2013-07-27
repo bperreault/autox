@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>FeatureToggle</id>
+    <version>1.2.0</version>
+    <title>FeatureToggle</title>
+    <authors>Jason Roberts - dontcodetired.com</authors>
+    <owners>Jason Roberts - dontcodetired.com</owners>
+    <licenseUrl>https://github.com/jason-roberts/FeatureToggle/blob/master/LICENSE.txt</licenseUrl>
+    <projectUrl>https://github.com/jason-roberts/FeatureToggle/wiki</projectUrl>
+    <iconUrl>https://github.com/jason-roberts/FeatureToggle/raw/master/etc/logo.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>An antidote to source control branching sickness for .Net developers. A simple library using the Feature Toggle design/release/continuous integration pattern</description>
+    <releaseNotes>Initial support for WinRT Windows 8 apps</releaseNotes>
+    <copyright>Copyright 2011-2013 Jason Roberts</copyright>
+    <language />
+    <tags>feature toggle branch merge winrt featuretoggle</tags>
+  </metadata>
+</package>
