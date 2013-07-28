@@ -278,7 +278,7 @@ namespace AutoX
             }
             var xElement =
                 XElement.Parse(
-                    @"<Folder Name='NewFolder' Type='Folder' Description='Please add description here' _id='" +
+                    @"<Folder Name='NewFolder' _type='Folder' Description='Please add description here' _id='" +
                     Guid.NewGuid() + "' />");
 
             AddNewItemToTree(tree, xElement);

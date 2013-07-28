@@ -124,14 +124,21 @@ namespace AutoX
                 return false;
             if (data == null)
                 return false;
+            
             //rule 1: only folder accept drop
             var xTarget = item.DataContext as XElement;
             if (xTarget == null) return false;
             var tag = xTarget.Name.ToString();
             if (!tag.Equals("Folder")) return false;
             //rule 2: don't waste your time move to your parent
-            var parentId = xTarget.GetAttributeValue(Constants._ID);
-            if (parentId.Equals(data.GetAttributeValue(Constants.PARENT_ID)))
+            var parentId = xTarget.GetAttributeValue(Constants.PARENT_ID);
+            if (parentId.Equals(data.GetAttributeValue(Constants._ID)))
+                return false;
+            //rule 3: root item should not be drag
+            if (data.GetAttributeValue(Constants.PARENT_ID).Equals(Configuration.Settings("Root", "")))
+                return false;
+            //rule 4: should not drop parent to its kid
+            if (parentId.Equals(data.GetAttributeValue(Constants._ID)))
                 return false;
             return true;
         }

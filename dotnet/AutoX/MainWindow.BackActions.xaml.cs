@@ -42,6 +42,8 @@ namespace AutoX
             if (selected != null)
             {
                 var type = ((XElement) selected.DataContext).GetAttributeValue(Constants._TYPE);
+                if (type == null)
+                    return false;
                 var query = from o in _xValidation.Descendants()
                     where o.GetAttributeValue(Constants.ACTION).Equals(action)
                           && o.GetAttributeValue("Type").Equals(type)
@@ -95,7 +97,7 @@ namespace AutoX
 
             if (messageBoxResult != MessageBoxResult.Yes) return;
             var xElement = (XElement) selected.DataContext;
-            if (Equals(selected.Parent, parent))
+            if (xElement.GetAttributeValue(Constants.PARENT_ID).Equals(Configuration.Settings("Root")))
             {
                 MessageBox.Show("Cannot Delete Root Item!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
