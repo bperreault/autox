@@ -30,6 +30,11 @@ Project("{6141683F-8A12-4E36-9623-2EB02B2C2303}") = "SetupClient", "SetupClient\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoX.WindowsService", "AutoX.WindowsService\AutoX.WindowsService.csproj", "{B5B9DCE6-F252-446C-A9F3-0A14117D6CF5}"
 EndProject
+Project("{6141683F-8A12-4E36-9623-2EB02B2C2303}") = "SetupWindowsSerivce", "SetupWindowsSerivce\SetupWindowsSerivce.isproj", "{818B13A8-68B8-43E8-8E4F-FFE8B7329A56}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B5B9DCE6-F252-446C-A9F3-0A14117D6CF5} = {B5B9DCE6-F252-446C-A9F3-0A14117D6CF5}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		CD_ROM|Any CPU = CD_ROM|Any CPU
@@ -159,6 +164,16 @@ Global
 		{B5B9DCE6-F252-446C-A9F3-0A14117D6CF5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B5B9DCE6-F252-446C-A9F3-0A14117D6CF5}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
 		{B5B9DCE6-F252-446C-A9F3-0A14117D6CF5}.SingleImage|Any CPU.Build.0 = Release|Any CPU
+		{818B13A8-68B8-43E8-8E4F-FFE8B7329A56}.CD_ROM|Any CPU.ActiveCfg = CD_ROM
+		{818B13A8-68B8-43E8-8E4F-FFE8B7329A56}.CD_ROM|Any CPU.Build.0 = CD_ROM
+		{818B13A8-68B8-43E8-8E4F-FFE8B7329A56}.Debug|Any CPU.ActiveCfg = DVD-5
+		{818B13A8-68B8-43E8-8E4F-FFE8B7329A56}.Debug|Any CPU.Build.0 = DVD-5
+		{818B13A8-68B8-43E8-8E4F-FFE8B7329A56}.DVD-5|Any CPU.ActiveCfg = DVD-5
+		{818B13A8-68B8-43E8-8E4F-FFE8B7329A56}.DVD-5|Any CPU.Build.0 = DVD-5
+		{818B13A8-68B8-43E8-8E4F-FFE8B7329A56}.Release|Any CPU.ActiveCfg = SingleImage
+		{818B13A8-68B8-43E8-8E4F-FFE8B7329A56}.Release|Any CPU.Build.0 = SingleImage
+		{818B13A8-68B8-43E8-8E4F-FFE8B7329A56}.SingleImage|Any CPU.ActiveCfg = SingleImage
+		{818B13A8-68B8-43E8-8E4F-FFE8B7329A56}.SingleImage|Any CPU.Build.0 = SingleImage
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
