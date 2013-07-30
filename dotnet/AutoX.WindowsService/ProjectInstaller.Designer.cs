@@ -41,7 +41,7 @@
             // 
             this.AutoXServiceInstaller.DelayedAutoStart = true;
             this.AutoXServiceInstaller.Description = "Host a mini web server and automation instances.";
-            this.AutoXServiceInstaller.DisplayName = "AutoXWindowsService";
+            this.AutoXServiceInstaller.DisplayName = "AutoX Windows Service";
             this.AutoXServiceInstaller.ServiceName = "AutoX";
             this.AutoXServiceInstaller.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             this.AutoXServiceInstaller.AfterInstall += new System.Configuration.Install.InstallEventHandler(this.AutoXServiceInstaller_AfterInstall);
