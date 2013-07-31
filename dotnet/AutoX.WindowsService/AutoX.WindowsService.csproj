@@ -53,6 +53,8 @@
     <Compile Include="AutoXService.Designer.cs">
       <DependentUpon>AutoXService.cs</DependentUpon>
     </Compile>
+    <Compile Include="HttpListenerController.cs" />
+    <Compile Include="HttpListenerWrapper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
@@ -61,13 +63,9 @@
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service.asmx.cs">
-      <SubType>Component</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="AutoXService.resx">
@@ -78,8 +76,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="favicon.ico" />
-    <Content Include="Service.asmx" />
+    <Content Include="favicon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AutoX.Basic\AutoX.Basic.csproj">
