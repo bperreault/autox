@@ -112,6 +112,8 @@ namespace AutoX.WindowsService
         public override void CloseConnection()
         {
             //TODO Watch this !!! _context.Close();
+
+            EndOfRequest();
         }
         public override string GetAppPath()
         {
