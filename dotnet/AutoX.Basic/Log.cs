@@ -39,7 +39,7 @@ namespace AutoX.Basic
 
             var currentFile = st.GetFrame(0).GetFileName();
             var currentLine = st.GetFrame(0).GetFileLineNumber();
-            return "File:" + currentFile + " Line:" + currentLine + "\t";
+            return "File:" + currentFile + " Line:" + currentLine + "\t\n";
         }
     }
 }

@@ -106,6 +106,7 @@ namespace AutoX.Activities.AutoActivities
             var steps = GetSteps(context);
             Host.SetCommand(steps);
             var rElement = Host.GetResult();
+            
             Log.Info(rElement.ToString());
             SetResult(rElement);
         }

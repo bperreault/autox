@@ -238,7 +238,7 @@ namespace AutoX
             if (parent == null) return;
             var parentId = parent.GetAttributeValue(Constants._ID);
             var xRoot = DBFactory.GetData().GetChildren(parentId);
-
+            Log.Debug(xRoot.ToString());
             if (parent.Name.ToString().Equals(Constants.RESULT))
             {
                 //load its children to TestCaseResultTable

@@ -256,6 +256,9 @@ namespace AutoX.Client.Core
 
         public string Snapshot()
         {
+            //in this case, the browser is closed, so need NOT take snapshot.
+            if (_browser == null)
+                return null;
             return ((ITakesScreenshot) GetCurrentBrowser()).GetScreenshot().AsBase64EncodedString;
 
             //IJavaScriptExecutor js = GetCurrentBrowser() as IJavaScriptExecutor;
@@ -265,6 +268,8 @@ namespace AutoX.Client.Core
 
         public void DismissUnexpectedAlert()
         {
+            if (_browser == null)
+                return;
             var alert = GetAlert();
             if (alert != null)
             {
