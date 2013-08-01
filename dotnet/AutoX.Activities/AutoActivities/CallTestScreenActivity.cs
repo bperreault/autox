@@ -12,6 +12,8 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Xml.Linq;
 using AutoX.Basic;
+using System;
+using AutoX.DB;
 
 #endregion
 
@@ -92,6 +94,10 @@ namespace AutoX.Activities.AutoActivities
         // and return the value from the Execute method.
         protected override void Execute(NativeActivityContext context)
         {
+            var result = new XElement(Constants.RESULT);
+            ResultId = ResultId ?? Guid.NewGuid().ToString();
+            
+            SetResult(result);
             SetVariablesBeforeRunning(context);
             InternalExecute(context, null);
         }
@@ -108,8 +114,25 @@ namespace AutoX.Activities.AutoActivities
             var rElement = Host.GetResult();
             
             Log.Info(rElement.ToString());
-            SetResult(rElement);
+            foreach (var stepElement in rElement.Descendants())
+            {
+                stepElement.SetAttributeValue(Constants.PARENT_ID, ResultId);
+                var ret = stepElement.GetAttributeValue(Constants.RESULT);
+                if (!string.IsNullOrEmpty(ret))
+                {
+                    stepElement.SetAttributeValue("Original", ret);
+                    stepElement.SetAttributeValue("Final", ret);
+                    _result = ret.Equals("Success") && _result;
+                }
+                else
+                    _result = false;
+                //result.SetAttributeValue(Constants.UI_OBJECT, UIObject);
+                DBFactory.GetData().Save(stepElement);
+            }
+            //SetResult(rElement);
         }
+
+        
 
         private XElement GetSteps(NativeActivityContext context)
         {

@@ -173,6 +173,7 @@ namespace AutoX.WF.Core
             return element.GetObjectFromXElement() as Instance;
         }
 
+        //This method only be used to create build, version folder
         private static string FindOrCreateSubResultFolder(string versionName, string resultId)
         {
             var results = DBFactory.GetData().GetChildren(resultId);

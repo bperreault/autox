@@ -105,9 +105,7 @@ namespace AutoX.Activities.AutoActivities
             SetResult(result);
             SetVariablesBeforeRunning(context);
             InternalExecute(context, null);
-
-            //TODO when test suite finished, close the browser (required by sauce)
-            //<Step Action="Close" />
+                        
         }
 
         private void InternalExecute(NativeActivityContext context, ActivityInstance instance)
@@ -118,7 +116,7 @@ namespace AutoX.Activities.AutoActivities
             if (currentActivityIndex == children.Count)
             {
                 //if the currentActivityIndex is equal to the count of MySequence's Activities
-                //Suite is complete
+                //Suite is complete, then we close the browser here
                 var steps =
                     XElement.Parse("<AutoX.Steps  OnError=\"AlwaysReturnTrue\" InstanceId=\"" + InstanceId + "\"/>");
                 var close = XElement.Parse("<Step Action=\"Close\" />");
