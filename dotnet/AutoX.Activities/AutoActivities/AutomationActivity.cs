@@ -30,7 +30,7 @@ namespace AutoX.Activities.AutoActivities
         protected string ParentResultId;
         protected string ResultId;
         private bool _enabled = true;
-        protected bool _result = true;
+        protected bool _runningResult = true;
         protected Dictionary<string, string> _upperVariables = new Dictionary<string, string>();
 
         [Browsable(false)]
@@ -145,13 +145,15 @@ namespace AutoX.Activities.AutoActivities
             {
                 result.SetAttributeValue("Original", ret);
                 result.SetAttributeValue("Final", ret);
-                _result = ret.Equals("Success") && _result;
+                _runningResult = ret.Equals("Success") && _runningResult;
             }
             else
-                _result = false;
+                _runningResult = false;
             //result.SetAttributeValue(Constants.UI_OBJECT, UIObject);
             DBFactory.GetData().Save(result);
         }
+
+        
 
         public void SetHost(IHost host)
         {
@@ -165,7 +167,7 @@ namespace AutoX.Activities.AutoActivities
         /// <returns> </returns>
         public bool GetResult()
         {
-            return _result;
+            return _runningResult;
         }
 
         protected void NotifyPropertyChanged(string p)

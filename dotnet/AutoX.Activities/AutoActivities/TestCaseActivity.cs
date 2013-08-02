@@ -125,15 +125,15 @@ namespace AutoX.Activities.AutoActivities
             }
             context.ScheduleActivity(nextChild, _onChildComplete);
             //Get result here, it is sync or async????
-            _result = _result && ((IPassData) nextChild).GetResult();
-            if (!_result)
+            _runningResult = _runningResult && ((IPassData) nextChild).GetResult();
+            if (!_runningResult)
             {
                 if (ErrorLevel == OnError.AlwaysReturnTrue)
-                    _result = true;
-                if (ErrorLevel == OnError.Terminate)
-                {
-                    //TODO terminate the instance (send a status to instance)
-                }
+                    _runningResult = true;
+                //if (ErrorLevel == OnError.Terminate)
+                //{
+                //    //TODO terminate the instance (send a status to instance)
+                //}
                 if (ErrorLevel == OnError.Continue)
                 {
                     //do nothing, just continue

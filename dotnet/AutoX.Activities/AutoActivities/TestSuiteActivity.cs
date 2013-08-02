@@ -146,16 +146,16 @@ namespace AutoX.Activities.AutoActivities
             //TODO if enabled, run it, may need to use while???
             context.ScheduleActivity(nextChild, _onChildComplete);
             //Get result here, it is sync or async????
-            _result = _result && ((IPassData) nextChild).GetResult();
-            //TODO set variables value ((AutomationActivity)nextChild).Name to _result
-            if (!_result)
+            _runningResult = _runningResult && ((IPassData) nextChild).GetResult();
+            //TODO set variables value ((AutomationActivity)nextChild).Name to _runningResult
+            if (!_runningResult)
             {
                 if (ErrorLevel == OnError.AlwaysReturnTrue)
-                    _result = true;
-                if (ErrorLevel == OnError.Terminate)
-                {
-                    //TODO terminate the instance (send a status to instance)
-                }
+                    _runningResult = true;
+                //if (ErrorLevel == OnError.Terminate)
+                //{
+                //    //TODO terminate the instance (send a status to instance)
+                //}
                 if (ErrorLevel == OnError.Continue)
                 {
                     //do nothing, just continue
@@ -163,7 +163,7 @@ namespace AutoX.Activities.AutoActivities
                 if (ErrorLevel == OnError.JustShowWarning)
                 {
                     Log.Warn("Warning:\n" + nextChild.DisplayName + " Error happened, but we ignore it");
-                    _result = true;
+                    _runningResult = true;
                 }
                 if (ErrorLevel == OnError.StopCurrentScript)
                 {
@@ -174,5 +174,7 @@ namespace AutoX.Activities.AutoActivities
             //increment the currentIndex
             _currentIndex.Set(context, ++currentActivityIndex);
         }
+
+        
     }
 }

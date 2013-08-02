@@ -4,6 +4,8 @@
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
+using System.Threading.Tasks;
+
 #region
 
 using System;
@@ -127,16 +129,32 @@ namespace AutoX
             DBFactory.GetData().Save(dialog.GetElement());
         }
 
-        private void TestCaseResultTableSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void TestCaseResultTableSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (TestCaseResultTable == null) return;
             var selected = TestCaseResultTable.SelectedItem as Result;
             if (selected == null) return;
+            await UpdateResultTable(selected._id);
+            //var xRoot = DBFactory.GetData().GetChildren(selected._id);
+            //if (xRoot.HasElements)
+            //{
+            //    _testStepSource.Clear();
+            //    foreach (XElement kid in xRoot.Descendants())
+            //    {
+            //        var testcaseresult = kid.GetDataObjectFromXElement() as StepResult;
+            //        if (testcaseresult != null)
+            //            _testStepSource.Add(testcaseresult);
+            //    }
+            //}
+            //TestStepsResultTable.ItemsSource = _testStepSource.Get();
+        }
 
-            var xRoot = DBFactory.GetData().GetChildren(selected._id);
+        private async Task UpdateResultTable(string id)
+        {
+            _testStepSource.Clear();
+            var xRoot = DBFactory.GetData().GetChildren(id);
             if (xRoot.HasElements)
             {
-                _testStepSource.Clear();
                 foreach (XElement kid in xRoot.Descendants())
                 {
                     var testcaseresult = kid.GetDataObjectFromXElement() as StepResult;

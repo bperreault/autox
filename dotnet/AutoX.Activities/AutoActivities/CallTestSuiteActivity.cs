@@ -75,7 +75,7 @@ namespace AutoX.Activities.AutoActivities
             }
             WorkflowInvoker.Invoke(activity);
             //TODO calculate result here
-            _result = ((IPassData) activity).GetResult();
+            _runningResult = ((IPassData) activity).GetResult();
         }
     }
 }

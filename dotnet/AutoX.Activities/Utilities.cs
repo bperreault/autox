@@ -35,7 +35,7 @@ namespace AutoX.Activities
 
         [Description("Stop Current Script, Mark it Error")] StopCurrentScript,
 
-        [Description("Terminate this Test Instance")] Terminate
+        //[Description("Terminate this Test Instance")] Terminate
     }
 
     public static class Utilities
