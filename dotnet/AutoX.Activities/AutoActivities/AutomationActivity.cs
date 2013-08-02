@@ -31,7 +31,9 @@ namespace AutoX.Activities.AutoActivities
         protected string ResultId;
         private bool _enabled = true;
         protected bool _runningResult = true;
+        
         protected Dictionary<string, string> _upperVariables = new Dictionary<string, string>();
+        protected XElement _result;
 
         [Browsable(false)]
         public string InstanceId { get; set; }
@@ -132,28 +134,38 @@ namespace AutoX.Activities.AutoActivities
             return true;
         }
 
-        protected void SetResult(XElement result)
+        protected void SetResult()
         {
-            result.SetAttributeValue(Constants.PARENT_ID, ParentResultId);
-            result.SetAttributeValue(Constants._ID, ResultId);
-            result.SetAttributeValue(Constants.INSTANCE_ID, InstanceId);
-            result.SetAttributeValue(Constants._TYPE, Constants.RESULT);
-            result.SetAttributeValue(Constants.NAME, DisplayName + " " + DateTime.Now.ToUniversalTime());
-            result.SetAttributeValue(SCRIPT_ID, Id);
-            var ret = result.GetAttributeValue(Constants.RESULT);
-            if (!string.IsNullOrEmpty(ret))
-            {
-                result.SetAttributeValue("Original", ret);
-                result.SetAttributeValue("Final", ret);
-                _runningResult = ret.Equals("Success") && _runningResult;
-            }
-            else
-                _runningResult = false;
+            
+            _result.SetAttributeValue(Constants.PARENT_ID, ParentResultId);
+            _result.SetAttributeValue(Constants._ID, ResultId);
+            _result.SetAttributeValue(Constants.INSTANCE_ID, InstanceId);
+            _result.SetAttributeValue(Constants._TYPE, Constants.RESULT);
+            _result.SetAttributeValue(Constants.NAME, DisplayName + " " + DateTime.Now.ToUniversalTime());
+            _result.SetAttributeValue(SCRIPT_ID, Id);
+            //var ret = _result.GetAttributeValue(Constants.RESULT);
+            //if (!string.IsNullOrEmpty(ret))
+            //{
+            //    _result.SetAttributeValue("Original", ret);
+            //    _result.SetAttributeValue("Final", ret);
+            //    _runningResult = ret.Equals("Success") && _runningResult;
+            //}
+            //else
+            //    _runningResult = false;
             //result.SetAttributeValue(Constants.UI_OBJECT, UIObject);
-            DBFactory.GetData().Save(result);
+            DBFactory.GetData().Save(_result);
         }
 
-        
+        protected void SetFinalResult()
+        {
+            var ret = "Success";
+            if (!_runningResult)
+                ret = "Failed";
+            _result.SetAttributeValue("Original", ret);
+            _result.SetAttributeValue("Final", ret);
+            DBFactory.GetData().Save(_result);
+
+        }
 
         public void SetHost(IHost host)
         {

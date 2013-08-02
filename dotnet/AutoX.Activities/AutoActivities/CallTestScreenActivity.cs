@@ -94,12 +94,13 @@ namespace AutoX.Activities.AutoActivities
         // and return the value from the Execute method.
         protected override void Execute(NativeActivityContext context)
         {
-            var result = new XElement(Constants.RESULT);
+            _result = new XElement(Constants.RESULT);
             ResultId = ResultId ?? Guid.NewGuid().ToString();
             
-            SetResult(result);
+            SetResult();
             SetVariablesBeforeRunning(context);
             InternalExecute(context, null);
+            
         }
 
         private void InternalExecute(NativeActivityContext context, ActivityInstance instance)
@@ -154,7 +155,7 @@ namespace AutoX.Activities.AutoActivities
                 //result.SetAttributeValue(Constants.UI_OBJECT, UIObject);
                 DBFactory.GetData().Save(stepElement);
             }
-            //SetResult(rElement);
+            SetFinalResult();
         }
 
         

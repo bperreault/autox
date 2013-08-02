@@ -4,6 +4,8 @@
 // Created @2012 09 18 14:34
 // Last Updated  by Huang, Jien @2012 09 18 14:34
 
+using System.Threading;
+
 #region
 
 using System.Activities;
@@ -101,24 +103,56 @@ namespace AutoX.Activities.AutoActivities
             Host.SetCommand(steps);
             Host.GetResult();
             //add a result level here
-            var result = new XElement(Constants.RESULT);
-            SetResult(result);
+            _result = new XElement(Constants.RESULT);
+            SetResult();
             SetVariablesBeforeRunning(context);
             InternalExecute(context, null);
-                        
+            SetFinalResult();
         }
 
         private void InternalExecute(NativeActivityContext context, ActivityInstance instance)
         {
-            Log.Info("In Test Suite InternalExecute!");
+            //this method turn async way to sync.
+            
             //grab the index of the current Activity
             var currentActivityIndex = _currentIndex.Get(context);
+            if (currentActivityIndex > 0)
+            {
+                var lastChild = children[currentActivityIndex - 1];
+                //Get result here, it is sync or async????
+                _runningResult = _runningResult && ((IPassData)lastChild).GetResult();
+                //TODO set variables value ((AutomationActivity)nextChild).Name to _runningResult
+                if (!_runningResult)
+                {
+                    if (ErrorLevel == OnError.AlwaysReturnTrue)
+                        _runningResult = true;
+                    //if (ErrorLevel == OnError.Terminate)
+                    //{
+                    //    //TODO terminate the instance (send a status to instance)
+                    //}
+                    if (ErrorLevel == OnError.Continue)
+                    {
+                        //do nothing, just continue
+                    }
+                    if (ErrorLevel == OnError.JustShowWarning)
+                    {
+                        Log.Warn("Warning:\n" + lastChild.DisplayName + " Error happened, but we ignore it");
+                        _runningResult = true;
+                    }
+                    if (ErrorLevel == OnError.StopCurrentScript)
+                    {
+                        Log.Error("Error:\n" + lastChild.DisplayName + " Error happened, stop current script.");
+                        return;
+                    }
+                }
+            }
             if (currentActivityIndex == children.Count)
             {
                 //if the currentActivityIndex is equal to the count of MySequence's Activities
                 //Suite is complete, then we close the browser here
+                //TODO please reconsider here, this means: suite must be totally independent, it will open & close browser itself. Then if it is called by others, must be very careful!!!!!!
                 var steps =
-                    XElement.Parse("<AutoX.Steps  OnError=\"AlwaysReturnTrue\" InstanceId=\"" + InstanceId + "\"/>");
+                    XElement.Parse("<AutoX.Steps  OnError=\"" + ErrorLevel + "\" InstanceId=\"" + InstanceId + "\"/>");
                 var close = XElement.Parse("<Step Action=\"Close\" />");
                 steps.Add(close);
                 Host.SetCommand(steps);
@@ -129,7 +163,6 @@ namespace AutoX.Activities.AutoActivities
             if (_onChildComplete == null)
             {
                 //on completion of the current child, have the runtime call back on this method
-
                 _onChildComplete = InternalExecute;
             }
 
@@ -144,33 +177,15 @@ namespace AutoX.Activities.AutoActivities
                 childEnabled = ((AutomationActivity) nextChild).Enabled;
             }
             //TODO if enabled, run it, may need to use while???
-            context.ScheduleActivity(nextChild, _onChildComplete);
-            //Get result here, it is sync or async????
-            _runningResult = _runningResult && ((IPassData) nextChild).GetResult();
-            //TODO set variables value ((AutomationActivity)nextChild).Name to _runningResult
-            if (!_runningResult)
+            if (childEnabled)
             {
-                if (ErrorLevel == OnError.AlwaysReturnTrue)
-                    _runningResult = true;
-                //if (ErrorLevel == OnError.Terminate)
-                //{
-                //    //TODO terminate the instance (send a status to instance)
-                //}
-                if (ErrorLevel == OnError.Continue)
-                {
-                    //do nothing, just continue
-                }
-                if (ErrorLevel == OnError.JustShowWarning)
-                {
-                    Log.Warn("Warning:\n" + nextChild.DisplayName + " Error happened, but we ignore it");
-                    _runningResult = true;
-                }
-                if (ErrorLevel == OnError.StopCurrentScript)
-                {
-                    Log.Error("Error:\n" + nextChild.DisplayName + " Error happened, stop current script.");
-                    return;
-                }
+                ActivityInstance activityInstance = context.ScheduleActivity(nextChild, _onChildComplete);
+                
+                
             }
+                
+            
+            
             //increment the currentIndex
             _currentIndex.Set(context, ++currentActivityIndex);
         }

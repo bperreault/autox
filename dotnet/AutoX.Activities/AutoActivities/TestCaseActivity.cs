@@ -4,6 +4,8 @@
 // Created @2012 09 18 14:34
 // Last Updated  by Huang, Jien @2012 09 18 14:34
 
+using System.Threading;
+
 #region
 
 using System.Activities;
@@ -92,20 +94,52 @@ namespace AutoX.Activities.AutoActivities
         protected override void Execute(NativeActivityContext context)
         {
             //add a result level here
-            var result = new XElement(Constants.RESULT);
-            SetResult(result);
+            _result = new XElement(Constants.RESULT);
+            SetResult();
             SetVariablesBeforeRunning(context);
             InternalExecute(context, null);
+            
         }
 
         private void InternalExecute(NativeActivityContext context, ActivityInstance instance)
         {
             //grab the index of the current Activity
             var currentActivityIndex = _currentIndex.Get(context);
+            if (currentActivityIndex > 0)
+            {
+                var lastChild = children[currentActivityIndex - 1];
+                //Get result here, it is sync or async????
+                _runningResult = _runningResult && ((IPassData)lastChild).GetResult();
+                //TODO set variables value ((AutomationActivity)nextChild).Name to _runningResult
+                if (!_runningResult)
+                {
+                    if (ErrorLevel == OnError.AlwaysReturnTrue)
+                        _runningResult = true;
+                    //if (ErrorLevel == OnError.Terminate)
+                    //{
+                    //    //TODO terminate the instance (send a status to instance)
+                    //}
+                    if (ErrorLevel == OnError.Continue)
+                    {
+                        //do nothing, just continue
+                    }
+                    if (ErrorLevel == OnError.JustShowWarning)
+                    {
+                        Log.Warn("Warning:\n" + lastChild.DisplayName + " Error happened, but we ignore it");
+                        _runningResult = true;
+                    }
+                    if (ErrorLevel == OnError.StopCurrentScript)
+                    {
+                        Log.Error("Error:\n" + lastChild.DisplayName + " Error happened, stop current script.");
+                        return;
+                    }
+                }
+            }
             if (currentActivityIndex == children.Count)
             {
                 //if the currentActivityIndex is equal to the count of MySequence's Activities
                 //MySequence is complete
+                SetFinalResult();
                 return;
             }
 
@@ -123,9 +157,11 @@ namespace AutoX.Activities.AutoActivities
                 ((AutomationActivity) nextChild).SetHost(Host);
                 ((AutomationActivity) nextChild).SetParentResultId(ResultId);
             }
-            context.ScheduleActivity(nextChild, _onChildComplete);
+            ActivityInstance activityInstance = context.ScheduleActivity(nextChild, _onChildComplete);
+            
             //Get result here, it is sync or async????
-            _runningResult = _runningResult && ((IPassData) nextChild).GetResult();
+            
+            _runningResult = _runningResult && ((IPassData)nextChild).GetResult();
             if (!_runningResult)
             {
                 if (ErrorLevel == OnError.AlwaysReturnTrue)
@@ -141,6 +177,8 @@ namespace AutoX.Activities.AutoActivities
                 if (ErrorLevel == OnError.JustShowWarning)
                 {
                     //do nothing, log warning
+                    Log.Warn("Warning:\n" + this.DisplayName + " Error happened, but we ignore it");
+                    _runningResult = true;
                 }
                 if (ErrorLevel == OnError.StopCurrentScript)
                 {

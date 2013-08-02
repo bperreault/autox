@@ -22,7 +22,7 @@ namespace AutoX.Activities.AutoActivities
 {
     [ToolboxBitmap(typeof (CallTestCaseDesigner), "TestCase.bmp")]
     [Designer(typeof (CallTestCaseDesigner))]
-    public sealed class CallTestCaseActivity : AutomationActivity
+    public sealed class CallTestCaseActivity : AutomationActivity, IPassData
     {
         private string _testCaseName;
         private string _userData = "";
