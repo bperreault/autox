@@ -103,7 +103,7 @@ namespace AutoX
             {
                 var fileName = Path.GetTempPath() + Guid.NewGuid() + ".htm";
                 File.WriteAllText(fileName,
-                    "<html><body><img src='data:image/jpg;base64," + content + "' /></body></html>");
+                    @"<html><body><img src='data:image/jpg;base64," + content + @"' /></body></html>");
                 Process.Start(fileName);
             }
             else
@@ -135,18 +135,7 @@ namespace AutoX
             var selected = TestCaseResultTable.SelectedItem as Result;
             if (selected == null) return;
             await UpdateResultTable(selected._id);
-            //var xRoot = DBFactory.GetData().GetChildren(selected._id);
-            //if (xRoot.HasElements)
-            //{
-            //    _testStepSource.Clear();
-            //    foreach (XElement kid in xRoot.Descendants())
-            //    {
-            //        var testcaseresult = kid.GetDataObjectFromXElement() as StepResult;
-            //        if (testcaseresult != null)
-            //            _testStepSource.Add(testcaseresult);
-            //    }
-            //}
-            //TestStepsResultTable.ItemsSource = _testStepSource.Get();
+            
         }
 
         private async Task UpdateResultTable(string id)

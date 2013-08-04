@@ -4,6 +4,7 @@
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
+using System.Threading.Tasks;
 using AutoX.FeatureToggles;
 
 #region
@@ -124,7 +125,7 @@ namespace AutoX
             MessageBox.Show("Your Test finished.");
         }
 
-        private void RunTest(object sender, RoutedEventArgs e)
+        private async void RunTest(object sender, RoutedEventArgs e)
         {
             //get workflowid from project tree
             var selected = ProjectTreeView.SelectedItem as TreeViewItem;
@@ -143,12 +144,17 @@ namespace AutoX
                 MessageBox.Show("Selected Item MUST be a Test Script!");
                 return;
             }
+            await RunTestLocally(workflowId);
+            //when finished, show a message
+            MessageBox.Show("Your Test finished.");
+        }
+
+        private async Task RunTestLocally(string workflowId)
+        {
             /**********This is a simple instance***********/
             _autoClient.Config.Set("HostType", "Local");
             RunWorkflowById(workflowId);
             /***********end of instance*******************/
-            //when finished, show a message
-            MessageBox.Show("Your Test finished.");
         }
 
         private void RunWorkflowById(string workflowId)
@@ -604,36 +610,42 @@ namespace AutoX
             }
         }
 
-        private void DeleteSuite(object sender, RoutedEventArgs e)
+        private async void DeleteSuite(object sender, RoutedEventArgs e)
         {
             var selected = InstanceTable.SelectedItem as Instance;
             if (selected == null) return;
             try
             {
-                var sRoot = Communication.GetInstance().DeleteInstance(selected._id);
-                var xRoot = XElement.Parse(sRoot);
-                var result = xRoot.GetAttributeValue(Constants.RESULT);
-                if (string.IsNullOrEmpty(result)) return;
-                if (result.Equals("Error"))
-                {
-                    MessageBox.Show("Delete Instance failed!\nReason:" +
-                                    xRoot.GetAttributeValue("Reason"));
-                }
-                else
-                {
-                    var source = InstanceTable.ItemsSource as List<Instance>;
-                    if (source != null)
-                    {
-                        source.Remove(selected);
-                        InstanceTable.Items.Clear();
-                        InstanceTable.ItemsSource = source;
-                    }
-                }
+                await DeleteItemById(selected);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private async Task DeleteItemById(Instance selected)
+        {
+            var sRoot = Communication.GetInstance().DeleteInstance(selected._id);
+            var xRoot = XElement.Parse(sRoot);
+            var result = xRoot.GetAttributeValue(Constants.RESULT);
+            if (string.IsNullOrEmpty(result)) return;
+            if (result.Equals("Error"))
+            {
+                MessageBox.Show("Delete Instance failed!\nReason:" +
+                                xRoot.GetAttributeValue("Reason"));
+            }
+            else
+            {
+                var source = InstanceTable.ItemsSource as List<Instance>;
+                if (source != null)
+                {
+                    source.Remove(selected);
+                    InstanceTable.Items.Clear();
+                    InstanceTable.ItemsSource = source;
+                }
+            }
+            return;
         }
     }
 }

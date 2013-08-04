@@ -4,6 +4,8 @@
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
+using System.Threading.Tasks;
+
 #region
 
 using System;
@@ -153,7 +155,7 @@ namespace AutoX
         //    tree.Items.Add(xRoot.GetTreeViewItemFromXElement());
         //}
 
-        private void DoubleClickOnTree(TreeView treeView)
+        private async Task DoubleClickOnTree(TreeView treeView)
         {
             //double click on an item, then get its children
             var selected = treeView.SelectedItem as TreeViewItem;
@@ -180,10 +182,10 @@ namespace AutoX
 
                 return;
             }
-            HandleDoubleClick(selected, treeViewName, xRoot);
+            await HandleDoubleClick(selected, treeViewName, xRoot);
         }
 
-        private static void HandleDoubleClick(TreeViewItem selected, string treeViewName, XElement xRoot)
+        private async Task HandleDoubleClick(TreeViewItem selected, string treeViewName, XElement xRoot)
         {
             selected.Items.Clear();
             foreach (XElement kid in xRoot.Descendants())
