@@ -9,7 +9,6 @@
 using System;
 using System.Activities;
 using System.Activities.Presentation;
-using System.Activities.Presentation.Model;
 using System.Windows;
 using System.Xml.Linq;
 using AutoX.Basic;
@@ -101,11 +100,9 @@ namespace AutoX.Activities
                 else
                 {
                     var activity = Utilities.GetActivityFromXElement(data);
-                    if (activity != null)
-                    {
-                        var canvasActivity = ModelItem;
-                        canvasActivity.Properties["children"].Collection.Add(activity);
-                    }
+                    if (activity == null) return;
+                    var canvasActivity = ModelItem;
+                    canvasActivity.Properties["children"].Collection.Add(activity);
                 }
             }
         }

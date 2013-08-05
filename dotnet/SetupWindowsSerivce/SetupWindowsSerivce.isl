@@ -343,6 +343,8 @@
 		<col def="S0">ISDotNetInstallerArgsRollback</col>
 		<row><td>AutoX.WindowsService.Primary_output</td><td>{1687BA61-3EFF-4C5E-AB35-31A7A13AF65F}</td><td>INSTALLDIR</td><td>2</td><td/><td>autox.windowsservice.primary</td><td>81</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>AutoX.WindowsService.Primary_output1</td><td>{C9C61D0A-4C0D-489B-85C8-882E32C4AEE7}</td><td>ProgramFilesFolder</td><td>2</td><td/><td>autox.windowsservice.primary1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISO19770_LocalTag</td><td>{E3A44933-A531-4219-B77D-A5D25CD8E349}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISO19770_SystemTag</td><td>{8630EAD7-9393-4C98-9F61-49DDA163414A}</td><td>CommonAppDataFolder</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
 
 	<table name="Condition">
@@ -1055,6 +1057,8 @@
 	<table name="CreateFolder">
 		<col key="yes" def="s72">Directory_</col>
 		<col key="yes" def="s72">Component_</col>
+		<row><td>CommonAppDataFolder</td><td>ISO19770_SystemTag</td></row>
+		<row><td>INSTALLDIR</td><td>ISO19770_LocalTag</td></row>
 	</table>
 
 	<table name="CustomAction">
@@ -1869,6 +1873,8 @@
 		<col key="yes" def="s72">Component_</col>
 		<row><td>AlwaysInstall</td><td>AutoX.WindowsService.Primary_output</td></row>
 		<row><td>AlwaysInstall</td><td>AutoX.WindowsService.Primary_output1</td></row>
+		<row><td>AlwaysInstall</td><td>ISO19770_LocalTag</td></row>
+		<row><td>AlwaysInstall</td><td>ISO19770_SystemTag</td></row>
 	</table>
 
 	<table name="File">
@@ -2030,6 +2036,8 @@
 		<col def="S0">Miscellaneous</col>
 		<row><td>AutoX.WindowsService.Primary_output</td><td/><td/><td>_59EF1725_E5D2_4B3A_8A28_05962D9FA63D_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>AutoX.WindowsService.Primary_output1</td><td/><td/><td>_0684D64C_2D9C_461D_968B_EAD9BBB97213_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISO19770_LocalTag</td><td/><td/><td>_99417B90_0334_4647_B5FC_FC305791A817_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISO19770_SystemTag</td><td/><td/><td>_990468C3_D1B1_42C5_A1F8_C1618F1C10F9_FILTER</td><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="ISCustomActionReference">
@@ -3762,6 +3770,8 @@
 	<table name="ISSwidtagProperty">
 		<col key="yes" def="s72">Name</col>
 		<col def="s0">Value</col>
+		<row><td>TagCreatorName</td><td>Jien Huang</td></row>
+		<row><td>TagCreatorRegid</td><td>regid.2013-08.autox.jien.huang,enterprise</td></row>
 		<row><td>UniqueId</td><td>7E84626E-1752-4193-BE71-039506519E5C</td></row>
 	</table>
 
@@ -4011,6 +4021,8 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>SccEnabled</td><td>0</td></row>
 		<row><td>SccPath</td><td/></row>
 		<row><td>SchemaVersion</td><td>774</td></row>
+		<row><td>SwidtagLocalComponent</td><td>ISO19770_LocalTag</td></row>
+		<row><td>SwidtagSystemComponent</td><td>ISO19770_SystemTag</td></row>
 		<row><td>Type</td><td>MSIE</td></row>
 	</table>
 
