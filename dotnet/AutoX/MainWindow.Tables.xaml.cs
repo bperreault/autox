@@ -4,6 +4,8 @@
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
+using System.Threading.Tasks;
+
 #region
 
 using System;
@@ -54,7 +56,7 @@ namespace AutoX
         private void ClientTableEnterFilter(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.Enter) return;
-            var filter = filterClient.Text;
+            var filter = FilterClient.Text;
             ClientTable.ItemsSource = _clientSource.GetMatched(filter);
             e.Handled = true;
         }
@@ -62,7 +64,7 @@ namespace AutoX
         private void InstanceTableEnterFilter(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.Enter) return;
-            var filter = filterInstance.Text;
+            var filter = FilterInstance.Text;
             InstanceTable.ItemsSource = _instanceSource.GetMatched(filter);
             e.Handled = true;
         }
@@ -70,7 +72,7 @@ namespace AutoX
         private void TestCaseTableEnterFilter(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.Enter) return;
-            var filter = filterTestCaseResult.Text;
+            var filter = FilterTestCaseResult.Text;
             TestCaseResultTable.ItemsSource = _testCaseResultSource.GetMatched(filter);
             e.Handled = true;
         }
@@ -78,7 +80,7 @@ namespace AutoX
         private void TestStepTableEnterFilter(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.Enter) return;
-            var filter = filterTestCaseResult.Text;
+            var filter = FilterTestCaseResult.Text;
             TestCaseResultTable.ItemsSource = _testCaseResultSource.GetMatched(filter);
             e.Handled = true;
         }
@@ -86,7 +88,7 @@ namespace AutoX
         private void TranslationEnterFilter(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.Enter) return;
-            var filter = filterTranslation.Text;
+            var filter = FilterTranslation.Text;
             TranslationTable.ItemsSource = _translationSource.GetMatched(filter);
             e.Handled = true;
         }
@@ -101,7 +103,7 @@ namespace AutoX
             {
                 var fileName = Path.GetTempPath() + Guid.NewGuid() + ".htm";
                 File.WriteAllText(fileName,
-                    "<html><body><img src='data:image/jpg;base64," + content + "' /></body></html>");
+                    @"<html><body><img src='data:image/jpg;base64," + content + @"' /></body></html>");
                 Process.Start(fileName);
             }
             else
@@ -127,16 +129,21 @@ namespace AutoX
             DBFactory.GetData().Save(dialog.GetElement());
         }
 
-        private void TestCaseResultTableSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void TestCaseResultTableSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (TestCaseResultTable == null) return;
             var selected = TestCaseResultTable.SelectedItem as Result;
             if (selected == null) return;
+            await UpdateResultTable(selected._id);
+            
+        }
 
-            var xRoot = DBFactory.GetData().GetChildren(selected._id);
+        private async Task UpdateResultTable(string id)
+        {
+            _testStepSource.Clear();
+            var xRoot = DBFactory.GetData().GetChildren(id);
             if (xRoot.HasElements)
             {
-                _testStepSource.Clear();
                 foreach (XElement kid in xRoot.Descendants())
                 {
                     var testcaseresult = kid.GetDataObjectFromXElement() as StepResult;

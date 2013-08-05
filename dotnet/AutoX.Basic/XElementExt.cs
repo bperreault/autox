@@ -102,7 +102,7 @@ namespace AutoX.Basic
         public static Dictionary<string, string> GetAttributeList(this XElement e)
         {
             var attributeList = new Dictionary<string, string>();
-            foreach (XAttribute attr in e.Attributes())
+            foreach (var attr in e.Attributes())
             {
                 attributeList.Add(attr.Name.ToString(), attr.Value);
             }
@@ -122,7 +122,7 @@ namespace AutoX.Basic
 
         public static XElement GetSubElement(this XElement current, string key, string value)
         {
-            foreach (XElement e in current.Descendants())
+            foreach (var e in current.Descendants())
             {
                 if (e.GetAttributeValue(key).Equals(value))
                     return e;

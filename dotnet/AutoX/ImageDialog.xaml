@@ -5,6 +5,6 @@
         Closed="WindowClosed" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
     <Grid>
 
-        <Image Name="vImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        <Image Name="VImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
     </Grid>
 </Window>

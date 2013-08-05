@@ -72,7 +72,7 @@
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Content="Reload" Margin="2" Click="ButtonReload" Name="reloadButton"  IsEnabled="False" />
+            <Button Grid.Column="0" Content="Reload" Margin="2" Click="ButtonReload" Name="ReloadButton"  IsEnabled="False" />
             <Button Grid.Column="1" Content="Up" Margin="2" Click="ButtonUpClick" />
             <Button Grid.Column="2" Content="Down" Margin="2" Click="ButtonDownClick" />
             <Button Grid.Column="3" Content="Delete" Margin="2" Click="ButtonDeleteClick" />

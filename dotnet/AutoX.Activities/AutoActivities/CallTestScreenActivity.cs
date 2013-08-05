@@ -12,6 +12,8 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Xml.Linq;
 using AutoX.Basic;
+using System;
+using AutoX.DB;
 
 #endregion
 
@@ -92,8 +94,13 @@ namespace AutoX.Activities.AutoActivities
         // and return the value from the Execute method.
         protected override void Execute(NativeActivityContext context)
         {
+            Result = new XElement(Constants.RESULT);
+            ResultId = ResultId ?? Guid.NewGuid().ToString();
+            
+            SetResult();
             SetVariablesBeforeRunning(context);
             InternalExecute(context, null);
+            
         }
 
         private void InternalExecute(NativeActivityContext context, ActivityInstance instance)
@@ -106,9 +113,52 @@ namespace AutoX.Activities.AutoActivities
             var steps = GetSteps(context);
             Host.SetCommand(steps);
             var rElement = Host.GetResult();
+            
             Log.Info(rElement.ToString());
-            SetResult(rElement);
+            foreach (var stepElement in rElement.Descendants())
+            {
+                stepElement.SetAttributeValue(Constants.PARENT_ID, ResultId);
+                var ret = stepElement.GetAttributeValue(Constants.RESULT);
+                if (!string.IsNullOrEmpty(ret))
+                {
+                    stepElement.SetAttributeValue("Original", ret);
+                    stepElement.SetAttributeValue("Final", ret);
+                    _runningResult = ret.Equals("Success") && _runningResult;
+                }
+                else
+                    _runningResult = false;
+                if (!_runningResult)
+                {
+                    if (ErrorLevel == OnError.AlwaysReturnTrue)
+                        _runningResult = true;
+                    //if (ErrorLevel == OnError.Terminate)
+                    //{
+                    //    //TODO terminate the instance (send a status to instance)
+                    //    Host.Stop();
+                    //}
+                    if (ErrorLevel == OnError.Continue)
+                    {
+                        //do nothing, just continue
+                    }
+                    if (ErrorLevel == OnError.JustShowWarning)
+                    {
+                        Log.Warn("Warning:\n" + DisplayName + " Error happened, but we ignore it");
+                        _runningResult = true;
+                    }
+                    if (ErrorLevel == OnError.StopCurrentScript)
+                    {
+                        //we cannot stop it here, just pass the result to higher level, until it reach the testscript level, then testscript will stop itself
+                        Log.Error("Error:\n" + DisplayName + " Error happened, stop current script.");
+                        
+                    }
+                }
+                //result.SetAttributeValue(Constants.UI_OBJECT, UIObject);
+                DBFactory.GetData().Save(stepElement);
+            }
+            SetFinalResult();
         }
+
+        
 
         private XElement GetSteps(NativeActivityContext context)
         {
@@ -123,7 +173,7 @@ namespace AutoX.Activities.AutoActivities
             //Utilities.PrintDictionary(data);
             //update the Steps into the format we want
             var steps = CreateStepsHeader();
-            foreach (XElement descendant in XElement.Parse(_steps).Descendants(Constants.STEP))
+            foreach (var descendant in XElement.Parse(_steps).Descendants(Constants.STEP))
             {
                 var enable = descendant.GetAttributeValue(Constants.ENABLE);
                 if (string.IsNullOrEmpty(enable))
@@ -157,31 +207,24 @@ namespace AutoX.Activities.AutoActivities
                     else
                     {
                         var found = false;
-                        foreach (PropertyDescriptor _var in context.DataContext.GetProperties())
+                        foreach (PropertyDescriptor propertyDescriptor in context.DataContext.GetProperties())
                         {
-                            if (_var.Name.Equals(dataref))
-                            {
-                                step.SetAttributeValue(Constants.DATA, _var.GetValue(context.DataContext));
-                                found = true;
-                                break;
-                            }
+                            if (!propertyDescriptor.Name.Equals(dataref)) continue;
+                            step.SetAttributeValue(Constants.DATA, propertyDescriptor.GetValue(context.DataContext));
+                            found = true;
+                            break;
                         }
                         if (!found)
                         {
-                            if (screen != null)
                             {
                                 XNamespace p = "http://schemas.microsoft.com/netfx/2009/xaml/activities";
-                                foreach (XElement v in screen.Descendants(p + "Variable"))
+                                foreach (var v in screen.Descendants(p + "Variable"))
                                 {
-                                    if (v.GetAttributeValue("Name").Equals(dataref))
-                                    {
-                                        if (!string.IsNullOrEmpty(v.GetAttributeValue("Default")))
-                                        {
-                                            found = true;
-                                            step.SetAttributeValue(Constants.DATA, v.GetAttributeValue("Default"));
-                                            break;
-                                        }
-                                    }
+                                    if (!v.GetAttributeValue("Name").Equals(dataref)) continue;
+                                    if (string.IsNullOrEmpty(v.GetAttributeValue("Default"))) continue;
+                                    found = true;
+                                    step.SetAttributeValue(Constants.DATA, v.GetAttributeValue("Default"));
+                                    break;
                                 }
                             }
                             if (!found)

@@ -2,7 +2,6 @@
 
 using System;
 using System.Activities;
-using System.Activities.Tracking;
 using System.Activities.XamlIntegration;
 using System.Collections.Generic;
 using System.Globalization;
@@ -173,6 +172,7 @@ namespace AutoX.WF.Core
             return element.GetObjectFromXElement() as Instance;
         }
 
+        //This method only be used to create build, version folder
         private static string FindOrCreateSubResultFolder(string versionName, string resultId)
         {
             var results = DBFactory.GetData().GetChildren(resultId);
@@ -304,36 +304,5 @@ namespace AutoX.WF.Core
         }
     }
 
-    public class StatusTracker : TrackingParticipant
-    {
-        private readonly TrackingProfile trackingProfile = new TrackingProfile();
-
-        public StatusTracker()
-        {
-            trackingProfile.Queries.Add(new ActivityStateQuery
-            {
-                ActivityName = "*",
-                States = {"*"},
-                Variables = {"*"},
-                Arguments = {"*"}
-            });
-            trackingProfile.Queries.Add(new WorkflowInstanceQuery
-            {
-                States = {"*"},
-            });
-
-            TrackingProfile = trackingProfile;
-        }
-
-        public string Status { get; private set; }
-
-        protected override void Track(TrackingRecord record, TimeSpan timeout)
-        {
-            var instanceRecord = record as WorkflowInstanceRecord;
-            if (instanceRecord != null)
-            {
-                Status = instanceRecord.State;
-            }
-        }
-    }
+    
 }

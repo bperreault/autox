@@ -48,7 +48,7 @@ namespace AutoX.Basic.Model
         {
             var localIP = "";
             var host = Dns.GetHostEntry(Dns.GetHostName());
-            foreach (IPAddress ip in host.AddressList)
+            foreach (var ip in host.AddressList)
             {
                 if (ip.AddressFamily.ToString() == "InterNetwork")
                 {

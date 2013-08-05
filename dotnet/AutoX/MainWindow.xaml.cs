@@ -44,7 +44,7 @@ namespace AutoX
             LoadToolBox();
             RegisterMetadata();
             //AddTestDesigner("TestSuite");
-            var rootId = Configuration.Settings("Root", null);
+            var rootId = Configuration.Settings("Root");
             if (string.IsNullOrEmpty(rootId))
             {
                 MessageBox.Show("Check your configuration settings, no Root entry");

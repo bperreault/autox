@@ -18,7 +18,7 @@ namespace AutoX.Client.Core
 
         private volatile bool _registered;
         private Task _task;
-        private bool disposed; // to detect redundant calls
+        private bool _disposed; // to detect redundant calls
 
         public AutoClient(Config config)
         {
@@ -91,7 +91,7 @@ namespace AutoX.Client.Core
 
         public bool Register()
         {
-            var ret = Communication.GetInstance().Register(Config);
+            Communication.GetInstance().Register(Config);
             //if there is a return, it will always be success
             return true;
         }
@@ -112,7 +112,7 @@ namespace AutoX.Client.Core
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposed)
+            if (!_disposed)
             {
                 if (disposing)
                 {
@@ -126,7 +126,7 @@ namespace AutoX.Client.Core
                     }
                 }
 
-                disposed = true;
+                _disposed = true;
             }
         }
     }

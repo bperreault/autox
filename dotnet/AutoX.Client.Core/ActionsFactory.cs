@@ -39,7 +39,7 @@ namespace AutoX.Client.Core
             var setEnv = steps.Element(Constants.SET_ENV);
             if (setEnv != null)
             {
-                foreach (XAttribute env in setEnv.Attributes())
+                foreach (var env in setEnv.Attributes())
                 {
                     config.Set(env.Name.ToString(), env.Value);
                 }
@@ -48,7 +48,7 @@ namespace AutoX.Client.Core
 
             var query = from o in steps.Elements(Constants.STEP)
                 select o;
-            foreach (XElement step in query)
+            foreach (var step in query)
             {
                 var xAttribute = step.Attribute(Constants.ACTION);
                 //var xId = step.GetAttributeValue(Constants._ID);

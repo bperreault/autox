@@ -4,6 +4,7 @@
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
+using System.Threading.Tasks;
 using AutoX.FeatureToggles;
 
 #region
@@ -74,15 +75,15 @@ namespace AutoX
         private void GetUIObjectsSaveToFile(object sender, RoutedEventArgs e)
         {
             var uiObjectsString = _autoClient.Browser.GetAllValuableObjects();
-            var fileDialog = new SaveFileDialog();
-            fileDialog.FileName = "UI";
-            fileDialog.DefaultExt = "xml";
-            fileDialog.Filter = "XML format (*.xml)|*.xml";
-            if (fileDialog.ShowDialog().Value)
+            var fileDialog = new SaveFileDialog
             {
-                var fileName = fileDialog.FileName;
-                File.WriteAllText(fileName, uiObjectsString);
-            }
+                FileName = "UI",
+                DefaultExt = "xml",
+                Filter = "XML format (*.xml)|*.xml"
+            };
+            if (!fileDialog.ShowDialog().Value) return;
+            var fileName = fileDialog.FileName;
+            File.WriteAllText(fileName, uiObjectsString);
         }
 
         private void CloseBrowser(object sender, RoutedEventArgs e)
@@ -124,7 +125,7 @@ namespace AutoX
             MessageBox.Show("Your Test finished.");
         }
 
-        private void RunTest(object sender, RoutedEventArgs e)
+        private async void RunTest(object sender, RoutedEventArgs e)
         {
             //get workflowid from project tree
             var selected = ProjectTreeView.SelectedItem as TreeViewItem;
@@ -143,18 +144,25 @@ namespace AutoX
                 MessageBox.Show("Selected Item MUST be a Test Script!");
                 return;
             }
-            /**********This is a simple instance***********/
-            _autoClient.Config.Set("HostType", "Local");
-            RunWorkflowById(workflowId);
-            /***********end of instance*******************/
+            await RunTestLocally(workflowId);
             //when finished, show a message
             MessageBox.Show("Your Test finished.");
         }
 
+        private async Task RunTestLocally(string workflowId)
+        {
+            /**********This is a simple instance***********/
+            _autoClient.Config.Set("HostType", "Local");
+            RunWorkflowById(workflowId);
+            /***********end of instance*******************/
+        }
+
         private void RunWorkflowById(string workflowId)
         {
-            var workflowInstance = new WorkflowInstance(Guid.NewGuid().ToString(), workflowId, _config.GetList());
-            workflowInstance.ClientId = _config.Get("_id", Guid.NewGuid().ToString());
+            var workflowInstance = new WorkflowInstance(Guid.NewGuid().ToString(), workflowId, _config.GetList())
+            {
+                ClientId = _config.Get("_id", Guid.NewGuid().ToString())
+            };
             ClientInstancesManager.GetInstance().Register(_config.SetRegisterBody(XElement.Parse("<Register />")));
             workflowInstance.Start();
             var debugMode = _config.Get("ModeDebug", "True").Equals("True", StringComparison.CurrentCultureIgnoreCase);
@@ -175,7 +183,9 @@ namespace AutoX
                 if (workflowInstance.IsFinished())
                     break;
             }
+/*
             workflowInstance = null;
+*/
         }
 
         private void GenerateKeyFile(object sender, RoutedEventArgs e)
@@ -367,29 +377,29 @@ namespace AutoX
             Delete(TestResultTree);
         }
 
-        private void DoubleClickOnProjectTree(object sender, MouseButtonEventArgs e)
+        private async void DoubleClickOnProjectTree(object sender, MouseButtonEventArgs e)
         {
-            DoubleClickOnTree(ProjectTreeView);
+            await DoubleClickOnTree(ProjectTreeView);
         }
 
-        private void DoubleClickOnUITree(object sender, MouseButtonEventArgs e)
+        private async void DoubleClickOnUITree(object sender, MouseButtonEventArgs e)
         {
-            DoubleClickOnTree(GuiObjectTree);
+            await DoubleClickOnTree(GuiObjectTree);
         }
 
-        private void DoubleClickOnDataTree(object sender, MouseButtonEventArgs e)
+        private async void DoubleClickOnDataTree(object sender, MouseButtonEventArgs e)
         {
-            DoubleClickOnTree(DataTree);
+            await DoubleClickOnTree(DataTree);
         }
 
-        private void DoubleClickOnSuiteTree(object sender, MouseButtonEventArgs e)
+        private async void DoubleClickOnSuiteTree(object sender, MouseButtonEventArgs e)
         {
-            DoubleClickOnTree(SuiteTree);
+            await DoubleClickOnTree(SuiteTree);
         }
 
-        private void DoubleClickOnResultTree(object sender, MouseButtonEventArgs e)
+        private async void DoubleClickOnResultTree(object sender, MouseButtonEventArgs e)
         {
-            DoubleClickOnTree(TestResultTree);
+            await DoubleClickOnTree(TestResultTree);
         }
 
 
@@ -454,35 +464,35 @@ namespace AutoX
         private void ProjectTreeEnterFilter(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.Enter) return;
-            DoFilterOnTree(ProjectTreeView, filterProject);
+            DoFilterOnTree(ProjectTreeView, FilterProject);
             e.Handled = true;
         }
 
         private void UIEnterFilter(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.Enter) return;
-            DoFilterOnTree(GuiObjectTree, filterUI);
+            DoFilterOnTree(GuiObjectTree, FilterUI);
             e.Handled = true;
         }
 
         private void DataEnterFilter(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.Enter) return;
-            DoFilterOnTree(DataTree, filterData);
+            DoFilterOnTree(DataTree, FilterData);
             e.Handled = true;
         }
 
         private void SuiteTreeEnterFilter(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.Enter) return;
-            DoFilterOnTree(SuiteTree, filterMonitor);
+            DoFilterOnTree(SuiteTree, FilterMonitor);
             e.Handled = true;
         }
 
         private void ResultEnterFilter(object sender, KeyEventArgs e)
         {
             if (e.Key != Key.Enter) return;
-            DoFilterOnTree(TestResultTree, filterResult);
+            DoFilterOnTree(TestResultTree, FilterResult);
             e.Handled = true;
         }
 
@@ -604,35 +614,40 @@ namespace AutoX
             }
         }
 
-        private void DeleteSuite(object sender, RoutedEventArgs e)
+        private async void DeleteSuite(object sender, RoutedEventArgs e)
         {
             var selected = InstanceTable.SelectedItem as Instance;
             if (selected == null) return;
             try
             {
-                var sRoot = Communication.GetInstance().DeleteInstance(selected._id);
-                var xRoot = XElement.Parse(sRoot);
-                var result = xRoot.GetAttributeValue(Constants.RESULT);
-                if (string.IsNullOrEmpty(result)) return;
-                if (result.Equals("Error"))
-                {
-                    MessageBox.Show("Delete Instance failed!\nReason:" +
-                                    xRoot.GetAttributeValue("Reason"));
-                }
-                else
-                {
-                    var source = InstanceTable.ItemsSource as List<Instance>;
-                    if (source != null)
-                    {
-                        source.Remove(selected);
-                        InstanceTable.Items.Clear();
-                        InstanceTable.ItemsSource = source;
-                    }
-                }
+                await DeleteItemById(selected);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private async Task DeleteItemById(Instance selected)
+        {
+            var sRoot = Communication.GetInstance().DeleteInstance(selected._id);
+            var xRoot = XElement.Parse(sRoot);
+            var result = xRoot.GetAttributeValue(Constants.RESULT);
+            if (string.IsNullOrEmpty(result)) return;
+            if (result.Equals("Error"))
+            {
+                MessageBox.Show("Delete Instance failed!\nReason:" +
+                                xRoot.GetAttributeValue("Reason"));
+            }
+            else
+            {
+                var source = InstanceTable.ItemsSource as List<Instance>;
+                if (source != null)
+                {
+                    source.Remove(selected);
+                    InstanceTable.Items.Clear();
+                    InstanceTable.ItemsSource = source;
+                }
             }
         }
     }

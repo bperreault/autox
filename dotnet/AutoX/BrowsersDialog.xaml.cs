@@ -78,12 +78,12 @@ namespace AutoX
             if (BrowserSetting == null) BrowserSetting = new XElement(browser);
             BrowserSetting.SetAttributeValue("AUTVersion", AUT_Version.Text);
             BrowserSetting.SetAttributeValue("AUTBuild", AUT_Build.Text);
-            if (Configuration.Settings("AUTVersion", null) == null)
+            if (Configuration.Settings("AUTVersion") == null)
             {
                 Configuration.Set("AUTVersion", AUT_Version.Text);
                 Configuration.SaveSettings();
             }
-            if (Configuration.Settings("AUTBuild", null) == null)
+            if (Configuration.Settings("AUTBuild") == null)
             {
                 Configuration.Set("AUTBuild", AUT_Build.Text);
                 Configuration.SaveSettings();

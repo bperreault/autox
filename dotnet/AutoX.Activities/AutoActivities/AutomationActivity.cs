@@ -30,8 +30,10 @@ namespace AutoX.Activities.AutoActivities
         protected string ParentResultId;
         protected string ResultId;
         private bool _enabled = true;
-        protected bool _result = true;
+        protected bool _runningResult = true;
+        
         protected Dictionary<string, string> _upperVariables = new Dictionary<string, string>();
+        protected XElement Result;
 
         [Browsable(false)]
         public string InstanceId { get; set; }
@@ -121,7 +123,8 @@ namespace AutoX.Activities.AutoActivities
             var input = context.DataContext.GetProperties()[key];
 
             if (input == null) return null;
-            return input.GetValue(context.DataContext).ToString();
+            var value = input.GetValue(context.DataContext);
+            return value != null ? value.ToString() : null;
         }
 
         protected bool SetVariableValueByContext(NativeActivityContext context, string key, string value)
@@ -132,25 +135,37 @@ namespace AutoX.Activities.AutoActivities
             return true;
         }
 
-        protected void SetResult(XElement result)
+        protected void SetResult()
         {
-            result.SetAttributeValue(Constants.PARENT_ID, ParentResultId);
-            result.SetAttributeValue(Constants._ID, ResultId);
-            result.SetAttributeValue(Constants.INSTANCE_ID, InstanceId);
-            result.SetAttributeValue(Constants._TYPE, Constants.RESULT);
-            result.SetAttributeValue(Constants.NAME, DisplayName + " " + DateTime.Now.ToUniversalTime());
-            result.SetAttributeValue(SCRIPT_ID, Id);
-            var ret = result.GetAttributeValue(Constants.RESULT);
-            if (!string.IsNullOrEmpty(ret))
-            {
-                result.SetAttributeValue("Original", ret);
-                result.SetAttributeValue("Final", ret);
-                _result = ret.Equals("Success") && _result;
-            }
-            else
-                _result = false;
+            
+            Result.SetAttributeValue(Constants.PARENT_ID, ParentResultId);
+            Result.SetAttributeValue(Constants._ID, ResultId);
+            Result.SetAttributeValue(Constants.INSTANCE_ID, InstanceId);
+            Result.SetAttributeValue(Constants._TYPE, Constants.RESULT);
+            Result.SetAttributeValue(Constants.NAME, DisplayName + " " + DateTime.Now.ToUniversalTime());
+            Result.SetAttributeValue(SCRIPT_ID, Id);
+            //var ret = _result.GetAttributeValue(Constants.RESULT);
+            //if (!string.IsNullOrEmpty(ret))
+            //{
+            //    _result.SetAttributeValue("Original", ret);
+            //    _result.SetAttributeValue("Final", ret);
+            //    _runningResult = ret.Equals("Success") && _runningResult;
+            //}
+            //else
+            //    _runningResult = false;
             //result.SetAttributeValue(Constants.UI_OBJECT, UIObject);
-            DBFactory.GetData().Save(result);
+            DBFactory.GetData().Save(Result);
+        }
+
+        protected void SetFinalResult()
+        {
+            var ret = "Success";
+            if (!_runningResult)
+                ret = "Failed";
+            Result.SetAttributeValue("Original", ret);
+            Result.SetAttributeValue("Final", ret);
+            DBFactory.GetData().Save(Result);
+
         }
 
         public void SetHost(IHost host)
@@ -165,7 +180,7 @@ namespace AutoX.Activities.AutoActivities
         /// <returns> </returns>
         public bool GetResult()
         {
-            return _result;
+            return _runningResult;
         }
 
         protected void NotifyPropertyChanged(string p)

@@ -342,7 +342,7 @@
 		<col def="S0">ISDotNetInstallerArgsUninstall</col>
 		<col def="S0">ISDotNetInstallerArgsRollback</col>
 		<row><td>AutoX.Client.Primary_output</td><td>{81B2DB86-5D5A-4EB5-830D-3773B2FD445F}</td><td>INSTALLDIR</td><td>2</td><td/><td>autox.client.primary_output</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>ISX_DEFAULTCOMPONENT</td><td>{507929E9-27A9-4AEC-9E9D-63D3430923DB}</td><td>RESOURCES</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT</td><td>{519DEA56-8425-4E88-B40E-5B0A257CEDAE}</td><td>RESOURCES</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
 
 	<table name="Condition">
@@ -1880,14 +1880,14 @@
 		<col def="I4">ISAttributes</col>
 		<col def="S72">ISComponentSubFolder_</col>
 		<row><td>autox.client.primary_output</td><td>AutoX.Client.Primary_output</td><td>AutoX.Client.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;AutoX.Client&gt;|Built</td><td>3</td><td/></row>
-		<row><td>folder.png</td><td>ISX_DEFAULTCOMPONENT</td><td>Folder.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\huangjien\Documents\autox\dotnet\AutoX.Client\Resources\Folder.png</td><td>1</td><td/></row>
-		<row><td>notificationareaicon.ico</td><td>ISX_DEFAULTCOMPONENT</td><td>NOTIFI~1.ICO|NotificationAreaIcon.ico</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\huangjien\Documents\autox\dotnet\AutoX.Client\Resources\NotificationAreaIcon.ico</td><td>1</td><td/></row>
-		<row><td>project.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>Project.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\huangjien\Documents\autox\dotnet\AutoX.Client\Resources\Project.bmp</td><td>1</td><td/></row>
-		<row><td>project.jpg</td><td>ISX_DEFAULTCOMPONENT</td><td>Project.jpg</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\huangjien\Documents\autox\dotnet\AutoX.Client\Resources\Project.jpg</td><td>1</td><td/></row>
-		<row><td>snapshot.png</td><td>ISX_DEFAULTCOMPONENT</td><td>Snapshot.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\huangjien\Documents\autox\dotnet\AutoX.Client\Resources\Snapshot.png</td><td>1</td><td/></row>
-		<row><td>testcase.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>TestCase.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\huangjien\Documents\autox\dotnet\AutoX.Client\Resources\TestCase.bmp</td><td>1</td><td/></row>
-		<row><td>testscreen.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>TESTSC~1.BMP|TestScreen.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\huangjien\Documents\autox\dotnet\AutoX.Client\Resources\TestScreen.bmp</td><td>1</td><td/></row>
-		<row><td>testsuite.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>TESTSU~1.BMP|TestSuite.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\huangjien\Documents\autox\dotnet\AutoX.Client\Resources\TestSuite.bmp</td><td>1</td><td/></row>
+		<row><td>folder.png</td><td>ISX_DEFAULTCOMPONENT</td><td>Folder.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX.Client\Resources\Folder.png</td><td>1</td><td/></row>
+		<row><td>notificationareaicon.ico</td><td>ISX_DEFAULTCOMPONENT</td><td>NOTIFI~1.ICO|NotificationAreaIcon.ico</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX.Client\Resources\NotificationAreaIcon.ico</td><td>1</td><td/></row>
+		<row><td>project.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>Project.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX.Client\Resources\Project.bmp</td><td>1</td><td/></row>
+		<row><td>project.jpg</td><td>ISX_DEFAULTCOMPONENT</td><td>Project.jpg</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX.Client\Resources\Project.jpg</td><td>1</td><td/></row>
+		<row><td>snapshot.png</td><td>ISX_DEFAULTCOMPONENT</td><td>Snapshot.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX.Client\Resources\Snapshot.png</td><td>1</td><td/></row>
+		<row><td>testcase.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>TestCase.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX.Client\Resources\TestCase.bmp</td><td>1</td><td/></row>
+		<row><td>testscreen.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>TESTSC~1.BMP|TestScreen.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX.Client\Resources\TestScreen.bmp</td><td>1</td><td/></row>
+		<row><td>testsuite.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>TESTSU~1.BMP|TestSuite.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX.Client\Resources\TestSuite.bmp</td><td>1</td><td/></row>
 	</table>
 
 	<table name="FileSFPCatalog">
@@ -2032,7 +2032,7 @@
 		<col def="S0">HTTPLocation</col>
 		<col def="S0">Miscellaneous</col>
 		<row><td>AutoX.Client.Primary_output</td><td/><td/><td>_B53BED04_1F14_46CA_BC08_088FA51AD59D_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>ISX_DEFAULTCOMPONENT</td><td/><td/><td>_F3E5BA95_6A9F_43EB_82B9_0C86AB9B17D2_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT</td><td/><td/><td>_E54DF6B7_A9D1_42C3_9738_6EE70540D7E2_FILTER</td><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="ISCustomActionReference">
@@ -3995,7 +3995,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>ISTheme</td><td>InstallShield Blue.theme</td></row>
 		<row><td>ISUSLock</td><td>{53F4C35F-ED2F-42A7-84CE-C9861F29E070}</td></row>
 		<row><td>ISUSSignature</td><td>{0FC95FE8-9065-4760-A278-103872D0FC25}</td></row>
-		<row><td>ISVisitedViews</td><td>viewAssistant,viewAppV,viewProject</td></row>
+		<row><td>ISVisitedViews</td><td>viewAssistant,viewAppV,viewProject,viewAppFiles</td></row>
 		<row><td>Limited</td><td>1</td></row>
 		<row><td>LockPermissionMode</td><td>1</td></row>
 		<row><td>MsiExecCmdLineOptions</td><td/></row>

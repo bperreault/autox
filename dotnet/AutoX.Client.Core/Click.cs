@@ -11,7 +11,7 @@ namespace AutoX.Client.Core
         public override XElement Act()
         {
             var sr = new StepResult(this);
-            if (UIObject.Count == 0)
+            if (UIObject == null||UIObject.Count == 0)
             {
                 sr.Error("Expected UI Object is not found!");
             }

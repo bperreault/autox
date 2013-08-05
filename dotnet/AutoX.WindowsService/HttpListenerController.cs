@@ -1,7 +1,5 @@
 ﻿#region Using directives
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Net;
 using System.Web;
 using System.Web.Hosting;
@@ -15,10 +13,10 @@ namespace AutoX.WindowsService
     public class HttpListenerController
     {
         private Thread _pump;
-        private bool _listening = false;
-        private string _virtualDir;
-        private string _physicalDir;
-        private string[] _prefixes;
+        private bool _listening;
+        private readonly string _virtualDir;
+        private readonly string _physicalDir;
+        private readonly string[] _prefixes;
         private HttpListenerWrapper _listener;
 
         public HttpListenerController(string[] prefixes, string vdir, string pdir)
@@ -31,7 +29,7 @@ namespace AutoX.WindowsService
         public void Start()
         {
             _listening = true;
-            _pump = new Thread(new ThreadStart(Pump));
+            _pump = new Thread(Pump);
             _pump.Start();
         }
 
@@ -61,12 +59,9 @@ namespace AutoX.WindowsService
             }
             catch (Exception ex)
             {
-                EventLog myLog = new EventLog();
-                myLog.Source = "HttpListenerController";
-                if (null != ex.InnerException)
-                    myLog.WriteEntry(ex.InnerException.ToString(), EventLogEntryType.Error);
-                else
-                    myLog.WriteEntry(ex.ToString(), EventLogEntryType.Error);
+                var myLog = new EventLog {Source = "HttpListenerController"};
+                myLog.WriteEntry(null != ex.InnerException ? ex.InnerException.ToString() : ex.ToString(),
+                    EventLogEntryType.Error);
             }
         }
     }
@@ -83,7 +78,7 @@ namespace AutoX.WindowsService
             _physicalDir = pdir;
             _listener = new HttpListener();
 
-            foreach (string prefix in prefixes)
+            foreach (var prefix in prefixes)
                 _listener.Prefixes.Add(prefix);
         }
         public void Start()
@@ -96,8 +91,8 @@ namespace AutoX.WindowsService
         }
         public void ProcessRequest()
         {
-            HttpListenerContext ctx = _listener.GetContext();
-            HttpListenerWorkerRequest workerRequest =
+            var ctx = _listener.GetContext();
+            var workerRequest =
                 new HttpListenerWorkerRequest(ctx, _virtualDir, _physicalDir);
             HttpRuntime.ProcessRequest(workerRequest);
         }

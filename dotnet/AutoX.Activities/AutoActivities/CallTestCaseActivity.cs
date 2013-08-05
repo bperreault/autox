@@ -22,7 +22,7 @@ namespace AutoX.Activities.AutoActivities
 {
     [ToolboxBitmap(typeof (CallTestCaseDesigner), "TestCase.bmp")]
     [Designer(typeof (CallTestCaseDesigner))]
-    public sealed class CallTestCaseActivity : AutomationActivity
+    public sealed class CallTestCaseActivity : AutomationActivity, IPassData
     {
         private string _testCaseName;
         private string _userData = "";
@@ -84,13 +84,14 @@ namespace AutoX.Activities.AutoActivities
             var screen = Host.GetDataObject(TestCaseId);
             if (screen == null) return;
             var activity = ActivityXamlServices.Load(new StringReader(screen.GetAttributeValue(Constants.CONTENT)));
-            if (activity is AutomationActivity)
+            var automationActivity = activity as AutomationActivity;
+            if (automationActivity != null)
             {
-                ((AutomationActivity) activity).SetHost(Host);
-                ((AutomationActivity) activity).SetParentResultId(ParentResultId);
+                automationActivity.SetHost(Host);
+                automationActivity.SetParentResultId(ParentResultId);
             }
             WorkflowInvoker.Invoke(activity);
-            _result = ((IPassData) activity).GetResult();
+            _runningResult = ((IPassData) activity).GetResult();
         }
     }
 }

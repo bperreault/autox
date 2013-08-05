@@ -18,20 +18,17 @@ namespace AutoX.DB
 
     public static class DBFactory
     {
-        private static IData _data = null;
+        private static readonly IData Data = null;
         //return proper IData according the config (MongoDB or mysql)
         public static IData GetData()
         {
-            if (_data != null)
-                return _data;
+            if (Data != null)
+                return Data;
             if (Configuration.HasKey("PostgreSQLDBConnectionString"))
                 return new PostgreSQLData();
             if (Configuration.HasKey("MySQLDBConnectionString"))
                 return new MysqlData();
-            if(Configuration.HasKey("MongoDBConnectionString"))
-                return new MongoData();
-            
-            return null;
+            return Configuration.HasKey("MongoDBConnectionString") ? new MongoData() : null;
         }
     }
 

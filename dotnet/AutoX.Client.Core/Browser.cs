@@ -52,13 +52,24 @@ namespace AutoX.Client.Core
                 StartBrowser();
             }
 //            DismissUnexpectedAlert();
-            if (_browser != null)
+            try
             {
-                var bs = _browser.WindowHandles;
-                _browser.SwitchTo().Window(bs.Count == 1 ? bs[0] : bs[bs.Count - 1]);
-            }
+                if (_browser != null)
+                {
+                    var bs = _browser.WindowHandles;
+                    _browser.SwitchTo().Window(bs.Count == 1 ? bs[0] : bs[bs.Count - 1]);
+                }
 
-            return _browser;
+                return _browser;
+            }
+            catch (Exception ex)
+            {
+                _browser = null;
+                Log.Error("Current Browser is Gone!\n"+ex.Message);
+            }
+            
+
+            return null;
         }
 
         public string GetAllValuableObjects()
@@ -251,12 +262,25 @@ namespace AutoX.Client.Core
                 xUI = xPage;
 
             var xpath = xUI.GenerateXPathFromXElement();
-            return GetCurrentBrowser().FindElements(By.XPath(xpath));
+            IWebDriver browser = GetCurrentBrowser();
+            if (browser == null)
+                return null;
+            return browser.FindElements(By.XPath(xpath));
         }
 
         public string Snapshot()
         {
-            return ((ITakesScreenshot) GetCurrentBrowser()).GetScreenshot().AsBase64EncodedString;
+            //in this case, the browser is closed, so need NOT take snapshot.
+            if (_browser == null)
+                return null;
+            
+            try
+            {
+                return ((ITakesScreenshot) GetCurrentBrowser()).GetScreenshot().AsBase64EncodedString;
+            }catch(Exception ex){
+                Log.Error("Cannot take a snapshot.\n"+ex.Message);
+            }
+            return null;
 
             //IJavaScriptExecutor js = GetCurrentBrowser() as IJavaScriptExecutor;
             //Response screenshotResponse = js.ExecuteScript(DriverCommand.Screenshot, null);
@@ -265,6 +289,8 @@ namespace AutoX.Client.Core
 
         public void DismissUnexpectedAlert()
         {
+            if (_browser == null)
+                return;
             var alert = GetAlert();
             if (alert != null)
             {

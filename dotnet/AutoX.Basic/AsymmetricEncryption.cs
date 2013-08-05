@@ -13,7 +13,7 @@ namespace AutoX.Basic
 {
     public static class AsymmetricEncryption
     {
-        private const bool OptimalAsymmetricEncryptionPadding = false;
+        private const bool OPTIMAL_ASYMMETRIC_ENCRYPTION_PADDING = false;
 
         public static bool GenerateRegisterFile()
         {
@@ -169,7 +169,7 @@ namespace AutoX.Basic
             using (var provider = new RSACryptoServiceProvider(keySize))
             {
                 provider.FromXmlString(publicKeyXml);
-                return provider.Encrypt(data, OptimalAsymmetricEncryptionPadding);
+                return provider.Encrypt(data, OPTIMAL_ASYMMETRIC_ENCRYPTION_PADDING);
             }
         }
 
@@ -190,7 +190,7 @@ namespace AutoX.Basic
             {
                 provider.FromXmlString(publicAndPrivateKeyXml);
 
-                return provider.Decrypt(data, OptimalAsymmetricEncryptionPadding);
+                return provider.Decrypt(data, OPTIMAL_ASYMMETRIC_ENCRYPTION_PADDING);
             }
         }
 

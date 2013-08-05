@@ -4,6 +4,8 @@
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
+using AutoX.Activities.AutoActivities;
+
 #region
 
 using System;
@@ -48,22 +50,12 @@ namespace AutoX.Activities
                 var data = e.Data.GetData(Constants.DATA_FORMAT) as XElement;
                 if (Utilities.CheckValidDrop(data, Constants.SCRIPT))
                 {
-                    var activity = Utilities.GetActivityFromXElement(data);
-                    if (activity != null)
-                    {
-                        var mi = Context.Services.GetService<ModelTreeManager>().CreateModelItem(ModelItem,
-                            activity);
-                        var dO = new DataObject(DragDropHelper.ModelItemDataFormat, mi);
-                        Utilities.AddVariable(mi, data.GetAttributeValue(Constants.NAME).Replace(" ", "_"));
-                        try
-                        {
-                            DragDrop.DoDragDrop(this, dO, DragDropEffects.Move);
-                        }
-                        catch (Exception)
-                        {
-                        }
-                    }
                     e.Effects = (DragDropEffects.Move & e.AllowedEffects);
+                    e.Handled = true;
+                }
+                else
+                {
+                    e.Effects = DragDropEffects.None;
                     e.Handled = true;
                 }
             }
@@ -95,19 +87,24 @@ namespace AutoX.Activities
         protected override void OnDrop(DragEventArgs e)
         {
             e.Handled = true;
-
-            //TODO not a graceful implementation, think about change it.
             var canvasActivity = ModelItem;
-            var droppedItems = DragDropHelper.GetDroppedObjects(this, e, Context);
-            //var droppedItem = DragDropHelper.GetDroppedObject(this, e, Context);
-            foreach (object droppedItem in droppedItems)
+            var data = e.Data.GetData(Constants.DATA_FORMAT) as XElement;
+            if (Utilities.CheckValidDrop(data, Constants.SCRIPT))
             {
-                canvasActivity.Properties["children"].Collection.Add(droppedItem);
+                var activity = (AutomationActivity) Utilities.GetActivityFromXElement(data);
+                if (activity != null)
+                {
+                    canvasActivity.Properties["children"].Collection.Add(activity);
+                }
             }
 
-
+            //var droppedItems = DragDropHelper.GetDroppedObjects(this, e, Context);
+            //var droppedItem = DragDropHelper.GetDroppedObject(this, e, Context);
+            //foreach (var droppedItem in droppedItems)
+            //{
+            //    canvasActivity.Properties["children"].Collection.Add(droppedItem);
+            //}
             //DragDropHelper.SetDragDropCompletedEffects(e, DragDropEffects.Move);
-
             base.OnDrop(e);
         }
     }

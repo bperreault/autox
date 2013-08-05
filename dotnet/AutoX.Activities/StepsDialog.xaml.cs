@@ -26,7 +26,7 @@ namespace AutoX.Activities
     {
         protected ArrayList Actions = Configuration.GetSupportedAction();
         public IHost Host = HostManager.GetInstance().GetHost();
-        private string StepId;
+        private string _stepId;
         protected ArrayList UserData = new ArrayList();
 
         public StepsDialog()
@@ -42,7 +42,7 @@ namespace AutoX.Activities
         private void ButtonReload(object sender, RoutedEventArgs e)
         {
             var p =
-                XElement.Parse(DBFactory.GetData().Read(StepId).GetAttributeValue(Constants.CONTENT))
+                XElement.Parse(DBFactory.GetData().Read(_stepId).GetAttributeValue(Constants.CONTENT))
                     .GetAttributeValue("Steps");
             var steps = Utilities.GetStepsList(p, Actions, Host);
             var current = StepsTable.ItemsSource as ArrayList;
@@ -155,8 +155,8 @@ namespace AutoX.Activities
 
         internal void Set(string stepId)
         {
-            reloadButton.IsEnabled = true;
-            StepId = stepId;
+            ReloadButton.IsEnabled = true;
+            _stepId = stepId;
         }
 
         internal void Set(string p, string userData)

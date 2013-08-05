@@ -1,19 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Net;
 using System.Web;
-using System.Web.Hosting;
-using System.Threading;
-using System.Diagnostics;
 
 namespace AutoX.WindowsService
 {
     public class HttpListenerWorkerRequest : HttpWorkerRequest
     {
-        private HttpListenerContext _context;
-        private string _virtualDir;
-        private string _physicalDir;
+        private readonly HttpListenerContext _context;
+        private readonly string _virtualDir;
+        private readonly string _physicalDir;
 
         public HttpListenerWorkerRequest(
             HttpListenerContext context, string vdir, string pdir)
@@ -62,9 +58,9 @@ namespace AutoX.WindowsService
         }
         public override string GetQueryString()
         {
-            string queryString = "";
-            string rawUrl = _context.Request.RawUrl;
-            int index = rawUrl.IndexOf('?');
+            var queryString = "";
+            var rawUrl = _context.Request.RawUrl;
+            var index = rawUrl.IndexOf('?');
             if (index != -1)
                 queryString = rawUrl.Substring(index + 1);
             return queryString;
@@ -133,20 +129,17 @@ namespace AutoX.WindowsService
         }
         public override string[][] GetUnknownRequestHeaders()
         {
-            string[][] unknownRequestHeaders;
-            System.Collections.Specialized.NameValueCollection headers = _context.Request.Headers;
-            int count = headers.Count;
-            List<string[]> headerPairs = new List<string[]>(count);
-            for (int i = 0; i < count; i++)
+            var headers = _context.Request.Headers;
+            var count = headers.Count;
+            var headerPairs = new List<string[]>(count);
+            for (var i = 0; i < count; i++)
             {
-                string headerName = headers.GetKey(i);
-                if (GetKnownRequestHeaderIndex(headerName) == -1)
-                {
-                    string headerValue = headers.Get(i);
-                    headerPairs.Add(new string[] { headerName, headerValue });
-                }
+                var headerName = headers.GetKey(i);
+                if (GetKnownRequestHeaderIndex(headerName) != -1) continue;
+                var headerValue = headers.Get(i);
+                headerPairs.Add(new string[] { headerName, headerValue });
             }
-            unknownRequestHeaders = headerPairs.ToArray();
+            var unknownRequestHeaders = headerPairs.ToArray();
             return unknownRequestHeaders;
         }
         public override string GetKnownRequestHeader(int index)
@@ -175,11 +168,11 @@ namespace AutoX.WindowsService
         public override string GetFilePath()
         {
             // TODO: this is a hack
-            string s = _context.Request.Url.LocalPath;
-            if (s.IndexOf(".aspx") != -1)
-                s = s.Substring(0, s.IndexOf(".aspx") + 5);
-            else if (s.IndexOf(".asmx") != -1)
-                s = s.Substring(0, s.IndexOf(".asmx") + 5);
+            var s = _context.Request.Url.LocalPath;
+            if (s.IndexOf(".aspx", StringComparison.Ordinal) != -1)
+                s = s.Substring(0, s.IndexOf(".aspx", StringComparison.Ordinal) + 5);
+            else if (s.IndexOf(".asmx", StringComparison.Ordinal) != -1)
+                s = s.Substring(0, s.IndexOf(".asmx", StringComparison.Ordinal) + 5);
             return s;
         }
         public override string GetFilePathTranslated()
@@ -192,12 +185,9 @@ namespace AutoX.WindowsService
 
         public override string GetPathInfo()
         {
-            string s1 = GetFilePath();
-            string s2 = _context.Request.Url.LocalPath;
-            if (s1.Length == s2.Length)
-                return "";
-            else
-                return s2.Substring(s1.Length);
+            var s1 = GetFilePath();
+            var s2 = _context.Request.Url.LocalPath;
+            return s1.Length == s2.Length ? "" : s2.Substring(s1.Length);
         }
     }
 }

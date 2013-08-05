@@ -35,7 +35,7 @@ namespace AutoX.Activities
 
         [Description("Stop Current Script, Mark it Error")] StopCurrentScript,
 
-        [Description("Terminate this Test Instance")] Terminate
+        //[Description("Terminate this Test Instance")] Terminate
     }
 
     public static class Utilities
@@ -140,11 +140,12 @@ namespace AutoX.Activities
                 {
                     var activity = new CallTestCaseActivity
                     {
+                        
                         TestCaseId = data.GetAttributeValue(Constants._ID),
                         TestCaseName = data.GetAttributeValue(Constants.NAME),
                         DisplayName = "Call Test Case: " + data.GetAttributeValue(Constants.NAME)
                     };
-
+                    
                     activity.SetHost(host);
                     return activity;
                 }
@@ -154,6 +155,9 @@ namespace AutoX.Activities
                     {
                         TestSreenId = data.GetAttributeValue(Constants._ID),
                         TestSreenName = data.GetAttributeValue(Constants.NAME),
+                        ErrorLevel = OnError.Continue,
+                        GUID = Guid.NewGuid().ToString(),
+                        UserData = "",
                         DisplayName = "Call Test Screen: " + data.GetAttributeValue(Constants.NAME),
                         Steps = XElement.Parse(data.GetAttributeValue(Constants.CONTENT)).GetAttributeValue("Steps")
                     };

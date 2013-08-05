@@ -1,9 +1,4 @@
-﻿#region
-
-// Hapa Project, CC
-// Created @2012 08 24 09:25
-// Last Updated  by Huang, Jien @2012 08 24 09:25
-
+﻿
 #region
 
 using System;
@@ -27,8 +22,6 @@ using AutoX.Activities.AutoActivities;
 using AutoX.Basic;
 using AutoX.DB;
 using Image = System.Drawing.Image;
-
-#endregion
 
 #endregion
 
@@ -81,16 +74,14 @@ namespace AutoX
                     ta.SetHost(this);
                     newActivity = ta;
                 }
-
-                AddDesigner(newActivity, treeViewItem);
-                //Dispatcher.Invoke(() => AddDesigner(newDesigner, treeViewItem));
             }
             else
             {
-                var activity = Utilities.GetActivityFromContentString(content);
-                AddDesigner(activity, treeViewItem);
-                //Dispatcher.Invoke(() => AddDesigner(activity, treeViewItem));
+                newActivity = Utilities.GetActivityFromContentString(content);
+                
             }
+            //AddDesigner(newActivity, treeViewItem);
+            Dispatcher.Invoke(() => AddDesigner(newActivity, treeViewItem));
         }
 
         protected void LoadToolBox()
@@ -115,7 +106,7 @@ namespace AutoX
             if (string.IsNullOrEmpty(ass)) return;
             var split = new[] {';'};
             var asses = ass.Split(split);
-            foreach (string a in asses)
+            foreach (var a in asses)
             {
                 if (!string.IsNullOrWhiteSpace(a))
                 {
@@ -126,7 +117,7 @@ namespace AutoX
             }
         }
 
-        private void LoadCustomActivities(ToolboxControl tbc, Assembly customAss, string categoryTitle)
+        private static void LoadCustomActivities(ToolboxControl tbc, Assembly customAss, string categoryTitle)
         {
             var types = customAss.GetTypes().
                 Where(t => (typeof (Activity).IsAssignableFrom(t) ||
@@ -134,7 +125,7 @@ namespace AutoX
                            !t.IsAbstract && t.IsPublic &&
                            !t.IsNested);
             var cat = new ToolboxCategory(categoryTitle);
-            foreach (Type type in types.OrderBy(t => t.Name))
+            foreach (var type in types.OrderBy(t => t.Name))
             {
                 //var w = new ToolboxItemWrapper(type, ToGenericTypeString(type));
                 if (type.Name.Equals("TestSuiteActivity")
@@ -167,7 +158,7 @@ namespace AutoX
 
             var primary = new ToolboxCategory("Native Activities");
 
-            foreach (Type type in standtypes.OrderBy(t => t.Name))
+            foreach (var type in standtypes.OrderBy(t => t.Name))
             {
                 var w = new ToolboxItemWrapper(type, ToGenericTypeString(type));
                 if (!AddIcon(type, _builder))
@@ -264,7 +255,7 @@ namespace AutoX
 
         private void UndoEngineServiceUndoUnitAdded(object sender, UndoUnitEventArgs e)
         {
-            undoMenu.IsEnabled = true;
+            UndoMenu.IsEnabled = true;
         }
 
         private static void RegisterMetadata()
@@ -308,7 +299,7 @@ namespace AutoX
         private void SetWorkflowDesigner(Activity activity, TreeViewItem treeViewItem)
         {
             _workflowDesigner.Load(activity);
-// Flush the workflow when the model changes
+            // Flush the workflow when the model changes
             _workflowDesigner.ModelChanged += (s, e) => WorkflowSourceChanged(treeViewItem);
 
             WorkflowSourceChanged(treeViewItem);
@@ -330,7 +321,7 @@ namespace AutoX
         {
             _workflowDesigner.Flush();
             var content = _workflowDesigner.Text;
-            debugInfo.Text = content;
+            DebugInfo.Text = content;
 
             var xElement = treeViewItem.DataContext as XElement;
             if (xElement == null)

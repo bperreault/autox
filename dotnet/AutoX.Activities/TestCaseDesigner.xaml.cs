@@ -55,22 +55,27 @@ namespace AutoX.Activities
                 var data = e.Data.GetData(Constants.DATA_FORMAT) as XElement;
                 if (Utilities.CheckValidDrop(data, Constants.SCRIPT, Constants.DATUM))
                 {
-                    var activity = Utilities.GetActivityFromXElement(data);
-                    if (activity != null)
-                    {
-                        var mi = Context.Services.GetService<ModelTreeManager>().CreateModelItem(ModelItem,
-                            activity);
-                        Utilities.AddVariable(mi, data.GetAttributeValue(Constants.NAME).Replace(" ", "_"));
-                        var dO = new DataObject(DragDropHelper.ModelItemDataFormat, mi);
-                        try
-                        {
-                            DragDrop.DoDragDrop(this, dO, DragDropEffects.Move);
-                        }
-                        catch (Exception)
-                        {
-                        }
-                    }
+                    //var activity = Utilities.GetActivityFromXElement(data);
+                    //if (activity != null)
+                    //{
+                    //    var mi = Context.Services.GetService<ModelTreeManager>().CreateModelItem(ModelItem,
+                    //        activity);
+                    //    Utilities.AddVariable(mi, data.GetAttributeValue(Constants.NAME).Replace(" ", "_"));
+                    //    var dO = new DataObject(DragDropHelper.ModelItemDataFormat, mi);
+                    //    try
+                    //    {
+                    //        DragDrop.DoDragDrop(this, dO, DragDropEffects.Move);
+                    //    }
+                    //    catch (Exception)
+                    //    {
+                    //    }
+                    //}
                     e.Effects = (DragDropEffects.Move & e.AllowedEffects);
+                    e.Handled = true;
+                }
+                else
+                {
+                    e.Effects = DragDropEffects.None;
                     e.Handled = true;
                 }
             }
@@ -88,22 +93,20 @@ namespace AutoX.Activities
             var data = e.Data.GetData(Constants.DATA_FORMAT) as XElement;
             if (data != null)
             {
-                Utilities.DropXElementToDesigner(data, "UserData", ModelItem);
-                //DragDropHelper.SetDragDropCompletedEffects(e, DragDropEffects.Move);
-            }
-            else
-            {
-                //TODO not a graceful implementation, think about change it.
-                //var droppedItem = DragDropHelper.GetDroppedObject(this, e, Context);
-                var canvasActivity = ModelItem;
-                var droppedItems = DragDropHelper.GetDroppedObjects(this, e, Context);
-                foreach (object droppedItem in droppedItems)
+                if (!data.Name.ToString().Equals("Script"))
                 {
-                    canvasActivity.Properties["children"].Collection.Add(droppedItem);
+                    Utilities.DropXElementToDesigner(data, "UserData", ModelItem);
+                    //DragDropHelper.SetDragDropCompletedEffects(e, DragDropEffects.Move);
                 }
-
-
-                //DragDropHelper.SetDragDropCompletedEffects(e, DragDropEffects.Move);
+                else
+                {
+                    var activity = Utilities.GetActivityFromXElement(data);
+                    if (activity != null)
+                    {
+                        var canvasActivity = ModelItem;
+                        canvasActivity.Properties["children"].Collection.Add(activity);
+                    }
+                }
             }
         }
 

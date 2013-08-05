@@ -67,15 +67,16 @@ namespace AutoX.Activities.AutoActivities
 
             if (screen == null) return;
             var activity = ActivityXamlServices.Load(new StringReader(screen.GetAttributeValue(Constants.CONTENT)));
-            if (activity is AutomationActivity)
+            var automationActivity = activity as AutomationActivity;
+            if (automationActivity != null)
             {
-                ((AutomationActivity) activity).SetHost(Host);
-                ((AutomationActivity) activity).SetParentResultId(ParentResultId);
-                ((AutomationActivity) activity).InstanceId = InstanceId;
+                automationActivity.SetHost(Host);
+                automationActivity.SetParentResultId(ParentResultId);
+                automationActivity.InstanceId = InstanceId;
             }
             WorkflowInvoker.Invoke(activity);
             //TODO calculate result here
-            _result = ((IPassData) activity).GetResult();
+            _runningResult = ((IPassData) activity).GetResult();
         }
     }
 }

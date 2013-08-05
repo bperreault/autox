@@ -41,7 +41,7 @@ namespace AutoX
 
         public void SetImage(string value)
         {
-            vImage = GetImage(value);
+            VImage = GetImage(value);
         }
 
         public void SetFile(string fileName)
@@ -51,7 +51,7 @@ namespace AutoX
             bitmap.BeginInit();
             bitmap.StreamSource = _streamSource;
             bitmap.EndInit();
-            vImage.Source = bitmap;
+            VImage.Source = bitmap;
 
             //var bitmap = new BitmapImage();
             //bitmap.BeginInit();

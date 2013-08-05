@@ -79,19 +79,19 @@ namespace AutoX.Test
 
         private static void PrintUsage()
         {
-            Console.WriteLine("Usage:");
-            Console.WriteLine("\t-C\tClean The Current Project");
-            Console.WriteLine("\t-R\tRemove all Results from Current Project");
-            Console.WriteLine("\t-G\tCreate a Project for a new User, require -f");
-            Console.WriteLine("\t-A\tAdd a User to Project, require -p -u");
-            Console.WriteLine("\t-S\tRun One Script, require -i");
-            Console.WriteLine("\t-F\tRun a Set of Tests, require -i");
-            Console.WriteLine("\t-u\tUser Name");
-            Console.WriteLine("\t-p\tProject Name");
-            Console.WriteLine("\t-f\tFile Name");
-            Console.WriteLine("\t-i\tId");
-            Console.WriteLine("\t-v\tVersion");
-            Console.WriteLine("\t-b\tBuild");
+            Console.WriteLine(@"Usage:");
+            Console.WriteLine(@"	-C	Clean The Current Project");
+            Console.WriteLine(@"	-R	Remove all Results from Current Project");
+            Console.WriteLine(@"	-G	Create a Project for a new User, require -f");
+            Console.WriteLine(@"	-A	Add a User to Project, require -p -u");
+            Console.WriteLine(@"	-S	Run One Script, require -i");
+            Console.WriteLine(@"	-F	Run a Set of Tests, require -i");
+            Console.WriteLine(@"	-u	User Name");
+            Console.WriteLine(@"	-p	Project Name");
+            Console.WriteLine(@"	-f	File Name");
+            Console.WriteLine(@"	-i	Id");
+            Console.WriteLine(@"	-v	Version");
+            Console.WriteLine(@"	-b	Build");
         }
 
         //private static void RemoveResults()
@@ -169,8 +169,8 @@ namespace AutoX.Test
             var root = new XElement("Root");
             root.SetAttributeValue(Constants._ID, Guid.NewGuid().ToString());
             AsymmetricEncryption.GenerateKeys(keySize, out publicKey, out publicAndPrivateKey);
-            Console.WriteLine("public key:" + publicKey);
-            Console.WriteLine("public & private key:" + publicAndPrivateKey);
+            Console.WriteLine(@"public key:" + publicKey);
+            Console.WriteLine(@"public & private key:" + publicAndPrivateKey);
             root.SetAttributeValue("PublicKey", publicKey);
             root.SetAttributeValue("PublicAndPrivateKey", publicAndPrivateKey);
             var productid = AsymmetricEncryption.GetProductId();
@@ -180,16 +180,23 @@ namespace AutoX.Test
             var text = userName + productid;
             var encrypted = AsymmetricEncryption.EncryptText(text, keySize, publicKey);
 
-            Console.WriteLine("Encrypted: {0}", encrypted);
+            Console.WriteLine(@"Encrypted: {0}", encrypted);
 
             //send encrypted data to service
             File.WriteAllText(userName + ".pem",
-                "UserName:\n" + userName + "\nPublic Key:" + publicKey + "\nPublic and Private Key:\n" +
-                publicAndPrivateKey + "Secrect:\n" + encrypted + "\nFor Test:\n" + productid);
+                @"UserName:
+" + userName + @"
+Public Key:" + publicKey + @"
+Public and Private Key:
+" +
+                publicAndPrivateKey + @"Secrect:
+" + encrypted + @"
+For Test:
+" + productid);
             var decrypted = AsymmetricEncryption.DecryptText(encrypted, keySize, publicAndPrivateKey);
 
             //service person do below
-            Console.WriteLine("Decrypted: {0}", decrypted);
+            Console.WriteLine(@"Decrypted: {0}", decrypted);
 
             //            Configuration.Set("UserName", userName);
             //            Configuration.Set("PublicKey", publicKey);
