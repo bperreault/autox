@@ -78,7 +78,7 @@ namespace AutoX
             text.ToolTip = new ToolTip {Content = xElement.GetSimpleDescriptionFromXElement()};
 
             if (image == null)
-                text.ToolTip = new ToolTip {Content = xElement.GetText()};
+                text.ToolTip = new ToolTip { Content = xElement.GetSimpleDescriptionFromXElement() };
 
             head.Children.Add(text);
 
@@ -140,7 +140,9 @@ namespace AutoX
             result += "\n";
             result = element.Attributes().Aggregate(result,
                 (current, xa) =>
-                    current + (GetNTab(level + 1) + xa.Name + "=" + (xa.Value.Length>64? xa.Value.Substring(0,32)+" ... ": xa.Value) + "\n"));
+                    current + (GetNTab(level + 1) 
+                    + xa.Name + "=" 
+                    + (xa.Value.Length>64? xa.Value.Substring(0,32)+" ... ": xa.Value) + "\n"));
             if (result.Length > 1024)
                 return result.Substring(0, 1000) + " ...";
             foreach (var xe in element.Descendants())

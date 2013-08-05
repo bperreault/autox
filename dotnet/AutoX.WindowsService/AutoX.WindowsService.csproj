@@ -54,6 +54,7 @@
       <DependentUpon>AutoXService.cs</DependentUpon>
     </Compile>
     <Compile Include="HttpListenerController.cs" />
+    <Compile Include="HttpListenerWorkerRequest.cs" />
     <Compile Include="HttpListenerWrapper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProjectInstaller.cs">

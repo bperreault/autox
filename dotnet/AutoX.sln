@@ -32,6 +32,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoX.WindowsService", "Aut
 EndProject
 Project("{6141683F-8A12-4E36-9623-2EB02B2C2303}") = "SetupWindowsSerivce", "SetupWindowsSerivce\SetupWindowsSerivce.isproj", "{818B13A8-68B8-43E8-8E4F-FFE8B7329A56}"
 	ProjectSection(ProjectDependencies) = postProject
+		{4B8F5366-D270-45A5-9CD3-9D7A2CF831CB} = {4B8F5366-D270-45A5-9CD3-9D7A2CF831CB}
 		{B5B9DCE6-F252-446C-A9F3-0A14117D6CF5} = {B5B9DCE6-F252-446C-A9F3-0A14117D6CF5}
 	EndProjectSection
 EndProject

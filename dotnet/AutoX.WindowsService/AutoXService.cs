@@ -1,4 +1,7 @@
-﻿using System.ServiceProcess;
+﻿using System;
+using System.IO;
+using System.ServiceProcess;
+using AutoX.Basic;
 
 namespace AutoX.WindowsService
 {
@@ -13,11 +16,13 @@ namespace AutoX.WindowsService
 
         protected override void OnStart(string[] args)
         {
-            var prefixes = new[] {
-                "http://localhost:8081/AutoX.Web/",
-                "http://127.0.0.1:8081/AutoX.Web/"
-            };
-            _controller = new HttpListenerController(prefixes, "/AutoX.Web", @"C:\inetpub\wwwroot\AutoX.Web");
+            var prefixString = Configuration.Settings("Prefixes",
+                @"http://localhost:8081/AutoX.Web/;http://127.0.0.1:8081/AutoX.Web/;http://*:8081/AutoX.Web/");
+            var prefixes = prefixString.Split(';');
+            var path = AppDomain.CurrentDomain.BaseDirectory;
+            _controller = new HttpListenerController(prefixes,
+                Configuration.Settings("VirtualPath", "/AutoX.Web"),
+                path+Configuration.Settings("PhysicalPath", ""));
             _controller.Start();
 
         }

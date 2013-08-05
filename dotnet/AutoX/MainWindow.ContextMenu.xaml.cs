@@ -319,36 +319,36 @@ namespace AutoX
             Edit(selected);
         }
 
-        private void ReloadOnProjectTree(object sender, RoutedEventArgs e)
+        private async void ReloadOnProjectTree(object sender, RoutedEventArgs e)
         {
             var projectId = Configuration.Settings("ProjectRoot", "0010010000001");
-            InitTree(ProjectTreeView, projectId);
+            await InitTree(ProjectTreeView, projectId);
         }
 
-        private void ReloadOnSuiteTree(object sender, RoutedEventArgs e)
+        private async void ReloadOnSuiteTree(object sender, RoutedEventArgs e)
         {
             var projectId = Configuration.Settings("ProjectRoot", "0010010000001");
-            InitTree(SuiteTree, projectId);
+            await InitTree(SuiteTree, projectId);
         }
 
 
-        private void ReloadOnResultTree(object sender, RoutedEventArgs e)
+        private async void ReloadOnResultTree(object sender, RoutedEventArgs e)
         {
             var resultId = Configuration.Settings("ResultsRoot", "0020020000002");
-            InitTree(TestResultTree, resultId);
+            await InitTree(TestResultTree, resultId);
         }
 
 
-        private void ReloadOnUITree(object sender, RoutedEventArgs e)
+        private async void ReloadOnUITree(object sender, RoutedEventArgs e)
         {
             var uiId = Configuration.Settings("ObjectPool", "0040040000004");
-            InitTree(GuiObjectTree, uiId);
+            await InitTree(GuiObjectTree, uiId);
         }
 
-        private void ReloadOnDataTree(object sender, RoutedEventArgs e)
+        private async void ReloadOnDataTree(object sender, RoutedEventArgs e)
         {
             var dataId = Configuration.Settings("DataRoot", "0030030000003");
-            InitTree(DataTree, dataId);
+            await InitTree(DataTree, dataId);
         }
 
         //private void ReloadOnResultTree(object sender, RoutedEventArgs e)
@@ -449,7 +449,7 @@ namespace AutoX
             }
         }
 
-        private static void InitTree(ItemsControl tree, string rootId)
+        private async Task InitTree(ItemsControl tree, string rootId)
         {
             var xRoot = DBFactory.GetData().Read(rootId);
             if (xRoot == null)

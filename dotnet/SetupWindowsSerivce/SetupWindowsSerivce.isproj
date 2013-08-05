@@ -29,6 +29,10 @@
 	</ItemGroup>
 	<Import Project="$(MSBuildExtensionsPath32)\InstallShield\2013Limited\InstallShield.targets"/>
 	<ItemGroup>
+		<ProjectReference Include="..\AutoX.Web\AutoX.Web.csproj">
+			<Name>AutoX.Web</Name>
+			<Project>{4B8F5366-D270-45A5-9CD3-9D7A2CF831CB}</Project>
+		</ProjectReference>
 		<ProjectReference Include="..\AutoX.WindowsService\AutoX.WindowsService.csproj">
 			<Name>AutoX.WindowsService</Name>
 			<Project>{B5B9DCE6-F252-446C-A9F3-0A14117D6CF5}</Project>
