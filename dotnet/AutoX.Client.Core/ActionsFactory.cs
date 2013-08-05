@@ -18,7 +18,7 @@ namespace AutoX.Client.Core
         {
             var ret = new XElement(Constants.RESULT);
             ret.SetAttributeValue("Created", DateTime.Now.ToString(CultureInfo.InvariantCulture));
-            ret.SetAttributeValue(Constants.RESULT, "Success");
+            ret.SetAttributeValue(Constants.RESULT, Constants.SUCCESS);
             ret.SetAttributeValue(Constants._ID, Guid.NewGuid().ToString());
             var instanceId = steps.GetAttributeValue(Constants.INSTANCE_ID);
             var runtimeId = steps.GetAttributeValue(Constants.RUNTIME_ID);
@@ -93,10 +93,10 @@ namespace AutoX.Client.Core
                 ret.SetAttributeValue(LINK, link);
             var stepResult = result.GetAttributeValue(Constants.RESULT);
             var onError = ret.GetAttributeValue(Constants.ON_ERROR);
-            if (!stepResult.Equals("Success"))
+            if (!stepResult.Equals(Constants.SUCCESS))
             {
                 if (onError.Equals("AlwaysReturnTrue")) return true;
-                ret.SetAttributeValue(Constants.RESULT, "Error");
+                ret.SetAttributeValue(Constants.RESULT, Constants.SUCCESS);
                 if (onError.Equals("StopCurrentScript") || onError.Equals("Terminate"))
                     return false;
             }

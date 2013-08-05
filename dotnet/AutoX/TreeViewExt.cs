@@ -35,13 +35,7 @@ namespace AutoX
             const string typeOrder = "ScriptType;Type;type;_type";
 
             var types = typeOrder.Split(';');
-            foreach (string iconType in types)
-            {
-                var t = xElement.GetAttributeValue(iconType);
-                if (!string.IsNullOrEmpty(t))
-                    return t;
-            }
-            return null;
+            return types.Select(xElement.GetAttributeValue).FirstOrDefault(t => !string.IsNullOrEmpty(t));
         }
 
         public static void UpdateTreeViewItem(this TreeViewItem treeViewItem, XElement xElement)
@@ -149,7 +143,7 @@ namespace AutoX
                     current + (GetNTab(level + 1) + xa.Name + "=" + (xa.Value.Length>64? xa.Value.Substring(0,32)+" ... ": xa.Value) + "\n"));
             if (result.Length > 1024)
                 return result.Substring(0, 1000) + " ...";
-            foreach (XElement xe in element.Elements())
+            foreach (var xe in element.Descendants())
             {
                 result += GetSimpleDescriptionFromXElement(xe, level + 1);
                 if (result.Length > 1024)

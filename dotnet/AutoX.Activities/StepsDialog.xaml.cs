@@ -4,6 +4,8 @@
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
+using System.Linq;
+
 #region
 
 using System;
@@ -64,12 +66,7 @@ namespace AutoX.Activities
 
         private bool InSteps(Step oneStep, ArrayList steps)
         {
-            foreach (Step step in steps)
-            {
-                if (step._id.Equals(oneStep._id))
-                    return true;
-            }
-            return false;
+            return steps.Cast<Step>().Any(step => step._id.Equals(oneStep._id));
         }
 
         private void ButtonOKClick(object sender, RoutedEventArgs e)

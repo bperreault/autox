@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutoX.Basic;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -74,15 +75,10 @@ namespace AutoX.DB
 
         public List<BsonDocument> Kids(string parentId)
         {
-            var children = new List<BsonDocument>();
             var sort = SortBy.Ascending("Created");
             MongoCursor cursor = _project.FindAs<BsonDocument>(Query.EQ(Constants.PARENT_ID, parentId))
                 .SetSortOrder(sort);
-            foreach (BsonDocument variable in cursor)
-            {
-                children.Add(variable);
-            }
-            return children;
+            return cursor.Cast<BsonDocument>().ToList();
         }
 
         public bool Save(BsonDocument bsonDocument)

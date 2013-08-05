@@ -50,6 +50,10 @@ namespace AutoX.Activities.AutoActivities
 
         public string Description { get; set; }
 
+        [DisplayName(@"Maturity")]
+        [DefaultValue(MaturityLevel.Playground)]
+        public MaturityLevel Maturity { get; set; }
+
         [DisplayName(@"On Error")]
         [DefaultValue(OnError.Continue)]
         public OnError ErrorLevel { get; set; }
@@ -187,4 +191,6 @@ namespace AutoX.Activities.AutoActivities
 
         
     }
+
+
 }

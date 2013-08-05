@@ -1,4 +1,6 @@
-﻿namespace AutoX.Basic
+﻿using System.ComponentModel;
+
+namespace AutoX.Basic
 {
     public static class Constants
     {
@@ -24,5 +26,15 @@
         public const string RUNTIME_ID = "RunTimeId";
         public const string SCRIPT_TYPE = "ScriptType";
         public const string SET_ENV = "SetEnv";
+        public const string SUCCESS = "Success";
+        public const string ERROR = "Error";
+    }
+
+    public enum MaturityLevel
+    {
+        [Description("Backyard")]Backyard,
+        [Description("Playground")]Playground,
+        [Description("Stadium")]Stadium
+
     }
 }

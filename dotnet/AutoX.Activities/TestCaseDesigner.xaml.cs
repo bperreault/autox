@@ -34,12 +34,12 @@ namespace AutoX.Activities
 
         protected override void OnDragEnter(DragEventArgs e)
         {
-            DragEnterTestCase(null, e);
+            DragEnterTestCase(e);
 
             base.OnDragEnter(e);
         }
 
-        private void DragEnterTestCase(object sender, DragEventArgs e)
+        private void DragEnterTestCase(DragEventArgs e)
         {
             if (DragDropHelper.AllowDrop(
                 e.Data,
@@ -82,11 +82,11 @@ namespace AutoX.Activities
 
         protected override void OnDragOver(DragEventArgs e)
         {
-            DragOverTestCase(null, e);
+            DragOverTestCase(e);
             base.OnDragOver(e);
         }
 
-        private void DropOverTestCase(object sender, DragEventArgs e)
+        private void DropOverTestCase(DragEventArgs e)
         {
             e.Handled = true;
             var data = e.Data.GetData(Constants.DATA_FORMAT) as XElement;
@@ -95,25 +95,26 @@ namespace AutoX.Activities
                 if (!data.Name.ToString().Equals("Script"))
                 {
                     Utilities.DropXElementToDesigner(data, "UserData", ModelItem);
-                    //DragDropHelper.SetDragDropCompletedEffects(e, DragDropEffects.Move);
                 }
                 else
                 {
                     var activity = Utilities.GetActivityFromXElement(data);
                     if (activity == null) return;
                     var canvasActivity = ModelItem;
-                    canvasActivity.Properties["children"].Collection.Add(activity);
+                    var kids = canvasActivity.Properties["children"];
+                    if (kids == null) return;
+                    if (kids.Collection != null) kids.Collection.Add(activity);
                 }
             }
         }
 
         protected override void OnDrop(DragEventArgs e)
         {
-            DropOverTestCase(null, e);
+            DropOverTestCase(e);
             base.OnDrop(e);
         }
 
-        private void DragOverTestCase(object sender, DragEventArgs e)
+        private void DragOverTestCase(DragEventArgs e)
         {
             if (DragDropHelper.AllowDrop(
                 e.Data,
@@ -126,11 +127,9 @@ namespace AutoX.Activities
             else
             {
                 var data = e.Data.GetData(Constants.DATA_FORMAT) as XElement;
-                if (Utilities.CheckValidDrop(data, Constants.SCRIPT, Constants.DATUM))
-                {
-                    e.Effects = (DragDropEffects.Move & e.AllowedEffects);
-                    e.Handled = true;
-                }
+                if (!Utilities.CheckValidDrop(data, Constants.SCRIPT, Constants.DATUM)) return;
+                e.Effects = (DragDropEffects.Move & e.AllowedEffects);
+                e.Handled = true;
             }
         }
     }

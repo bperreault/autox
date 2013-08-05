@@ -161,7 +161,7 @@ namespace AutoX
         {
             var workflowInstance = new WorkflowInstance(Guid.NewGuid().ToString(), workflowId, _config.GetList())
             {
-                ClientId = _config.Get("_id", Guid.NewGuid().ToString())
+                ClientId = _config.Get(Constants._ID, Guid.NewGuid().ToString())
             };
             ClientInstancesManager.GetInstance().Register(_config.SetRegisterBody(XElement.Parse("<Register />")));
             workflowInstance.Start();
@@ -514,7 +514,7 @@ namespace AutoX
                 var xRoot = XElement.Parse(sRoot);
                 var result = xRoot.GetAttributeValue(Constants.RESULT);
                 if (string.IsNullOrEmpty(result)) return;
-                if (result.Equals("Error"))
+                if (result.Equals(Constants.ERROR))
                 {
                     MessageBox.Show("Start Instance failed!\nReason:" +
                                     xRoot.GetAttributeValue("Reason"));
@@ -541,7 +541,7 @@ namespace AutoX
                 var xRoot = XElement.Parse(sRoot);
                 var result = xRoot.GetAttributeValue(Constants.RESULT);
                 if (string.IsNullOrEmpty(result)) return;
-                if (result.Equals("Error"))
+                if (result.Equals(Constants.ERROR))
                 {
                     MessageBox.Show("Stop Instance failed!\nReason:" +
                                     xRoot.GetAttributeValue("Reason"));
@@ -602,7 +602,7 @@ namespace AutoX
                 var xRoot = XElement.Parse(sRoot);
                 var result = xRoot.GetAttributeValue(Constants.RESULT);
                 if (string.IsNullOrEmpty(result)) return;
-                if (result.Equals("Error"))
+                if (result.Equals(Constants.ERROR))
                 {
                     MessageBox.Show("Update Instance failed!\nReason:" +
                                     xRoot.GetAttributeValue("Reason"));
@@ -634,7 +634,7 @@ namespace AutoX
             var xRoot = XElement.Parse(sRoot);
             var result = xRoot.GetAttributeValue(Constants.RESULT);
             if (string.IsNullOrEmpty(result)) return;
-            if (result.Equals("Error"))
+            if (result.Equals(Constants.ERROR))
             {
                 MessageBox.Show("Delete Instance failed!\nReason:" +
                                 xRoot.GetAttributeValue("Reason"));

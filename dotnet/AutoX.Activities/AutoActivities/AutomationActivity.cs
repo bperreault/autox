@@ -149,7 +149,7 @@ namespace AutoX.Activities.AutoActivities
             //{
             //    _result.SetAttributeValue("Original", ret);
             //    _result.SetAttributeValue("Final", ret);
-            //    _runningResult = ret.Equals("Success") && _runningResult;
+            //    _runningResult = ret.Equals(Constants.SUCCESS) && _runningResult;
             //}
             //else
             //    _runningResult = false;
@@ -159,9 +159,9 @@ namespace AutoX.Activities.AutoActivities
 
         protected void SetFinalResult()
         {
-            var ret = "Success";
+            var ret = Constants.SUCCESS;
             if (!_runningResult)
-                ret = "Failed";
+                ret = Constants.ERROR;
             Result.SetAttributeValue("Original", ret);
             Result.SetAttributeValue("Final", ret);
             DBFactory.GetData().Save(Result);

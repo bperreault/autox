@@ -52,11 +52,11 @@ namespace AutoX
             }
             var xRoot = DBFactory.GetData().GetChildren(rootId);
 
-            Configuration.Set("ProjectRoot", xRoot.GetSubElement("Name", "Project").GetAttributeValue("_id"));
-            Configuration.Set("ResultsRoot", xRoot.GetSubElement("Name", Constants.RESULT).GetAttributeValue("_id"));
-            Configuration.Set("DataRoot", xRoot.GetSubElement("Name", Constants.DATA).GetAttributeValue("_id"));
-            Configuration.Set("ObjectPool", xRoot.GetSubElement("Name", "UI").GetAttributeValue("_id"));
-            Configuration.Set("TranslationRoot", xRoot.GetSubElement("Name", "Translation").GetAttributeValue("_id"));
+            Configuration.Set("ProjectRoot", xRoot.GetSubElement(Constants.NAME, "Project").GetAttributeValue(Constants._ID));
+            Configuration.Set("ResultsRoot", xRoot.GetSubElement(Constants.NAME, Constants.RESULT).GetAttributeValue(Constants._ID));
+            Configuration.Set("DataRoot", xRoot.GetSubElement(Constants.NAME, Constants.DATA).GetAttributeValue(Constants._ID));
+            Configuration.Set("ObjectPool", xRoot.GetSubElement(Constants.NAME, "UI").GetAttributeValue(Constants._ID));
+            Configuration.Set("TranslationRoot", xRoot.GetSubElement(Constants.NAME, "Translation").GetAttributeValue(Constants._ID));
             Configuration.SaveSettings();
             InitScreen();
             //InitializeProject();

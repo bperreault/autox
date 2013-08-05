@@ -50,7 +50,7 @@ namespace AutoX.WF.Core
             {
                 var xRoot = DBFactory.GetData().GetChildren(rootId);
 
-                var resultId = xRoot.GetSubElement("Name", Constants.RESULT).GetAttributeValue("_id");
+                var resultId = xRoot.GetSubElement(Constants.NAME, Constants.RESULT).GetAttributeValue(Constants._ID);
 
                 if (!string.IsNullOrEmpty(resultId))
                 {
@@ -181,9 +181,9 @@ namespace AutoX.WF.Core
             {
                 foreach (XElement result in results.Descendants())
                 {
-                    if (versionName.Equals(result.GetAttributeValue("Name")))
+                    if (versionName.Equals(result.GetAttributeValue(Constants.NAME)))
                     {
-                        versionId = result.GetAttributeValue("_id");
+                        versionId = result.GetAttributeValue(Constants._ID);
                         break;
                     }
                 }

@@ -14,8 +14,8 @@ namespace AutoX.DB
         public bool Save(XElement xElement)
         {
             xElement.SetAttributeValue("Updated", DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
-            var id = xElement.GetAttributeValue("_id");
-            var parentId = xElement.GetAttributeValue("_parentId");
+            var id = xElement.GetAttributeValue(Constants._ID);
+            var parentId = xElement.GetAttributeValue(Constants.PARENT_ID);
             if (MysqlDBManager.GetInstance().Find(id) == null)
             {
                 xElement.SetAttributeValue("Created", DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));

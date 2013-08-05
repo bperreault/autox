@@ -123,7 +123,7 @@ namespace AutoX.Activities.AutoActivities
                 {
                     stepElement.SetAttributeValue("Original", ret);
                     stepElement.SetAttributeValue("Final", ret);
-                    _runningResult = ret.Equals("Success") && _runningResult;
+                    _runningResult = ret.Equals(Constants.SUCCESS) && _runningResult;
                 }
                 else
                     _runningResult = false;

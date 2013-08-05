@@ -33,7 +33,7 @@ namespace AutoX.Activities
 
         [Description("Mark Error in Result, but Continue Next Step")] Continue,
 
-        [Description("Stop Current Script, Mark it Error")] StopCurrentScript,
+        [Description("Stop Current Script, Mark it Error")] StopCurrentScript
 
         //[Description("Terminate this Test Instance")] Terminate
     }
@@ -94,27 +94,13 @@ namespace AutoX.Activities
 
         public static void AddVariable(ModelItem navtiveModelItem, string name)
         {
-            if (!string.IsNullOrEmpty(name))
-            {
-                var variablesProperty = navtiveModelItem.Properties["Variables"];
-                if (variablesProperty != null)
-                {
-                    var existed = false;
-                    foreach (ModelItem v in variablesProperty.Collection)
-                    {
-                        if (v.Properties["Name"].Value.ToString().Equals(name))
-                        {
-                            existed = true;
-                            break;
-                        }
-                    }
-                    if (!existed)
-                    {
-                        var variable = new Variable<string>(name);
-                        variablesProperty.Collection.Add(variable);
-                    }
-                }
-            }
+            if (string.IsNullOrEmpty(name)) return;
+            var variablesProperty = navtiveModelItem.Properties["Variables"];
+            if (variablesProperty == null) return;
+            var existed = variablesProperty.Collection.Any(v => v.Properties[Constants.NAME].Value.ToString().Equals(name));
+            if (existed) return;
+            var variable = new Variable<string>(name);
+            variablesProperty.Collection.Add(variable);
         }
 
         public static bool CheckValidDrop(XElement data, params string[] types)

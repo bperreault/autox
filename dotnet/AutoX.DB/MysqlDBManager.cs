@@ -11,7 +11,7 @@ using MySql.Data.MySqlClient;
 
 namespace AutoX.DB
 {
-    public class MysqlDBManager
+    public class MysqlDBManager : IDisposable
     {
         private static MysqlDBManager _instance;
         private readonly MySqlConnection _connection;
@@ -47,10 +47,10 @@ namespace AutoX.DB
         private void CreateSubItem(string parentId, string type, string name, string id)
         {
             var xElement = new XElement(type);
-            xElement.SetAttributeValue("_id", id);
-            xElement.SetAttributeValue("_parentId", parentId);
-            xElement.SetAttributeValue("_type", type);
-            xElement.SetAttributeValue("Name", name);
+            xElement.SetAttributeValue(Constants._ID, id);
+            xElement.SetAttributeValue(Constants.PARENT_ID, parentId);
+            xElement.SetAttributeValue(Constants._TYPE, type);
+            xElement.SetAttributeValue(Constants.NAME, name);
             xElement.SetAttributeValue("Created", DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
             xElement.SetAttributeValue("Updated", DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
             CreateContent(id, xElement.ToString());
@@ -159,6 +159,12 @@ namespace AutoX.DB
             comm1.Parameters.AddWithValue("@type", type);
             comm1.Parameters.AddWithValue("@slave", slave);
             comm1.ExecuteNonQuery();
+        }
+
+        public void Dispose()
+        {
+            _connection.Dispose();
+            
         }
     }
 }

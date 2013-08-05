@@ -4,6 +4,8 @@
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
+using System.Linq;
+
 #region
 
 using System;
@@ -94,13 +96,7 @@ namespace AutoX
 
         private static TreeViewItem FindItemOnTree(ItemsControl tree, string name, string value)
         {
-            foreach (object item in tree.Items)
-            {
-                var ti = item as TreeViewItem;
-                if (ti == null) continue;
-                return FindItemOnTreeViewItem(ti, name, value);
-            }
-            return null;
+            return tree.Items.OfType<TreeViewItem>().Select(ti => FindItemOnTreeViewItem(ti, name, value)).FirstOrDefault();
         }
 
         private static TreeViewItem FindItemOnTreeViewItem(TreeViewItem ti, string name, string value)
@@ -108,14 +104,7 @@ namespace AutoX
             var data = ti.DataContext as XElement;
             if (data != null && data.GetAttributeValue(name).Equals(value))
                 return ti;
-            foreach (object kid in ti.Items)
-            {
-                var k = kid as TreeViewItem;
-                if (k == null) continue;
-                var answer = FindItemOnTreeViewItem(k, name, value);
-                if (answer != null) return answer;
-            }
-            return null;
+            return ti.Items.OfType<TreeViewItem>().Select(k => FindItemOnTreeViewItem(k, name, value)).FirstOrDefault(answer => answer != null);
         }
 
         private static bool CheckValidDrop(FrameworkElement item, XElement data)
@@ -260,7 +249,7 @@ namespace AutoX
                 var xRoot = XElement.Parse(sRoot);
                 var result = xRoot.GetAttributeValue(Constants.RESULT);
                 if (string.IsNullOrEmpty(result)) return;
-                if (result.Equals("Error"))
+                if (result.Equals(Constants.ERROR))
                 {
                     MessageBox.Show("Update Instance failed!\nReason:" +
                                     xRoot.GetAttributeValue("Reason"));
@@ -298,7 +287,7 @@ namespace AutoX
                 var xRoot = XElement.Parse(sRoot);
                 var result = xRoot.GetAttributeValue(Constants.RESULT);
                 if (string.IsNullOrEmpty(result)) return;
-                if (result.Equals("Error"))
+                if (result.Equals(Constants.ERROR))
                 {
                     MessageBox.Show("Update Instance failed!\nReason:" +
                                     xRoot.GetAttributeValue("Reason"));

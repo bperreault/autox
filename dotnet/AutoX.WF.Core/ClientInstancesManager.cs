@@ -87,12 +87,7 @@ namespace AutoX.WF.Core
 
         public string GetAReadyClientInstance()
         {
-            foreach (KeyValuePair<string, ClientInstance> instance in _computerList)
-            {
-                if (instance.Value.Status.Equals("Ready"))
-                    return instance.Key;
-            }
-            return null;
+            return (from instance in _computerList where instance.Value.Status.Equals("Ready") select instance.Key).FirstOrDefault();
         }
 
         public ClientInstance GetComputer(string idOfComputer)

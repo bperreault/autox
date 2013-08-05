@@ -40,12 +40,7 @@ namespace AutoX.Activities
         public void Set(string userDataIds)
         {
             Data = Utilities.GetUserData(userDataIds, Host);
-            var filtered = new List<UserData>();
-            foreach (UserData userData in Data)
-            {
-                if (!Utilities.ReservedList.Contains(userData.Name))
-                    filtered.Add(userData);
-            }
+            var filtered = Data.Where(userData => !Utilities.ReservedList.Contains(userData.Name)).ToList();
             UserDataTable.ItemsSource = filtered;
         }
 

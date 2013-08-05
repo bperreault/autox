@@ -4,6 +4,8 @@
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
+using System.Linq;
+
 #region
 
 using System;
@@ -26,13 +28,7 @@ namespace AutoX.Activities
         {
             var rawData = value as string;
             var userDataList = Utilities.GetUserData(rawData, HostManager.GetInstance().GetHost());
-            var retList = new List<UserData>();
-            foreach (UserData userData in userDataList)
-            {
-                if (!Utilities.ReservedList.Contains(userData.Name))
-                    retList.Add(userData);
-            }
-            return retList;
+            return userDataList.Where(userData => !Utilities.ReservedList.Contains(userData.Name)).ToList();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

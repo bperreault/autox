@@ -188,7 +188,7 @@ namespace AutoX
         private async Task HandleDoubleClick(TreeViewItem selected, string treeViewName, XElement xRoot)
         {
             selected.Items.Clear();
-            foreach (XElement kid in xRoot.Descendants())
+            foreach (var kid in xRoot.Descendants())
             {
                 if (treeViewName.Equals("SuiteTree"))
                 {
@@ -196,7 +196,12 @@ namespace AutoX
                     if (type != null && type.Equals(Constants.SCRIPT))
                     {
                         var scriptType = kid.GetAttributeValue(Constants.SCRIPT_TYPE);
+
                         if (!scriptType.Equals("TestSuite")) continue;
+                        var scriptContent = kid.GetAttributeValue("Content");
+                        if(string.IsNullOrEmpty(scriptContent)) continue;
+                        var scriptMaturity = XElement.Parse(scriptContent).GetAttributeValue("Maturity");
+                        if(!Configuration.Settings("Maturity","Playground;Stadium").Contains(scriptMaturity)) continue;
                     }
                 }
                 var newItem = kid.GetTreeViewItemFromXElement();

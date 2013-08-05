@@ -24,13 +24,13 @@ namespace AutoX.Client.Core
         {
             if (_result.Attribute(Constants.RESULT) == null)
             {
-                _result.SetAttributeValue(Constants.RESULT, "Success");
+                _result.SetAttributeValue(Constants.RESULT, Constants.SUCCESS);
             }
         }
 
         public void Error(string reason)
         {
-            _result.SetAttributeValue(Constants.RESULT, "Error");
+            _result.SetAttributeValue(Constants.RESULT, Constants.ERROR);
             SetReason(reason);
         }
 
@@ -42,7 +42,7 @@ namespace AutoX.Client.Core
             else
             {
                 var value = xResult.Value;
-                if (!value.Equals("Error"))
+                if (!value.Equals(Constants.SUCCESS))
                     _result.SetAttributeValue(Constants.RESULT, "Warning");
             }
             SetReason(reason);
