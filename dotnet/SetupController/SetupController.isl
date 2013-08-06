@@ -4103,7 +4103,6 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="l255">Description</col>
 		<row><td>(Not Version9X) And (Not VersionNT=400) And (Not VersionNT=500) And (Not VersionNT=501) And (Not VersionNT=502) And (Not (VersionNT=600 And (MsiNTProductType=1)))</td><td>##IDPROP_EXPRESS_LAUNCH_CONDITION_OS##</td></row>
 		<row><td>DOTNETVERSION45FULL&gt;="#1"</td><td>##IDPROP_EXPRESS_LAUNCH_CONDITION_DOTNETVERSION45FULL##</td></row>
-		<row><td>HKEY_LOCAL_MACHINE_SOFTWARE_MYSQL_AB_MYSQL_CONNECTOR_NET</td><td>##IDPROP_EXPRESS_LAUNCH_CONDITION_HKEY_LOCAL_MACHINE_SOFTWARE_##</td></row>
 	</table>
 
 	<table name="ListBox">

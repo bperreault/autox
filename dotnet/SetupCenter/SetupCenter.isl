@@ -3521,6 +3521,10 @@
 		<row><td>IDS_PROGMSG_XML_UPDATE_FILE</td><td>1033</td><td>Updating XML file %s...</td><td>0</td><td/><td>-1818137784</td></row>
 		<row><td>IDS_SETUPEXE_EXPIRE_MSG</td><td>1033</td><td>This setup works until %s. The setup will now exit.</td><td>0</td><td/><td>-1818137784</td></row>
 		<row><td>IDS_SETUPEXE_LAUNCH_COND_E</td><td>1033</td><td>This setup was built with an evaluation version of InstallShield and can only be launched from setup.exe.</td><td>0</td><td/><td>-1818137784</td></row>
+		<row><td>IDS_SOFTWARE_REQUIREMENT_MESSAGE1</td><td>1033</td><td>CLICK HERE to enter the message to display to your end user when this item does not exist on the target machine.</td><td>0</td><td/><td>874603783</td></row>
+		<row><td>IDS_SOFTWARE_REQUIREMENT_MESSAGE2</td><td>1033</td><td>CLICK HERE to enter the message to display to your end user when this item does not exist on the target machine.</td><td>0</td><td/><td>874603783</td></row>
+		<row><td>IDS_SOFTWARE_REQUIREMENT_MESSAGE3</td><td>1033</td><td>CLICK HERE to enter the message to display to your end user when this item does not exist on the target machine.</td><td>0</td><td/><td>874605831</td></row>
+		<row><td>IDS_SOFTWARE_REQUIREMENT_MESSAGE4</td><td>1033</td><td>CLICK HERE to enter the message to display to your end user when this item does not exist on the target machine.</td><td>0</td><td/><td>874605831</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO</td><td>1033</td><td>From the list of servers below, select the database server you would like to target.</td><td>0</td><td/><td>-1818137784</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO_DB</td><td>1033</td><td>From the list of catalog names below, select the database catalog you would like to target.</td><td>0</td><td/><td>-1818137784</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO_TEMPLATE</td><td>1033</td><td>[IS_SQLBROWSE_INTRO]</td><td>0</td><td/><td>-1818137784</td></row>
@@ -4124,10 +4128,9 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="l255">Description</col>
 		<row><td>(Not Version9X) And (Not VersionNT=400) And (Not VersionNT=500) And (Not VersionNT=501) And (Not VersionNT=502) And (Not (VersionNT=600 And (MsiNTProductType=1)))</td><td>##IDPROP_EXPRESS_LAUNCH_CONDITION_OS##</td></row>
 		<row><td>DOTNETVERSION45FULL&gt;="#1"</td><td>##IDPROP_EXPRESS_LAUNCH_CONDITION_DOTNETVERSION45FULL##</td></row>
-		<row><td>HKEY_LOCAL_MACHINE_SOFTWARE_MYSQL_AB_MYSQL_CONNECTOR_NET</td><td>##IDPROP_EXPRESS_LAUNCH_CONDITION_HKEY_LOCAL_MACHINE_SOFTWARE_##</td></row>
-		<row><td>IISROOTFOLDER</td><td>##IDPROP_EXPRESS_LAUNCH_CONDITION_IISROOTFOLDER##</td></row>
-		<row><td>NOT (IIS_VERSION)</td><td>##IDPROP_EXPRESS_LAUNCH_CONDITION_IIS_VERSION##</td></row>
-		<row><td>NOT (WWWROOT)</td><td>##IDPROP_EXPRESS_LAUNCH_CONDITION_WWWROOT##</td></row>
+		<row><td>IISROOTFOLDER</td><td>##IDS_SOFTWARE_REQUIREMENT_MESSAGE3##</td></row>
+		<row><td>IIS_VERSION</td><td>##IDS_SOFTWARE_REQUIREMENT_MESSAGE2##</td></row>
+		<row><td>WWWROOT</td><td>##IDS_SOFTWARE_REQUIREMENT_MESSAGE1##</td></row>
 	</table>
 
 	<table name="ListBox">

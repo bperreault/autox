@@ -52,8 +52,9 @@ namespace AutoX.WindowsService
                     typeof(HttpListenerWrapper), _virtualDir, _physicalDir);
                 Log.Debug("Create CreateApplicationHost OK");
                 _listener.Configure(_prefixes, _virtualDir, _physicalDir);
+                Log.Debug("After Configure -> Virtual Path:" + _virtualDir + " Physical Path:" + _physicalDir);
                 _listener.Start();
-
+                Log.Debug("Listener Started ...");
                 while (_listening)
                     _listener.ProcessRequest();
             }

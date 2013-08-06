@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Web;
+using AutoX.Basic;
 
 namespace AutoX.WindowsService
 {
@@ -32,6 +33,7 @@ namespace AutoX.WindowsService
             var ctx = _listener.GetContext();
             var workerRequest =
                 new HttpListenerWorkerRequest(ctx, _virtualDir, _physicalDir);
+            Log.Debug("Virtual Path:"+_virtualDir+" Physical Path:"+_physicalDir);
             HttpRuntime.ProcessRequest(workerRequest);
         }
     }

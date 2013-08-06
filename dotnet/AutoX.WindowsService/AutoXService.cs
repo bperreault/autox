@@ -22,7 +22,7 @@ namespace AutoX.WindowsService
             var path = AppDomain.CurrentDomain.BaseDirectory;
             _controller = new HttpListenerController(prefixes,
                 Configuration.Settings("VirtualPath", "/AutoX.Web"),
-                path+Configuration.Settings("PhysicalPath", ""));
+                Configuration.Settings("PhysicalPath", ""));
             _controller.Start();
 
         }
