@@ -49,21 +49,21 @@ namespace AutoX
             {
                 if (type.Equals("TestSuite"))
                 {
-                    var ta = new TestSuiteActivity {Description = description, GUID = guid, Name = name};
+                    var ta = new TestSuiteActivity {Description = description, GUID = guid, Authors = _currentWindowsUser, Name = name};
                     ta.SetHost(this);
                     newActivity = ta;
                 }
 
                 if (type.Equals("TestCase"))
                 {
-                    var ta = new TestCaseActivity {Description = description, GUID = guid, Name = name};
+                    var ta = new TestCaseActivity { Description = description, GUID = guid, Authors = _currentWindowsUser, Name = name };
                     ta.SetHost(this);
                     newActivity = ta;
                 }
 
                 if (type.Equals("TestScreen"))
                 {
-                    var ta = new TestScreenActivity {Description = description, GUID = guid, Name = name};
+                    var ta = new TestScreenActivity { Description = description, GUID = guid, Authors = _currentWindowsUser, Name = name };
                     ta.SetHost(this);
                     newActivity = ta;
                 }
@@ -332,6 +332,7 @@ namespace AutoX
             var activity = Utilities.GetActivityFromContentString(content);
             var name = activity.GetType().GetProperty(Constants.NAME).GetValue(activity, null) as string;
             var description = activity.GetType().GetProperty("Description").GetValue(activity, null) as string;
+            activity.GetType().GetProperty("Authors").SetValue(activity,_currentWindowsUser);
             if (!string.IsNullOrEmpty(name))
                 xElement.SetAttributeValue(Constants.NAME, name);
             if (!string.IsNullOrEmpty(description))

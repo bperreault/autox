@@ -28,6 +28,7 @@ namespace AutoX
     public partial class MainWindow : IHost
     {
         private readonly Config _config = Configuration.Clone();
+        private readonly string _currentWindowsUser = Environment.UserName;
 
         public MainWindow()
         {
@@ -63,7 +64,7 @@ namespace AutoX
             InitScreen();
             //InitializeProject();
             //LoadProject();
-
+            this.Title = this.Title + " - " + _currentWindowsUser;
             StopProgressBar();
         }
 

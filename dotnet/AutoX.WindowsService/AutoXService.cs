@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.ServiceProcess;
+﻿using System.ServiceProcess;
 using AutoX.Basic;
 
 namespace AutoX.WindowsService
@@ -19,7 +17,7 @@ namespace AutoX.WindowsService
             var prefixString = Configuration.Settings("Prefixes",
                 @"http://localhost:8081/AutoX.Web/;http://127.0.0.1:8081/AutoX.Web/;http://*:8081/AutoX.Web/");
             var prefixes = prefixString.Split(';');
-            var path = AppDomain.CurrentDomain.BaseDirectory;
+            //var path = AppDomain.CurrentDomain.BaseDirectory;
             _controller = new HttpListenerController(prefixes,
                 Configuration.Settings("VirtualPath", "/AutoX.Web"),
                 Configuration.Settings("PhysicalPath", ""));

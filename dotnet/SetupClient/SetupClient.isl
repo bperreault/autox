@@ -1884,14 +1884,14 @@
 		<col def="I4">ISAttributes</col>
 		<col def="S72">ISComponentSubFolder_</col>
 		<row><td>autox.client.primary_output</td><td>AutoX.Client.Primary_output</td><td>AutoX.Client.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;AutoX.Client&gt;|Built</td><td>3</td><td/></row>
-		<row><td>folder.png</td><td>ISX_DEFAULTCOMPONENT</td><td>Folder.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX.Client\Resources\Folder.png</td><td>1</td><td/></row>
-		<row><td>notificationareaicon.ico</td><td>ISX_DEFAULTCOMPONENT</td><td>NOTIFI~1.ICO|NotificationAreaIcon.ico</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX.Client\Resources\NotificationAreaIcon.ico</td><td>1</td><td/></row>
-		<row><td>project.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>Project.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX.Client\Resources\Project.bmp</td><td>1</td><td/></row>
-		<row><td>project.jpg</td><td>ISX_DEFAULTCOMPONENT</td><td>Project.jpg</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX.Client\Resources\Project.jpg</td><td>1</td><td/></row>
-		<row><td>snapshot.png</td><td>ISX_DEFAULTCOMPONENT</td><td>Snapshot.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX.Client\Resources\Snapshot.png</td><td>1</td><td/></row>
-		<row><td>testcase.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>TestCase.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX.Client\Resources\TestCase.bmp</td><td>1</td><td/></row>
-		<row><td>testscreen.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>TESTSC~1.BMP|TestScreen.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX.Client\Resources\TestScreen.bmp</td><td>1</td><td/></row>
-		<row><td>testsuite.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>TESTSU~1.BMP|TestSuite.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX.Client\Resources\TestSuite.bmp</td><td>1</td><td/></row>
+		<row><td>folder.png</td><td>ISX_DEFAULTCOMPONENT</td><td>Folder.png</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX.Client\Resources\Folder.png</td><td>1</td><td/></row>
+		<row><td>notificationareaicon.ico</td><td>ISX_DEFAULTCOMPONENT</td><td>NOTIFI~1.ICO|NotificationAreaIcon.ico</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX.Client\Resources\NotificationAreaIcon.ico</td><td>1</td><td/></row>
+		<row><td>project.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>Project.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX.Client\Resources\Project.bmp</td><td>1</td><td/></row>
+		<row><td>project.jpg</td><td>ISX_DEFAULTCOMPONENT</td><td>Project.jpg</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX.Client\Resources\Project.jpg</td><td>1</td><td/></row>
+		<row><td>snapshot.png</td><td>ISX_DEFAULTCOMPONENT</td><td>Snapshot.png</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX.Client\Resources\Snapshot.png</td><td>1</td><td/></row>
+		<row><td>testcase.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>TestCase.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX.Client\Resources\TestCase.bmp</td><td>1</td><td/></row>
+		<row><td>testscreen.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>TESTSC~1.BMP|TestScreen.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX.Client\Resources\TestScreen.bmp</td><td>1</td><td/></row>
+		<row><td>testsuite.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>TESTSU~1.BMP|TestSuite.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX.Client\Resources\TestSuite.bmp</td><td>1</td><td/></row>
 	</table>
 
 	<table name="FileSFPCatalog">

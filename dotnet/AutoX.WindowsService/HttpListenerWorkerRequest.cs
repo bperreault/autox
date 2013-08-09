@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Web;
-using AutoX.Basic;
 
 namespace AutoX.WindowsService
 {
@@ -168,9 +167,9 @@ namespace AutoX.WindowsService
         }
         public override string GetFilePath()
         {
-            // TODO: this is a hack
+            // TODO: this is a trick
             var s = _context.Request.Url.LocalPath;
-            Log.Debug("LocalPath:"+s);
+            //Log.Debug("LocalPath:"+s);
             if (s.IndexOf(".aspx", StringComparison.Ordinal) != -1)
                 s = s.Substring(0, s.IndexOf(".aspx", StringComparison.Ordinal) + 5);
             else if (s.IndexOf(".asmx", StringComparison.Ordinal) != -1)

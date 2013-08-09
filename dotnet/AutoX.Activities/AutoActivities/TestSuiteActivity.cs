@@ -49,6 +49,7 @@ namespace AutoX.Activities.AutoActivities
         }
 
         public string Description { get; set; }
+        
 
         [DisplayName(@"Maturity")]
         [DefaultValue(MaturityLevel.Playground)]

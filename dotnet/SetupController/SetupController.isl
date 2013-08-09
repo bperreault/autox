@@ -1888,44 +1888,44 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I4">ISAttributes</col>
 		<col def="S72">ISComponentSubFolder_</col>
-		<row><td>activate_task.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>ACTIVA~1.BMP|activate_task.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\activate_task.bmp</td><td>1</td><td/></row>
+		<row><td>activate_task.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>ACTIVA~1.BMP|activate_task.bmp</td><td>0</td><td/><td/><td>0</td><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\activate_task.bmp</td><td>1</td><td/></row>
 		<row><td>autox.primary_output</td><td>AutoX.Primary_output</td><td>AutoX.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;AutoX&gt;|Built</td><td>3</td><td/></row>
-		<row><td>button.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>button.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\button.bmp</td><td>1</td><td/></row>
-		<row><td>calculate.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>CALCUL~1.BMP|calculate.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\calculate.bmp</td><td>1</td><td/></row>
-		<row><td>case.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>case.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\case.bmp</td><td>1</td><td/></row>
-		<row><td>check.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>check.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\check.bmp</td><td>1</td><td/></row>
-		<row><td>checkbox.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>checkbox.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\checkbox.bmp</td><td>1</td><td/></row>
-		<row><td>click.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>click.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\click.bmp</td><td>1</td><td/></row>
-		<row><td>closebrowser.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>CLOSEB~1.BMP|closebrowser.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\closebrowser.bmp</td><td>1</td><td/></row>
-		<row><td>complete.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>complete.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\complete.bmp</td><td>1</td><td/></row>
-		<row><td>delay.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>delay.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\delay.bmp</td><td>1</td><td/></row>
-		<row><td>empty.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>empty.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\empty.bmp</td><td>1</td><td/></row>
-		<row><td>executing.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>EXECUT~1.BMP|executing.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\executing.bmp</td><td>1</td><td/></row>
-		<row><td>failed.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>failed.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\failed.bmp</td><td>1</td><td/></row>
-		<row><td>folder.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>Folder.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\Folder.bmp</td><td>1</td><td/></row>
-		<row><td>folder.png</td><td>ISX_DEFAULTCOMPONENT</td><td>Folder.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\Folder.png</td><td>1</td><td/></row>
-		<row><td>getobjects.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>GETOBJ~1.BMP|getobjects.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\getobjects.bmp</td><td>1</td><td/></row>
-		<row><td>getobjectvalue.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>GETOBJ~1.BMP|getobjectvalue.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\getobjectvalue.bmp</td><td>1</td><td/></row>
-		<row><td>link.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>link.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\link.bmp</td><td>1</td><td/></row>
-		<row><td>message.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>message.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\message.bmp</td><td>1</td><td/></row>
-		<row><td>parallelif.png</td><td>ISX_DEFAULTCOMPONENT</td><td>PARALL~1.PNG|parallelif.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\parallelif.png</td><td>1</td><td/></row>
-		<row><td>project.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>Project.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\Project.bmp</td><td>1</td><td/></row>
-		<row><td>project.jpg</td><td>ISX_DEFAULTCOMPONENT</td><td>Project.jpg</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\Project.jpg</td><td>1</td><td/></row>
-		<row><td>prompt.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>prompt.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\prompt.bmp</td><td>1</td><td/></row>
-		<row><td>select.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>select.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\select.bmp</td><td>1</td><td/></row>
-		<row><td>sequence.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>sequence.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\sequence.bmp</td><td>1</td><td/></row>
-		<row><td>snapshot.png</td><td>ISX_DEFAULTCOMPONENT</td><td>Snapshot.png</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\Snapshot.png</td><td>1</td><td/></row>
-		<row><td>startbrowser.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>STARTB~1.BMP|startbrowser.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\startbrowser.bmp</td><td>1</td><td/></row>
-		<row><td>testcase.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>TestCase.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\TestCase.bmp</td><td>1</td><td/></row>
-		<row><td>testscreen.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>TESTSC~1.BMP|TestScreen.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\TestScreen.bmp</td><td>1</td><td/></row>
-		<row><td>teststeps.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>TESTST~1.BMP|TestSteps.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\TestSteps.bmp</td><td>1</td><td/></row>
-		<row><td>testsuite.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>TESTSU~1.BMP|TestSuite.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\TestSuite.bmp</td><td>1</td><td/></row>
-		<row><td>text.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>text.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\text.bmp</td><td>1</td><td/></row>
-		<row><td>textbox.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>textbox.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\textbox.bmp</td><td>1</td><td/></row>
-		<row><td>textnode.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>textnode.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\textnode.bmp</td><td>1</td><td/></row>
-		<row><td>verify.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>verify.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\verify.bmp</td><td>1</td><td/></row>
-		<row><td>warning.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>warning.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\warning.bmp</td><td>1</td><td/></row>
-		<row><td>while.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>while.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>C:\Users\jien\Documents\Visual Studio 2013\Projects\autox\dotnet\AutoX\Resources\while.bmp</td><td>1</td><td/></row>
+		<row><td>button.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>button.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\button.bmp</td><td>1</td><td/></row>
+		<row><td>calculate.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>CALCUL~1.BMP|calculate.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\calculate.bmp</td><td>1</td><td/></row>
+		<row><td>case.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>case.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\case.bmp</td><td>1</td><td/></row>
+		<row><td>check.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>check.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\check.bmp</td><td>1</td><td/></row>
+		<row><td>checkbox.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>checkbox.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\checkbox.bmp</td><td>1</td><td/></row>
+		<row><td>click.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>click.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\click.bmp</td><td>1</td><td/></row>
+		<row><td>closebrowser.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>CLOSEB~1.BMP|closebrowser.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\closebrowser.bmp</td><td>1</td><td/></row>
+		<row><td>complete.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>complete.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\complete.bmp</td><td>1</td><td/></row>
+		<row><td>delay.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>delay.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\delay.bmp</td><td>1</td><td/></row>
+		<row><td>empty.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>empty.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\empty.bmp</td><td>1</td><td/></row>
+		<row><td>executing.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>EXECUT~1.BMP|executing.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\executing.bmp</td><td>1</td><td/></row>
+		<row><td>failed.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>failed.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\failed.bmp</td><td>1</td><td/></row>
+		<row><td>folder.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>Folder.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\Folder.bmp</td><td>1</td><td/></row>
+		<row><td>folder.png</td><td>ISX_DEFAULTCOMPONENT</td><td>Folder.png</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\Folder.png</td><td>1</td><td/></row>
+		<row><td>getobjects.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>GETOBJ~1.BMP|getobjects.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\getobjects.bmp</td><td>1</td><td/></row>
+		<row><td>getobjectvalue.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>GETOBJ~1.BMP|getobjectvalue.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\getobjectvalue.bmp</td><td>1</td><td/></row>
+		<row><td>link.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>link.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\link.bmp</td><td>1</td><td/></row>
+		<row><td>message.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>message.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\message.bmp</td><td>1</td><td/></row>
+		<row><td>parallelif.png</td><td>ISX_DEFAULTCOMPONENT</td><td>PARALL~1.PNG|parallelif.png</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\parallelif.png</td><td>1</td><td/></row>
+		<row><td>project.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>Project.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\Project.bmp</td><td>1</td><td/></row>
+		<row><td>project.jpg</td><td>ISX_DEFAULTCOMPONENT</td><td>Project.jpg</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\Project.jpg</td><td>1</td><td/></row>
+		<row><td>prompt.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>prompt.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\prompt.bmp</td><td>1</td><td/></row>
+		<row><td>select.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>select.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\select.bmp</td><td>1</td><td/></row>
+		<row><td>sequence.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>sequence.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\sequence.bmp</td><td>1</td><td/></row>
+		<row><td>snapshot.png</td><td>ISX_DEFAULTCOMPONENT</td><td>Snapshot.png</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\Snapshot.png</td><td>1</td><td/></row>
+		<row><td>startbrowser.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>STARTB~1.BMP|startbrowser.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\startbrowser.bmp</td><td>1</td><td/></row>
+		<row><td>testcase.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>TestCase.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\TestCase.bmp</td><td>1</td><td/></row>
+		<row><td>testscreen.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>TESTSC~1.BMP|TestScreen.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\TestScreen.bmp</td><td>1</td><td/></row>
+		<row><td>teststeps.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>TESTST~1.BMP|TestSteps.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\TestSteps.bmp</td><td>1</td><td/></row>
+		<row><td>testsuite.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>TESTSU~1.BMP|TestSuite.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\TestSuite.bmp</td><td>1</td><td/></row>
+		<row><td>text.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>text.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\text.bmp</td><td>1</td><td/></row>
+		<row><td>textbox.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>textbox.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\textbox.bmp</td><td>1</td><td/></row>
+		<row><td>textnode.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>textnode.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\textnode.bmp</td><td>1</td><td/></row>
+		<row><td>verify.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>verify.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\verify.bmp</td><td>1</td><td/></row>
+		<row><td>warning.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>warning.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\warning.bmp</td><td>1</td><td/></row>
+		<row><td>while.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>while.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\while.bmp</td><td>1</td><td/></row>
 	</table>
 
 	<table name="FileSFPCatalog">
@@ -4041,7 +4041,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>ISTheme</td><td>InstallShield Blue.theme</td></row>
 		<row><td>ISUSLock</td><td>{C2902764-F4BE-418E-816F-5C83D97F5DF1}</td></row>
 		<row><td>ISUSSignature</td><td>{F9048021-E55B-4D10-A27C-B966A1719C0F}</td></row>
-		<row><td>ISVisitedViews</td><td>viewAssistant,viewProject,viewISToday,viewUI,viewSetupDesign,viewAppV,viewSystemSearch</td></row>
+		<row><td>ISVisitedViews</td><td>viewAssistant,viewProject,viewISToday,viewUI,viewSetupDesign,viewAppV,viewSystemSearch,viewAppFiles</td></row>
 		<row><td>Limited</td><td>1</td></row>
 		<row><td>LockPermissionMode</td><td>1</td></row>
 		<row><td>MsiExecCmdLineOptions</td><td/></row>

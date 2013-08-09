@@ -60,9 +60,7 @@ namespace AutoX.WindowsService
             }
             catch (Exception ex)
             {
-                var myLog = new EventLog {Source = "HttpListenerController"};
-                myLog.WriteEntry(null != ex.InnerException ? ex.InnerException.ToString() : ex.ToString(),
-                    EventLogEntryType.Error);
+                Log.Debug(null != ex.InnerException ? ex.InnerException.ToString() : ex.ToString());
             }
         }
     }

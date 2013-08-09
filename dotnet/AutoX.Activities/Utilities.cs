@@ -126,7 +126,7 @@ namespace AutoX.Activities
                 {
                     var activity = new CallTestCaseActivity
                     {
-                        
+                        Authors = Environment.UserName,
                         TestCaseId = data.GetAttributeValue(Constants._ID),
                         TestCaseName = data.GetAttributeValue(Constants.NAME),
                         DisplayName = "Call Test Case: " + data.GetAttributeValue(Constants.NAME)
@@ -139,6 +139,7 @@ namespace AutoX.Activities
                 {
                     var activity = new CallTestScreenActivity
                     {
+                        Authors = Environment.UserName,
                         TestSreenId = data.GetAttributeValue(Constants._ID),
                         TestSreenName = data.GetAttributeValue(Constants.NAME),
                         ErrorLevel = OnError.Continue,
@@ -154,6 +155,7 @@ namespace AutoX.Activities
                 {
                     var activity = new CallTestSuiteActivity
                     {
+                        Authors = Environment.UserName,
                         TestSuiteId = data.GetAttributeValue(Constants._ID),
                         TestSuiteName = data.GetAttributeValue(Constants.NAME),
                         TestSuiteDescription = data.GetAttributeValue("Description"),

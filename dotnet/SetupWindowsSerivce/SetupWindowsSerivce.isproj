@@ -29,6 +29,30 @@
 	</ItemGroup>
 	<Import Project="$(MSBuildExtensionsPath32)\InstallShield\2013Limited\InstallShield.targets"/>
 	<ItemGroup>
+		<ProjectReference Include="..\AutoX.Activities\AutoX.Activities.csproj">
+			<Name>AutoX.Activities</Name>
+			<Project>{82CE9DF9-7593-4B3C-B232-2B2894E40BB8}</Project>
+		</ProjectReference>
+		<ProjectReference Include="..\AutoX.Basic\AutoX.Basic.csproj">
+			<Name>AutoX.Basic</Name>
+			<Project>{BB39BDB6-D9A0-4B29-98C5-977069B8D575}</Project>
+		</ProjectReference>
+		<ProjectReference Include="..\AutoX.Client.Core\AutoX.Client.Core.csproj">
+			<Name>AutoX.Client.Core</Name>
+			<Project>{4C838B4A-F1C7-4B78-B6C4-EB65EAD3FBE0}</Project>
+		</ProjectReference>
+		<ProjectReference Include="..\AutoX.Comm\AutoX.Comm.csproj">
+			<Name>AutoX.Comm</Name>
+			<Project>{EA1D75AA-B145-4B6B-84E5-9933A5D537F0}</Project>
+		</ProjectReference>
+		<ProjectReference Include="..\AutoX.DB\AutoX.DB.csproj">
+			<Name>AutoX.DB</Name>
+			<Project>{7D09A7D8-2A35-49CB-936E-58919BB4A5F9}</Project>
+		</ProjectReference>
+		<ProjectReference Include="..\AutoX.WF.Core\AutoX.WF.Core.csproj">
+			<Name>AutoX.WF.Core</Name>
+			<Project>{6A598CBB-A54F-4272-82AA-0DD64428E3C6}</Project>
+		</ProjectReference>
 		<ProjectReference Include="..\AutoX.Web\AutoX.Web.csproj">
 			<Name>AutoX.Web</Name>
 			<Project>{4B8F5366-D270-45A5-9CD3-9D7A2CF831CB}</Project>

@@ -341,15 +341,32 @@
 		<col def="S0">ISDotNetInstallerArgsCommit</col>
 		<col def="S0">ISDotNetInstallerArgsUninstall</col>
 		<col def="S0">ISDotNetInstallerArgsRollback</col>
+		<row><td>AutoX.Activities.Primary_output</td><td>{6AE240A7-C9B2-414A-88B7-FBE2C0141858}</td><td>BIN</td><td>2</td><td/><td>autox.activities.primary_out</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>AutoX.Basic.Primary_output</td><td>{31D96F03-C1C0-4CE1-BD53-8469C4D8A518}</td><td>BIN</td><td>2</td><td/><td>autox.basic.primary_output</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>AutoX.Basic.Primary_output1</td><td>{17FCF077-68C7-4E52-B378-0AF33477EB06}</td><td>INSTALLDIR</td><td>2</td><td/><td>autox.basic.primary_output1</td><td>1</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>AutoX.Client.Core.Primary_output</td><td>{CB9800ED-296D-4EF2-8911-AEE2F658FDD6}</td><td>BIN</td><td>2</td><td/><td>autox.client.core.primary_ou</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>AutoX.Comm.Primary_output</td><td>{CEF7C2AE-219E-4C8C-90DF-3EEA06145BF8}</td><td>BIN</td><td>2</td><td/><td>autox.comm.primary_output</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>AutoX.DB.Primary_output</td><td>{8003068E-4780-44D2-9C27-6C74820ACA2A}</td><td>BIN</td><td>2</td><td/><td>autox.db.primary_output</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>AutoX.WF.Core.Primary_output</td><td>{C535C889-BCA3-47C0-B8F1-99CE9BB9DA23}</td><td>BIN</td><td>2</td><td/><td>autox.wf.core.primary_output</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>AutoX.WF.Core.Primary_output1</td><td>{10194571-7C01-469C-8FBA-B6F75E43F360}</td><td>INSTALLDIR</td><td>2</td><td/><td>autox.wf.core.primary_output1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>AutoX.Web.Content_Files</td><td>{27BBD2D8-F166-4225-99A3-E827FF740036}</td><td>BIN</td><td>2</td><td/><td>autox.web.content_files</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>AutoX.Web.Content_Files1</td><td>{F99DEEE0-C6EA-4C94-98C4-90C4337283F3}</td><td>AUTOX.WEB</td><td>2</td><td/><td>autox.web.content_files1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>AutoX.Web.Content_Files2</td><td>{3816FB4D-8B75-47E0-92D0-91B114294A56}</td><td>AUTOX.WEB</td><td>2</td><td/><td>autox.web.content_files2</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>AutoX.Web.Primary_output</td><td>{24FA6CC3-E729-4BAB-8DD3-858D52C4BBE0}</td><td>INSTALLDIR</td><td>2</td><td/><td>autox.web.primary_output</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>AutoX.Web.Content_Files2</td><td>{136B862A-DFBD-479A-AA9C-2A56409FB348}</td><td>INSTALLDIR</td><td>2</td><td/><td>autox.web.content_files2</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>AutoX.Web.Primary_output</td><td>{4A5A3349-BA47-4240-AD39-2D46E19F853C}</td><td>INSTALLDIR</td><td>2</td><td/><td>autox.web.primary_output</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>AutoX.Web.Primary_output1</td><td>{9A047A1E-2F23-430E-9D7A-DF135D0F0F42}</td><td>AUTOX.WEB</td><td>2</td><td/><td>autox.web.primary_output1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>AutoX.Web.Primary_output2</td><td>{BA6BFD99-ABED-479D-9D62-5B80AB8ECC12}</td><td>BIN</td><td>2</td><td/><td>autox.web.primary_output2</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>AutoX.WindowsService.Content_Files</td><td>{4839D4C5-E867-498E-856E-697D1D5A97D8}</td><td>INSTALLDIR</td><td>2</td><td/><td>autox.windowsservice.content</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>AutoX.WindowsService.Content_Files1</td><td>{9E60E270-173C-4BEE-B354-53B552579401}</td><td>BIN</td><td>2</td><td/><td>autox.windowsservice.content1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>AutoX.WindowsService.Primary_output</td><td>{1687BA61-3EFF-4C5E-AB35-31A7A13AF65F}</td><td>INSTALLDIR</td><td>2</td><td/><td>autox.windowsservice.primary</td><td>81</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>AutoX.WindowsService.Primary_output1</td><td>{C9C61D0A-4C0D-489B-85C8-882E32C4AEE7}</td><td>ProgramFilesFolder</td><td>2</td><td/><td>autox.windowsservice.primary1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>AutoX.WindowsService.Primary_output2</td><td>{1CBAD966-A924-4801-B185-6522BF6555B3}</td><td>AUTOX.WEB</td><td>2</td><td/><td>autox.windowsservice.primary2</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>AutoX.WindowsService.Primary_output3</td><td>{F5A8B798-EC92-4413-BE8F-56F8178ED7CF}</td><td>BIN</td><td>2</td><td/><td>autox.windowsservice.primary3</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISO19770_LocalTag</td><td>{E3A44933-A531-4219-B77D-A5D25CD8E349}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISO19770_SystemTag</td><td>{8630EAD7-9393-4C98-9F61-49DDA163414A}</td><td>CommonAppDataFolder</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT</td><td>{788B9C20-BA9E-4BAC-B456-DB399E477410}</td><td>AUTOX.WEB</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT1</td><td>{BA3A8811-17F2-4BB4-A0DE-58D95CF1A014}</td><td>BIN</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>log4net.dll</td><td>{3F0F30DE-90D7-4D2C-9E7D-15C13ADF0569}</td><td>INSTALLDIR</td><td>2</td><td/><td>log4net.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>log4net.dll2</td><td>{958ECB2A-775E-4549-9C0D-48982CE4A44B}</td><td>BIN</td><td>2</td><td/><td>log4net.dll2</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
 
 	<table name="Condition">
@@ -624,7 +641,7 @@
 		<row><td>ReadmeInformation</td><td>DlgLine</td><td>Line</td><td>48</td><td>234</td><td>326</td><td>0</td><td>3</td><td/><td/><td/><td/><td>0</td><td>0</td><td/><td/></row>
 		<row><td>ReadmeInformation</td><td>DlgTitle</td><td>Text</td><td>13</td><td>6</td><td>193</td><td>13</td><td>65539</td><td/><td>##IDS__IsReadmeDlg_ReadMeInfo##</td><td>DlgDesc</td><td/><td>0</td><td/><td/><td/></row>
 		<row><td>ReadmeInformation</td><td>Next</td><td>PushButton</td><td>230</td><td>243</td><td>66</td><td>17</td><td>1048579</td><td/><td>##IDS_NEXT##</td><td>Cancel</td><td/><td>0</td><td/><td/><td/></row>
-		<row><td>ReadmeInformation</td><td>Readme</td><td>ScrollableText</td><td>10</td><td>55</td><td>353</td><td>166</td><td>3</td><td/><td/><td>Banner</td><td/><td>0</td><td/><td>&lt;ISProductFolder&gt;\Redist\0409\Readme.rtf</td><td/></row>
+		<row><td>ReadmeInformation</td><td>Readme</td><td>ScrollableText</td><td>10</td><td>55</td><td>353</td><td>166</td><td>3</td><td/><td/><td>Banner</td><td/><td>0</td><td/><td>&lt;ISProjectFolder&gt;\ReadMe.rtf</td><td/></row>
 		<row><td>ReadyToInstall</td><td>Back</td><td>PushButton</td><td>164</td><td>243</td><td>66</td><td>17</td><td>3</td><td/><td>##IDS_BACK##</td><td>GroupBox1</td><td/><td>0</td><td/><td/><td/></row>
 		<row><td>ReadyToInstall</td><td>Banner</td><td>Bitmap</td><td>0</td><td>0</td><td>374</td><td>44</td><td>1</td><td/><td/><td/><td/><td>0</td><td/><td/><td>NewBinary1</td></row>
 		<row><td>ReadyToInstall</td><td>BannerLine</td><td>Line</td><td>0</td><td>44</td><td>374</td><td>0</td><td>1</td><td/><td/><td/><td/><td>0</td><td/><td/><td/></row>
@@ -951,7 +968,7 @@
 		<row><td>LicenseAgreement</td><td>Back</td><td>NewDialog</td><td>InstallWelcome</td><td>1</td><td>0</td></row>
 		<row><td>LicenseAgreement</td><td>Cancel</td><td>SpawnDialog</td><td>CancelSetup</td><td>1</td><td>0</td></row>
 		<row><td>LicenseAgreement</td><td>ISPrintButton</td><td>DoAction</td><td>ISPrint</td><td>1</td><td>0</td></row>
-		<row><td>LicenseAgreement</td><td>Next</td><td>NewDialog</td><td>ReadyToInstall</td><td>AgreeToLicense = "Yes"</td><td>0</td></row>
+		<row><td>LicenseAgreement</td><td>Next</td><td>NewDialog</td><td>ReadmeInformation</td><td>AgreeToLicense = "Yes"</td><td>0</td></row>
 		<row><td>MaintenanceType</td><td>Back</td><td>NewDialog</td><td>MaintenanceWelcome</td><td>1</td><td>0</td></row>
 		<row><td>MaintenanceType</td><td>Cancel</td><td>SpawnDialog</td><td>CancelSetup</td><td>1</td><td>0</td></row>
 		<row><td>MaintenanceType</td><td>Next</td><td>NewDialog</td><td>CustomSetup</td><td>_IsMaintenance = "Change"</td><td>12</td></row>
@@ -978,12 +995,12 @@
 		<row><td>PatchWelcome</td><td>Next</td><td>EndDialog</td><td>Return</td><td>1</td><td>3</td></row>
 		<row><td>PatchWelcome</td><td>Next</td><td>Reinstall</td><td>ALL</td><td>PATCH And REINSTALL=""</td><td>1</td></row>
 		<row><td>PatchWelcome</td><td>Next</td><td>ReinstallMode</td><td>omus</td><td>PATCH And REINSTALLMODE=""</td><td>2</td></row>
-		<row><td>ReadmeInformation</td><td>Back</td><td>NewDialog</td><td>LicenseAgreement</td><td>1</td><td>1</td></row>
+		<row><td>ReadmeInformation</td><td>Back</td><td>NewDialog</td><td>LicenseAgreement</td><td>NOT Installed</td><td>1</td></row>
 		<row><td>ReadmeInformation</td><td>Cancel</td><td>SpawnDialog</td><td>CancelSetup</td><td>1</td><td>1</td></row>
-		<row><td>ReadmeInformation</td><td>Next</td><td>NewDialog</td><td>CustomerInformation</td><td>1</td><td>1</td></row>
+		<row><td>ReadmeInformation</td><td>Next</td><td>NewDialog</td><td>ReadyToInstall</td><td>1</td><td>1</td></row>
 		<row><td>ReadyToInstall</td><td>Back</td><td>NewDialog</td><td>CustomSetup</td><td>Installed OR _IsSetupTypeMin = "Custom"</td><td>2</td></row>
-		<row><td>ReadyToInstall</td><td>Back</td><td>NewDialog</td><td>LicenseAgreement</td><td>NOT Installed</td><td>1</td></row>
 		<row><td>ReadyToInstall</td><td>Back</td><td>NewDialog</td><td>MaintenanceType</td><td>Installed AND _IsMaintenance = "Reinstall"</td><td>3</td></row>
+		<row><td>ReadyToInstall</td><td>Back</td><td>NewDialog</td><td>ReadmeInformation</td><td>NOT Installed</td><td>1</td></row>
 		<row><td>ReadyToInstall</td><td>Cancel</td><td>SpawnDialog</td><td>CancelSetup</td><td>1</td><td>0</td></row>
 		<row><td>ReadyToInstall</td><td>InstallNow</td><td>EndDialog</td><td>Return</td><td>OutOfNoRbDiskSpace &lt;&gt; 1</td><td>0</td></row>
 		<row><td>ReadyToInstall</td><td>InstallNow</td><td>NewDialog</td><td>OutOfSpace</td><td>OutOfNoRbDiskSpace = 1</td><td>0</td></row>
@@ -1063,6 +1080,7 @@
 		<col key="yes" def="s72">Directory_</col>
 		<col key="yes" def="s72">Component_</col>
 		<row><td>AUTOX.WEB</td><td>ISX_DEFAULTCOMPONENT</td></row>
+		<row><td>BIN</td><td>ISX_DEFAULTCOMPONENT1</td></row>
 		<row><td>CommonAppDataFolder</td><td>ISO19770_SystemTag</td></row>
 		<row><td>INSTALLDIR</td><td>ISO19770_LocalTag</td></row>
 	</table>
@@ -1151,6 +1169,7 @@
 		<row><td>AUTOX_WINDOWS_SERVICE</td><td>AUTOX</td><td>AUTOXW~1|AutoX Windows Service</td><td/><td>0</td><td/></row>
 		<row><td>AdminToolsFolder</td><td>TARGETDIR</td><td>.:Admint~1|AdminTools</td><td/><td>0</td><td/></row>
 		<row><td>AppDataFolder</td><td>TARGETDIR</td><td>.:APPLIC~1|Application Data</td><td/><td>0</td><td/></row>
+		<row><td>BIN</td><td>AUTOX.WEB</td><td>bin</td><td/><td>0</td><td/></row>
 		<row><td>CommonAppDataFolder</td><td>TARGETDIR</td><td>.:Common~1|CommonAppData</td><td/><td>0</td><td/></row>
 		<row><td>CommonFiles64Folder</td><td>TARGETDIR</td><td>.:Common64</td><td/><td>0</td><td/></row>
 		<row><td>CommonFilesFolder</td><td>TARGETDIR</td><td>.:Common</td><td/><td>0</td><td/></row>
@@ -1878,15 +1897,32 @@
 	<table name="FeatureComponents">
 		<col key="yes" def="s38">Feature_</col>
 		<col key="yes" def="s72">Component_</col>
+		<row><td>AlwaysInstall</td><td>AutoX.Activities.Primary_output</td></row>
+		<row><td>AlwaysInstall</td><td>AutoX.Basic.Primary_output</td></row>
+		<row><td>AlwaysInstall</td><td>AutoX.Basic.Primary_output1</td></row>
+		<row><td>AlwaysInstall</td><td>AutoX.Client.Core.Primary_output</td></row>
+		<row><td>AlwaysInstall</td><td>AutoX.Comm.Primary_output</td></row>
+		<row><td>AlwaysInstall</td><td>AutoX.DB.Primary_output</td></row>
+		<row><td>AlwaysInstall</td><td>AutoX.WF.Core.Primary_output</td></row>
+		<row><td>AlwaysInstall</td><td>AutoX.WF.Core.Primary_output1</td></row>
+		<row><td>AlwaysInstall</td><td>AutoX.Web.Content_Files</td></row>
 		<row><td>AlwaysInstall</td><td>AutoX.Web.Content_Files1</td></row>
 		<row><td>AlwaysInstall</td><td>AutoX.Web.Content_Files2</td></row>
 		<row><td>AlwaysInstall</td><td>AutoX.Web.Primary_output</td></row>
 		<row><td>AlwaysInstall</td><td>AutoX.Web.Primary_output1</td></row>
+		<row><td>AlwaysInstall</td><td>AutoX.Web.Primary_output2</td></row>
+		<row><td>AlwaysInstall</td><td>AutoX.WindowsService.Content_Files</td></row>
+		<row><td>AlwaysInstall</td><td>AutoX.WindowsService.Content_Files1</td></row>
 		<row><td>AlwaysInstall</td><td>AutoX.WindowsService.Primary_output</td></row>
 		<row><td>AlwaysInstall</td><td>AutoX.WindowsService.Primary_output1</td></row>
+		<row><td>AlwaysInstall</td><td>AutoX.WindowsService.Primary_output2</td></row>
+		<row><td>AlwaysInstall</td><td>AutoX.WindowsService.Primary_output3</td></row>
 		<row><td>AlwaysInstall</td><td>ISO19770_LocalTag</td></row>
 		<row><td>AlwaysInstall</td><td>ISO19770_SystemTag</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT1</td></row>
+		<row><td>AlwaysInstall</td><td>log4net.dll</td></row>
+		<row><td>AlwaysInstall</td><td>log4net.dll2</td></row>
 	</table>
 
 	<table name="File">
@@ -1901,12 +1937,28 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I4">ISAttributes</col>
 		<col def="S72">ISComponentSubFolder_</col>
+		<row><td>autox.activities.primary_out</td><td>AutoX.Activities.Primary_output</td><td>AutoX.Activities.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;AutoX.Activities&gt;|Built</td><td>3</td><td/></row>
+		<row><td>autox.basic.primary_output</td><td>AutoX.Basic.Primary_output</td><td>AutoX.Basic.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;AutoX.Basic&gt;|Built</td><td>3</td><td/></row>
+		<row><td>autox.basic.primary_output1</td><td>AutoX.Basic.Primary_output1</td><td>AutoX.Basic.Primary output</td><td>0</td><td/><td/><td>0</td><td>1</td><td>&lt;AutoX.Basic&gt;|Built</td><td>3</td><td/></row>
+		<row><td>autox.client.core.primary_ou</td><td>AutoX.Client.Core.Primary_output</td><td>AutoX.Client.Core.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;AutoX.Client.Core&gt;|Built</td><td>3</td><td/></row>
+		<row><td>autox.comm.primary_output</td><td>AutoX.Comm.Primary_output</td><td>AutoX.Comm.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;AutoX.Comm&gt;|Built</td><td>3</td><td/></row>
+		<row><td>autox.db.primary_output</td><td>AutoX.DB.Primary_output</td><td>AutoX.DB.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;AutoX.DB&gt;|Built</td><td>3</td><td/></row>
+		<row><td>autox.web.content_files</td><td>AutoX.Web.Content_Files</td><td>AutoX.Web.Content Files</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;AutoX.Web&gt;|ContentFiles</td><td>3</td><td/></row>
 		<row><td>autox.web.content_files1</td><td>AutoX.Web.Content_Files1</td><td>AutoX.Web.Content Files</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;AutoX.Web&gt;|ContentFiles</td><td>3</td><td/></row>
 		<row><td>autox.web.content_files2</td><td>AutoX.Web.Content_Files2</td><td>AutoX.Web.Content Files</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;AutoX.Web&gt;|ContentFiles</td><td>3</td><td/></row>
 		<row><td>autox.web.primary_output</td><td>AutoX.Web.Primary_output</td><td>AutoX.Web.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;AutoX.Web&gt;|Built</td><td>3</td><td/></row>
 		<row><td>autox.web.primary_output1</td><td>AutoX.Web.Primary_output1</td><td>AutoX.Web.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;AutoX.Web&gt;|Built</td><td>3</td><td/></row>
+		<row><td>autox.web.primary_output2</td><td>AutoX.Web.Primary_output2</td><td>AutoX.Web.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;AutoX.Web&gt;|Built</td><td>3</td><td/></row>
+		<row><td>autox.wf.core.primary_output</td><td>AutoX.WF.Core.Primary_output</td><td>AutoX.WF.Core.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;AutoX.WF.Core&gt;|Built</td><td>3</td><td/></row>
+		<row><td>autox.wf.core.primary_output1</td><td>AutoX.WF.Core.Primary_output1</td><td>AutoX.WF.Core.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;AutoX.WF.Core&gt;|Built</td><td>3</td><td/></row>
+		<row><td>autox.windowsservice.content</td><td>AutoX.WindowsService.Content_Files</td><td>AutoX.WindowsService.Content Files</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;AutoX.WindowsService&gt;|ContentFiles</td><td>3</td><td/></row>
+		<row><td>autox.windowsservice.content1</td><td>AutoX.WindowsService.Content_Files1</td><td>AutoX.WindowsService.Content Files</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;AutoX.WindowsService&gt;|ContentFiles</td><td>3</td><td/></row>
 		<row><td>autox.windowsservice.primary</td><td>AutoX.WindowsService.Primary_output</td><td>AutoX.WindowsService.Primary output</td><td>0</td><td/><td/><td>0</td><td>1</td><td>&lt;AutoX.WindowsService&gt;|Built</td><td>3</td><td/></row>
 		<row><td>autox.windowsservice.primary1</td><td>AutoX.WindowsService.Primary_output1</td><td>AutoX.WindowsService.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;AutoX.WindowsService&gt;|Built</td><td>3</td><td/></row>
+		<row><td>autox.windowsservice.primary2</td><td>AutoX.WindowsService.Primary_output2</td><td>AutoX.WindowsService.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;AutoX.WindowsService&gt;|Built</td><td>3</td><td/></row>
+		<row><td>autox.windowsservice.primary3</td><td>AutoX.WindowsService.Primary_output3</td><td>AutoX.WindowsService.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;AutoX.WindowsService&gt;|Built</td><td>3</td><td/></row>
+		<row><td>log4net.dll</td><td>log4net.dll</td><td>log4net.dll</td><td>0</td><td/><td/><td>0</td><td>1</td><td>&lt;ISProjectFolder&gt;..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</td><td>1</td><td/></row>
+		<row><td>log4net.dll2</td><td>log4net.dll2</td><td>log4net.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</td><td>1</td><td/></row>
 	</table>
 
 	<table name="FileSFPCatalog">
@@ -2050,15 +2102,32 @@
 		<col def="S0">FTPLocation</col>
 		<col def="S0">HTTPLocation</col>
 		<col def="S0">Miscellaneous</col>
+		<row><td>AutoX.Activities.Primary_output</td><td/><td/><td>_7AE42F59_5D57_4478_A8E7_7863CB0D34F1_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>AutoX.Basic.Primary_output</td><td/><td/><td>_E580532C_1191_4ECB_AE7E_092D5E0AB03F_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>AutoX.Basic.Primary_output1</td><td/><td/><td>_5D91B9BF_0C20_4DA1_9F2A_7B25A0D08284_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>AutoX.Client.Core.Primary_output</td><td/><td/><td>_1291578C_1A81_46C7_AD3C_F636B54497DE_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>AutoX.Comm.Primary_output</td><td/><td/><td>_86E856E1_21DF_4532_B63D_EB143130C202_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>AutoX.DB.Primary_output</td><td/><td/><td>_FBA6F9FB_7F64_4909_B13D_79FFEF2AE491_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>AutoX.WF.Core.Primary_output</td><td/><td/><td>_7D4156C6_FA48_41EC_83DD_0949F25F23E2_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>AutoX.WF.Core.Primary_output1</td><td/><td/><td>_819F3BEF_681D_476A_8C30_F888BB4CBDB9_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>AutoX.Web.Content_Files</td><td/><td/><td>_F74BE3C9_DBA9_458B_AEFF_6CB554AD3368_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>AutoX.Web.Content_Files1</td><td/><td/><td>_06E1704A_5AB5_4814_A6B0_A20A1256AC13_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>AutoX.Web.Content_Files2</td><td/><td/><td>_7286140C_029C_465D_B575_DB88FBDF5C94_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>AutoX.Web.Primary_output</td><td/><td/><td>_6896F7B5_04BE_4FAD_9BA8_E7B1379722CE_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>AutoX.Web.Content_Files2</td><td/><td/><td>_B0CCFEC0_0FE6_4649_B7F0_377FFA415707_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>AutoX.Web.Primary_output</td><td/><td/><td>_4DED091A_D5A1_41CD_959F_A1D41579DE73_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>AutoX.Web.Primary_output1</td><td/><td/><td>_7F6FF1EB_894B_4EBF_9CCD_1A8C80BC3C45_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>AutoX.Web.Primary_output2</td><td/><td/><td>_9F085826_254E_45B1_9501_52AAD361AFE4_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>AutoX.WindowsService.Content_Files</td><td/><td/><td>_9856076D_67C0_4A77_9AB2_6133DE026F90_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>AutoX.WindowsService.Content_Files1</td><td/><td/><td>_CF1E7DC2_F867_437A_A28F_53F294BA7690_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>AutoX.WindowsService.Primary_output</td><td/><td/><td>_59EF1725_E5D2_4B3A_8A28_05962D9FA63D_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>AutoX.WindowsService.Primary_output1</td><td/><td/><td>_0684D64C_2D9C_461D_968B_EAD9BBB97213_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>AutoX.WindowsService.Primary_output2</td><td/><td/><td>_1FCD7E2E_D152_4C7C_B01A_6F3EAE77CC6A_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>AutoX.WindowsService.Primary_output3</td><td/><td/><td>_0798CE44_7893_4480_93FD_50FAB6670D80_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISO19770_LocalTag</td><td/><td/><td>_99417B90_0334_4647_B5FC_FC305791A817_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISO19770_SystemTag</td><td/><td/><td>_990468C3_D1B1_42C5_A1F8_C1618F1C10F9_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT</td><td/><td/><td>_0FF984C1_AE3D_42AD_B346_DAA64B969859_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT1</td><td/><td/><td>_9CC9DFDB_C3E1_4744_92CB_A969FFB6E752_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>log4net.dll</td><td/><td/><td>_CFD5755D_D693_4920_9D2B_B213D5F180AB_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>log4net.dll2</td><td/><td/><td>_A85A58E5_5CDD_4544_BA3C_85790691D26B_FILTER</td><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="ISCustomActionReference">
@@ -2359,6 +2428,12 @@
 		<col def="S255">Value</col>
 		<col def="S255">TestValue</col>
 		<col def="i4">Type</col>
+		<row><td>AutoX.Activities</td><td>AutoX.Activities\AutoX.Activities.csproj</td><td/><td>2</td></row>
+		<row><td>AutoX.Basic</td><td>AutoX.Basic\AutoX.Basic.csproj</td><td/><td>2</td></row>
+		<row><td>AutoX.Client.Core</td><td>AutoX.Client.Core\AutoX.Client.Core.csproj</td><td/><td>2</td></row>
+		<row><td>AutoX.Comm</td><td>AutoX.Comm\AutoX.Comm.csproj</td><td/><td>2</td></row>
+		<row><td>AutoX.DB</td><td>AutoX.DB\AutoX.DB.csproj</td><td/><td>2</td></row>
+		<row><td>AutoX.WF.Core</td><td>AutoX.WF.Core\AutoX.WF.Core.csproj</td><td/><td>2</td></row>
 		<row><td>AutoX.Web</td><td>AutoX.Web\AutoX.Web.csproj</td><td/><td>2</td></row>
 		<row><td>AutoX.WindowsService</td><td>AutoX.WindowsService\AutoX.WindowsService.csproj</td><td/><td>2</td></row>
 		<row><td>CommonFilesFolder</td><td/><td/><td>1</td></row>
@@ -4030,7 +4105,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>ISTheme</td><td>InstallShield Blue.theme</td></row>
 		<row><td>ISUSLock</td><td>{C8BDFF89-E8CD-43C8-83ED-75388999D0E3}</td></row>
 		<row><td>ISUSSignature</td><td>{6DFF2F50-9937-409B-9B7B-C4099C6BCAE2}</td></row>
-		<row><td>ISVisitedViews</td><td>viewAssistant,viewSetupTypes,viewServices,viewProject,viewRealSetupDesign,viewAppFiles,viewSetupDesign</td></row>
+		<row><td>ISVisitedViews</td><td>viewAssistant,viewSetupTypes,viewServices,viewProject,viewRealSetupDesign,viewAppFiles,viewSetupDesign,viewUI</td></row>
 		<row><td>Limited</td><td>1</td></row>
 		<row><td>LockPermissionMode</td><td>1</td></row>
 		<row><td>MsiExecCmdLineOptions</td><td/></row>

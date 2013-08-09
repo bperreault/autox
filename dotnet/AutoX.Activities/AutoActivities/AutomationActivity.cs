@@ -46,6 +46,18 @@ namespace AutoX.Activities.AutoActivities
             get { return _variables; }
         }
 
+        protected string _author;
+        [DisplayName(@"Authors")]
+        public string Authors
+        {
+            get { return _author; }
+            set
+            {
+                if (string.IsNullOrEmpty(_author)) _author = value;
+                else if(!_author.Contains(value)) _author = _author +","+ value ;
+            }
+        }
+
         [DisplayName(@"Enabled")]
         [DefaultValue(true)]
         public bool Enabled
