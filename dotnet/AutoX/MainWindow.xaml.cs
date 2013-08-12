@@ -27,7 +27,7 @@ namespace AutoX
     /// </summary>
     public partial class MainWindow : IHost
     {
-        private readonly Config _config = Configuration.Clone();
+        private Config _config = Configuration.Clone();
         private readonly string _currentWindowsUser = Environment.UserName;
 
         public MainWindow()

@@ -22,16 +22,19 @@ namespace AutoX
         public InfoDialog()
         {
             InitializeComponent();
+            
         }
 
+        private string _infoContent;
         public string InfoContent
         {
-            get { return infomationContent.Text.Trim(); }
-            set { infomationContent.Text = value; }
+            get { return _infoContent; }
+            set { _infoContent = value.Trim(); infomationContent.Text = _infoContent; }
         }
 
         private void OkButtonClick(object sender, RoutedEventArgs e)
         {
+            _infoContent = infomationContent.Text.Trim();
             DialogResult = true;
         }
 

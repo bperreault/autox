@@ -401,6 +401,7 @@ namespace AutoX.Client.Core
                 {
                     Environment.SetEnvironmentVariable("webdriver.ie.driver",
                         Directory.GetCurrentDirectory() + "\\IEDriverServer64.exe");
+                    if (!File.Exists(Directory.GetCurrentDirectory() + "\\IEDriverServer.exe"))
                     File.Copy(Directory.GetCurrentDirectory() + "\\IEDriverServer64.exe",
                         Directory.GetCurrentDirectory() + "\\IEDriverServer.exe");
                 }
@@ -409,6 +410,7 @@ namespace AutoX.Client.Core
                 {
                     Environment.SetEnvironmentVariable("webdriver.ie.driver",
                         Directory.GetCurrentDirectory() + "\\IEDriverServer32.exe");
+                    if (!File.Exists(Directory.GetCurrentDirectory() + "\\IEDriverServer.exe"))
                     File.Copy(Directory.GetCurrentDirectory() + "\\IEDriverServer32.exe",
                         Directory.GetCurrentDirectory() + "\\IEDriverServer.exe");
                 }

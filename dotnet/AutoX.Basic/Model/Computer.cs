@@ -31,6 +31,8 @@ namespace AutoX.Basic.Model
 
         public DateTime Updated { get; set; }
 
+        public string DefaultURL { get; set; }
+
         public string _parentId { get; set; }
 
         public static Computer GetLocalHost()
@@ -74,6 +76,10 @@ namespace AutoX.Basic.Model
             {
                 ret.SetAttributeValue("Version", Version);
             }
+            if (!string.IsNullOrEmpty(DefaultURL))
+            {
+                ret.SetAttributeValue("DefaultURL", DefaultURL);
+            }
             return ret;
         }
 
@@ -88,7 +94,8 @@ namespace AutoX.Basic.Model
                 ComputerName = xComputer.GetAttributeValue("ComputerName"),
                 IPAddress = xComputer.GetAttributeValue("IPAddress"),
                 Version = xComputer.GetAttributeValue("Version"),
-                Status = xComputer.GetAttributeValue("Status")
+                Status = xComputer.GetAttributeValue("Status"),
+                DefaultURL = xComputer.GetAttributeValue("DefaultURL")
             };
 
             return computer;

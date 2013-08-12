@@ -117,6 +117,11 @@ namespace AutoX.Basic
                 if (app.Settings[key.ToString()] == null)
                     app.Settings.Add(key.ToString(), Settings(key.ToString(), key.ToString()));
                 app.Settings[key.ToString()].Value = Settings(key.ToString(), key.ToString());
+                //ConfigurationManager.AppSettings.Set(key.ToString(),app.Settings[key.ToString()].Value);
+            }
+            foreach (var s in app.Settings.AllKeys)
+            {
+                ConfigurationManager.AppSettings.Set(s,app.Settings[s].Value);
             }
 
             //Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);

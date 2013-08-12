@@ -36,6 +36,7 @@ namespace AutoX.Client.Core
         {
             if (uiObj == null)
                 return;
+            
             UIObject = Browser.GetWebElement(uiObj);
         }
 

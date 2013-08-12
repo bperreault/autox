@@ -1,19 +1,18 @@
 ﻿<Window x:Class="AutoX.InfoDialog" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="Infomation" Margin="5" ResizeMode="NoResize"
-        SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen">
-    <Grid>
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" Title="Infomation" Margin="5"  
+         WindowStartupLocation="CenterScreen" Height="110" Width="300">
+    <Grid >
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="2.5*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="4*" />
+            <RowDefinition Height="2*" />
             <RowDefinition Height="2*" />
         </Grid.RowDefinitions>
         <Label Grid.Column="0" Grid.Row="0" Margin="5" Content="Information:" />
-        <TextBox Grid.Column="1" Grid.Row="0" Name="infomationContent" BorderThickness="2" TextWrapping="Wrap"
-                 AcceptsReturn="True" AcceptsTab="True" Margin="5" />
-        <StackPanel Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="1" Orientation="Horizontal">
+        <TextBox Grid.Column="1" Grid.Row="0" Name="infomationContent" BorderThickness="2"  Margin="5" IsReadOnly="False" />
+        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
             <Button Name="OkButton" IsDefault="True" Width="80" Click="OkButtonClick" Margin="5">OK</Button>
             <Button Name="CancelButton" IsCancel="True" Width="80" Click="CancelButtonClick" Margin="5">Cancel</Button>
         </StackPanel>

@@ -27,6 +27,8 @@ namespace AutoX.Basic.Model
 
         public string ClientId { get; set; }
 
+        public string DefaultURL { get; set; }
+
         public string Language { get; set; }
 
         public string ScriptGUID { get; set; }

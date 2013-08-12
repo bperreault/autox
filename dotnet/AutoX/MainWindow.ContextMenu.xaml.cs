@@ -4,6 +4,8 @@
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
+using System.Activities.Expressions;
+using System.Security.Policy;
 using System.Threading.Tasks;
 using AutoX.FeatureToggles;
 
@@ -67,13 +69,24 @@ namespace AutoX
             }
         }
 
-        private void StartBrowser(object sender, RoutedEventArgs e)
+        private  void StartBrowser(object sender, RoutedEventArgs e)
         {
-            _autoClient.Browser.StartBrowser();
+            var urlDialog = new InfoDialog { Title = "Set the URL for Browser", InfoContent = _config.Get("DefaultURL") };
+            
+            urlDialog.ShowDialog();
+            if (urlDialog.DialogResult != true) return;
+            _config.Set("DefaultURL",urlDialog.InfoContent);
+            _autoClient.Browser = new Browser(_config);
+             Task.Factory.StartNew(() => _autoClient.Browser.StartBrowser());
         }
 
         private void GetUIObjectsSaveToFile(object sender, RoutedEventArgs e)
         {
+            var urlDialog = new InfoDialog { Title = "Set the URL for Browser", InfoContent = _config.Get("DefaultURL") };
+            urlDialog.ShowDialog();
+            if (urlDialog.DialogResult != true) return;
+            _config.Set("DefaultURL", urlDialog.InfoContent);
+            _autoClient.Browser = new Browser(_config);
             var uiObjectsString = _autoClient.Browser.GetAllValuableObjects();
             var fileDialog = new SaveFileDialog
             {
@@ -86,12 +99,12 @@ namespace AutoX
             File.WriteAllText(fileName, uiObjectsString);
         }
 
-        private void CloseBrowser(object sender, RoutedEventArgs e)
+        private async void CloseBrowser(object sender, RoutedEventArgs e)
         {
-            _autoClient.Browser.CloseBrowser();
+            await Task.Factory.StartNew(() => _autoClient.Browser.CloseBrowser());
         }
 
-        private void RunSauceTest(object sender, RoutedEventArgs e)
+        private async void RunSauceTest(object sender, RoutedEventArgs e)
         {
             var saucelabFeature = new SaucelabFeature();
             if (!saucelabFeature.FeatureEnabled)
@@ -120,7 +133,7 @@ namespace AutoX
             PopupBrowsersDialogSetDefaultConfig();
             _config.Set("HostType", "Sauce");
             _autoClient = new AutoClient(_config);
-            RunWorkflowById(workflowId);
+            await Task.Factory.StartNew(() => RunWorkflowById(workflowId));
             //when finished, show a message
             MessageBox.Show("Your Test finished.");
         }
@@ -152,8 +165,13 @@ namespace AutoX
         private async Task RunTestLocally(string workflowId)
         {
             /**********This is a simple instance***********/
+            var urlDialog = new InfoDialog { Title = "Set the URL for Browser", InfoContent = _config.Get("DefaultURL") };
+            urlDialog.ShowDialog();
+            if (urlDialog.DialogResult != true) return;
+            _config.Set("DefaultURL", urlDialog.InfoContent);
+            _autoClient.Browser = new Browser(_config);
             _autoClient.Config.Set("HostType", "Local");
-            RunWorkflowById(workflowId);
+            await Task.Factory.StartNew(() =>  RunWorkflowById(workflowId));
             /***********end of instance*******************/
         }
 
@@ -163,6 +181,7 @@ namespace AutoX
             {
                 ClientId = _config.Get(Constants._ID, Guid.NewGuid().ToString())
             };
+            Log.Debug(workflowInstance.ToXElement().ToString());
             ClientInstancesManager.GetInstance().Register(_config.SetRegisterBody(XElement.Parse("<Register />")));
             workflowInstance.Start();
             var debugMode = _config.Get("ModeDebug", "True").Equals("True", StringComparison.CurrentCultureIgnoreCase);
@@ -221,6 +240,7 @@ namespace AutoX
                 Configuration.Set(name, value);
             }
             Configuration.SaveSettings();
+            _config = Configuration.Clone();
         }
 
         private void CreateSuite(object sender, RoutedEventArgs e)

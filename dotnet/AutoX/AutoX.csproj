@@ -187,6 +187,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Readme.rtf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\activate_task.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

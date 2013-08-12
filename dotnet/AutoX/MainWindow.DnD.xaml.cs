@@ -240,6 +240,7 @@ namespace AutoX
                 _id = Guid.NewGuid().ToString(),
                 ScriptGUID = data.GetAttributeValue(Constants._ID),
                 SuiteName = data.GetAttributeValue(Constants.NAME),
+                DefaultURL = client.DefaultURL,
                 Status = "Ready",
                 TestName = "NewTest"
             };

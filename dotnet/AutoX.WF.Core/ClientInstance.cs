@@ -36,6 +36,7 @@ namespace AutoX.WF.Core
             _element.SetAttributeValue("Status", Status);
             _element.SetAttributeValue("Created", Created.ToString(CultureInfo.InvariantCulture));
             _element.SetAttributeValue("Updated", Updated.ToString(CultureInfo.InvariantCulture));
+            Log.Debug("A new Client Instance created:\n"+_element.ToString(SaveOptions.None));
         }
 
         public string Name { set; get; }

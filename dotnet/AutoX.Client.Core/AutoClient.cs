@@ -35,6 +35,7 @@ namespace AutoX.Client.Core
         public Browser Browser
         {
             get { return _browser ?? (_browser = new Browser(Config)); }
+            set { _browser = value; }
         }
 
         public void Dispose()

@@ -47,9 +47,12 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="WebDriver, Version=2.33.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="WebDriver, Version=2.34.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Selenium.WebDriver.2.33.0\lib\net40\WebDriver.dll</HintPath>
+      <HintPath>..\packages\Selenium.WebDriver.2.34.0\lib\net40\WebDriver.dll</HintPath>
+    </Reference>
+    <Reference Include="WebDriver.Support">
+      <HintPath>..\packages\Selenium.Support.2.34.0\lib\net40\WebDriver.Support.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -62,13 +65,19 @@
     <Compile Include="Close.cs" />
     <Compile Include="Command.cs" />
     <Compile Include="Enter.cs" />
+    <Compile Include="Existed.cs" />
     <Compile Include="FeatureToggles\SampleFeatureToggle.cs" />
+    <Compile Include="GetValue.cs" />
     <Compile Include="IAction.cs" />
+    <Compile Include="NotExisted.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SauceDriver.cs" />
+    <Compile Include="Select.cs" />
     <Compile Include="SetEnv.cs" />
     <Compile Include="Start.cs" />
     <Compile Include="StepResult.cs" />
+    <Compile Include="VerifyTable.cs" />
+    <Compile Include="VerifyValue.cs" />
     <Compile Include="Wait.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -87,6 +96,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="chromedriver.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="IEDriverServer32.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="IEDriverServer64.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
