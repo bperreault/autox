@@ -18,10 +18,13 @@ namespace AutoX.Basic
     {
         XElement GetDataObject(string id);
 
+        Config GetConfig();
+
         void SetCommand(XElement steps);
 
         void Stop();
 
         XElement GetResult();
+        
     }
 }

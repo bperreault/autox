@@ -38,6 +38,13 @@ namespace AutoX
             return DBFactory.GetData().Read(id);
         }
 
+        public Config GetConfig()
+        {
+            var _config = Configuration.Clone();
+            
+            return _config;
+        }
+
         private bool BeforeActionCheck(TreeView treeView, string action, string objName)
         {
             var selected = (TreeViewItem) treeView.SelectedItem;

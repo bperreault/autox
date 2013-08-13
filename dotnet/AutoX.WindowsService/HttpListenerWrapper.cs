@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net;
+using System.Runtime.Remoting;
+using System.Runtime.Remoting.Lifetime;
 using System.Web;
 using AutoX.Basic;
 
@@ -30,10 +33,13 @@ namespace AutoX.WindowsService
         }
         public void ProcessRequest()
         {
+            var lease = (ILease) RemotingServices.GetLifetimeService(this);
+            Debug.Assert(lease.CurrentState==LeaseState.Active);
+            lease.Renew(TimeSpan.FromMinutes(30));
             var ctx = _listener.GetContext();
             var workerRequest =
                 new HttpListenerWorkerRequest(ctx, _virtualDir, _physicalDir);
-            Log.Debug("Virtual Path:"+_virtualDir+" Physical Path:"+_physicalDir);
+            //Log.Debug("Virtual Path:"+_virtualDir+" Physical Path:"+_physicalDir);
             HttpRuntime.ProcessRequest(workerRequest);
         }
     }

@@ -39,7 +39,7 @@ namespace AutoX.Activities.AutoActivities
             set
             {
                 _testCaseName = value;
-                DisplayName = "Call Test Case: " + _testCaseName;
+                DisplayName = "Call Test Case " + _testCaseName;
             }
         }
 

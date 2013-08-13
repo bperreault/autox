@@ -86,6 +86,8 @@ namespace AutoX.WF.Core
 
         public string ScriptGUID { get; set; }
 
+        public string DefaultURL { get; set; }
+
         public Dictionary<string, string> Variables
         {
             get { return _variables; }
@@ -119,6 +121,18 @@ namespace AutoX.WF.Core
         public XElement GetDataObject(string id)
         {
             return DBFactory.GetData().Read(id);
+        }
+
+        public Config GetConfig()
+        {
+            var _config = Configuration.Clone();
+            foreach (var variable in Variables)
+            {
+                _config.Set(variable.Key,variable.Value);
+            }
+            _config.Set("DefaultURL", DefaultURL);
+            
+            return _config;
         }
 
         public void SetCommand(XElement steps)
@@ -275,7 +289,7 @@ namespace AutoX.WF.Core
                         case ActivityInstanceState.Faulted:
                             Log.Error("workflow [" + activity.Id + "] " + activity.DisplayName +
                                       " stopped! Error Message:\n" + e.TerminationException.GetType().FullName + "\n" +
-                                      e.TerminationException.Message);
+                                      e.TerminationException.Message+"\n"+e.TerminationException.StackTrace);
                             Status = "Terminated";
                             ClientInstancesManager.GetInstance().GetComputer(ClientId).Status = "Ready";
                             break;

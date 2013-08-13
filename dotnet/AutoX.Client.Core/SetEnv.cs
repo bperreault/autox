@@ -10,6 +10,7 @@ namespace AutoX.Client.Core
     {
         public override XElement Act()
         {
+            
             var sr = new StepResult(this);
 
             return sr.GetResult();

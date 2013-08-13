@@ -4,6 +4,8 @@
 // Created @2012 09 18 14:34
 // Last Updated  by Huang, Jien @2012 09 18 14:34
 
+using System;
+
 #region
 
 using System.Activities;
@@ -44,7 +46,7 @@ namespace AutoX.Activities.AutoActivities
             set
             {
                 _name = value;
-                DisplayName = "Suite: " + _name;
+                DisplayName = "Suite " + _name;
             }
         }
 
@@ -102,6 +104,19 @@ namespace AutoX.Activities.AutoActivities
             {
                 setEnv.SetAttributeValue(propertyDescriptor.Name, propertyDescriptor.GetValue(context.DataContext));
             }
+            var _config = Host.GetConfig();
+            foreach (var variable in _config.GetList())
+            {
+                try
+                {
+                    setEnv.SetAttributeValue(variable.Key, variable.Value);
+                }
+                catch (Exception e)
+                {
+                    Log.Warn("Set Env attributes setting failed: key["+variable.Key+"] value["+variable.Value+"]");
+                }
+                
+            }
             steps.Add(setEnv);
             Host.SetCommand(steps);
             Host.GetResult();
@@ -111,6 +126,7 @@ namespace AutoX.Activities.AutoActivities
             SetVariablesBeforeRunning(context);
             InternalExecute(context, null);
             SetFinalResult();
+            
         }
 
         private void InternalExecute(NativeActivityContext context, ActivityInstance instance)

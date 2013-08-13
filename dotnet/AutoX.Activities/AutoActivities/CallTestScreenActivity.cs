@@ -39,7 +39,7 @@ namespace AutoX.Activities.AutoActivities
             set
             {
                 _testScreenName = value;
-                DisplayName = "Call Test Screen: " + _testScreenName;
+                DisplayName = "Call Test Screen " + _testScreenName;
                 NotifyPropertyChanged("TestScreenName");
                 NotifyPropertyChanged("DisplayName");
             }
@@ -193,10 +193,12 @@ namespace AutoX.Activities.AutoActivities
                 var step = XElement.Parse("<Step />");
 
                 step.SetAttributeValue(Constants.ACTION, action);
+                var defaultData = descendant.GetAttributeValue(Constants.DEFAULT_DATA);
+                
                 var dataref = descendant.GetAttributeValue(Constants.DATA);
+
                 if (string.IsNullOrEmpty(dataref))
                 {
-                    var defaultData = descendant.GetAttributeValue(Constants.DEFAULT_DATA);
                     if (!string.IsNullOrEmpty(defaultData))
                         step.SetAttributeValue(Constants.DATA, defaultData);
                 }
@@ -228,7 +230,8 @@ namespace AutoX.Activities.AutoActivities
                                 }
                             }
                             if (!found)
-                                step.SetAttributeValue(Constants.DATA, "");
+                                step.SetAttributeValue(Constants.DATA,
+                                    !string.IsNullOrEmpty(defaultData) ? defaultData : "");
                         }
                     }
                 }

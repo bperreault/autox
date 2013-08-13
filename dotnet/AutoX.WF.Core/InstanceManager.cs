@@ -27,6 +27,7 @@ namespace AutoX.WF.Core
             var _1StNode = ((XElement) instanceInfo.FirstNode);
             //var name = instanceInfo.GetAttributeValue("TestName");
             var scriptGuid = _1StNode.GetAttributeValue("ScriptGUID");
+            var defaultURL = _1StNode.GetAttributeValue("DefaultURL");
             //var clientId = _1StNode.GetAttributeValue("ClientId");
             var guid = _1StNode.GetAttributeValue(Constants._ID);
             //var status = instanceInfo.GetAttributeValue("Status");

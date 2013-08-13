@@ -40,6 +40,7 @@ namespace AutoX.WindowsService
             Process.GetCurrentProcess().Kill();
             _pump.Abort();
             _pump.Join();
+            
         }
 
         private void Pump()

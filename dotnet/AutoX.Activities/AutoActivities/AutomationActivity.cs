@@ -177,7 +177,10 @@ namespace AutoX.Activities.AutoActivities
             Result.SetAttributeValue("Original", ret);
             Result.SetAttributeValue("Final", ret);
             DBFactory.GetData().Save(Result);
-
+            var topResult = DBFactory.GetData().Read(ParentResultId);
+            topResult.SetAttributeValue("Original", ret);
+            topResult.SetAttributeValue("Final", ret);
+            DBFactory.GetData().Save(topResult);
         }
 
         public void SetHost(IHost host)

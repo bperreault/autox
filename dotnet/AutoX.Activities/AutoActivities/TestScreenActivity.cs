@@ -38,7 +38,7 @@ namespace AutoX.Activities.AutoActivities
             set
             {
                 _name = value;
-                DisplayName = "Screen: " + _name;
+                DisplayName = "Screen " + _name;
                 NotifyPropertyChanged("Steps");
             }
         }
