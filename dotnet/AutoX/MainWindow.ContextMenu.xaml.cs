@@ -376,6 +376,10 @@ namespace AutoX
         //    string resultId = Configuration.Settings("ResultsRoot", "0020020000002");
 
         //}
+        private void ExportOnResultTree(object sender, RoutedEventArgs e)
+        {
+             ExportResultTask(TestResultTree);
+        }
 
         private void DeleteOnProjectTree(object sender, RoutedEventArgs e)
         {

@@ -31,8 +31,6 @@ namespace AutoX.WindowsService
         {
             _context.Response.OutputStream.Close();
             _context.Response.Close();
-
-            //TODO watch this !!! _context.Close();
         }
         public override void FlushResponse(bool finalFlush)
         {
@@ -107,8 +105,6 @@ namespace AutoX.WindowsService
         // additional overrides
         public override void CloseConnection()
         {
-            //TODO Watch this !!! _context.Close();
-
             EndOfRequest();
         }
         public override string GetAppPath()
@@ -154,7 +150,7 @@ namespace AutoX.WindowsService
         }
         public override string GetServerVariable(string name)
         {
-            // TODO: vet this list
+            //vet this list
             switch (name)
             {
                 case "HTTPS":
@@ -167,7 +163,7 @@ namespace AutoX.WindowsService
         }
         public override string GetFilePath()
         {
-            // TODO: this is a trick
+            // this is a trick
             var s = _context.Request.Url.LocalPath;
             //Log.Debug("LocalPath:"+s);
             if (s.IndexOf(".aspx", StringComparison.Ordinal) != -1)

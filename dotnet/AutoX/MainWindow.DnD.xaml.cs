@@ -57,7 +57,7 @@ namespace AutoX
 
         private void TreeViewDrop(object sender, DragEventArgs e)
         {
-            //TODO drag and drop error, target and source are reversed
+            
             try
             {
                 e.Effects = DragDropEffects.None;

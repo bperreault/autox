@@ -32,7 +32,7 @@ namespace AutoX.Activities.AutoActivities
             set
             {
                 _testSuiteName = value;
-                DisplayName = "Call Test Suite " + _testSuiteName;
+                DisplayName = "Call Test Suite: " + _testSuiteName;
             }
         }
 

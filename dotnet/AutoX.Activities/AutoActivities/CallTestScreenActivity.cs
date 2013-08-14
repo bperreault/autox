@@ -39,7 +39,7 @@ namespace AutoX.Activities.AutoActivities
             set
             {
                 _testScreenName = value;
-                DisplayName = "Call Test Screen " + _testScreenName;
+                DisplayName = "Call Test Screen: " + _testScreenName;
                 NotifyPropertyChanged("TestScreenName");
                 NotifyPropertyChanged("DisplayName");
             }

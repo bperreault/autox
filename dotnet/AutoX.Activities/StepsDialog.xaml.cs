@@ -49,17 +49,16 @@ namespace AutoX.Activities
             var steps = Utilities.GetStepsList(p, Actions, Host);
             var current = StepsTable.ItemsSource as ArrayList;
 
-            //TODO add new things and remove something
+            //add new things and remove something
             var newList = new ArrayList();
-            foreach (Step currentStep in current)
-            {
-                if (InSteps(currentStep, steps))
+            if (current != null)
+                foreach (var currentStep in current.Cast<Step>().Where(currentStep => InSteps(currentStep, steps)))
+                {
                     newList.Add(currentStep);
-            }
-            foreach (Step original in steps)
+                }
+            foreach (var original in steps.Cast<Step>().Where(original => !InSteps(original, newList)))
             {
-                if (!InSteps(original, newList))
-                    newList.Add(original);
+                newList.Add(original);
             }
             StepsTable.ItemsSource = newList;
         }

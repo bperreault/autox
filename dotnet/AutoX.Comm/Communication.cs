@@ -17,7 +17,7 @@ namespace AutoX.Comm
     {
         private static Communication _instance;
         private static readonly ServiceSoapClient Client = new ServiceSoapClient();
-
+        
         public Communication()
         {
             _instance = this;
@@ -79,9 +79,14 @@ namespace AutoX.Comm
             Client.Open();
         }
 
+        public string LastOutMessage { get; set; }
+        public string LastInMessage { get; set; }
+
         public string Command(string xmlFormatCommand)
         {
+            LastOutMessage = xmlFormatCommand;
             var ret = Client.Command(xmlFormatCommand);
+            LastInMessage = ret;
             return ret;
         }
 

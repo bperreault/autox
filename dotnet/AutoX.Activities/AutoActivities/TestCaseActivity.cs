@@ -47,7 +47,7 @@ namespace AutoX.Activities.AutoActivities
             set
             {
                 _name = value;
-                DisplayName = "Case " + _name;
+                DisplayName = "Case: " + _name;
             }
         }
 

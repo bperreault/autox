@@ -44,7 +44,7 @@ namespace AutoX
             var head = new StackPanel {Orientation = Orientation.Horizontal};
             Image image = null;
             var text = new TextBlock();
-//TODO ScriptType->Type->type->_Type
+            // ScriptType->Type->type->_Type
             var type = xElement.GetIconType();
             var name = xElement.GetAttributeValue(Constants.NAME);
 
@@ -110,61 +110,6 @@ namespace AutoX
             tree.Visibility = visible ? Visibility.Visible : Visibility.Collapsed;
 
             return visible;
-        }
-
-        private static string GetNTab(int n)
-        {
-            var tab = "";
-            for (var i = 0; i < n; i++)
-            {
-                tab += "\t";
-            }
-            return tab;
-        }
-
-        public static string GetSimpleDescriptionFromXElement(this XElement element)
-        {
-            return element.GetSimpleDescriptionFromXElement(0);
-        }
-
-        public static string GetSimpleDescriptionFromXElement(this XElement element, int level)
-        {
-            if (element == null)
-                return "element is null!";
-            var result = "";
-            result += GetNTab(level) + element.Name;
-            if (!String.IsNullOrEmpty(element.Value))
-            {
-                result += " : [" + element.Value + "] ";
-            }
-            result += "\n";
-            result = element.Attributes().Aggregate(result,
-                (current, xa) =>
-                    current + (GetNTab(level + 1) 
-                    + xa.Name + "=" 
-                    + (xa.Value.Length>64? xa.Value.Substring(0,32)+" ... ": xa.Value) + "\n"));
-            if (result.Length > 1024)
-                return result.Substring(0, 1000) + " ...";
-            foreach (var xe in element.Descendants())
-            {
-                result += GetSimpleDescriptionFromXElement(xe, level + 1);
-                if (result.Length > 1024)
-                    return result.Substring(0, 1000) + " ...";
-            }
-            if (result.Length > 1024)
-                return result.Substring(0, 1000) + " ...";
-            return result;
-        }
-
-        public static string GetText(this XElement element)
-        {
-            if (element == null)
-                return "Element is NULL";
-            var retString = element.Name + "\n";
-            if (!string.IsNullOrWhiteSpace(element.Value))
-                retString += element.Value + "\n";
-            return element.Attributes().Aggregate(retString,
-                (current, a) => current + (" " + a.Name + " : " + a.Value + "\n"));
         }
     }
 }

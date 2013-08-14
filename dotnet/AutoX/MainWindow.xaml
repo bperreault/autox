@@ -295,6 +295,7 @@
                                     <MenuItem Header="Reload" Click="ReloadOnResultTree" />
                                     <MenuItem Header="Update" Click="EditOnResultTree" />
                                     <MenuItem Header="Delete" Click="DeleteOnResultTree" />
+                                    <MenuItem Header="Export" Click="ExportOnResultTree" />
                                 </ContextMenu>
                             </TreeView.ContextMenu>
                         </TreeView>

@@ -39,7 +39,7 @@ namespace AutoX.Activities.AutoActivities
             set
             {
                 _testCaseName = value;
-                DisplayName = "Call Test Case " + _testCaseName;
+                DisplayName = "Call Test Case: " + _testCaseName;
             }
         }
 
@@ -54,7 +54,7 @@ namespace AutoX.Activities.AutoActivities
             set
             {
                 _userData = value;
-                NotifyPropertyChanged("UserData");
+                NotifyPropertyChanged(@"UserData");
             }
         }
 
@@ -69,17 +69,6 @@ namespace AutoX.Activities.AutoActivities
 
         protected override void Execute(NativeActivityContext nativeActivityContext)
         {
-            //TODO implement it!!!
-            //invoke a test suite here
-            /*
-                        Logger.GetInstance().Log().Debug("in CallTestCase, before Executing Test Case: " + TestCaseName);
-                        var screen = DBManager.GetInstance().FindOneDataFromDB(TestCaseId) as Script;
-                        if (screen == null) return;
-                        var activity = ActivityXamlServices.Load(new StringReader(screen.Content));
-                        ((IPassData) activity).PassData(InstanceId, UserData);
-                        WorkflowInvoker.Invoke(activity);
-                        result = ((IPassData) activity).GetResult();
-            */
             SetVariablesBeforeRunning(nativeActivityContext);
             var screen = Host.GetDataObject(TestCaseId);
             if (screen == null) return;

@@ -46,7 +46,7 @@ namespace AutoX.Activities.AutoActivities
             set
             {
                 _name = value;
-                DisplayName = "Suite " + _name;
+                DisplayName = "Suite: " + _name;
             }
         }
 
@@ -107,13 +107,15 @@ namespace AutoX.Activities.AutoActivities
             var _config = Host.GetConfig();
             foreach (var variable in _config.GetList())
             {
+                if(variable.Key.Contains(":"))
+                    continue;
                 try
                 {
                     setEnv.SetAttributeValue(variable.Key, variable.Value);
                 }
                 catch (Exception e)
                 {
-                    Log.Warn("Set Env attributes setting failed: key["+variable.Key+"] value["+variable.Value+"]");
+                    Log.Warn("Set Env attributes setting failed: key["+variable.Key+"] value["+variable.Value+"]\n"+e.Message);
                 }
                 
             }
@@ -126,7 +128,6 @@ namespace AutoX.Activities.AutoActivities
             SetVariablesBeforeRunning(context);
             InternalExecute(context, null);
             SetFinalResult();
-            
         }
 
         private void InternalExecute(NativeActivityContext context, ActivityInstance instance)

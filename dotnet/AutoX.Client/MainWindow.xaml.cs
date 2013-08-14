@@ -4,11 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Xml.Linq;
 using AutoX.Basic;
 using AutoX.Client.Core;
+using AutoX.Comm;
 using Microsoft.Win32;
 
 #endregion
@@ -207,10 +210,18 @@ namespace AutoX.Client
             Close();
         }
 
-        private void NotificationAreaIconMouseClick(object sender, MouseButtonEventArgs e)
+        private async void NotificationAreaIconMouseClick(object sender, MouseButtonEventArgs e)
         {
-            //TODO have not decided what to do on it
-            //MessageBox.Show(_lastMessage);
+            /**** interesting code, don't remove it
+            await Task.Factory.StartNew(() =>
+            {
+               MessageBox.Show( 
+                "Last Sent Out Messagae:\n" +
+                XElement.Parse(Communication.GetInstance().LastOutMessage).GetSimpleDescriptionFromXElement() +
+                "\nLast Received Message:\n" +
+                XElement.Parse(Communication.GetInstance().LastOutMessage).GetSimpleDescriptionFromXElement());
+            });
+            ***/
         }
 
         private void OnMenuItemStartClick(object sender, EventArgs e)

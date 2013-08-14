@@ -5,9 +5,10 @@
         Icon="pack://siteoforigin:,,,/Resources/Project.jpg">
 
     <Grid>
-        <local:NotificationAreaIcon Text="Automation Client" ToolTip="Automation Client" x:Name="NotifyIcon"
+        <local:NotificationAreaIcon Text="Automation Client" ToolTip="Automation Client" x:Name="NotifyIcon" ToolTipService.ShowDuration="5000"
                                     Icon="pack://siteoforigin:,,,/Resources/NotificationAreaIcon.ico" MouseDoubleClick="OnNotificationAreaIconDoubleClick"
                                     MouseClick="NotificationAreaIconMouseClick">
+            
 
             <local:NotificationAreaIcon.MenuItems>
                 <forms:MenuItem Text="Open" Click="OnMenuItemOpenClick" DefaultItem="True" />
