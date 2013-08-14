@@ -246,7 +246,10 @@ namespace AutoX
                         ret += "<td>"+data+"</td>";
                         ret += "<td align=\"center\" style=\"color:" + colour + "\">" + result.ToUpper() + "</td>";
                         ret += "<td align=\"right\" title=\"Start At:" + starttime+"&#10End At:"+endtime + "\">" + duration + "</td>";
-                        ret += "<td><a href=\"#\" onclick=\"javascript:popUpWindow(this)\" snapshot=\""+snapshot+"\">"+reason+"</a></td>";
+                        if(snapshot.length>100)
+                          ret += "<td><a href=\"#\" onclick=\"javascript:popUpWindow(this)\" snapshot=\""+snapshot+"\">"+reason+"</a></td>";
+                        else
+                          ret += "<td>"+reason+"</td>";
                         ret += "</tr>";
                     }
                     //add table footer
