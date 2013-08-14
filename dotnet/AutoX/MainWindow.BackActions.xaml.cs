@@ -1,4 +1,4 @@
-﻿#region
+ #region
 
 // Hapa Project, CC
 // Created @2012 08 24 09:25
@@ -203,7 +203,7 @@ namespace AutoX
                 var updated = xElement.GetAttributeValue("Updated");
                 var color = final.Equals("Success") ? "GREEN" : "RED";
                 var ret =
-                    "<li><span title=\"Start:" + created + "&#10End:" + updated + "\"   onclick=\"ShowOrUnShow(this)\"> " + name + " </span> <span title=\"Original:" + origianl + "&#10Final:" + final + "\" style=\"color:" + color + "\" > " + final + " </span><ul>";
+                    "<li><span title=\"Start:" + created + "&#10End:" + updated + "\"   onclick=\"ShowOrUnShow(this)\"> " + name + " </span> <span title=\"Original:" + origianl + "&#10Final:" + final + "\" style=\"color:" + color + "\" > " + final + " </span><ul  style=\"display:none\">";
                 var children = DBFactory.GetData().GetChildren(toBeExportdId);
                 var kidTag =children.Descendants().First().Name.ToString();
                 if (kidTag.Equals("Result"))
