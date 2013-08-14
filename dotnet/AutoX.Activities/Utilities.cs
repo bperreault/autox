@@ -158,7 +158,7 @@ namespace AutoX.Activities
                         Authors = Environment.UserName,
                         TestSuiteId = data.GetAttributeValue(Constants._ID),
                         TestSuiteName = data.GetAttributeValue(Constants.NAME),
-                        TestSuiteDescription = data.GetAttributeValue("Description"),
+                        Description = data.GetAttributeValue("Description"),
                         DisplayName = "Call Test Suite: " + data.GetAttributeValue(Constants.NAME)
                     };
                     activity.SetHost(host);

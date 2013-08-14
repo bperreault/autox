@@ -73,6 +73,9 @@ namespace AutoX.Activities.AutoActivities
         [DisplayName(@"Local Data First")]
         public bool OwnDataFirst { get; set; }
 
+        [DisplayName(@"Description")]
+        public string Description { get; set; }
+
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -109,7 +112,7 @@ namespace AutoX.Activities.AutoActivities
 
         protected void SetVariablesBeforeRunning(NativeActivityContext context)
         {
-            foreach (string key in _upperVariables.Keys)
+            foreach (var key in _upperVariables.Keys)
             {
                 var value = _upperVariables[key];
                 if (ContainsVariableByContext(context, key))
@@ -156,6 +159,9 @@ namespace AutoX.Activities.AutoActivities
             Result.SetAttributeValue(Constants._TYPE, Constants.RESULT);
             Result.SetAttributeValue(Constants.NAME, DisplayName + " " + DateTime.Now.ToUniversalTime());
             Result.SetAttributeValue(SCRIPT_ID, Id);
+            Result.SetAttributeValue("Authors",Authors);
+            Result.SetAttributeValue("Description",Description);
+            
             //var ret = _result.GetAttributeValue(Constants.RESULT);
             //if (!string.IsNullOrEmpty(ret))
             //{

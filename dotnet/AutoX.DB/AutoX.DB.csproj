@@ -70,6 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BsonDocumentExt.cs" />
+    <Compile Include="DBUtils.cs" />
     <Compile Include="FeatureToggles\SampleFeatureToggle.cs" />
     <Compile Include="MongoData.cs" />
     <Compile Include="DBFactory.cs" />

@@ -42,9 +42,7 @@ namespace AutoX.Activities.AutoActivities
                 NotifyPropertyChanged("Steps");
             }
         }
-
-        public string Description { get; set; }
-
+        
         [DisplayName(@"Test Steps")]
         [Editor(typeof (StepsEditor), typeof (DialogPropertyValueEditor))]
         public string Steps

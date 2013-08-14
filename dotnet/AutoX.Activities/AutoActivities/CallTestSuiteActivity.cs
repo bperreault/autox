@@ -40,8 +40,7 @@ namespace AutoX.Activities.AutoActivities
         [Browsable(false)]
         public string TestSuiteId { get; set; }
 
-        [DisplayName(@"Description")]
-        public string TestSuiteDescription { get; set; }
+        
 
         #region IPassData Members
 

@@ -51,8 +51,6 @@ namespace AutoX.Activities.AutoActivities
             }
         }
 
-        public string Description { get; set; }
-
         [DisplayName(@"On Error")]
         public OnError ErrorLevel { get; set; }
 
