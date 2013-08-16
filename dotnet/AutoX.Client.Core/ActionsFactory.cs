@@ -86,15 +86,16 @@ namespace AutoX.Client.Core
             result.SetAttributeValue(Constants.INSTANCE_ID, instanceId);
             CopyAttribute(result, step, Constants.UI_ID);
             CopyAttribute(result, step, Constants.UI_OBJECT);
-            link = TakeSnapshot(browser, link, result);
             //result.SetAttributeValue(Constants._ID,xId);
             ret.Add(result);
-            if (!string.IsNullOrEmpty(link))
-                ret.SetAttributeValue(LINK, link);
             var stepResult = result.GetAttributeValue(Constants.RESULT);
             var onError = ret.GetAttributeValue(Constants.ON_ERROR);
             if (!stepResult.Equals(Constants.SUCCESS))
             {
+                link = TakeSnapshot(browser, link, result);
+                
+                if (!string.IsNullOrEmpty(link))
+                    ret.SetAttributeValue(LINK, link);
                 if (onError.Equals("AlwaysReturnTrue")) return true;
                 ret.SetAttributeValue(Constants.RESULT, Constants.SUCCESS);
                 if (onError.Equals("StopCurrentScript") || onError.Equals("Terminate"))

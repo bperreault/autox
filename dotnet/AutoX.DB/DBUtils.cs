@@ -9,11 +9,11 @@ namespace AutoX.DB
     {
         public static string GetHtmlHeader()
         {
-            return 
-                "<html><head><title>Automation Results</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=gb2312\"><script language=\"javascript\">" +
-                "function ShowOrUnShow(item){ if (!item.parentNode.getElementsByTagName(\"ul\")[0]) return; var x = item.parentNode.getElementsByTagName(\"ul\")[0];x.style.display = (x.style.display == \"\") ? 'none' : \"\"; }  "+
-                "function ExpandAll(){var e = document.getElementsByTagName(\"ul\");for ( var i = 0, len = e.length; i < len; i++ ){e[i].style.display = \"\";}}"+
-                "function CollapseAll(){var e = document.getElementsByTagName(\"ul\");for ( var i = 0, len = e.length; i < len; i++ ){e[i].style.display = \"none\";}}"+
+            return
+                "<html><head><style type=\"text/css\">table { margin-left: 0; }</style><title>Automation Results</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=gb2312\"><script language=\"javascript\">" +
+                "function ShowOrUnShow(item){ if (!item.parentNode.getElementsByTagName(\"ul\")[0]) return; var x = item.parentNode.getElementsByTagName(\"ul\")[0];x.style.display = (x.style.display == \"\") ? 'none' : \"\"; if (x.style.display ==\"\" ) item.parentNode.type=\"Circle\"; else item.parentNode.type=\"Disc\"; }  "+
+                "function ExpandAll(){var e = document.getElementsByTagName(\"ul\");for ( var i = 0, len = e.length; i < len; i++ ){e[i].style.display = \"\"; e[i].parentNode.type=\"Circle\"; }}" +
+                "function CollapseAll(){var e = document.getElementsByTagName(\"ul\");for ( var i = 0, len = e.length; i < len; i++ ){e[i].style.display = \"none\"; e[i].parentNode.type=\"Disc\"; }}" +
                 "var popUpWin = 0;"+
                 "function popUpWindow(content){if(popUpWin){if(!popUpWin.closed) popUpWin.close();}popUpWin = window.open('','','width=800,height=600,resizeable,scrollbars');var data=\"<html><body><img src='data:image/jpg;base64,\"+content.getAttribute('snapshot')+\"' /></body></html>\";popUpWin.document.write(data);}"+
                 "</script></head><a href=\"#\" onclick=\"ExpandAll()\" >Expand</a><span>    </span><a href=\"#\" onclick=\"CollapseAll()\">Collapse</a><div>";
@@ -87,7 +87,7 @@ namespace AutoX.DB
                         ret += "<td>"+data+"</td>";
                         ret += "<td align=\"center\" style=\"color:" + colour + "\">" + result.ToUpper() + "</td>";
                         ret += "<td align=\"right\" title=\"Start At:" + starttime+"&#10End At:"+endtime + "\">" + duration + "</td>";
-                        if(snapshot.Length>100)
+                        if(!string.IsNullOrEmpty(snapshot))
                             ret += "<td><a href=\"#\" onclick=\"javascript:popUpWindow(this)\" snapshot=\""+snapshot+"\">"+reason+"</a></td>";
                         else
                             ret += "<td>"+reason+"</td>";

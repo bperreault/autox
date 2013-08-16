@@ -8,6 +8,7 @@ using System.Activities.Presentation;
 using System.Activities.Presentation.Metadata;
 using System.Activities.Presentation.Toolbox;
 using System.Activities.Presentation.View;
+using System.ComponentModel.Design;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -22,6 +23,7 @@ using AutoX.Activities.AutoActivities;
 using AutoX.Basic;
 using AutoX.DB;
 using Image = System.Drawing.Image;
+using UndoEngine = System.Activities.Presentation.UndoEngine;
 
 #endregion
 
@@ -33,7 +35,8 @@ namespace AutoX
         //private System.Drawing.Point _startPoint;
         private UndoEngine _undoEngineService;
         private WorkflowDesigner _workflowDesigner = new WorkflowDesigner();
-
+       
+        
         private void AddTestDesigner(TreeViewItem treeViewItem)
         {
             var xElement = treeViewItem.DataContext as XElement;
@@ -283,7 +286,7 @@ namespace AutoX
             //Create an instance of WorkflowDesigner class
             //if(_workflowDesigner==null)
             _workflowDesigner = new WorkflowDesigner();
-
+            
             //Place the WorkflowDesigner in the middle column of the grid
             Grid.SetColumn(_workflowDesigner.View, 1);
             //Add the WorkflowDesigner to the grid
@@ -315,6 +318,7 @@ namespace AutoX
                                                           | ShellBarItemVisibility.Zoom | ShellBarItemVisibility.PanMode
                                                           | ShellBarItemVisibility.Variables;
             //CompileExpressions(activity);
+            //IDesignerHost designer = _workflowDesigner.Context.Services.GetService<IDesignerHost>();
         }
 
         private void WorkflowSourceChanged(TreeViewItem treeViewItem)

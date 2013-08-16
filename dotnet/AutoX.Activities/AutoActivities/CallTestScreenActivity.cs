@@ -114,7 +114,7 @@ namespace AutoX.Activities.AutoActivities
             Host.SetCommand(steps);
             var rElement = Host.GetResult();
             
-            Log.Info(rElement.ToString());
+            Log.Info("CallTestScreen Receive result from Host:\n"+rElement);
             foreach (var stepElement in rElement.Descendants())
             {
                 stepElement.SetAttributeValue(Constants.PARENT_ID, ResultId);

@@ -4,9 +4,14 @@
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
-using System.Activities.Expressions;
-using System.Security.Policy;
+using System.Activities;
+using System.Activities.Debugger;
+using System.Activities.Presentation;
+using System.Activities.Presentation.Debug;
+using System.Activities.Presentation.Services;
+using System.Activities.Tracking;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using AutoX.FeatureToggles;
 
 #region
@@ -174,16 +179,20 @@ namespace AutoX
             await Task.Factory.StartNew(() =>  RunWorkflowById(workflowId));
             /***********end of instance*******************/
         }
-
+        private WorkflowInstance workflowInstance;
         private void RunWorkflowById(string workflowId)
         {
-            var workflowInstance = new WorkflowInstance(Guid.NewGuid().ToString(), workflowId, _config.GetList())
+            workflowInstance = new WorkflowInstance(Guid.NewGuid().ToString(), workflowId, _config.GetList())
             {
                 ClientId = _config.Get(Constants._ID, Guid.NewGuid().ToString())
             };
+            //Mapping between the Object and Line No.
+       
             Log.Debug(workflowInstance.ToXElement().ToString());
             ClientInstancesManager.GetInstance().Register(_config.SetRegisterBody(XElement.Parse("<Register />")));
+            
             workflowInstance.Start();
+            
             var debugMode = _config.Get("ModeDebug", "True").Equals("True", StringComparison.CurrentCultureIgnoreCase);
             while (true)
             {
@@ -206,6 +215,10 @@ namespace AutoX
             workflowInstance = null;
 */
         }
+
+       
+
+        
 
         private void GenerateKeyFile(object sender, RoutedEventArgs e)
         {

@@ -128,10 +128,10 @@ namespace AutoX.WF.Core
             var _config = Configuration.Clone();
             foreach (var variable in Variables)
             {
-                _config.Set(variable.Key,variable.Value);
+                _config.Set(variable.Key, variable.Value);
             }
             _config.Set("DefaultURL", DefaultURL);
-            
+
             return _config;
         }
 
@@ -215,9 +215,11 @@ namespace AutoX.WF.Core
             return versionId;
         }
 
+
         private WorkflowApplication CreateActivity(string workflow, string resultParentId,
             Dictionary<string, string> upperLevelVariables)
         {
+
             var activity = ActivityXamlServices.Load(new StringReader(workflow)) as AutomationActivity;
             if (activity != null)
             {
@@ -227,6 +229,7 @@ namespace AutoX.WF.Core
                 activity.SetVariables(upperLevelVariables);
                 var workflowApplication = GetWorkflowApplication(activity);
                 workflowApplication.Extensions.Add(_statusTracker);
+
                 return workflowApplication;
                 //_workflowApplication.Run();
             }
@@ -289,7 +292,7 @@ namespace AutoX.WF.Core
                         case ActivityInstanceState.Faulted:
                             Log.Error("workflow [" + activity.Id + "] " + activity.DisplayName +
                                       " stopped! Error Message:\n" + e.TerminationException.GetType().FullName + "\n" +
-                                      e.TerminationException.Message+"\n"+e.TerminationException.StackTrace);
+                                      e.TerminationException.Message + "\n" + e.TerminationException.StackTrace);
                             Status = "Terminated";
                             ClientInstancesManager.GetInstance().GetComputer(ClientId).Status = "Ready";
                             break;
@@ -318,5 +321,5 @@ namespace AutoX.WF.Core
         }
     }
 
-    
+
 }
