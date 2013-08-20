@@ -139,7 +139,7 @@ namespace AutoX
             MessageBox.Show("Your Test finished.");
         }
 
-        private void RunTest(object sender, RoutedEventArgs e)
+        private async void RunTest(object sender, RoutedEventArgs e)
         {
             //get workflowid from project tree
             var selected = ProjectTreeView.SelectedItem as TreeViewItem;
@@ -158,12 +158,12 @@ namespace AutoX
                 MessageBox.Show("Selected Item MUST be a Test Script!");
                 return;
             }
-             RunTestLocally(workflowId);
+            await RunTestLocally(workflowId);
             //when finished, show a message
             MessageBox.Show("Your Test finished.");
         }
 
-        private async void RunTestLocally(string workflowId)
+        private async Task RunTestLocally(string workflowId)
         {
             /**********This is a simple instance***********/
             var urlDialog = new InfoDialog { Title = "Set the URL for Browser", InfoContent = _config.Get("DefaultURL") };
@@ -172,11 +172,10 @@ namespace AutoX
             _config.Set("DefaultURL", urlDialog.InfoContent);
             _autoClient.Browser = new Browser(_config);
             _autoClient.Config.Set("HostType", "Local");
-            await Task.Factory.StartNew(new Action( () => RunWorkflowById(workflowId)));
+            await Task.Factory.StartNew(( () => RunWorkflowById(workflowId)));
             /***********end of instance*******************/
         }
 
-        public static Mutex mutex = new Mutex();
         
         private WorkflowInstance workflowInstance;
         private void RunWorkflowById(string workflowId)

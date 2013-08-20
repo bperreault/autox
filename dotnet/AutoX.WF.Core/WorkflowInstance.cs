@@ -66,6 +66,7 @@ namespace AutoX.WF.Core
                     {
                         //very important! it make the workflow run in Synchronized way.
                         //_workflowApplication.SynchronizationContext = new SynchronizationContext();
+                        
                         Status = "Ready";
                     }
                 }

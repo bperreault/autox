@@ -97,11 +97,15 @@ namespace AutoX.Activities.AutoActivities
                 XElement.Parse("<AutoX.Steps  OnError=\"" + ErrorLevel + "\" InstanceId=\"" + InstanceId + "\"/>");
             var setEnv = XElement.Parse("<Step />");
             setEnv.SetAttributeValue(Constants.ACTION, Constants.SET_ENV);
+            //Description += "\nProperties:\n";
             foreach (PropertyDescriptor propertyDescriptor in context.DataContext.GetProperties())
             {
                 setEnv.SetAttributeValue(propertyDescriptor.Name, propertyDescriptor.GetValue(context.DataContext));
+                //Description += propertyDescriptor.Name + " : " +
+                //               propertyDescriptor.GetValue(context.DataContext) + ";";
             }
             var _config = Host.GetConfig();
+            //Description += "\nVariables From Configuration:\n";
             foreach (var variable in _config.GetList())
             {
                 if(variable.Key.Contains(":"))
@@ -109,6 +113,7 @@ namespace AutoX.Activities.AutoActivities
                 try
                 {
                     setEnv.SetAttributeValue(variable.Key, variable.Value);
+                    //Description += variable.Key + " : " + variable.Value + ";";
                 }
                 catch (Exception e)
                 {
@@ -116,6 +121,7 @@ namespace AutoX.Activities.AutoActivities
                 }
                 
             }
+            //Description += "\n";
             steps.Add(setEnv);
             Host.SetCommand(steps);
             Host.GetResult();

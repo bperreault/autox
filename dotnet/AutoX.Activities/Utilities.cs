@@ -4,6 +4,12 @@
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
+using System.CodeDom.Compiler;
+using System.Reflection;
+using System.Text;
+using System.Windows;
+using Microsoft.CSharp;
+
 #region
 
 using System;
@@ -307,6 +313,56 @@ namespace AutoX.Activities
                 finalRet = outerData + ";" + userData;
             }
             return finalRet;
+        }
+
+        public static object Eval(string sCSCode)
+        {
+
+            var c = new CSharpCodeProvider();
+            var icc = c.CreateCompiler();
+            var cp = new CompilerParameters();
+
+            cp.ReferencedAssemblies.Add("system.dll");
+            cp.ReferencedAssemblies.Add("system.xml.dll");
+            cp.ReferencedAssemblies.Add("system.data.dll");
+            cp.ReferencedAssemblies.Add("system.windows.forms.dll");
+            cp.ReferencedAssemblies.Add("system.drawing.dll");
+
+            cp.CompilerOptions = "/t:library";
+            cp.GenerateInMemory = true;
+
+            var sb = new StringBuilder("");
+            sb.Append("using System;\n");
+            sb.Append("using System.Xml;\n");
+            sb.Append("using System.Data;\n");
+            sb.Append("using System.Data.SqlClient;\n");
+            sb.Append("using System.Windows.Forms;\n");
+            sb.Append("using System.Drawing;\n");
+
+            sb.Append("namespace CSCodeEvaler{ \n");
+            sb.Append("public class CSCodeEvaler{ \n");
+            sb.Append("public object EvalCode(){\n");
+            sb.Append("return " + sCSCode + "; \n");
+            sb.Append("} \n");
+            sb.Append("} \n");
+            sb.Append("}\n");
+
+            var cr = icc.CompileAssemblyFromSource(cp, sb.ToString());
+            if (cr.Errors.Count > 0)
+            {
+                Log.Error("ERROR: " + cr.Errors[0].ErrorText);
+                return null;
+            }
+
+            var a = cr.CompiledAssembly;
+            var o = a.CreateInstance("CSCodeEvaler.CSCodeEvaler");
+
+            if (o == null) return null;
+            var t = o.GetType();
+            var mi = t.GetMethod("EvalCode");
+
+            var s = mi.Invoke(o, null);
+            return s;
         }
 
         public static WorkflowApplication GetWorkflowApplication(AutomationActivity activity)
