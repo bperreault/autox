@@ -1,7 +1,5 @@
 ﻿#region Using directives
 using System;
-using System.Net;
-using System.Web;
 using System.Web.Hosting;
 using System.Threading;
 using System.Diagnostics;
@@ -61,7 +59,7 @@ namespace AutoX.WindowsService
             }
             catch (Exception ex)
             {
-                Log.Debug(null != ex.InnerException ? ex.InnerException.ToString() : ex.ToString());
+                Log.Debug(ExceptionHelper.FormatStackTrace(ex));
             }
         }
     }

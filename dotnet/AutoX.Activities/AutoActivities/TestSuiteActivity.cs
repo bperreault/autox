@@ -112,7 +112,7 @@ namespace AutoX.Activities.AutoActivities
                 }
                 catch (Exception e)
                 {
-                    Log.Warn("Set Env attributes setting failed: key["+variable.Key+"] value["+variable.Value+"]\n"+e.Message);
+                    Log.Warn(ExceptionHelper.FormatStackTrace("Set Env attributes setting failed: key["+variable.Key+"] value["+variable.Value+"]",e));
                 }
                 
             }

@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Enyim.Caching">
+      <HintPath>..\packages\EnyimMemcached.2.12\lib\net35\Enyim.Caching.dll</HintPath>
+    </Reference>
     <Reference Include="JasonRoberts.FeatureToggle">
       <HintPath>..\packages\FeatureToggle.1.2.0\lib\net40\JasonRoberts.FeatureToggle.dll</HintPath>
     </Reference>

@@ -67,9 +67,29 @@ namespace AutoX.DB
             var comm1 = new NpgsqlCommand("delete from content where id=@id", _connection);
             comm1.Parameters.AddWithValue("@id", id);
             comm1.ExecuteNonQuery();
-            var comm2 = new NpgsqlCommand("delete from relationship where master=@id or slave=@id", _connection);
+
+            var comm2 = new NpgsqlCommand("delete from relationship where slave=@id", _connection);
             comm2.Parameters.AddWithValue("@id", id);
             comm2.ExecuteNonQuery();
+
+            var comm3 = new NpgsqlCommand("select slave from relationship where master=@id", _connection);
+            comm3.Parameters.AddWithValue("@id", id);
+            var list = new List<string>();
+            var reader = comm3.ExecuteReader();
+            while (reader.Read())
+            {
+                list.Add(reader.GetString(0));
+                
+            }
+            reader.Close();
+            foreach (var kidId in list)
+            {
+                Remove(kidId);
+            }
+
+            var comm4 = new NpgsqlCommand("delete from relationship where master=@id", _connection);
+            comm4.Parameters.AddWithValue("@id", id);
+            comm4.ExecuteNonQuery();
         }
 
         public XElement Find(string id)
@@ -141,7 +161,7 @@ namespace AutoX.DB
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Log.Error(ExceptionHelper.FormatStackTrace(ex));
             }
         }
 

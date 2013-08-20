@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Xml.Linq;
+using AutoX.Basic;
 
 namespace AutoX.Client.Core
 {
@@ -36,7 +37,7 @@ namespace AutoX.Client.Core
                 }
                 catch (Exception ex)
                 {
-                    sr.Error("GetValue Failed:"+ex.Message);
+                    sr.Error(ExceptionHelper.FormatStackTrace("GetValue Failed:", ex));
                 }
                 
             }

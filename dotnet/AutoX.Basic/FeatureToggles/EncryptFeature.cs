@@ -4,7 +4,7 @@ using JasonRoberts.FeatureToggle;
 
 #endregion
 
-namespace AutoX.FeatureToggles
+namespace AutoX.Basic.FeatureToggles
 {
     public class EncryptFeature : SimpleFeatureToggle
     {

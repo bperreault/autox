@@ -4,15 +4,11 @@
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
-using System.Activities;
-using System.Activities.Debugger;
-using System.Activities.Presentation;
-using System.Activities.Presentation.Debug;
-using System.Activities.Presentation.Services;
 using System.Activities.Tracking;
 using System.Threading.Tasks;
-using System.Windows.Threading;
-using AutoX.FeatureToggles;
+using AutoX.Basic.FeatureToggles;
+using Constants = AutoX.Basic.Constants;
+using TrackingRecord = System.Activities.Tracking.TrackingRecord;
 
 #region
 
@@ -38,7 +34,7 @@ using Microsoft.Win32;
 
 namespace AutoX
 {
-    public partial class MainWindow
+    public partial class MainWindow 
     {
         private readonly XElement _xValidation = XElement.Parse(@"
 <Validation>
@@ -143,7 +139,7 @@ namespace AutoX
             MessageBox.Show("Your Test finished.");
         }
 
-        private async void RunTest(object sender, RoutedEventArgs e)
+        private void RunTest(object sender, RoutedEventArgs e)
         {
             //get workflowid from project tree
             var selected = ProjectTreeView.SelectedItem as TreeViewItem;
@@ -162,12 +158,12 @@ namespace AutoX
                 MessageBox.Show("Selected Item MUST be a Test Script!");
                 return;
             }
-            await RunTestLocally(workflowId);
+             RunTestLocally(workflowId);
             //when finished, show a message
             MessageBox.Show("Your Test finished.");
         }
 
-        private async Task RunTestLocally(string workflowId)
+        private async void RunTestLocally(string workflowId)
         {
             /**********This is a simple instance***********/
             var urlDialog = new InfoDialog { Title = "Set the URL for Browser", InfoContent = _config.Get("DefaultURL") };
@@ -176,9 +172,12 @@ namespace AutoX
             _config.Set("DefaultURL", urlDialog.InfoContent);
             _autoClient.Browser = new Browser(_config);
             _autoClient.Config.Set("HostType", "Local");
-            await Task.Factory.StartNew(() =>  RunWorkflowById(workflowId));
+            await Task.Factory.StartNew(new Action( () => RunWorkflowById(workflowId)));
             /***********end of instance*******************/
         }
+
+        public static Mutex mutex = new Mutex();
+        
         private WorkflowInstance workflowInstance;
         private void RunWorkflowById(string workflowId)
         {
@@ -190,6 +189,9 @@ namespace AutoX
        
             Log.Debug(workflowInstance.ToXElement().ToString());
             ClientInstancesManager.GetInstance().Register(_config.SetRegisterBody(XElement.Parse("<Register />")));
+            //TODO add visual trace here
+            //if workflow is loaded, we can track it.
+            //workflowInstance.Tracker.Tracking = this;
             
             workflowInstance.Start();
             
@@ -564,7 +566,7 @@ namespace AutoX
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ExceptionHelper.FormatStackTrace(ex), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -598,7 +600,7 @@ namespace AutoX
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ExceptionHelper.FormatStackTrace(ex), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -625,7 +627,7 @@ namespace AutoX
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ExceptionHelper.FormatStackTrace(ex), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -647,7 +649,7 @@ namespace AutoX
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ExceptionHelper.FormatStackTrace(ex), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -661,7 +663,7 @@ namespace AutoX
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ExceptionHelper.FormatStackTrace(ex), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

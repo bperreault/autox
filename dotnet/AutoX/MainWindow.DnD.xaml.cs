@@ -89,7 +89,7 @@ namespace AutoX
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error Happen:\n" + ex.Message);
+                MessageBox.Show(ExceptionHelper.FormatStackTrace("Error Happen:\n", ex));
             }
         }
 
@@ -167,7 +167,7 @@ namespace AutoX
                 }
                 catch (Exception exception)
                 {
-                    Log.Debug("need to improve here:" + exception.Message);
+                    Log.Debug(ExceptionHelper.FormatStackTrace("need to improve here:", exception));
                 }
             }
         }

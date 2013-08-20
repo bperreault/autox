@@ -39,7 +39,7 @@ namespace AutoX.DB
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Log.Error(ExceptionHelper.FormatStackTrace(ex));
             }
         }
 

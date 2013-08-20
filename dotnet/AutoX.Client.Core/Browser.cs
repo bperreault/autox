@@ -65,7 +65,7 @@ namespace AutoX.Client.Core
             catch (Exception ex)
             {
                 _browser = null;
-                Log.Error("Current Browser is Gone!\n"+ex.Message);
+                Log.Error(ExceptionHelper.FormatStackTrace("Current Browser is Gone!", ex));
             }
             
 
@@ -262,10 +262,8 @@ namespace AutoX.Client.Core
                 xUI = xPage;
 
             var xpath = xUI.GenerateXPathFromXElement();
-            IWebDriver browser = GetCurrentBrowser();
-            if (browser == null)
-                return null;
-            return browser.FindElements(By.XPath(xpath));
+            var browser = GetCurrentBrowser();
+            return browser == null ? null : browser.FindElements(By.XPath(xpath));
         }
 
         public string Snapshot()
@@ -278,7 +276,7 @@ namespace AutoX.Client.Core
             {
                 return ((ITakesScreenshot) GetCurrentBrowser()).GetScreenshot().AsBase64EncodedString;
             }catch(Exception ex){
-                Log.Error("Cannot take a snapshot.\n"+ex.Message);
+                Log.Error(ExceptionHelper.FormatStackTrace("Cannot take a snapshot.", ex));
             }
             return null;
 
@@ -306,9 +304,9 @@ namespace AutoX.Client.Core
             {
                 alert = _browser.SwitchTo().Alert();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Log.Debug("Suppress get alert");
+                Log.Debug(ExceptionHelper.FormatStackTrace("Suppress get alert",ex));
             }
             return alert;
         }

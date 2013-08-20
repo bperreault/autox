@@ -4,8 +4,6 @@
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
-using System.Threading.Tasks;
-
 #region
 
 using System;
@@ -64,7 +62,7 @@ namespace AutoX
             InitScreen();
             //InitializeProject();
             //LoadProject();
-            this.Title = this.Title + " - " + _currentWindowsUser;
+            Title = Title + " - " + _currentWindowsUser;
             StopProgressBar();
         }
 
@@ -87,7 +85,7 @@ namespace AutoX
 
         #endregion
 
-        public async void InitScreen()
+        public void InitScreen()
         {
             //load the project tree
             ReloadOnProjectTree(null, null);

@@ -214,12 +214,13 @@ namespace AutoX.WF.Core
             }
             return versionId;
         }
-
+        public string Source { get; set; }
+        public StatusTracker Tracker {get { return _statusTracker; }}
 
         private WorkflowApplication CreateActivity(string workflow, string resultParentId,
             Dictionary<string, string> upperLevelVariables)
         {
-
+            Source = workflow;
             var activity = ActivityXamlServices.Load(new StringReader(workflow)) as AutomationActivity;
             if (activity != null)
             {
@@ -229,7 +230,7 @@ namespace AutoX.WF.Core
                 activity.SetVariables(upperLevelVariables);
                 var workflowApplication = GetWorkflowApplication(activity);
                 workflowApplication.Extensions.Add(_statusTracker);
-
+                
                 return workflowApplication;
                 //_workflowApplication.Run();
             }

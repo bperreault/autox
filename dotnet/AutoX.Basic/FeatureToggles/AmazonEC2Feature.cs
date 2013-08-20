@@ -1,6 +1,6 @@
 ﻿using JasonRoberts.FeatureToggle;
 
-namespace AutoX.FeatureToggles
+namespace AutoX.Basic.FeatureToggles
 {
     public class AmazonEC2Feature : SimpleFeatureToggle
     {

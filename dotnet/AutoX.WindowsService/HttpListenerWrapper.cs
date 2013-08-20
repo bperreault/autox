@@ -4,7 +4,6 @@ using System.Net;
 using System.Runtime.Remoting;
 using System.Runtime.Remoting.Lifetime;
 using System.Web;
-using AutoX.Basic;
 
 namespace AutoX.WindowsService
 {

@@ -1,10 +1,13 @@
-﻿#region
+﻿using System.Linq;
+
+#region
 
 // Hapa Project, CC
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
-
 using System.Threading.Tasks;
+using AutoX.Basic;
+#endregion
 
 #region
 
@@ -21,7 +24,7 @@ using AutoX.Comm;
 using AutoX.DB;
 using IDataObject = AutoX.Basic.Model.IDataObject;
 
-#endregion
+
 
 #endregion
 
@@ -49,7 +52,7 @@ namespace AutoX
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ExceptionHelper.FormatStackTrace(ex), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -144,11 +147,9 @@ namespace AutoX
             var xRoot = DBFactory.GetData().GetChildren(id);
             if (xRoot.HasElements)
             {
-                foreach (XElement kid in xRoot.Descendants())
+                foreach (var testcaseresult in xRoot.Descendants().Select(kid => kid.GetDataObjectFromXElement()).OfType<StepResult>())
                 {
-                    var testcaseresult = kid.GetDataObjectFromXElement() as StepResult;
-                    if (testcaseresult != null)
-                        _testStepSource.Add(testcaseresult);
+                    _testStepSource.Add(testcaseresult);
                 }
             }
             TestStepsResultTable.ItemsSource = _testStepSource.Get();

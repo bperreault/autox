@@ -41,12 +41,12 @@ namespace AutoX.Client.Core
                     }
                     catch (Exception ex)
                     {
-                        sr.Error("Get attribute Value Failed:" + ex.Message);
+                        sr.Error(ExceptionHelper.FormatStackTrace("Get attribute Value Failed:", ex));
                     }
                 }
                 else
                 {
-                    verifyWebElement(Data, target);
+                    VerifyWebElement(Data, target);
                 }
                 
 
@@ -54,7 +54,7 @@ namespace AutoX.Client.Core
             return sr.GetResult();
         }
 
-        public static bool verifyWebElement(String value, IWebElement webElement)
+        public static bool VerifyWebElement(String value, IWebElement webElement)
         {
             String valueOnScreen = "";
 
@@ -68,13 +68,7 @@ namespace AutoX.Client.Core
                     return select.SelectedOption.Text.Trim().Equals(value);
                 // if the object is a checkbox
                 case "checkbox":
-                    valueOnScreen = "";
-                    if (webElement.Selected)
-                        valueOnScreen = "true";
-                    else
-                    {
-                        valueOnScreen = "false";
-                    }
+                    valueOnScreen = webElement.Selected ? "true" : "false";
                     return valueOnScreen.Equals(value.ToLower().Trim());
                    
                 // otherwise we can get the value attribute

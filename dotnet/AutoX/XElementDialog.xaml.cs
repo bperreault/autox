@@ -217,7 +217,7 @@ namespace AutoX
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Not Valid XML:\n" + ex.Message);
+                MessageBox.Show(ExceptionHelper.FormatStackTrace("Not Valid XML", ex));
                 return;
             }
 

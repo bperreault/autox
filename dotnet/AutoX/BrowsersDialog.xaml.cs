@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Xml.Linq;
 using AutoX.Basic;
-using AutoX.FeatureToggles;
+using AutoX.Basic.FeatureToggles;
 
 #endregion
 

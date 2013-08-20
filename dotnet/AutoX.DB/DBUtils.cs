@@ -10,7 +10,7 @@ namespace AutoX.DB
         public static string GetHtmlHeader()
         {
             return
-                "<html><head><style type=\"text/css\">table { margin-left: 0; }</style><title>Automation Results</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=gb2312\"><script language=\"javascript\">" +
+                "<html><head><style type=\"text/css\">table { margin-left: 0; } td{text-wrap:normal;word-wrap:break-word;height:11%;} </style><title>Automation Results</title><meta http-equiv=\"Content-Type\" content=\"text/html; charset=gb2312\"><script language=\"javascript\">" +
                 "function ShowOrUnShow(item){ if (!item.parentNode.getElementsByTagName(\"ul\")[0]) return; var x = item.parentNode.getElementsByTagName(\"ul\")[0];x.style.display = (x.style.display == \"\") ? 'none' : \"\"; if (x.style.display ==\"\" ) item.parentNode.type=\"Circle\"; else item.parentNode.type=\"Disc\"; }  "+
                 "function ExpandAll(){var e = document.getElementsByTagName(\"ul\");for ( var i = 0, len = e.length; i < len; i++ ){e[i].style.display = \"\"; e[i].parentNode.type=\"Circle\"; }}" +
                 "function CollapseAll(){var e = document.getElementsByTagName(\"ul\");for ( var i = 0, len = e.length; i < len; i++ ){e[i].style.display = \"none\"; e[i].parentNode.type=\"Disc\"; }}" +
@@ -49,10 +49,7 @@ namespace AutoX.DB
                 var kidTag =children.Descendants().First().Name.ToString();
                 if (kidTag.Equals(Constants.RESULT) || kidTag.Contains("." + Constants.RESULT))
                 {
-                    foreach (var kid in children.Descendants())
-                    {
-                        ret += ExportReulstToHtml(kid);
-                    }
+                    ret = children.Descendants().Aggregate(ret, (current, kid) => current + ExportReulstToHtml(kid));
                 }
                 else
                 {

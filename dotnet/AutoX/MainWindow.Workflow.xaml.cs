@@ -8,6 +8,7 @@ using System.Activities.Presentation;
 using System.Activities.Presentation.Metadata;
 using System.Activities.Presentation.Toolbox;
 using System.Activities.Presentation.View;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Drawing;
 using System.IO;
@@ -22,6 +23,8 @@ using AutoX.Activities;
 using AutoX.Activities.AutoActivities;
 using AutoX.Basic;
 using AutoX.DB;
+using AutoX.WF.Core;
+using DesignerView = System.Activities.Presentation.View.DesignerView;
 using Image = System.Drawing.Image;
 using UndoEngine = System.Activities.Presentation.UndoEngine;
 
@@ -34,6 +37,7 @@ namespace AutoX
         private readonly AttributeTableBuilder _builder = new AttributeTableBuilder();
         //private System.Drawing.Point _startPoint;
         private UndoEngine _undoEngineService;
+        protected DesignSurface _DesignSurface;
         private WorkflowDesigner _workflowDesigner = new WorkflowDesigner();
        
         
@@ -299,6 +303,8 @@ namespace AutoX
             PropertyBorder.Child = propertyView;
         }
 
+        protected Dictionary<string, ActivityStatusInfo> activityStatusList = new Dictionary<string, ActivityStatusInfo>();
+        
         private void SetWorkflowDesigner(Activity activity, TreeViewItem treeViewItem)
         {
             _workflowDesigner.Load(activity);
@@ -310,6 +316,7 @@ namespace AutoX
             _undoEngineService = _workflowDesigner.Context.Services.GetService<UndoEngine>();
             _undoEngineService.UndoUnitAdded += UndoEngineServiceUndoUnitAdded;
 
+            
             var designerView = _workflowDesigner.Context.Services.GetService<DesignerView>();
             //hide the shell bar of designer
             //designerView.WorkflowShellBarItemVisibility = ShellBarItemVisibility.None;
@@ -318,7 +325,19 @@ namespace AutoX
                                                           | ShellBarItemVisibility.Zoom | ShellBarItemVisibility.PanMode
                                                           | ShellBarItemVisibility.Variables;
             //CompileExpressions(activity);
-            //IDesignerHost designer = _workflowDesigner.Context.Services.GetService<IDesignerHost>();
+            /*** visual tracker things
+            IDesignerHost designer = _workflowDesigner.Context.Services.GetService<IDesignerHost>();
+           
+            if(surface!=null)
+                surface.Dispose();
+            surface = new WorkflowDesignSurface(new MemberCreationService());
+            
+            var glyphService =
+                designerView.Context.Services.GetService(typeof(IDesignerGlyphProviderService)) as IDesignerGlyphProviderService;
+            var glyphProvider = new WorkflowMonitorDesignerGlyphProvider(activityStatusList);
+            if (glyphService != null)
+                glyphService.AddGlyphProvider(glyphProvider);
+             * *****/
         }
 
         private void WorkflowSourceChanged(TreeViewItem treeViewItem)
@@ -359,6 +378,8 @@ namespace AutoX
             treeViewItem.DataContext = xElement;
             treeViewItem.UpdateTreeViewItem(xElement);
         }
+
+        
 
         //static void CompileExpressions(Activity activity)
         //{
@@ -406,4 +427,6 @@ namespace AutoX
         //        activity, compiledExpressionRoot);
         //}
     }
+
+    
 }

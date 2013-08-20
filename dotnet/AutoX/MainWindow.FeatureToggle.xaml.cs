@@ -1,7 +1,7 @@
 ﻿#region
 
 using System.ComponentModel;
-using AutoX.FeatureToggles;
+using AutoX.Basic.FeatureToggles;
 
 #endregion
 

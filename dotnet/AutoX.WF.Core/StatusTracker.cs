@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Activities.Tracking;
+using System.Xml.Linq;
+using AutoX.Basic;
 
 namespace AutoX.WF.Core
 {
@@ -26,13 +28,23 @@ namespace AutoX.WF.Core
 
         public string Status { get; private set; }
 
+        public ITracker Tracking { get; set; }
+
         protected override void Track(TrackingRecord record, TimeSpan timeout)
         {
+            if (Tracking != null)
+                Tracking.Update(record);
             var instanceRecord = record as WorkflowInstanceRecord;
             if (instanceRecord != null)
             {
                 Status = instanceRecord.State;
             }
+
         }
+    }
+
+    public interface ITracker
+    {
+        void Update(TrackingRecord record);
     }
 }
