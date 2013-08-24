@@ -57,7 +57,7 @@ namespace AutoX.WF.Core
         public XElement GetInstances()
         {
             var list = new XElement("Instances");
-            foreach (WorkflowInstance ti in _instanceList.Values)
+            foreach (var ti in _instanceList.Values)
             {
                 list.Add(ti.ToXElement());
             }

@@ -12,17 +12,24 @@ namespace AutoX.DB
             xElement.SetAttributeValue("Updated", DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
             var id = xElement.GetAttributeValue(Constants._ID);
             var parentId = xElement.GetAttributeValue(Constants.PARENT_ID);
+            var updated = xElement.GetAttributeValue("Updated");
+            var created = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
             if (PostgreSQLDBManager.GetInstance().Find(id) == null)
             {
-                xElement.SetAttributeValue("Created", DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
-                PostgreSQLDBManager.GetInstance().CreateContent(id, xElement.ToString());
+                xElement.SetAttributeValue("Created", created);
+                var _type = xElement.GetAttributeValue("_type");
+                
+                PostgreSQLDBManager.GetInstance().CreateContent(id, xElement.ToString(),_type,created,updated);
             }
             else
             {
-                PostgreSQLDBManager.GetInstance().UpdateContent(id, xElement.ToString());
+                var existed_created = xElement.GetAttributeValue("Created");
+                if (!string.IsNullOrEmpty(existed_created))
+                    created = existed_created;
+                PostgreSQLDBManager.GetInstance().UpdateContent(id, xElement.ToString(),updated);
                 PostgreSQLDBManager.GetInstance().RemoveRelationship(id);
             }
-            PostgreSQLDBManager.GetInstance().CreateRelationship(parentId, "Parent-Kid", id);
+            PostgreSQLDBManager.GetInstance().CreateRelationship(parentId, "Parent-Kid", id,created,updated);
             return true;
         }
 

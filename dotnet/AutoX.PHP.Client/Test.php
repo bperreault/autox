@@ -3,23 +3,17 @@ require_once 'log4php/Logger.php';
 require_once 'XML/Util.php';
 
 Logger::configure('config.xml');
-global $log;
 ini_set('soap.wsdl_cache_enabled', "0");
 class WebTest extends PHPUnit_Extensions_Selenium2TestCase
 {
+	private $log;
 	
-		
     protected function setUp()
-    {
-		//read config file 
-		//start selenium server???
-		//$log.configure('config.xml');
-		//$log.getLogger('autox.log');
-		$log = Logger::getLogger('autox.log');
+    {		
+		$this->log = Logger::getLogger('autox.log');
 		$this->setBrowser('firefox');
 		$this->setBrowserUrl('http://demouat.com/');
-		
-    }
+	}
 	
 	protected function tearDown(){
 		//$this->closeBrowser();
@@ -27,8 +21,13 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase
  
     public function testMainProcess()
     {
-		$log = Logger::getLogger('autox.log');
-		$log->debug($this->readCommand());
+		$cmd = $this->fakeReadCommand('C:\Users\jien\Documents\autox\dotnet\AutoX.PHP.Client\Commands.xml');
+		//var_dump($cmd);
+		$this->log->debug($cmd['_id']);
+		$items = $cmd->xpath('*/Step');
+		foreach($items as $item){
+			doTest($item);
+		}
 		// while(1){
 // 			//read command from center
 // 			$command = readCommand();
@@ -45,23 +44,32 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase
 // 		}
 		        
     }
-	
+	private function fakeReadCommand($xmlFile){
+		$xml_str = file_get_contents($xmlFile);
+		$xml = new SimpleXMLElement($xml_str);
+		return $xml;
+	}	
 		
 	//read command from center, return an xml
-	private function readCommand(){
-		$soap = new SoapClient("http://localhost:8081/AutoX.Web/Service.asmx?wsdl");
- 		$param["input"] = "Test String";
- 		$ret = $soap->__Call("Hello",array($param));
-		var_dump($ret);
- 		echo $ret->HelloResult;
-		
+	private function readCommand($cmd){
+		try{
+			$soap = new SoapClient("http://localhost:8081/AutoX.Web/Service.asmx?wsdl");
+			                $param["xmlFormatCommand"] = $cmd;
+			                $ret = $soap->__Call("Command",array($param));
+			//           var_dump($ret);
+			$xml_str = $ret->CommandResult;                
+			return new SimpleXMLElement($xml_str);				
+		}catch(Exception $e){
+			echo print_r($e->getMessage(),true);
+		}		
 		return null;
 	}
 	
 	//run the command, return an xml format string
 	private function doTest($cmd){
 		//get action name, if it is wait 17 sec, then wait, then return null
-		$actionName = getActionName($cmd);
+		$actionName = $cmd['Action'];
+		$this->log->debug($actionName);
 		if($actionName=="Wait"){
 			//wait
 			return;
@@ -90,7 +98,7 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase
 			//
 				break;
 			case "Wait":
-			//
+				wait($cmd);
 				break;
 			case "GetValue":
 			//
@@ -133,5 +141,14 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase
 		
 	}
  
+	private function wait($xmlelement){
+		$time = 17;
+		try{
+			$data = $xmlelement['Data'];
+			$time = intval($data);
+		}catch(Exception $e){
+		}
+		sleep($time);		
+	}
 }
 ?>

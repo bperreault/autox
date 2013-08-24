@@ -38,7 +38,7 @@ namespace AutoX.WF.Core
                 {
                     var cancelled = token.WaitHandle.WaitOne(5*60*1000);
                     var now = DateTime.Now;
-                    foreach (string nameOfComputer in _computerList.Keys)
+                    foreach (var nameOfComputer in _computerList.Keys)
                     {
                         var computer = _computerList[nameOfComputer];
                         var lostMessage = now - computer.Updated;

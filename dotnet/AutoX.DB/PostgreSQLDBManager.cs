@@ -46,8 +46,8 @@ namespace AutoX.DB
             xElement.SetAttributeValue(Constants.NAME, name);
             xElement.SetAttributeValue("Created", DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
             xElement.SetAttributeValue("Updated", DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
-            CreateContent(id, xElement.ToString());
-            CreateRelationship(parentId, "Parent-Kid", id);
+            CreateContent(id, xElement.ToString(), type, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture), DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
+            CreateRelationship(parentId, "Parent-Kid", id, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture), DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
         }
 
         public static PostgreSQLDBManager GetInstance()
@@ -111,7 +111,7 @@ namespace AutoX.DB
         private IEnumerable<string> GetKids(string parentId)
         {
             var list = new List<string>();
-            var cmd = new NpgsqlCommand("select slave from relationship where master=@parentId and type='Parent-Kid'",
+            var cmd = new NpgsqlCommand("select slave from relationship where master=@parentId and type='Parent-Kid' order by created",
                 _connection);
             cmd.Parameters.AddWithValue("@parentId", parentId);
             var reader = cmd.ExecuteReader();
@@ -132,11 +132,12 @@ namespace AutoX.DB
             return kids;
         }
 
-        public void UpdateContent(string id, string content)
+        public void UpdateContent(string id, string content,string updated)
         {
-            var comm1 = new NpgsqlCommand("update content set data=@content  where id=@id", _connection);
+            var comm1 = new NpgsqlCommand("update content set data=@content, updated=@updated  where id=@id", _connection);
             comm1.Parameters.AddWithValue("@id", id);
             comm1.Parameters.AddWithValue("@content", content);
+            comm1.Parameters.AddWithValue("@updated", updated);
             comm1.ExecuteNonQuery();
         }
 
@@ -150,13 +151,16 @@ namespace AutoX.DB
             comm1.ExecuteNonQuery();
         }
 
-        public void CreateContent(string id, string content)
+        public void CreateContent(string id, string content,string type,string created,string updated)
         {
             try
             {
-                var comm1 = new NpgsqlCommand("insert into content values(@id,@content)", _connection);
+                var comm1 = new NpgsqlCommand("insert into content values(@id,@content,@type,@created,@updated)", _connection);
                 comm1.Parameters.AddWithValue("@id", id);
                 comm1.Parameters.AddWithValue("@content", content);
+                comm1.Parameters.AddWithValue("@type", type);
+                comm1.Parameters.AddWithValue("@created", created);
+                comm1.Parameters.AddWithValue("@updated", updated);
                 comm1.ExecuteNonQuery();
             }
             catch (Exception ex)
@@ -165,12 +169,14 @@ namespace AutoX.DB
             }
         }
 
-        public void CreateRelationship(string master, string type, string slave)
+        public void CreateRelationship(string master, string type, string slave, string created, string updated)
         {
-            var comm1 = new NpgsqlCommand("insert into relationship values(@master,@type,@slave)", _connection);
+            var comm1 = new NpgsqlCommand("insert into relationship values(@master,@type,@slave,@created,@updated)", _connection);
             comm1.Parameters.AddWithValue("@master", master);
             comm1.Parameters.AddWithValue("@type", type);
             comm1.Parameters.AddWithValue("@slave", slave);
+            comm1.Parameters.AddWithValue("@created", created);
+            comm1.Parameters.AddWithValue("@updated", updated);
             comm1.ExecuteNonQuery();
         }
     }

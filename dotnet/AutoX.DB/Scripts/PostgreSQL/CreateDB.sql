@@ -18,7 +18,10 @@ CREATE DATABASE autox
 CREATE TABLE content
 (
   id text,
-  data text
+  data text,
+  type text,
+  created timestamp without time zone,
+  updated timestamp without time zone
 )
 WITH (
   OIDS=FALSE
@@ -36,6 +39,15 @@ CREATE INDEX id_idx
   (id COLLATE pg_catalog."default");
 ALTER TABLE content CLUSTER ON id_idx;
 
+-- Index: idx_created
+
+-- DROP INDEX idx_created;
+
+CREATE INDEX idx_created
+  ON content
+  USING btree
+  (created);
+
 
 
 -- Table: relationship
@@ -46,7 +58,9 @@ CREATE TABLE relationship
 (
   master text,
   type text,
-  slave text
+  slave text,
+  created timestamp without time zone,
+  updated timestamp without time zone
 )
 WITH (
   OIDS=FALSE
@@ -62,6 +76,15 @@ CREATE INDEX c_idx
   ON relationship
   USING btree
   (master COLLATE pg_catalog."default", type COLLATE pg_catalog."default");
+
+-- Index: idx_rs_created
+
+-- DROP INDEX idx_rs_created;
+
+CREATE INDEX idx_rs_created
+  ON relationship
+  USING btree
+  (created);
 
 -- Index: master_key
 

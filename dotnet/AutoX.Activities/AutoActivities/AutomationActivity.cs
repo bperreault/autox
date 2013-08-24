@@ -189,6 +189,12 @@ namespace AutoX.Activities.AutoActivities
             DBFactory.GetData().Save(topResult);
         }
 
+        protected void SetFinalResult(string key, string value)
+        {
+            Result.SetAttributeValue(key,value);
+            SetFinalResult();
+        }
+
         public void SetHost(IHost host)
         {
             Host = host;

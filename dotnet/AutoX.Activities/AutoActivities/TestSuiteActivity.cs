@@ -97,6 +97,7 @@ namespace AutoX.Activities.AutoActivities
                 XElement.Parse("<AutoX.Steps  OnError=\"" + ErrorLevel + "\" InstanceId=\"" + InstanceId + "\"/>");
             var setEnv = XElement.Parse("<Step />");
             setEnv.SetAttributeValue(Constants.ACTION, Constants.SET_ENV);
+            
             //Description += "\nProperties:\n";
             foreach (PropertyDescriptor propertyDescriptor in context.DataContext.GetProperties())
             {
@@ -130,7 +131,7 @@ namespace AutoX.Activities.AutoActivities
             SetResult();
             SetVariablesBeforeRunning(context);
             InternalExecute(context, null);
-            SetFinalResult();
+            SetFinalResult("Maturity",Maturity.ToString());
         }
 
         private void InternalExecute(NativeActivityContext context, ActivityInstance instance)

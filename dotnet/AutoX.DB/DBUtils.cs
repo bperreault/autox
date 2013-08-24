@@ -39,6 +39,9 @@ namespace AutoX.DB
                 var created = xElement.GetAttributeValue("Created");
                 var updated = xElement.GetAttributeValue("Updated");
                 var authors = xElement.GetAttributeValue("Authors");
+                var maturity = xElement.GetAttributeValue("Maturity");
+                if (!string.IsNullOrEmpty(maturity))
+                    maturity = "<span>&nbsp</span><span>" + maturity + "</span>";
                 var descriptionList = xElement.GetAttributeValue("Description").Split('\n');
                 string description = "";
                 foreach (var block in descriptionList)
@@ -50,7 +53,7 @@ namespace AutoX.DB
                 var ret =
                     "<li><span title=\"Start:" + created + "&#10End:" + updated + "\"   onclick=\"ShowOrUnShow(this)\"> " 
                     + name + " </span> <span title=\"Original:" + origianl + "&#10Final:" + final + "\" style=\"color:" + color + "\" > " + final
-                    + " </span><ul  style=\"display:none\"><span>Authors: "+authors+"</span><br><span>Description: "+description+"</span>";
+                    + " </span><ul  style=\"display:none\"><span>Authors: "+authors+"</span>"+maturity+"<br><span>Description: "+description+"</span>";
                 var children = DBFactory.GetData().GetChildren(toBeExportdId);
                 var kidTag =children.Descendants().First().Name.ToString();
                 if (kidTag.Equals(Constants.RESULT) || kidTag.Contains("." + Constants.RESULT))
