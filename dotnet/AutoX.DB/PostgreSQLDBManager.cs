@@ -57,9 +57,20 @@ namespace AutoX.DB
 
         public void RemoveRelationship(string id)
         {
+            var comm1 = new NpgsqlCommand("select master from relationship where slave=@id", _connection);
+            comm1.Parameters.AddWithValue("@id", id);
+            var reader = comm1.ExecuteReader();
+            if (reader.Read())
+            {
+                var masterId = reader.GetString(0);
+                DBFactory.DeleteMemcachedRelationship(masterId, id);
+            }
+            reader.Close();
+
             var comm2 = new NpgsqlCommand("delete from relationship where slave=@id", _connection);
             comm2.Parameters.AddWithValue("@id", id);
             comm2.ExecuteNonQuery();
+            
         }
 
         public void Remove(string id)
@@ -67,21 +78,29 @@ namespace AutoX.DB
             var comm1 = new NpgsqlCommand("delete from content where id=@id", _connection);
             comm1.Parameters.AddWithValue("@id", id);
             comm1.ExecuteNonQuery();
+            DBFactory.DeleteMemcachedData(id);
 
-            var comm2 = new NpgsqlCommand("delete from relationship where slave=@id", _connection);
-            comm2.Parameters.AddWithValue("@id", id);
-            comm2.ExecuteNonQuery();
-
-            var comm3 = new NpgsqlCommand("select slave from relationship where master=@id", _connection);
-            comm3.Parameters.AddWithValue("@id", id);
-            var list = new List<string>();
-            var reader = comm3.ExecuteReader();
-            while (reader.Read())
+            //var comm2 = new NpgsqlCommand("delete from relationship where slave=@id", _connection);
+            //comm2.Parameters.AddWithValue("@id", id);
+            //comm2.ExecuteNonQuery();
+            RemoveRelationship(id);
+            
+            var list = DBFactory.GetMemcachedRelationship(id);
+            if (list == null)
             {
-                list.Add(reader.GetString(0));
-                
+                list = new List<string>();
+                var comm3 = new NpgsqlCommand("select slave from relationship where master=@id", _connection);
+                comm3.Parameters.AddWithValue("@id", id);
+                var reader = comm3.ExecuteReader();
+                while (reader.Read())
+                {
+                    list.Add(reader.GetString(0));
+
+                }
+                reader.Close();
             }
-            reader.Close();
+
+            
             foreach (var kidId in list)
             {
                 Remove(kidId);
@@ -90,11 +109,14 @@ namespace AutoX.DB
             var comm4 = new NpgsqlCommand("delete from relationship where master=@id", _connection);
             comm4.Parameters.AddWithValue("@id", id);
             comm4.ExecuteNonQuery();
+            DBFactory.DeleteMemcachedRelationship(id);
         }
 
         public XElement Find(string id)
         {
-            string content = null;
+            string content = DBFactory.GetMemcachedData(id);
+            if (!string.IsNullOrEmpty(content))
+                return XElement.Parse(content);
             var cmd = new NpgsqlCommand("select data from content where id=@id", _connection);
             cmd.Parameters.AddWithValue("@id", id);
             var reader = cmd.ExecuteReader();
@@ -105,6 +127,7 @@ namespace AutoX.DB
             reader.Close();
             if (content == null)
                 return null;
+            DBFactory.UpdateMemcachedData(id, content);
             return XElement.Parse(content);
         }
 
@@ -124,9 +147,21 @@ namespace AutoX.DB
         public XElement GetChildren(string parentId)
         {
             var kids = new XElement("Children");
-            var directKids = GetKids(parentId);
-            foreach (string directKid in directKids)
+
+            var kidsList = DBFactory.GetMemcachedRelationship(parentId);
+            if (kidsList != null&& kidsList.Count>0)
             {
+                foreach (var directKid in kidsList)
+                {
+                    kids.Add(Find(directKid));
+                }
+                return kids;
+            }
+            
+            var directKids = GetKids(parentId);
+            foreach (var directKid in directKids)
+            {
+                DBFactory.AddMemcachedRelationship(parentId, directKid);
                 kids.Add(Find(directKid));
             }
             return kids;
@@ -139,17 +174,18 @@ namespace AutoX.DB
             comm1.Parameters.AddWithValue("@content", content);
             comm1.Parameters.AddWithValue("@updated", updated);
             comm1.ExecuteNonQuery();
+            DBFactory.UpdateMemcachedData(id, content);
         }
 
-        public void UpdateRelationship(string masterId, string type, string slaveId)
-        {
-            var comm1 = new NpgsqlCommand("update relationship set type=@type, slave=@slave where master=@master",
-                _connection);
-            comm1.Parameters.AddWithValue("@master", masterId);
-            comm1.Parameters.AddWithValue("@type", type);
-            comm1.Parameters.AddWithValue("@slave", slaveId);
-            comm1.ExecuteNonQuery();
-        }
+        //public void UpdateRelationship(string masterId, string type, string slaveId)
+        //{
+        //    var comm1 = new NpgsqlCommand("update relationship set type=@type, slave=@slave where master=@master",
+        //        _connection);
+        //    comm1.Parameters.AddWithValue("@master", masterId);
+        //    comm1.Parameters.AddWithValue("@type", type);
+        //    comm1.Parameters.AddWithValue("@slave", slaveId);
+        //    comm1.ExecuteNonQuery();
+        //}
 
         public void CreateContent(string id, string content,string type,string created,string updated)
         {
@@ -162,6 +198,7 @@ namespace AutoX.DB
                 comm1.Parameters.AddWithValue("@created", created);
                 comm1.Parameters.AddWithValue("@updated", updated);
                 comm1.ExecuteNonQuery();
+                DBFactory.UpdateMemcachedData(id, content);
             }
             catch (Exception ex)
             {
@@ -178,6 +215,7 @@ namespace AutoX.DB
             comm1.Parameters.AddWithValue("@created", created);
             comm1.Parameters.AddWithValue("@updated", updated);
             comm1.ExecuteNonQuery();
+            DBFactory.AddMemcachedRelationship(master, slave);
         }
     }
 }

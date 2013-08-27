@@ -66,7 +66,6 @@
     <Compile Include="Command.cs" />
     <Compile Include="Enter.cs" />
     <Compile Include="Existed.cs" />
-    <Compile Include="FeatureToggles\SampleFeatureToggle.cs" />
     <Compile Include="GetValue.cs" />
     <Compile Include="IAction.cs" />
     <Compile Include="NotExisted.cs" />
