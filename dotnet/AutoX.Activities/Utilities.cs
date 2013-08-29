@@ -5,9 +5,7 @@
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
 using System.CodeDom.Compiler;
-using System.Reflection;
 using System.Text;
-using System.Windows;
 using Microsoft.CSharp;
 
 #region
@@ -103,10 +101,10 @@ namespace AutoX.Activities
             if (string.IsNullOrEmpty(name)) return;
             var variablesProperty = navtiveModelItem.Properties["Variables"];
             if (variablesProperty == null) return;
-            var existed = variablesProperty.Collection.Any(v => v.Properties[Constants.NAME].Value.ToString().Equals(name));
+            var existed = variablesProperty.Collection != null && variablesProperty.Collection.Any(v => v.Properties[Constants.NAME].Value.ToString().Equals(name));
             if (existed) return;
             var variable = new Variable<string>(name);
-            variablesProperty.Collection.Add(variable);
+            if (variablesProperty.Collection != null) variablesProperty.Collection.Add(variable);
         }
 
         public static bool CheckValidDrop(XElement data, params string[] types)

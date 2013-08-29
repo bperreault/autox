@@ -9,7 +9,6 @@ using System.Linq;
 #region
 
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Data;
 using AutoX.Basic;

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Activities.Tracking;
-using System.Xml.Linq;
-using AutoX.Basic;
 
 namespace AutoX.WF.Core
 {

@@ -58,7 +58,7 @@ namespace AutoX.Activities
 
             var stepsDialog = new StepsDialog();
             if (stepId != null)
-                stepsDialog.Set(stepId.Value.ToString());
+                if (stepId.Value != null) stepsDialog.Set(stepId.Value.ToString());
             stepsDialog.Set(propertyValue.Value.ToString(), "");
             //if (!string.IsNullOrEmpty(steps))
             //    stepsDialog.Set(steps);

@@ -95,7 +95,7 @@ namespace AutoX
             return null;
         }
 
-        private  async void Delete(TreeView parent)
+        private void Delete(TreeView parent)
         {
             DeleteTask(parent);
         }

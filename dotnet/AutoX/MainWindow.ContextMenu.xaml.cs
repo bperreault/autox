@@ -4,11 +4,9 @@
 // Created @2012 08 24 09:25
 // Last Updated  by Huang, Jien @2012 08 24 09:25
 
-using System.Activities.Tracking;
 using System.Threading.Tasks;
 using AutoX.Basic.FeatureToggles;
 using Constants = AutoX.Basic.Constants;
-using TrackingRecord = System.Activities.Tracking.TrackingRecord;
 
 #region
 

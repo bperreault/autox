@@ -7,7 +7,7 @@ namespace AutoX.WindowsService
 {
     public class HttpListenerWorkerRequest : HttpWorkerRequest
     {
-        private readonly HttpListenerContext _context;
+        private readonly HttpListenerContext _context = null;
         private readonly string _virtualDir;
         private readonly string _physicalDir;
 
@@ -174,7 +174,7 @@ namespace AutoX.WindowsService
         }
         public override string GetFilePathTranslated()
         {
-            string s = GetFilePath();
+            var s = GetFilePath();
             s = s.Substring(_virtualDir.Length);
             s = s.Replace('/', '\\');
             return _physicalDir + s;
@@ -184,7 +184,7 @@ namespace AutoX.WindowsService
         {
             var s1 = GetFilePath();
             var s2 = _context.Request.Url.LocalPath;
-            return s1.Length == s2.Length ? "" : s2.Substring(s1.Length);
+            return s1 != null && s1.Length == s2.Length ? "" : s2.Substring(s1.Length);
         }
     }
 }

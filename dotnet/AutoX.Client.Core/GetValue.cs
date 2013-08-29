@@ -27,7 +27,7 @@ namespace AutoX.Client.Core
                     sr.Error("The correct format for this action is 'attribute=>variable', e.g.: value=>currentValue");
                     return sr.GetResult();
                 }
-                int pos = Data.IndexOf("=>", System.StringComparison.Ordinal);
+                var pos = Data.IndexOf("=>", StringComparison.Ordinal);
                 try
                 {
                     var attr = Data.Substring(0, pos);

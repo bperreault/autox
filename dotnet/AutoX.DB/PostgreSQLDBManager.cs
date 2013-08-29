@@ -16,7 +16,16 @@ namespace AutoX.DB
         {
             _connection = new NpgsqlConnection(Configuration.Settings("PostgreSQLDBConnectionString", 
                 "User ID=root;Password=Passw0rd;Host=localhost;Port=5432;Database=autox;Pooling=true;"));
-            _connection.Open();
+            try
+            {
+                _connection.Open();
+            }
+            catch (Exception exception)
+            {
+                Log.Error(ExceptionHelper.FormatStackTrace("Connect to PostgreSQL failed.",exception));
+                return;
+            }
+            
             var cmd = new NpgsqlCommand("select count(*) from content", _connection);
             var count = Convert.ToInt32(cmd.ExecuteScalar());
             if (count > 0)

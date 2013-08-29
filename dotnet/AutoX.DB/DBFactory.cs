@@ -1,6 +1,5 @@
 ﻿#region
 
-using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Xml.Linq;
@@ -25,7 +24,7 @@ namespace AutoX.DB
 
     public static class DBFactory
     {
-        public static MemcachedFeature memcachedFeature = new MemcachedFeature();
+        public static MemcachedFeature MemcachedFeature = new MemcachedFeature();
         private static readonly IData Data = null;
         private static MemcachedClient memcachedClient;
         //return proper IData according the config (MongoDB or mysql)
@@ -42,17 +41,17 @@ namespace AutoX.DB
 
         public static string GetMemcachedData(string id)
         {
-            return !memcachedFeature.FeatureEnabled ? null : GetMemcachedClient().Get<string>(id);
+            return !MemcachedFeature.FeatureEnabled ? null : GetMemcachedClient().Get<string>(id);
         }
 
         public static bool DeleteMemcachedData(string id)
         {
-            return memcachedFeature.FeatureEnabled && GetMemcachedClient().Remove(id);
+            return MemcachedFeature.FeatureEnabled && GetMemcachedClient().Remove(id);
         }
 
         public static bool UpdateMemcachedData(string id, string data)
         {
-            if (!memcachedFeature.FeatureEnabled) return false;
+            if (!MemcachedFeature.FeatureEnabled) return false;
             if (GetMemcachedClient().Get(id) != null)
                 return GetMemcachedClient().Store(StoreMode.Replace, id, data);
             return GetMemcachedClient().Store(StoreMode.Add, id, data);
@@ -60,7 +59,7 @@ namespace AutoX.DB
 
         public static List<string> GetMemcachedRelationship(string parentId)
         {
-            if (!memcachedFeature.FeatureEnabled)
+            if (!MemcachedFeature.FeatureEnabled)
                 return null;
             if (GetMemcachedClient().Get<List<string>>("Parent_" + parentId) == null)
                 return null;
@@ -69,7 +68,7 @@ namespace AutoX.DB
 
         public static bool DeleteMemcachedRelationship(string parentId, string childId)
         {
-            if (!memcachedFeature.FeatureEnabled)
+            if (!MemcachedFeature.FeatureEnabled)
                 return true;
             if (GetMemcachedClient().Get<List<string>>("Parent_" + parentId) == null)
                 return true;
@@ -80,25 +79,27 @@ namespace AutoX.DB
 
         public static bool DeleteMemcachedRelationship(string parentId)
         {
-            if (!memcachedFeature.FeatureEnabled)
+            if (!MemcachedFeature.FeatureEnabled)
                 return true;
             return GetMemcachedClient().Remove("Parent_" + parentId);
         }
 
         public static bool AddMemcachedRelationship(string parentId, string childId)
         {
-            if (!memcachedFeature.FeatureEnabled)
+            if (!MemcachedFeature.FeatureEnabled)
                 return false;
             if (GetMemcachedClient().Get<List<string>>("Parent_" + parentId) == null)
                 GetMemcachedClient().Store(StoreMode.Add, "Parent_" + parentId, new List<string>());
             var kids = GetMemcachedClient().Get<List<string>>("Parent_" + parentId);
+            if(kids==null)
+                return false;
             kids.Add(childId);
             return true;
         }
 
         public static MemcachedClient GetMemcachedClient()
         {
-            if (!memcachedFeature.FeatureEnabled)
+            if (!MemcachedFeature.FeatureEnabled)
                 return null;
             if (memcachedClient != null) return memcachedClient;
             var config = new MemcachedClientConfiguration();

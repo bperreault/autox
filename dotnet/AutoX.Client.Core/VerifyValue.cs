@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using AutoX.Basic;
 using OpenQA.Selenium;
@@ -30,7 +26,7 @@ namespace AutoX.Client.Core
                 }
                 if (Data.Contains("=>"))
                 {
-                    int pos = Data.IndexOf("=>", System.StringComparison.Ordinal);
+                    var pos = Data.IndexOf("=>", StringComparison.Ordinal);
                     try
                     {
                         var attr = Data.Substring(0, pos);
