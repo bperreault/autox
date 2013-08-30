@@ -313,11 +313,27 @@ namespace AutoX.Activities
             return finalRet;
         }
 
+        public static string Evaluate(string variable)
+        {
+            if (variable.StartsWith("${") && variable.EndsWith("}"))
+            {
+                try
+                {
+                    variable = variable.Substring(2, variable.Length - 3);
+                    return Eval(variable).ToString();
+                }
+                catch (Exception exception)
+                {
+                    Log.Error(ExceptionHelper.FormatStackTrace("try to evaluate string "+variable+" failed.",exception));
+                }
+            }
+            return variable;
+        }
+
         public static object Eval(string sCSCode)
         {
 
-            var c = new CSharpCodeProvider();
-            var icc = c.CreateCompiler();
+            var c = CodeDomProvider.CreateProvider("CSharp");
             var cp = new CompilerParameters();
 
             cp.ReferencedAssemblies.Add("system.dll");
@@ -337,7 +353,7 @@ namespace AutoX.Activities
             sb.Append("using System.Windows.Forms;\n");
             sb.Append("using System.Drawing;\n");
 
-            sb.Append("namespace CSCodeEvaler{ \n");
+            sb.Append("namespace AutoX.Activities{ \n");
             sb.Append("public class CSCodeEvaler{ \n");
             sb.Append("public object EvalCode(){\n");
             sb.Append("return " + sCSCode + "; \n");
@@ -345,15 +361,15 @@ namespace AutoX.Activities
             sb.Append("} \n");
             sb.Append("}\n");
 
-            var cr = icc.CompileAssemblyFromSource(cp, sb.ToString());
+            var cr = c.CompileAssemblyFromSource(cp, sb.ToString());
             if (cr.Errors.Count > 0)
             {
                 Log.Error("ERROR: " + cr.Errors[0].ErrorText);
                 return null;
             }
-
+            
             var a = cr.CompiledAssembly;
-            var o = a.CreateInstance("CSCodeEvaler.CSCodeEvaler");
+            var o = a.CreateInstance("AutoX.Activities.CSCodeEvaler");
 
             if (o == null) return null;
             var t = o.GetType();

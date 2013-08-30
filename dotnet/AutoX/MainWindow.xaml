@@ -27,7 +27,7 @@
 
                             <MenuItem Header="Exit" Click="Exit" />
                         </MenuItem>
-                        <MenuItem Header="Edit">
+                        <MenuItem Header="Edit" Visibility="Collapsed">
                             <MenuItem Header="Undo" Name="UndoMenu" IsEnabled="False" />
                             <MenuItem Header="Redo" Name="RedoMenu" IsEnabled="False" />
                         </MenuItem>

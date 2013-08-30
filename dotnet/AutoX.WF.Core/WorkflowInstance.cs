@@ -143,7 +143,11 @@ namespace AutoX.WF.Core
             {
                 ClientInstancesManager.GetInstance().GetComputer(ClientId).SetCommand(steps.ToString());
             }
-            _command = steps;
+            lock (this)
+            {
+                _command = steps;
+            }
+            
         }
 
         public XElement GetResult()
@@ -157,7 +161,11 @@ namespace AutoX.WF.Core
                     return null;
             }
             var resultString = _result.ToString();
-            _result = null;
+            lock (this)
+            {
+                _result = null;
+            }
+            
             return XElement.Parse(resultString);
         }
 
@@ -260,7 +268,11 @@ namespace AutoX.WF.Core
 
         public void SetResult(XElement result)
         {
-            _result = result;
+            lock (this)
+            {
+                _result = result;
+            }
+            
         }
 
         public XElement GetCommand()
@@ -274,7 +286,11 @@ namespace AutoX.WF.Core
                     return null;
             }
             var commandString = _command.ToString();
-            _command = null;
+            lock (this)
+            {
+                _command = null;
+            }
+            
             return XElement.Parse(commandString);
         }
 

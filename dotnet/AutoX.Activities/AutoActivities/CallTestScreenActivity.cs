@@ -196,7 +196,7 @@ namespace AutoX.Activities.AutoActivities
                 var defaultData = descendant.GetAttributeValue(Constants.DEFAULT_DATA);
                 
                 var dataref = descendant.GetAttributeValue(Constants.DATA);
-
+                
                 if (string.IsNullOrEmpty(dataref))
                 {
                     if (!string.IsNullOrEmpty(defaultData))
@@ -205,7 +205,7 @@ namespace AutoX.Activities.AutoActivities
                 else
                 {
                     if (data.ContainsKey(dataref))
-                        step.SetAttributeValue(Constants.DATA, data[dataref]);
+                        step.SetAttributeValue(Constants.DATA, Utilities.Evaluate(data[dataref]));
                     else
                     {
                         var found = false;
