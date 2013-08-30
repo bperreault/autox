@@ -8,19 +8,19 @@
         <wpfExtensions:FeatureToggleToVisibilityConverter x:Key="ToggleVisibilityConverter"/>
     </Window.Resources>
     <Grid>
-        
+
         <TabControl HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="2,2,2,2">
-            <TabItem Header="Edit" BorderThickness="2" Width="128">
+            <TabItem Header="Edit" BorderThickness="0" Width="128">
                 <Grid>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="4*" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Menu Grid.Row="0" HorizontalAlignment="Left" Name="MainMenu" VerticalAlignment="Top"
-                          BorderThickness="2">
+                          BorderThickness="0">
                         <MenuItem Header="File" Name="FileMenu">
                             <MenuItem Header="Generate Key File" Click="GenerateKeyFile" Visibility="{Binding Path=EncryptFeature, Converter={StaticResource ToggleVisibilityConverter} }"  />
                             <MenuItem Header="Settings" Click="Settings" />
@@ -40,7 +40,8 @@
                             <MenuItem Header="Debug Test (Sauce)" Click="RunSauceTest" Visibility="{Binding Path=SaucelabFeature, Converter={StaticResource ToggleVisibilityConverter} }" />
                         </MenuItem>
                     </Menu>
-                    <Grid Grid.Row="1" Name="Grid1">
+                    <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" BorderThickness="0" Height="8" IsEnabled="False" />
+                    <Grid Grid.Row="2" Name="Grid1">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="2*" />
                             <ColumnDefinition Width="Auto" />
@@ -77,25 +78,25 @@
                                 </Grid>
                             </TabItem>
                             <TabItem Header="Workflow" Width="96">
-                                <Border Name="ToolboxBorder" BorderThickness="2" />
+                                <Border Name="ToolboxBorder" BorderThickness="0" />
                             </TabItem>
                         </TabControl>
                         <GridSplitter Grid.Column="1" Name="GridSplitter2" Width="8" ResizeBehavior="PreviousAndNext"
-                                      BorderThickness="1" />
-                        <Border Grid.Column="2" Name="DesignerBorder" BorderThickness="2" />
+                                      BorderThickness="0" />
+                        <Border Grid.Column="2" Name="DesignerBorder" BorderThickness="0" />
                         <GridSplitter Grid.Column="3" Name="GridSplitter1" Width="8" ResizeBehavior="PreviousAndNext"
-                                      BorderThickness="1" />
-                        <Border Grid.Column="4" Name="PropertyBorder" BorderThickness="2" />
+                                      BorderThickness="0" />
+                        <Border Grid.Column="4" Name="PropertyBorder" BorderThickness="0" />
                     </Grid>
-                    <GridSplitter Grid.Row="2" Name="GridSplitter4" ResizeBehavior="PreviousAndNext"
-                                  HorizontalAlignment="Stretch" BorderThickness="1" Height="8" />
-                    <Grid Grid.Row="3">
+                    <GridSplitter Grid.Row="3" Name="GridSplitter4" ResizeBehavior="PreviousAndNext"
+                                  HorizontalAlignment="Stretch" BorderThickness="0" Height="8" />
+                    <Grid Grid.Row="4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="4*" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="4*" />
                         </Grid.ColumnDefinitions>
-                        <TabControl Grid.Column="0" Name="TabControl1" VerticalAlignment="Stretch" BorderThickness="2">
+                        <TabControl Grid.Column="0" Name="TabControl1" VerticalAlignment="Stretch" BorderThickness="0">
                             <TabItem Header=" UI Objects Pool" Name="TabGuiObject">
                                 <Grid>
                                     <Grid.RowDefinitions>
@@ -129,7 +130,7 @@
                             </TabItem>
                         </TabControl>
                         <GridSplitter Grid.Column="1" Name="GridSplitter11" Width="8" ResizeBehavior="PreviousAndNext"
-                                      BorderThickness="1" />
+                                      BorderThickness="0" />
                         <TabControl Name="TabControl2" Grid.Column="2">
                             <TabItem Header=" Data" Name="TabData">
                                 <Grid>
@@ -158,10 +159,10 @@
                             </TabItem>
                         </TabControl>
                     </Grid>
-                    <ProgressBar Name="Progressing" Grid.Row="4" Height="16" Visibility="Visible" />
+                    <!--<ProgressBar Name="Progressing" Grid.Row="4" Height="16" Visibility="Visible" />-->
                 </Grid>
             </TabItem>
-            <TabItem Header="Monitor" BorderThickness="2" Width="128">
+            <TabItem Header="Monitor" BorderThickness="0" Width="128">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*" />
@@ -193,7 +194,7 @@
                             </TreeView>
                         </Grid>
                         <GridSplitter Grid.Column="1" Name="GridSplitter22" Width="8" ResizeBehavior="PreviousAndNext"
-                                      BorderThickness="1" />
+                                      BorderThickness="0" />
                         <Grid Grid.Column="2">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
@@ -230,7 +231,7 @@
                         </Grid>
                     </Grid>
                     <GridSplitter Grid.Row="1" Name="GridSplitter21" ResizeBehavior="PreviousAndNext"
-                                  HorizontalAlignment="Stretch" BorderThickness="1" Height="8" />
+                                  HorizontalAlignment="Stretch" BorderThickness="0" Height="8" />
                     <Grid Grid.Row="2">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -270,15 +271,16 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="Result" BorderThickness="2" Width="128">
+            <TabItem Header="Result" BorderThickness="0" Width="128">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="92*" />
+                        <ColumnDefinition Width="18*" />
+                        <ColumnDefinition Width="75*"/>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="13*" />
-                        <ColumnDefinition Width="262*" />
+                        <ColumnDefinition Width="265*" />
                     </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0">
+                    <Grid Grid.Column="0" Grid.ColumnSpan="2">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
@@ -300,9 +302,9 @@
                             </TreeView.ContextMenu>
                         </TreeView>
                     </Grid>
-                    <GridSplitter Grid.Column="1" Name="GridSplitter31" Width="8" ResizeBehavior="PreviousAndNext"
-                                  BorderThickness="1" />
-                    <Grid Grid.Column="2" Grid.ColumnSpan="2">
+                    <GridSplitter Grid.Column="2" Name="GridSplitter31" Width="8" ResizeBehavior="PreviousAndNext"
+                                  BorderThickness="0" />
+                    <Grid Grid.Column="3" Grid.ColumnSpan="2">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="1*" />
                             <RowDefinition Height="Auto" />
@@ -325,7 +327,7 @@
                                             </DataTrigger>
                                             <DataTrigger Binding="{Binding FinalResult}" Value="Error">
                                                 <Setter Property="Background" Value="DarkGray" />
-                                            </DataTrigger>                                            
+                                            </DataTrigger>
                                         </Style.Triggers>
                                         <Setter Property="MaxHeight" Value="16" />
                                     </Style>
@@ -349,11 +351,11 @@
                                         </DataGridHyperlinkColumn.ElementStyle>
                                     </DataGridHyperlinkColumn>
                                 </DataGrid.Columns>
-                                
+
                             </DataGrid>
                         </Grid>
                         <GridSplitter Grid.Row="1" Name="GridSplitter32" ResizeBehavior="PreviousAndNext"
-                                      HorizontalAlignment="Stretch" BorderThickness="1" Height="8" />
+                                      HorizontalAlignment="Stretch" BorderThickness="0" Height="8" />
                         <Grid Grid.Row="2">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />

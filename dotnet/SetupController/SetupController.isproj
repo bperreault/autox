@@ -33,5 +33,9 @@
 			<Name>AutoX</Name>
 			<Project>{62E91EC9-E076-480C-AC02-397E034232F0}</Project>
 		</ProjectReference>
+		<ProjectReference Include="..\AutoX.Client.Core\AutoX.Client.Core.csproj">
+			<Name>AutoX.Client.Core</Name>
+			<Project>{4C838B4A-F1C7-4B78-B6C4-EB65EAD3FBE0}</Project>
+		</ProjectReference>
 	</ItemGroup>
 </Project>

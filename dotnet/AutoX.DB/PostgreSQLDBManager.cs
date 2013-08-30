@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Xml.Linq;
 using AutoX.Basic;
+using Microsoft.CSharp.RuntimeBinder;
 using Npgsql;
 
 namespace AutoX.DB
@@ -15,7 +16,7 @@ namespace AutoX.DB
         private PostgreSQLDBManager()
         {
             _connection = new NpgsqlConnection(Configuration.Settings("PostgreSQLDBConnectionString", 
-                "User ID=root;Password=Passw0rd;Host=localhost;Port=5432;Database=autox;Pooling=true;"));
+                "User ID=postgres;Password=Passw0rd;Host=localhost;Port=5432;Database=postgres;Pooling=true;"));
             try
             {
                 _connection.Open();
@@ -23,7 +24,7 @@ namespace AutoX.DB
             catch (Exception exception)
             {
                 Log.Error(ExceptionHelper.FormatStackTrace("Connect to PostgreSQL failed.",exception));
-                return;
+                throw new RuntimeBinderException("Connect to Database Failed",exception);
             }
             
             var cmd = new NpgsqlCommand("select count(*) from content", _connection);

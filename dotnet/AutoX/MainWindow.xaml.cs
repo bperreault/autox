@@ -34,7 +34,7 @@ namespace AutoX
             InitFeatureToggle();
             DataContext = this;
             HostManager.GetInstance().Register(this);
-            StartProgressBar();
+            //StartProgressBar();
             //set datagrid itemssource
             ClientTable.ItemsSource = _clientSource.Get();
             InstanceTable.ItemsSource = _instanceSource.Get();
@@ -49,21 +49,45 @@ namespace AutoX
             if (string.IsNullOrEmpty(rootId))
             {
                 MessageBox.Show("Check your configuration settings, no Root entry");
+                Close();
                 return;
             }
-            var xRoot = DBFactory.GetData().GetChildren(rootId);
+            try
+            {
+                var xRoot = DBFactory.GetData().GetChildren(rootId);
+                if (xRoot == null || !xRoot.HasElements)
+                {
+                    MessageBox.Show(
+                        "Cannot connect to Server, Check your configuration settings, network connection and database connection");
+                    return;
+                }
 
-            Configuration.Set("ProjectRoot", xRoot.GetSubElement(Constants.NAME, "Project").GetAttributeValue(Constants._ID));
-            Configuration.Set("ResultsRoot", xRoot.GetSubElement(Constants.NAME, Constants.RESULT).GetAttributeValue(Constants._ID));
-            Configuration.Set("DataRoot", xRoot.GetSubElement(Constants.NAME, Constants.DATA).GetAttributeValue(Constants._ID));
-            Configuration.Set("ObjectPool", xRoot.GetSubElement(Constants.NAME, "UI").GetAttributeValue(Constants._ID));
-            Configuration.Set("TranslationRoot", xRoot.GetSubElement(Constants.NAME, "Translation").GetAttributeValue(Constants._ID));
-            Configuration.SaveSettings();
+                Configuration.Set("ProjectRoot",
+                    xRoot.GetSubElement(Constants.NAME, "Project").GetAttributeValue(Constants._ID));
+                Configuration.Set("ResultsRoot",
+                    xRoot.GetSubElement(Constants.NAME, Constants.RESULT).GetAttributeValue(Constants._ID));
+                Configuration.Set("DataRoot",
+                    xRoot.GetSubElement(Constants.NAME, Constants.DATA).GetAttributeValue(Constants._ID));
+                Configuration.Set("ObjectPool",
+                    xRoot.GetSubElement(Constants.NAME, "UI").GetAttributeValue(Constants._ID));
+                Configuration.Set("TranslationRoot",
+                    xRoot.GetSubElement(Constants.NAME, "Translation").GetAttributeValue(Constants._ID));
+                Configuration.SaveSettings();
+            }
+            catch (Exception exception)
+            {
+                Log.Error(ExceptionHelper.FormatStackTrace(exception));
+                MessageBox.Show(
+                    "Cannot connect to Server, Check your configuration settings, network connection and database connection");
+                Close();
+                return;
+            }
+            
             InitScreen();
             //InitializeProject();
             //LoadProject();
             Title = Title + " - " + _currentWindowsUser;
-            StopProgressBar();
+            //StopProgressBar();
         }
 
         #region IHost Members
@@ -103,20 +127,20 @@ namespace AutoX
 
         #region Progress bar
 
-        private void StartProgressBar()
-        {
-            Progressing.IsIndeterminate = true;
-            Progressing.Visibility = Visibility.Visible;
-            var duration = new Duration(TimeSpan.FromSeconds(1));
-            var doubleanimation = new DoubleAnimation(10.0, duration);
-            Dispatcher.BeginInvoke(new Action(() => Progressing.BeginAnimation(RangeBase.ValueProperty, doubleanimation)));
-        }
+        //private void StartProgressBar()
+        //{
+        //    Progressing.IsIndeterminate = true;
+        //    Progressing.Visibility = Visibility.Visible;
+        //    var duration = new Duration(TimeSpan.FromSeconds(1));
+        //    var doubleanimation = new DoubleAnimation(10.0, duration);
+        //    Dispatcher.BeginInvoke(new Action(() => Progressing.BeginAnimation(RangeBase.ValueProperty, doubleanimation)));
+        //}
 
-        private void StopProgressBar()
-        {
-            Dispatcher.BeginInvoke(new Action(() => Progressing.BeginAnimation(RangeBase.ValueProperty, null)));
-            Progressing.Visibility = Visibility.Collapsed;
-        }
+        //private void StopProgressBar()
+        //{
+        //    Dispatcher.BeginInvoke(new Action(() => Progressing.BeginAnimation(RangeBase.ValueProperty, null)));
+        //    Progressing.Visibility = Visibility.Collapsed;
+        //}
 
         #endregion Progress bar
     }

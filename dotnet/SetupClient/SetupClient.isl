@@ -341,6 +341,7 @@
 		<col def="S0">ISDotNetInstallerArgsCommit</col>
 		<col def="S0">ISDotNetInstallerArgsUninstall</col>
 		<col def="S0">ISDotNetInstallerArgsRollback</col>
+		<row><td>AutoX.Client.Core.Content_Files</td><td>{7F32A988-566B-452F-B8A2-1FBA7E9EACC9}</td><td>INSTALLDIR</td><td>2</td><td/><td>autox.client.core.content_fi</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>AutoX.Client.Primary_output</td><td>{81B2DB86-5D5A-4EB5-830D-3773B2FD445F}</td><td>INSTALLDIR</td><td>2</td><td/><td>autox.client.primary_output</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISO19770_LocalTag</td><td>{A9D0FE8E-F5BF-4CBE-B724-60AEF6165E46}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISO19770_SystemTag</td><td>{C3947F08-8D62-459D-A9F3-808FD4630C29}</td><td>CommonAppDataFolder</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
@@ -1867,6 +1868,7 @@
 	<table name="FeatureComponents">
 		<col key="yes" def="s38">Feature_</col>
 		<col key="yes" def="s72">Component_</col>
+		<row><td>AlwaysInstall</td><td>AutoX.Client.Core.Content_Files</td></row>
 		<row><td>AlwaysInstall</td><td>AutoX.Client.Primary_output</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT</td></row>
 	</table>
@@ -1883,6 +1885,7 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I4">ISAttributes</col>
 		<col def="S72">ISComponentSubFolder_</col>
+		<row><td>autox.client.core.content_fi</td><td>AutoX.Client.Core.Content_Files</td><td>AutoX.Client.Core.Content Files</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;AutoX.Client.Core&gt;|ContentFiles</td><td>3</td><td/></row>
 		<row><td>autox.client.primary_output</td><td>AutoX.Client.Primary_output</td><td>AutoX.Client.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;AutoX.Client&gt;|Built</td><td>3</td><td/></row>
 		<row><td>folder.png</td><td>ISX_DEFAULTCOMPONENT</td><td>Folder.png</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX.Client\Resources\Folder.png</td><td>1</td><td/></row>
 		<row><td>notificationareaicon.ico</td><td>ISX_DEFAULTCOMPONENT</td><td>NOTIFI~1.ICO|NotificationAreaIcon.ico</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX.Client\Resources\NotificationAreaIcon.ico</td><td>1</td><td/></row>
@@ -2035,6 +2038,7 @@
 		<col def="S0">FTPLocation</col>
 		<col def="S0">HTTPLocation</col>
 		<col def="S0">Miscellaneous</col>
+		<row><td>AutoX.Client.Core.Content_Files</td><td/><td/><td>_913056FB_8575_4B94_AFCB_71B55CE4D232_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>AutoX.Client.Primary_output</td><td/><td/><td>_B53BED04_1F14_46CA_BC08_088FA51AD59D_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISO19770_LocalTag</td><td/><td/><td>_9527F138_56ED_4292_8EE0_E59A12911BB9_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISO19770_SystemTag</td><td/><td/><td>_CFEAABF2_12E1_4D03_9202_BC4BAD375ADF_FILTER</td><td/><td/><td/><td/></row>
@@ -2108,6 +2112,7 @@
 	<table name="ISDependency">
 		<col key="yes" def="S50">ISDependency</col>
 		<col def="I2">Exclude</col>
+		<row><td>LIBC.DLL</td><td>1</td></row>
 	</table>
 
 	<table name="ISDisk1File">
@@ -2340,6 +2345,7 @@
 		<col def="S255">TestValue</col>
 		<col def="i4">Type</col>
 		<row><td>AutoX.Client</td><td>AutoX.Client\AutoX.Client.csproj</td><td/><td>2</td></row>
+		<row><td>AutoX.Client.Core</td><td>AutoX.Client.Core\AutoX.Client.Core.csproj</td><td/><td>2</td></row>
 		<row><td>CommonFilesFolder</td><td/><td/><td>1</td></row>
 		<row><td>ISPROJECTDIR</td><td/><td/><td>1</td></row>
 		<row><td>ISProductFolder</td><td/><td/><td>1</td></row>
