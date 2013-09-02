@@ -9,8 +9,9 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase
     private $log;
     private $config;
     private $clientId;
+    private $registered;
 
-    public function testMainProcess()
+    public function testMainProcessFake()
     {
         //$xml = $this->fakeReadCommand('C:\Users\jien\Documents\autox\dotnet\AutoX.PHP.Client\Commands.xml');
         //$log = Logger::getLogger('autox.log');
@@ -23,21 +24,37 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase
             $this->doTest($item);
             //$this->log->debug($item);
         }
-        // while(1){
-// 			//read command from center
-// 			$command = readCommand();
-//			$xml_command = convertCommand($command)
-// 			if(empty($xml_command))
-// 				continue;
-// 			//analasyze the xml, choose a action to run
-// 			$result = doTest($xml_command);
-// 			if(empty($result))
-// 				continue;
-// 			//form a return result
-// 			//send result back
-// 			sendResult($result);
-// 		}
 
+
+    }
+
+    public function testMainProcess(){
+         while(1){
+ 			//read command from center
+ 			$command = $this->requestCommandFromHost();
+			if(empty($xml_command)){
+                sleep(6);
+                continue;
+            }
+
+             $instanceId = $this->getInstanceId($command);
+             if(empty($instanceId)){
+                 sleep(6);
+                 continue;
+             }
+             //TODO prepare the return result here
+             $result = new SimpleXMLElement("<Result />");
+             $result->addAttribute("Created", date("Y-m-d H:i:s"));
+ 			//analasyze the xml, choose a action to run
+             $items = $xml->xpath("Step");
+             foreach ($items as $item) {
+                 $this->log->debug($item);
+                 $ret = $this->doTest($item);
+                 $this->xml_appendChild($result,$ret);
+             }
+             $result->addAttribute("Created", date("Y-m-d H:i:s"));
+             $this->sendResultToHost($result);
+ 		}
     }
 
     private function fakeReadCommand($xmlFile)
@@ -184,6 +201,10 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase
         return strval($cmd["Data"]);
     }
 
+    private function getInstanceId($cmd){
+        return strval($cmd["InstanceId"]);
+    }
+
     private function click($xmlElement)
     {
         $xpath = $this->getUIObject($xmlElement);
@@ -259,7 +280,7 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase
     private function readCommand($cmd)
     {
         try {
-            $soap = new SoapClient("http://localhost:8080/AutoX.Web/Service.asmx?wsdl");
+            $soap = new SoapClient($this->config["EndPoint"]);
             $param["xmlFormatCommand"] = $cmd;
             $ret = $soap->__Call("Command", array($param));
             //           var_dump($ret);
@@ -267,13 +288,42 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase
             return new SimpleXMLElement($xml_str);
         } catch (Exception $e) {
             echo print_r($e->getMessage(), true);
+            $this->log->error($e->getMessage());
         }
         return null;
     }
 
-    private function sendResult($ret)
-    {
+    private function registerToHost(){
+        $cmd = $this->getRegisterString();
 
+        while(1){
+            try{
+                $result = $this->readCommand($cmd);
+                if($result!=null)
+                    return;
+            }catch(Exception $e){
+                $this->log->warn("Register failed, due to: "+$e->getMessage());
+                sleep(17);
+            }
+        }
+    }
+
+    private function requestCommandFromHost(){
+        $cmd = $this->getRequestCommandString();
+        try{
+            $command = $this->readCommand($cmd);
+            if($command!=null)
+                return $command;
+        }catch(Exception $e){
+            $this->log->error("Request command failed, due to: "+$e->getMessage());
+            sleep(6);
+        }
+        return null;
+    }
+    private function sendResultToHost($ret)
+    {
+        $cmd = $this->getSetResultString($ret);
+        $this->readCommand($cmd);
     }
 
     private function snapshot()
