@@ -22,6 +22,11 @@ namespace AutoX.WindowsService
             foreach (var prefix in prefixes)
                 _listener.Prefixes.Add(prefix);
         }
+
+        public override object InitializeLifetimeService()
+        {
+            return null;
+        }
         public void Start()
         {
             _listener.Start();
@@ -32,9 +37,10 @@ namespace AutoX.WindowsService
         }
         public void ProcessRequest()
         {
-            var lease = (ILease) RemotingServices.GetLifetimeService(this);
-            Debug.Assert(lease.CurrentState==LeaseState.Active);
-            lease.Renew(TimeSpan.FromMinutes(30));
+            //var lease = (ILease) RemotingServices.GetLifetimeService(this);
+            //Debug.Assert(lease.CurrentState==LeaseState.Active);
+            //lease.Renew(TimeSpan.FromMinutes(60));
+            RemotingServices.Marshal(this);
             var ctx = _listener.GetContext();
             var workerRequest =
                 new HttpListenerWorkerRequest(ctx, _virtualDir, _physicalDir);

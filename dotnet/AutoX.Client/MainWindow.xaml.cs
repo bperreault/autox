@@ -45,10 +45,10 @@ namespace AutoX.Client
             Close();
         }
 
-        private void SwitchBrowser(object sender, RoutedEventArgs e)
-        {
-            _defaultClientInstance.Browser.SwitchToAnotherBrowser();
-        }
+        //private void SwitchBrowser(object sender, RoutedEventArgs e)
+        //{
+        //    _defaultClientInstance.Browser.SwitchToAnotherBrowser();
+        //}
 
         private void GetUIObjects(object sender, RoutedEventArgs e)
         {

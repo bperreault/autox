@@ -455,7 +455,7 @@ namespace AutoX.Client.Core
 
         private void CloseLocalBrowser()
         {
-            var browserType = _config.Get("Browser.Type", "IE");
+            var browserType = _config.Get("BrowserType", "IE");
             if (browserType.Equals("IE"))
 
                 Command.DosCommand(Environment.SystemDirectory + "\\taskkill.exe", " /IM iexplore.exe");
@@ -463,6 +463,11 @@ namespace AutoX.Client.Core
                 Command.DosCommand(Environment.SystemDirectory + "\\taskkill.exe", " /IM firefox.exe");
             if (browserType.Equals("Chrome"))
                 Command.DosCommand(Environment.SystemDirectory + "\\taskkill.exe", " /IM chrome.exe");
+        }
+
+        public bool IsExisted()
+        {
+            return _browser != null;
         }
     }
 }

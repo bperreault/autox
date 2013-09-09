@@ -81,11 +81,14 @@ namespace AutoX
 
         private void GetUIObjectsSaveToFile(object sender, RoutedEventArgs e)
         {
-            var urlDialog = new InfoDialog { Title = "Set the URL for Browser", InfoContent = _config.Get("DefaultURL") };
-            urlDialog.ShowDialog();
-            if (urlDialog.DialogResult != true) return;
-            _config.Set("DefaultURL", urlDialog.InfoContent);
-            _autoClient.Browser = new Browser(_config);
+            if (!_autoClient.Browser.IsExisted())
+            {
+                var urlDialog = new InfoDialog { Title = "Set the URL for Browser", InfoContent = _config.Get("DefaultURL") };
+                urlDialog.ShowDialog();
+                if (urlDialog.DialogResult != true) return;
+                _config.Set("DefaultURL", urlDialog.InfoContent);
+                _autoClient.Browser = new Browser(_config);
+            }
             var uiObjectsString = _autoClient.Browser.GetAllValuableObjects();
             var fileDialog = new SaveFileDialog
             {

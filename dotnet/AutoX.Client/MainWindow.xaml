@@ -35,7 +35,7 @@
             </Grid.RowDefinitions>
             <Menu Grid.Row="0" Name="MainMenu" Margin="10, 10, 5, 5" HorizontalAlignment="Left" VerticalAlignment="Top">
                 <MenuItem Header="_File">
-                    <MenuItem Header="_Switch Browser" Click="SwitchBrowser" />
+                    <!--<MenuItem Header="_Switch Browser" Click="SwitchBrowser" />-->
                     <MenuItem Header="_Get UI Objects" Click="GetUIObjects" />
                     <MenuItem Header="_Register" Click="Register" />
                     <MenuItem Header="Request_Command" Click="RequestCommand" />

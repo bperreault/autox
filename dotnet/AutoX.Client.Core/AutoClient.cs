@@ -66,9 +66,9 @@ namespace AutoX.Client.Core
                     continue;
                 }
                 var command = RequestCommand();
+                Log.Debug(command.ToString());
                 if (command.Attribute(Constants.INSTANCE_ID) != null)
-                {
-                    Log.Debug(command.ToString());
+                {                    
                     SendResult(command);
                 }
                 else
