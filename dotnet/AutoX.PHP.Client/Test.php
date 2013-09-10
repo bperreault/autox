@@ -78,7 +78,8 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase
             sleep(17);
             return;
         }
-        $stepResult = new SimpleXMLElement("<StepResult Action='" . $actionName . "' _id='" . $this->getGuid() ."' Data='" . $data ."' UIObject='" . $uiObjectName . "' Created='" . date("Y-m-d H:i:s") . "' Result='Error' />");
+        $start = time();
+        $stepResult = new SimpleXMLElement("<StepResult Action='" . $actionName . "' _id='" . $this->getGuid() ."' Data='" . $data ."' UIObject='" . $uiObjectName . "' StartTime='" . date("Y-m-d H:i:s", $start) . "' />");
 
         switch ($actionName) {
             case "Check":
@@ -88,7 +89,7 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase
                 $this->click($cmd, $stepResult);
                 break;
             case "Close":
-                $this->close($cmd, $stepResult);
+                $this->closeBrowser($cmd, $stepResult);
                 break;
             case "Command":
                 $this->command($data, $stepResult);
@@ -122,12 +123,17 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase
                 break;
             default:
                 //this is a command we don't support, do nothing here, the default ret is for this case.
-                $stepResult->addAttribute("Reason","Client does not support this action");
+                $stepResult->addAttribute("Reason","Client does not support this action" . $actionName);
                 break;
 
         }
         $this->snapshot($stepResult);
-        $stepResult->addAttribute("Updated",date("Y-m-d H:i:s"));
+        $end = time();
+        $duration = $end - $start;
+        var_dump($end);
+        var_dump($duration);
+        $stepResult->addAttribute("EndTime",date("Y-m-d H:i:s", $end));
+        $stepResult->addAttribute("Duration",$duration->format("%I : %S"));
         var_dump($stepResult);
         return $stepResult;
     }
@@ -226,21 +232,36 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase
         return strval($xpath);
     }
 
+    private function setSuccessResult($stepResult){
+        $stepResult->addAttribute("Result","Success");
+    }
+
+    private function setFailedResult($stepResult,$reason){
+        $stepResult->addAttribute("Result","Error");
+        if(!empty($reason)){
+            $stepResult->addAttribute("Reason",$reason);
+        }
+    }
+
 //----------------actions-----------------
     private function click($xmlElement, $stepResult)
     {
         $xpath = $this->getUIObject($xmlElement);
         $this->byXPath($xpath)->click();
+
+        $this->setSuccessResult($stepResult);
     }
 
-    private function close($xmlElemen, $stepResultt)
+    private function closeBrowser($xmlElemen, $stepResultt)
     {
-        $this->close();
+        $this->webdriver->close();
+        $this->setSuccessResult($stepResult);
     }
 
     private function command($cmd, $stepResult)
     {
         exec($cmd);
+        $this->setSuccessResult($stepResult);
     }
 
     //send result back to center, xml format string
@@ -250,6 +271,7 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase
         $xpath = $this->getUIObject($xmlElement);
         $this->byXPath($xpath)->click();
         $this->keys($data);
+        $this->setSuccessResult($stepResult);
     }
 
     private function setEnv($xmlElement, $stepResult)
@@ -262,6 +284,7 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase
         $this->prepareSession();
         $this->log->debug($this->config['DefaultURL']);
         $this->url($this->config['DefaultURL']);
+        $this->setSuccessResult($stepResult);
     }
 
     private function start($xmlElement, $stepResult)
@@ -270,28 +293,34 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase
         $this->setBrowserUrl($this->config['DefaultURL']);
         $this->prepareSession();
         $this->url($this->config['DefaultURL']);
+        $this->setSuccessResult($stepResult);
     }
 
     private function existed($xmlElement, $stepResult)
     {
         $xpath = $this->getUIObject($xmlElement);
         //TODO how to set result????
+
+        $this->setSuccessResult($stepResult);
     }
 
     private function notExisted($xmlElement, $stepResult)
     {
         $xpath = $this->getUIObject($xmlElement);
         //TODO how to set result????
+        $this->setSuccessResult($stepResult);
     }
     private function verifyValue($xmlElement, $stepResult)
     {
         $xpath = $this->getUIObject($xmlElement);
         //TODO how to set result????
+        $this->setSuccessResult($stepResult);
     }
     private function verifyTable($xmlElement, $stepResult)
     {
         $xpath = $this->getUIObject($xmlElement);
         //TODO how to set result????
+        $this->setSuccessResult($stepResult);
     }
 
     private function wait($xmlElement, $stepResult)
@@ -303,6 +332,7 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase
         } catch (Exception $e) {
         }
         sleep($time);
+        $this->setSuccessResult($stepResult);
     }
 //------------actions---------------------
 
@@ -385,7 +415,7 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase
             }
             //TODO prepare the return result here
             $result = new SimpleXMLElement("<Result />");
-            $result->addAttribute("Created", date("Y-m-d H:i:s"));
+            $result->addAttribute("Created", date("Y-m-d H:i:s", time()));
             //$result->addAttribute("_id",$instanceId);
             $result->addAttribute("InstanceId",$instanceId);
             //analasyze the xml, choose a action to run
@@ -395,7 +425,7 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase
                 $ret = $this->doTest($item);
                 $this->xml_appendChild($result, $ret);
             }
-            $result->addAttribute("Updated", date("Y-m-d H:i:s"));
+            $result->addAttribute("Updated", date("Y-m-d H:i:s", time()));
             $this->sendResultToHost($result);
         }
     }
