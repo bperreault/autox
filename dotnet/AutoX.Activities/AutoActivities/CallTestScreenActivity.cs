@@ -153,6 +153,7 @@ namespace AutoX.Activities.AutoActivities
                     }
                 }
                 //result.SetAttributeValue(Constants.UI_OBJECT, UIObject);
+                stepElement.SetAttributeValue(Constants._TYPE, "Result");
                 DBFactory.GetData().Save(stepElement);
             }
             SetFinalResult();

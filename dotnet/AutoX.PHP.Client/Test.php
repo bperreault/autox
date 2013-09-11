@@ -54,7 +54,7 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase
 
     protected function tearDown()
     {
-        $this->closeBrowser();
+        $this->closeWindow();
     }
 
     private function fakeReadCommand($xmlFile)
@@ -130,10 +130,10 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase
         $this->snapshot($stepResult);
         $end = time();
         $duration = $end - $start;
-        var_dump($end);
-        var_dump($duration);
+
         $stepResult->addAttribute("EndTime",date("Y-m-d H:i:s", $end));
-        $stepResult->addAttribute("Duration",$duration->format("%I : %S"));
+        $stepResult->addAttribute("Duration",date("H:i:s",$duration));
+        $stepResult->addAttribute("_type","Result");
         var_dump($stepResult);
         return $stepResult;
     }
@@ -252,9 +252,9 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase
         $this->setSuccessResult($stepResult);
     }
 
-    private function closeBrowser($xmlElemen, $stepResultt)
+    private function closeBrowser($xmlElemen, $stepResult)
     {
-        $this->webdriver->close();
+        $this->closeWindow();
         $this->setSuccessResult($stepResult);
     }
 
