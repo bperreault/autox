@@ -1,11 +1,30 @@
-<AutoX.Steps OnError="Continue" _id="31915f65-07a0-4fe5-9341-7f02f516a666">
-  <Step Action="Enter" Data="test" StepId="08712d8a-895e-4b0f-9238-e754176ee705" UIObject="userName" UIId="06a323ce-20cd-4958-99f0-5e4d0890a484">
-    <UIObject XPath="//input[@name='userName'  and @type='text' ]" />
-  </Step>
-  <Step Action="Enter" Data="test" StepId="4491652a-eb4d-4536-8dc0-b1cd1c31d2a3" UIObject="password" UIId="5019e9bd-1fbb-45cb-b777-2a93104e760c">
-    <UIObject XPath="//input[@name='password'  and @type='password' ]" />
-  </Step>
-  <Step Action="Click" StepId="c5d0d71d-173f-470f-8864-e747120442e3" UIObject="login" UIId="45ef53d4-2a72-4c3f-ab60-7482ae8d27e4">
-    <UIObject XPath="//input[@name='login'  and @type='image'  and @value='Login' ]" />
-  </Step>
+<AutoX.Steps OnError="Continue" InstanceId="31915f65-07a0-4fe5-9341-7f02f516a666"
+             _id="31915f65-07a0-4fe5-9341-7f02f516a666">
+    <Step Action="SetEnv" _id="5dacaabc-470e-465c-af33-437167013198" PreserveLoginUrl="true"
+          ClientValidationEnabled="true" UnobtrusiveJavaScriptEnabled="true" StepsTimeout="20" ProjectName="autox"
+          UserName="yazhi.pang" Root="42c5eb51-0e1c-4de1-976d-733bde24220a" Assemblies="ActivityLib.dll"
+          MongoDBConnectionString="mongodb://@localhost:27017"
+          PostgreSQLDBConnectionString="User ID=postgres;Password=qwer123$;Host=localhost;Port=5432;Database=postgres;Pooling=true;"
+          FeatureToggle.MemcachedFeature="true"
+          MySQLDBConnectionString="Server=localhost;Database=autox;Uid=root;Pwd=Gene4hje;" TestName="NewTest"
+          SuiteName="NewTest Suite" Status="Ready" ClientName="iMac" ClientId="066CE93C-3892-0FBC-47E1-DB5C33457A38"
+          Language="Default" ScriptGUID="ed1fe80d-2c25-475d-9e37-8cf17707b85a" _parentId=""
+          Created="1/1/0001 12:00:00 AM" Updated="1/1/0001 12:00:00 AM"/>
+
+    <!--<Step Action="Enter" Data="test" StepId="08712d8a-895e-4b0f-9238-e754176ee705" UIObject="userName"-->
+          <!--UIId="06a323ce-20cd-4958-99f0-5e4d0890a484">-->
+        <!--<UIObject XPath="//input[@name='userName'  and @type='text' ]"/>-->
+    <!--</Step>-->
+    <!--<Step Action="Enter" Data="test" StepId="4491652a-eb4d-4536-8dc0-b1cd1c31d2a3" UIObject="password"-->
+          <!--UIId="5019e9bd-1fbb-45cb-b777-2a93104e760c">-->
+        <!--<UIObject XPath="//input[@name='password'  and @type='password' ]"/>-->
+    <!--</Step>-->
+    <!--<Step Action="Click" StepId="c5d0d71d-173f-470f-8864-e747120442e3" UIObject="login"-->
+          <!--UIId="45ef53d4-2a72-4c3f-ab60-7482ae8d27e4">-->
+        <!--<UIObject XPath="//input[@name='login'  and @type='image'  and @value='Login' ]"/>-->
+    <!--</Step>-->
+    <Step Action="VerifyTable" Data="Boston|to San Francisco|$513">
+        <UIObject XPath="(//table[@cellspacing='0' and @cellpadding='2'])[2]" />
+    </Step>
+    <Step Action="Close"/>
 </AutoX.Steps>

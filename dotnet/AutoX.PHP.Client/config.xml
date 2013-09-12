@@ -5,7 +5,17 @@
         <param name="file" value="autox.log" />
         <param name="append" value="true" />
     </appender>
+    <appender name="communication" class="LoggerAppenderFile">
+        <layout class="LoggerLayoutSimple" />
+        <param name="file" value="communication.log" />
+        <param name="append" value="true" />
+    </appender>
     <root>
+	<level value="debug" />
         <appender_ref ref="default" />
     </root>
+	<logger name="communication" additivity="false" >
+		<level value="debug" />
+		<appender_ref ref="communication" />
+	</logger>
 </configuration>

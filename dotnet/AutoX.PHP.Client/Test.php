@@ -1,6 +1,7 @@
 <?php
 require_once 'log4php/Logger.php';
 require_once 'XML/Util.php';
+require_once 'Communicate.php';
 
 Logger::configure('config.xml');
 ini_set('soap.wsdl_cache_enabled', "0");
@@ -10,59 +11,79 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase
     private $log;
     private $config;
     private $clientId;
-    private $registered;
-
-//    public function testMainProcessFake()
-//    {
-//        //$xml = $this->fakeReadCommand('C:\Users\jien\Documents\autox\dotnet\AutoX.PHP.Client\Commands.xml');
-//        //$log = Logger::getLogger('autox.log');
-//        $xml = $this->fakeReadCommand('/Users/jien.huang/Documents/Commands.xml');
-//        //var_dump($xml);
-//        $mainId = strval($xml->attributes()->_id);
-//        $this->log->debug($mainId);
-//        $items = $xml->xpath("Step");
-//        foreach ($items as $item) {
-//            $this->doTest($item);
-//            //$this->log->debug($item);
-//        }
-//
-//
-//    }
+    private $communicate;
 
     protected function setUp()
     {
+        $this->log = Logger::getLogger('default');
+        $this->log->debug("In setUp now...");
         //read config file
-        //start selenium server???
-        $this->log = Logger::getLogger('autox.log');
+
         $this->config = parse_ini_file("autox.ini");
-        $this->log->debug($this->config['BrowserType']);
-        $this->log->debug($this->config['DefaultURL']);
+        $this->log->debug("After parse ini...");
+        $this->log->debug($this->config);
         $this->setBrowser($this->config['BrowserType']);
-        $this->setBrowser("firefox");
         $this->setBrowserUrl($this->config['DefaultURL']);
+
+        //read uuid, if not existed, create one then save it to ini
+
+
+        try{
+            $this->clientId = $this->config['ClientId'];
+            $this->log->debug("After get client id...");
+        }catch(Exception $ex){
+            $this->log->debug('First Time use this client. \n');
+            $this->clientId = null;
+        }
+        $this->log->debug($this->clientId);
+        if(empty($this->clientId)){
+            $this->clientId = $this->getGuid();
+            $this->append_ini_file("autox.ini","ClientId",$this->clientId);
+        }
+        $this->log->debug($this->clientId);
+        $this->communicate = new Communicate();
     }
 
+    private function append_ini_file($path,$key,$value){
+        $content = "\n" . $key . "=" . $value;
+        $this->log->debug("In append ini now...");
+        if (!$handle = fopen($path, 'a')) {
+            return;
+        }
+        $this->log->debug("After open ini...");
+        if (!fwrite($handle, $content)) {
+            return;
+        }
+        $this->log->debug("After write to ini...");
+        fclose($handle);
+    }
 
     public function testMainProcess(){
 
         while(true){
-            //TODO register, then do cycle, if break from dotest cycle, register again.
-            $this->registerToHost();
+            if(!$this->communicate->isFake())
+                $this->registerToHost();
+//            $this->closeWindow();
+//            exec("taskkill firefox");
+//            sleep(10);
+//            $this->setBrowser($this->config['BrowserType']);
+//            $this->setBrowserUrl($this->config['DefaultURL']);
+//            $session = $this->prepareSession();
+//            //var_dump($session);
+//            $this->log->debug($this->config['DefaultURL']);
+//
+//            $this->url($this->config['DefaultURL']);
             $this->requestReturnCycle();
+
+            sleep(17);
         }
     }
 
     protected function tearDown()
     {
-        $this->closeWindow();
+        //$this->closeWindow();
     }
 
-    private function fakeReadCommand($xmlFile)
-    {
-        $xml_str = file_get_contents($xmlFile);
-        $xml = new SimpleXMLElement($xml_str);
-        return $xml;
-    }
 
     private function doTest($cmd)
     {
@@ -74,19 +95,23 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase
         $uiObjectName = $this->getUIObjectName($cmd);
         $this->log->debug("Action:" . $actionName);
 
-        if ($actionName == "Wait" && $data==null) {
-            sleep(17);
-            return;
-        }
         $start = time();
         $stepResult = new SimpleXMLElement("<StepResult Action='" . $actionName . "' _id='" . $this->getGuid() ."' Data='" . $data ."' UIObject='" . $uiObjectName . "' StartTime='" . date("Y-m-d H:i:s", $start) . "' />");
 
+        if ($actionName == "Wait" && $data==null) {
+            sleep(17);
+            $this->setSuccessResult($stepResult);
+            $this->setDurationToResult($stepResult, $start);
+            return $stepResult;
+        }
+
+
         switch ($actionName) {
             case "Check":
-                //check a checkbox or radio
+                $this->check($cmd, $stepResult);
                 break;
             case "Click":
-                $this->click($cmd, $stepResult);
+                $this->clickOnUIObject($cmd, $stepResult);
                 break;
             case "Close":
                 $this->closeBrowser($cmd, $stepResult);
@@ -104,10 +129,10 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase
                 $this->start($cmd, $stepResult);
                 break;
             case "Wait":
-                wait($cmd, $stepResult);
+                $this->wait($cmd, $stepResult);
                 break;
             case "GetValue":
-                //
+                $this->getValue($cmd, $stepResult);
                 break;
             case "Existed":
                 $this->existed($cmd,$stepResult);
@@ -127,14 +152,8 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase
                 break;
 
         }
-        $this->snapshot($stepResult);
-        $end = time();
-        $duration = $end - $start;
-
-        $stepResult->addAttribute("EndTime",date("Y-m-d H:i:s", $end));
-        $stepResult->addAttribute("Duration",date("H:i:s",$duration));
-        $stepResult->addAttribute("_type","Result");
-        var_dump($stepResult);
+        $this->setDurationToResult($stepResult, $start);
+//        var_dump($stepResult);
         return $stepResult;
     }
 
@@ -244,17 +263,26 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase
     }
 
 //----------------actions-----------------
-    private function click($xmlElement, $stepResult)
+    private function clickOnUIObject($xmlElement, $stepResult)
     {
-        $xpath = $this->getUIObject($xmlElement);
-        $this->byXPath($xpath)->click();
-
+        $uiObject = $this->findUIObject($xmlElement);
+        if(empty($uiObject))
+        {
+            $this->setFailedResult($stepResult,"Cannot find expected UI Object");
+            return;
+        }
+        $uiObject->click();
         $this->setSuccessResult($stepResult);
     }
 
-    private function closeBrowser($xmlElemen, $stepResult)
+
+
+    private function closeBrowser($xmlElement, $stepResult)
     {
-        $this->closeWindow();
+        $this->setBrowserUrl("http://127.0.0.1:4444/wd/hub/static/resource/hub.html");
+        $session = $this->prepareSession();
+        $session->cookie()->clear();
+        $this->url("http://127.0.0.1:4444/wd/hub/static/resource/hub.html");
         $this->setSuccessResult($stepResult);
     }
 
@@ -268,8 +296,13 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase
 
     private function enter($xmlElement, $data, $stepResult)
     {
-        $xpath = $this->getUIObject($xmlElement);
-        $this->byXPath($xpath)->click();
+        $uiObject = $this->findUIObject($xmlElement);
+        if(empty($uiObject))
+        {
+            $this->setFailedResult($stepResult,"Cannot find expected UI Object");
+            return;
+        }
+        $uiObject->click();
         $this->keys($data);
         $this->setSuccessResult($stepResult);
     }
@@ -283,6 +316,7 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase
         $this->setBrowserUrl($this->config['DefaultURL']);
         $this->prepareSession();
         $this->log->debug($this->config['DefaultURL']);
+
         $this->url($this->config['DefaultURL']);
         $this->setSuccessResult($stepResult);
     }
@@ -298,29 +332,161 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase
 
     private function existed($xmlElement, $stepResult)
     {
-        $xpath = $this->getUIObject($xmlElement);
-        //TODO how to set result????
-
+        $uiObject = $this->findUIObject($xmlElement);
+        if(empty($uiObject))
+        {
+            $this->setFailedResult($stepResult,"Cannot find expected UI Object");
+            return;
+        }
         $this->setSuccessResult($stepResult);
     }
 
     private function notExisted($xmlElement, $stepResult)
     {
-        $xpath = $this->getUIObject($xmlElement);
-        //TODO how to set result????
+        $uiObject = $this->findUIObject($xmlElement);
+        if(!empty($uiObject))
+        {
+            $this->setFailedResult($stepResult,"find unexpected UI Object");
+            return;
+        }
         $this->setSuccessResult($stepResult);
     }
+
+    private function check($xmlElement, $stepResult)
+    {
+        $uiObject = $this->findUIObject($xmlElement);
+        if(empty($uiObject))
+        {
+            $this->setFailedResult($stepResult,"find unexpected UI Object");
+            return;
+        }
+        $data = $this->getData($xmlElement);
+        if(empty($data)){
+            $uiObject->click();
+            $this->setSuccessResult($stepResult);
+            return;
+        }
+        $toCheck = $data=="True"||$data=="true";
+        $checkStatus = !empty($uiObject->attribute("checked"));
+        if($toCheck && !$checkStatus || !toCheck && $checkStatus)
+            $uiObject->click();
+        $this->setSuccessResult($stepResult);
+    }
+
+    private function getValue($xmlElement, $stepResult)
+    {
+        $uiObject = $this->findUIObject($xmlElement);
+        if(empty($uiObject))
+        {
+            $this->setFailedResult($stepResult,"find unexpected UI Object");
+            return;
+        }
+        $data = $this->getData($xmlElement);
+        if(empty($data)){
+            $this->setFailedResult($stepResult,"No expected data?");
+            return;
+        }
+        $items = explode("=>",$data);
+        if(empty($items[1])){
+            $this->setFailedResult($stepResult,"The correct format for this action is 'attribute=>variable', e.g.: value=>currentValue");
+            return;
+        }
+        $elementValue = $uiObject->value($items[0]);
+        $stepResult->addAttribute($items[1],$elementValue);
+        $this->setSuccessResult($stepResult);
+    }
+
     private function verifyValue($xmlElement, $stepResult)
     {
-        $xpath = $this->getUIObject($xmlElement);
-        //TODO how to set result????
-        $this->setSuccessResult($stepResult);
+        $uiObject = $this->findUIObject($xmlElement);
+        if(empty($uiObject))
+        {
+            $this->setFailedResult($stepResult,"find unexpected UI Object");
+            return;
+        }
+        $data = $this->getData($xmlElement);
+        if(empty($data)){
+            $this->setFailedResult($stepResult,"No expected data?");
+            return;
+        }
+        $items = explode("=>",$data);
+        if(empty($items[1])){
+            $tag = $uiObject->name();
+            $type = $uiObject->attribute("type");
+            if($tag=="select"){
+                $target = $uiObject->byXPath("//option[@value='" . $data . "' and @selected]");
+                if(empty($target)){
+                    $this->setFailedResult($stepResult,"value not matched");
+                    return;
+                }
+
+            }
+            if($tag=="radio"||$tag=="checkbox"){
+                $target = $uiObject->attribute("checked");
+                if(empty($target)){
+                    $this->setFailedResult($stepResult,"value not matched");
+                    return;
+                }
+            }
+            $target = $uiObject->attribute("value");
+            if($target!=$data){
+                $this->setFailedResult($stepResult,"value not matched");
+                return;
+            }
+            $this->setSuccessResult($stepResult);
+            return;
+        }
+        $elementValue = $uiObject->attribute($items[0]);
+        if($elementValue==$items[1])
+            $this->setSuccessResult($stepResult);
+        else
+            $this->setFailedResult($stepResult,"Expected[". $item[1] . "]<>Actual[" . $elementValue ."]");
     }
+
     private function verifyTable($xmlElement, $stepResult)
     {
-        $xpath = $this->getUIObject($xmlElement);
-        //TODO how to set result????
-        $this->setSuccessResult($stepResult);
+        $this->log->debug("in verifyTable now ...");
+        $uiObject = $this->findUIObject($xmlElement);
+        if(empty($uiObject))
+        {
+            $this->setFailedResult($stepResult,"find unexpected UI Object");
+            return;
+        }
+        $data = $this->getData($xmlElement);
+        if(empty($data)){
+            $this->setFailedResult($stepResult,"No expected data?");
+            return;
+        }
+        $this->log->debug("Data->". $data);
+        $items = explode("|",$data);
+        $rows = $uiObject->elements($this->using('css selector')->value('tr'));
+        foreach($rows as $row){
+            if($this->verifyRow($row,$items))
+            {
+                var_dump($row);
+                $this->log->debug("Found the row!");
+                $this->setSuccessResult($stepResult);
+                return;
+            }
+        }
+        $this->setFailedResult($stepResult,"No expected row");
+    }
+
+    private function verifyRow($row,$items){
+        foreach($items as $item){
+            try{
+                $this->log->debug("//*[contains(text(),'" . $item . "')]");
+                $found = $row->byXPath("//*[contains(text(),'" . $item . "')]");
+
+                if(empty($found))
+                    return false;
+            }catch(Exception $ex){
+                $this->log->debug($ex->getMessage());
+                return false;
+            }
+
+        }
+        return true;
     }
 
     private function wait($xmlElement, $stepResult)
@@ -343,35 +509,18 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase
             $stepResult->addAttribute("Link", $this->screenshot());
     }
 
-    private function readCommand($cmd)
-    {
-        //$this->log->debug($this->config["EndPoint"]);
-        $this->log->debug($cmd);
-        try {
-            $soap = new SoapClient($this->config["EndPoint"]);
-            $param["xmlFormatCommand"] = $cmd;
-            $ret = $soap->__Call("Command", array($param));
-            var_dump($ret);
-            $xml_str = $ret->CommandResult;
-            $this->log->debug($xml_str);
-            return new SimpleXMLElement($xml_str);
-        } catch (Exception $e) {
-            echo print_r($e->getMessage(), true);
-            $this->log->error($e->getMessage());
-        }
-        return null;
-    }
+
 
     private function registerToHost(){
         $cmd = $this->getRegisterString();
 
         while(1){
             try{
-                $result = $this->readCommand($cmd);
+                $result = $this->communicate->readCommand($cmd);
                 if($result!=null)
                     return;
             }catch(Exception $e){
-                $this->log->warn("Register failed, due to: "+$e->getMessage());
+                $this->log->warn("Register failed, due to: " . $e->getMessage());
                 sleep(17);
             }
         }
@@ -380,12 +529,12 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase
     private function requestCommandFromHost(){
         $cmd = $this->getRequestCommandString();
         try{
-            $command = $this->readCommand($cmd);
-            var_dump($command);
-            if($command!=null)
+            $command = $this->communicate->readCommand($cmd);
+            $this->log->debug("Recieve command:\n" . $command->asXML());
+            if(!empty($command))
                 return $command;
         }catch(Exception $e){
-            $this->log->error("Request command failed, due to: "+$e->getMessage());
+            $this->log->error("Request command failed, due to: " . $e->getMessage());
             sleep(6);
         }
         return null;
@@ -393,16 +542,18 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase
     private function sendResultToHost($ret)
     {
         $cmd = $this->getSetResultString($ret);
-        $this->readCommand($cmd);
+        $this->communicate->readCommand($cmd);
     }
 
 
     private function requestReturnCycle()
     {
+        $this->log->debug("In requestReturnCycle now ...");
         while (true) {
             //read command from center
 
             $command = $this->requestCommandFromHost();
+
             if (empty($command)) {
                 sleep(6);
                 continue;
@@ -421,17 +572,41 @@ class WebTest extends PHPUnit_Extensions_Selenium2TestCase
             //analasyze the xml, choose a action to run
             $items = $command->xpath("Step");
             foreach ($items as $item) {
-                $this->log->debug($item);
+                //$this->log->debug($item);
                 $ret = $this->doTest($item);
                 $this->xml_appendChild($result, $ret);
             }
             $result->addAttribute("Updated", date("Y-m-d H:i:s", time()));
             $this->sendResultToHost($result);
+            sleep(1);
         }
     }
 
+    /**
+     * @param $stepResult
+     * @param $start
+     */
+    private function setDurationToResult($stepResult, $start)
+    {
+        $this->snapshot($stepResult);
+        $end = time();
+        $duration = $end - $start;
+
+        $stepResult->addAttribute("EndTime", date("Y-m-d H:i:s", $end));
+        $stepResult->addAttribute("Duration", date("H:i:s", $duration));
+        $stepResult->addAttribute("_type", "Result");
+    }
+
+    /**
+     * @param $xmlElement
+     * @return mixed
+     */
+    private function findUIObject($xmlElement)
+    {
+        $xpath = $this->getUIObject($xmlElement);
+        $uiObject = $this->byXPath($xpath);
+        return $uiObject;
+    }
 
 
 }
-
-?>
