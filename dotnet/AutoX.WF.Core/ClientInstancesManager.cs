@@ -92,6 +92,7 @@ namespace AutoX.WF.Core
 
         public ClientInstance GetComputer(string idOfComputer)
         {
+            //TODO use a while to wait this computer available
             return
                 (from id in _computerList.Keys where id.Contains(idOfComputer) select _computerList[id]).
                     FirstOrDefault();

@@ -21,7 +21,7 @@ using AutoX.DB;
 
 namespace AutoX.Activities.AutoActivities
 {
-    [ToolboxBitmap(typeof (CallTestScreenDesigner), "TestScreen.bmp")]
+    [ToolboxBitmap(typeof (CallTestScreenDesigner), "TestScreen.png")]
     [Designer(typeof (CallTestScreenDesigner))]
     public sealed class CallTestScreenActivity : AutomationActivity, IPassData
     {

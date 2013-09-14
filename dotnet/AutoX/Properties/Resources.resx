@@ -196,17 +196,8 @@
   <data name="startbrowser" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\startbrowser.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="TestCase" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\testcase.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="TestScreen" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\testscreen.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="TestSteps" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\teststeps.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="TestSuite" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resources\testsuite.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="textbox" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\resources\textbox.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

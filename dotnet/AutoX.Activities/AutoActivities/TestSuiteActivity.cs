@@ -21,7 +21,7 @@ using AutoX.Basic;
 
 namespace AutoX.Activities.AutoActivities
 {
-    [ToolboxBitmap(typeof (TestSuiteDesigner), "TestSuite.bmp")]
+    [ToolboxBitmap(typeof (TestSuiteDesigner), "TestSuite.png")]
     [Designer(typeof (TestSuiteDesigner))]
     public sealed class TestSuiteActivity : AutomationActivity, IPassData
     {

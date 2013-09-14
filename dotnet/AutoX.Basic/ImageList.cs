@@ -6,6 +6,7 @@
 
 #region
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Media.Imaging;
@@ -28,15 +29,26 @@ namespace AutoX.Basic
             var di = new DirectoryInfo("Resources");
             if (!di.Exists)
                 return;
-            foreach (FileInfo fi in di.GetFiles("*.bmp"))
+            foreach (FileInfo fi in di.GetFiles())
             {
-                var bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.StreamSource = File.OpenRead(fi.FullName);
-                bitmap.EndInit();
-                bitmap.Freeze();
-                _container.Add(fi.Name.ToLower().Substring(0, fi.Name.Length - 4), bitmap);
-                _paths.Add(fi.Name.ToLower().Substring(0, fi.Name.Length - 4), fi.FullName);
+                try
+                {
+                    var bitmap = new BitmapImage();
+                    bitmap.BeginInit();
+                    bitmap.StreamSource = File.OpenRead(fi.FullName);
+                    bitmap.EndInit();
+                    bitmap.Freeze();
+                    
+                    var key = fi.Name.ToLower().Substring(0, fi.Name.Length - 4);
+                    if (_container.ContainsKey(key))
+                        continue;
+                    _container.Add(fi.Name.ToLower().Substring(0, fi.Name.Length - 4), bitmap);
+                    _paths.Add(key, fi.FullName);
+                }
+                catch (Exception ex)
+                {
+                    Log.Debug(ex.Message);
+                }
             }
         }
 

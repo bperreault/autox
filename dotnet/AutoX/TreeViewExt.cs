@@ -60,10 +60,13 @@ namespace AutoX
                         {
                             Source = bitmap,
                             Stretch = Stretch.Uniform,
+                            MaxHeight = text.FontSize,
+                            MaxWidth = text.FontSize,
                             Width = text.FontSize,
                             Height = text.FontSize,
                             MinHeight = 16,
                             MinWidth = 16,
+                            Margin = new Thickness(1,0,1,0),
                             ToolTip = xElement.GetAttributeValue("Description")
                         };
 
@@ -75,6 +78,7 @@ namespace AutoX
             }
 
             text.Text = name;
+            text.Margin = new Thickness(1, 0, 1, 0);
             text.ToolTip = new ToolTip {Content = xElement.GetSimpleDescriptionFromXElement()};
 
             if (image == null)

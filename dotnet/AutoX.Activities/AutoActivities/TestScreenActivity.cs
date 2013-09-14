@@ -17,7 +17,7 @@ using System.Drawing;
 
 namespace AutoX.Activities.AutoActivities
 {
-    [ToolboxBitmap(typeof (TestScreenActivity), "TestScreen.bmp")]
+    [ToolboxBitmap(typeof (TestScreenActivity), "TestScreen")]
     [Designer(typeof (TestScreenDesigner))]
     public sealed class TestScreenActivity : AutomationActivity
     {
