@@ -3,6 +3,9 @@
 using System.Collections.Generic;
 using System.Xml.Linq;
 using AutoX.Basic;
+using System.Threading.Tasks;
+using System;
+using System.Threading;
 
 #endregion
 
@@ -12,9 +15,44 @@ namespace AutoX.WF.Core
     {
         private static InstanceManager _instance;
         private readonly Dictionary<string, WorkflowInstance> _instanceList = new Dictionary<string, WorkflowInstance>();
+        private readonly List<WorkflowInstance> _waitingList = new List<WorkflowInstance>();
+        private readonly Task _task;
 
         private InstanceManager()
         {
+            
+            _task = new Task(() =>
+            {
+                while (true)
+                {
+                    lock(_waitingList){
+                        int toRemove = -1;
+                    foreach (var instance in _waitingList)
+                    {
+                        if(string.IsNullOrEmpty(instance.ClientId)){
+                            var clientId = ClientInstancesManager.GetInstance().GetAReadyClientInstance();
+                            if(string.IsNullOrEmpty(clientId))
+                                continue;
+                            else
+                                instance.ClientId = clientId;
+                        }
+                        var clientStatus = ClientInstancesManager.GetInstance().GetComputer(instance.ClientId).Status;
+                        if (clientStatus.Equals("Running"))
+                            continue;
+                        else{
+                            toRemove = _waitingList.IndexOf(instance);
+                            break;
+                        }
+                    }
+                        if(toRemove>-1){
+                            _waitingList[toRemove].RealStart();
+                            _waitingList.RemoveAt(toRemove);
+                        }
+                    }
+                    Thread.Sleep(500);
+                }
+            });
+            _task.Start();
         }
 
         public static InstanceManager GetInstance()
@@ -102,5 +140,14 @@ namespace AutoX.WF.Core
             RemoveTestInstance(guid);
             return XElement.Parse("<Result Result='Success' />");
         }
+    
+        internal void AddToWaitingList(WorkflowInstance workflowInstance)
+        {
+ 	        lock(_waitingList){
+                _waitingList.Add(workflowInstance);
+                Monitor.Pulse(_waitingList);
+            }
+        }
+
     }
 }

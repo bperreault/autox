@@ -196,7 +196,14 @@ namespace AutoX
                 newAttrName = iDlg.InfoContent;
                 var newAttribute = new XAttribute(newAttrName,
                     "NewValue" + i.ToString(CultureInfo.InvariantCulture).Trim());
-                _content.Add(newAttribute);
+                try
+                {
+                    _content.Add(newAttribute);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
 
                 //ContentGrid.Rows += 1;
                 AddPairControls(newAttribute);

@@ -547,6 +547,12 @@ namespace AutoX
         {
             var selected = InstanceTable.SelectedItem as Instance;
             if (selected == null) return;
+            Dispatcher.BeginInvoke(new Action(() => StartSuiteTask(sender, e, selected)));
+        }
+
+        private void StartSuiteTask(object sender, RoutedEventArgs e, Instance selected)
+        {
+            
             try
             {
                 var sRoot = Communication.GetInstance().StartInstance(selected._id);
@@ -568,6 +574,7 @@ namespace AutoX
             {
                 MessageBox.Show(ExceptionHelper.FormatStackTrace(ex), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            
         }
 
         private void StopSuite(object sender, RoutedEventArgs e)

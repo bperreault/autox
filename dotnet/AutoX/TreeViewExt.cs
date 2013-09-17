@@ -42,51 +42,60 @@ namespace AutoX
         {
             treeViewItem.DataContext = xElement;
             var head = new StackPanel {Orientation = Orientation.Horizontal};
-            Image image = null;
+            
             var text = new TextBlock();
             // ScriptType->Type->type->_Type
-            var type = xElement.GetIconType();
+            var icon = xElement.GetIconType();
             var name = xElement.GetAttributeValue(Constants.NAME);
-
-            if (!string.IsNullOrWhiteSpace(type))
+            var description = xElement.GetAttributeValue("Description");
+            var height = text.FontSize;
+            if (!string.IsNullOrWhiteSpace(icon))
             {
-                var bitmap = ImageList.GetInstance().Get(type);
-                if (bitmap != null)
-                {
-                    // this is important, remove it, the tree will be 20 times slower
-                    Dispatcher.CurrentDispatcher.BeginInvoke((DispatcherPriority.Normal), (Action) (() =>
-                    {
-                        image = new Image
-                        {
-                            Source = bitmap,
-                            Stretch = Stretch.Uniform,
-                            MaxHeight = text.FontSize,
-                            MaxWidth = text.FontSize,
-                            Width = text.FontSize,
-                            Height = text.FontSize,
-                            MinHeight = 16,
-                            MinWidth = 16,
-                            Margin = new Thickness(1,0,1,0),
-                            ToolTip = xElement.GetAttributeValue("Description")
-                        };
-
-                        //head.Children.Add(image);
-                        head.Children.Insert(0, image);
-                    }
-                        ));
-                }
+                AddIcon(head, icon, description, height);
+            }
+            var maturity = xElement.GetAttributeValue("Maturity");
+            if (!string.IsNullOrEmpty(maturity))
+            {
+                AddIcon(head, maturity,"",height);
             }
 
             text.Text = name;
             text.Margin = new Thickness(1, 0, 1, 0);
             text.ToolTip = new ToolTip {Content = xElement.GetSimpleDescriptionFromXElement()};
 
-            if (image == null)
-                text.ToolTip = new ToolTip { Content = xElement.GetSimpleDescriptionFromXElement() };
 
             head.Children.Add(text);
 
             treeViewItem.Header = head;
+        }
+
+        private static void AddIcon(StackPanel head, string icon, string description, double height)
+        {
+            var bitmap = ImageList.GetInstance().Get(icon);
+            if (bitmap != null)
+            {
+                // this is important, remove it, the tree will be 20 times slower
+                Dispatcher.CurrentDispatcher.BeginInvoke((DispatcherPriority.Normal), (Action)(() =>
+                {
+                    var image = new Image
+                    {
+                        Source = bitmap,
+                        Stretch = Stretch.Uniform,
+                        MaxHeight = height,
+                        MaxWidth = height,
+                        Width = height,
+                        Height = height,
+                        MinHeight = 16,
+                        MinWidth = 16,
+                        Margin = new Thickness(1, 0, 1, 0),
+                        ToolTip = description
+                    };
+
+                    
+                    head.Children.Insert(0, image);
+                }
+                    ));
+            }
         }
 
         public static bool FilterTreeItem(this TreeViewItem tree, string value)

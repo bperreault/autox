@@ -117,6 +117,8 @@ namespace AutoX.Activities
 
         public static Activity GetActivityFromContentString(string content)
         {
+            if (string.IsNullOrEmpty(content))
+                return null;
             return ActivityXamlServices.Load(new StringReader(content));
         }
 
@@ -312,6 +314,8 @@ namespace AutoX.Activities
             }
             return finalRet;
         }
+
+
 
         public static string Evaluate(string variable)
         {

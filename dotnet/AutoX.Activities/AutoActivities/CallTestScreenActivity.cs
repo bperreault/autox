@@ -152,6 +152,33 @@ namespace AutoX.Activities.AutoActivities
                         
                     }
                 }
+                //handle the get value here
+                var action = stepElement.GetAttributeValue("Action");
+                if (action.Equals("GetValue"))
+                {
+                    var data = stepElement.GetAttributeValue("Data");
+                    if (!string.IsNullOrEmpty(data))
+                    {
+                        var pos = data.IndexOf("=>", StringComparison.Ordinal);
+                        try
+                        {
+                            var attr = data.Substring(0, pos);
+                            var variable = data.Substring(pos + 2);
+                            if (!string.IsNullOrEmpty(variable))
+                            {
+                                var value = stepElement.GetAttributeValue(variable);
+                                if (!string.IsNullOrEmpty(value))
+                                {
+
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.Error(ExceptionHelper.FormatStackTrace("GetValue Failed:", ex));
+                        }
+                    }
+                }
                 //result.SetAttributeValue(Constants.UI_OBJECT, UIObject);
                 stepElement.SetAttributeValue(Constants._TYPE, "Result");
                 DBFactory.GetData().Save(stepElement);
@@ -201,12 +228,14 @@ namespace AutoX.Activities.AutoActivities
                 if (string.IsNullOrEmpty(dataref))
                 {
                     if (!string.IsNullOrEmpty(defaultData))
-                        step.SetAttributeValue(Constants.DATA, defaultData);
+                        step.SetAttributeValue(Constants.DATA, Utilities.Evaluate(Pretreat(context,defaultData)));
                 }
                 else
                 {
                     if (data.ContainsKey(dataref))
-                        step.SetAttributeValue(Constants.DATA, Utilities.Evaluate(data[dataref]));
+                    {
+                        step.SetAttributeValue(Constants.DATA, Utilities.Evaluate(Pretreat(context,data[dataref])));
+                    }
                     else
                     {
                         var found = false;
@@ -265,6 +294,26 @@ namespace AutoX.Activities.AutoActivities
                 steps.Add(step);
             }
             return steps;
+        }
+
+        private string Pretreat(NativeActivityContext context, string data)
+        {
+            try
+            {
+                if (!data.Contains("$("))
+                    return data;
+                int start = data.IndexOf("$(");
+                int end = data.IndexOf(")", start + 2);
+                string variable = data.Substring(start + 2, end - start - 2).Trim();
+                string value = GetVariableValueByContext(context, variable);
+                string ret = data.Substring(0, start) + value + data.Substring(end+1);
+                return Pretreat(context, ret);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ExceptionHelper.FormatStackTrace("Statement error ["+data+"] ",ex));
+            }
+            return "";
         }
 
         private XElement CreateStepsHeader()

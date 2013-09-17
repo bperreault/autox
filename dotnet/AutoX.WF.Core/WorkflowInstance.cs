@@ -252,19 +252,33 @@ namespace AutoX.WF.Core
             if (_workflowApplication != null)
                 if (!IsFinished())
                 {
-                    while (String.IsNullOrEmpty(ClientId))
-                    {
-                        Thread.Sleep(23);
-                        ClientId = ClientInstancesManager.GetInstance().GetAReadyClientInstance();
-                    }
-                    ClientInstancesManager.GetInstance().GetComputer(ClientId).Status = "Running";
-                    Variables["ClientName"] = ClientInstancesManager.GetInstance().GetComputer(ClientId).Name;
-                    Variables["ClientId"] = ClientId;
-                    Status = "Running";
-                    _workflowApplication.Run();
-                    return XElement.Parse("<Result Result='Success' />");
+                    //while (String.IsNullOrEmpty(ClientId))
+                    //{
+                    //    Thread.Sleep(23);
+                    //    ClientId = ClientInstancesManager.GetInstance().GetAReadyClientInstance();
+                    //}
+                    //while (true)
+                    //{
+                    //    var clientStatus = ClientInstancesManager.GetInstance().GetComputer(ClientId).Status;
+                    //    if (!clientStatus.Equals("Running"))
+                    //        break;
+                    //    else
+                    //        Thread.Sleep(17000);
+                    //}
+                    //RealStart();
+                    InstanceManager.GetInstance().AddToWaitingList(this);
+                    return XElement.Parse("<Result Result='Success' Reason='In the waiting List' />");
                 }
-            return XElement.Parse("<Result Result='Error' />");
+            return XElement.Parse("<Result Result='Error' Reason='script error or it is already finished.' />");
+        }
+
+        public void RealStart()
+        {
+            ClientInstancesManager.GetInstance().GetComputer(ClientId).Status = "Running";
+            Variables["ClientName"] = ClientInstancesManager.GetInstance().GetComputer(ClientId).Name;
+            Variables["ClientId"] = ClientId;
+            Status = "Running";
+            _workflowApplication.Run();
         }
 
         public void SetResult(XElement result)

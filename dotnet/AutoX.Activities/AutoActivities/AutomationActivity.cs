@@ -14,6 +14,7 @@ using System.ComponentModel;
 using System.Xml.Linq;
 using AutoX.Basic;
 using AutoX.DB;
+using System.Activities.Presentation.PropertyEditing;
 
 #endregion
 
@@ -74,6 +75,7 @@ namespace AutoX.Activities.AutoActivities
         public bool OwnDataFirst { get; set; }
 
         [DisplayName(@"Description")]
+        [Editor(typeof(System.Activities.Presentation.PropertyEditing.ExtendedPropertyValueEditor),typeof(ExtendedPropertyValueEditor))]
         public string Description { get; set; }
 
         #region INotifyPropertyChanged Members
@@ -108,6 +110,14 @@ namespace AutoX.Activities.AutoActivities
                     _upperVariables.Add(key, value);
                 }
             }
+        }
+
+        public void AddVariable(string key, string value)
+        {
+            if (_upperVariables.ContainsKey(key))
+                _upperVariables[key] = value;
+            else
+                _upperVariables.Add(key, value);
         }
 
         protected void SetVariablesBeforeRunning(NativeActivityContext context)

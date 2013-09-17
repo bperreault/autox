@@ -27,6 +27,7 @@ using AutoX.WF.Core;
 using DesignerView = System.Activities.Presentation.View.DesignerView;
 using Image = System.Drawing.Image;
 using UndoEngine = System.Activities.Presentation.UndoEngine;
+using System.Runtime.Versioning;
 
 #endregion
 
@@ -307,12 +308,29 @@ namespace AutoX
         
         private void SetWorkflowDesigner(Activity activity, TreeViewItem treeViewItem)
         {
+           
+            // services
+            //DesignerConfigurationService configService =
+            //    _workflowDesigner.Context.Services.GetRequiredService<DesignerConfigurationService>();
+            //configService.AnnotationEnabled = true; /* maybe, see explanation of TargetFrameworkName*/
+            //configService.AutoConnectEnabled = true;
+            //configService.AutoSplitEnabled = true;
+            //configService.AutoSurroundWithSequenceEnabled = true;
+            //configService.BackgroundValidationEnabled = true;
+            //configService.MultipleItemsContextMenuEnabled = true;
+            //configService.MultipleItemsDragDropEnabled = true;
+            //configService.NamespaceConversionEnabled = true;
+            //configService.PanModeEnabled = true;
+            //configService.RubberBandSelectionEnabled = true;
+            //configService.LoadingFromUntrustedSourceEnabled = true;
+            //configService.TargetFrameworkName = new FrameworkName(".NETFramework,Version=v4.5");
+
             _workflowDesigner.Load(activity);
             // Flush the workflow when the model changes
             _workflowDesigner.ModelChanged += (s, e) => WorkflowSourceChanged(treeViewItem);
 
             WorkflowSourceChanged(treeViewItem);
-            // services
+
             _undoEngineService = _workflowDesigner.Context.Services.GetService<UndoEngine>();
             _undoEngineService.UndoUnitAdded += UndoEngineServiceUndoUnitAdded;
 
@@ -324,6 +342,7 @@ namespace AutoX
             designerView.WorkflowShellBarItemVisibility = ShellBarItemVisibility.MiniMap
                                                           | ShellBarItemVisibility.Zoom | ShellBarItemVisibility.PanMode
                                                           | ShellBarItemVisibility.Variables;
+            
             //CompileExpressions(activity);
             /*** visual tracker things
             IDesignerHost designer = _workflowDesigner.Context.Services.GetService<IDesignerHost>();
@@ -353,6 +372,11 @@ namespace AutoX
                 return;
             }
             var activity = Utilities.GetActivityFromContentString(content);
+            if (activity == null)
+            {
+                MessageBox.Show("We receive invalid data["+content+"]");
+                return;
+            }
             var name = activity.GetType().GetProperty(Constants.NAME).GetValue(activity, null) as string;
             var description = activity.GetType().GetProperty("Description").GetValue(activity, null) as string;
             activity.GetType().GetProperty("Authors").SetValue(activity,_currentWindowsUser);

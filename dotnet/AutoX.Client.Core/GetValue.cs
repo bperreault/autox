@@ -17,7 +17,7 @@ namespace AutoX.Client.Core
             {
                 var target = UIObject[0];
                 //Data should look like text=>variable
-                if (!string.IsNullOrEmpty(Data))
+                if (string.IsNullOrEmpty(Data))
                 {
                     sr.Error("Please define variable and attribute.");
                     return sr.GetResult();
