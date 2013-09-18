@@ -188,6 +188,7 @@ namespace AutoX
             //Mapping between the Object and Line No.
        
             Log.Debug(workflowInstance.ToXElement().ToString());
+            //do we need to register client at controller debugging? Yes, we need it to maintain the status of this only client
             ClientInstancesManager.GetInstance().Register(_config.SetRegisterBody(XElement.Parse("<Register />")));
             //TODO add visual trace here
             //if workflow is loaded, we can track it.

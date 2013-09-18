@@ -145,7 +145,7 @@ namespace AutoX.Activities.AutoActivities
                 var lastChild = children[currentActivityIndex - 1];
                 //Get result here, it is sync or async????
                 _runningResult = _runningResult && ((IPassData)lastChild).GetResult();
-                //TODO set variables value ((AutomationActivity)nextChild).Name to _runningResult
+                
                 if (!_runningResult)
                 {
                     if (ErrorLevel == OnError.AlwaysReturnTrue)
@@ -169,6 +169,9 @@ namespace AutoX.Activities.AutoActivities
                         return;
                     }
                 }
+                //set variables value ((AutomationActivity)nextChild).Name to _runningResult
+                AddVariable(((AutomationActivity)lastChild).DisplayName.Replace(" ", "_").Replace(":", "_"), _runningResult.ToString());
+                SetVariableValueByContext(context, ((AutomationActivity)lastChild).DisplayName.Replace(" ", "_").Replace(":", "_"), _runningResult.ToString());
             }
             if (currentActivityIndex == children.Count)
             {
@@ -201,7 +204,7 @@ namespace AutoX.Activities.AutoActivities
                 child.SetParentResultId(ResultId);
                 childEnabled = child.Enabled;
             }
-            //TODO if enabled, run it, may need to use while???
+            //if enabled, run it, don't think to use while, it is a recursive, async cycle here!
             if (childEnabled)
             {
                 context.ScheduleActivity(nextChild, _onChildComplete);

@@ -67,17 +67,27 @@ namespace AutoX.WF.Core
 
         #endregion
 
-        public void Register(XElement xElement)
+        public XElement Register(XElement xElement)
         {
-            var xAction = xElement.Attribute(Constants.ACTION);
-            if (xAction != null) xAction.Remove();
-            var computer = new ClientInstance(xElement);
-
-            if (_computerList.ContainsKey(computer._id))
+            try
             {
-                _computerList.Remove(computer._id);
+                var xAction = xElement.Attribute(Constants.ACTION);
+                if (xAction != null) xAction.Remove();
+                var computer = new ClientInstance(xElement);
+
+                if (_computerList.ContainsKey(computer._id))
+                {
+                    _computerList.Remove(computer._id);
+                }
+                _computerList.Add(computer._id, computer);
+                return XElement.Parse("<Result Result='Success' />");
             }
-            _computerList.Add(computer._id, computer);
+            catch (Exception ex)
+            {
+                Log.Error(ExceptionHelper.FormatStackTrace("Register Failed! ",ex));
+                return XElement.Parse("<Result Result='Error' Reason='"+ex.Message+"' />");
+            }
+            return XElement.Parse("<Result Result='Error' Reason='Unknown Reason.' />");
         }
 
         public static ClientInstancesManager GetInstance()
@@ -92,7 +102,7 @@ namespace AutoX.WF.Core
 
         public ClientInstance GetComputer(string idOfComputer)
         {
-            //TODO use a while to wait this computer available
+            //use a while to wait this computer available? no, there is a thread(task) in InstanceManager to handle.
             return
                 (from id in _computerList.Keys where id.Contains(idOfComputer) select _computerList[id]).
                     FirstOrDefault();

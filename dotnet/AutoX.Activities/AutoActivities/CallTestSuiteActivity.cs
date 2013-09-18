@@ -59,7 +59,6 @@ namespace AutoX.Activities.AutoActivities
             // Obtain the runtime value of the Text input argument
 
             SetVariablesBeforeRunning(context);
-            //TODO implement it!!!
             //invoke a test suite here
             Log.Debug("in CallTestSuite, before Executing Test Suite: " + TestSuiteName);
             var screen = Host.GetDataObject(TestSuiteId);
@@ -74,7 +73,7 @@ namespace AutoX.Activities.AutoActivities
                 automationActivity.InstanceId = InstanceId;
             }
             WorkflowInvoker.Invoke(activity);
-            //TODO calculate result here
+            //calculate result here? no, the caller will calculate it.
             _runningResult = ((IPassData) activity).GetResult();
         }
     }

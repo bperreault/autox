@@ -106,7 +106,7 @@ namespace AutoX.Activities.AutoActivities
                 var lastChild = children[currentActivityIndex - 1];
                 //Get result here, it is sync or async????
                 _runningResult = _runningResult && ((IPassData)lastChild).GetResult();
-                //TODO set variables value ((AutomationActivity)nextChild).Name to _runningResult
+                
                 if (!_runningResult)
                 {
                     if (ErrorLevel == OnError.AlwaysReturnTrue)
@@ -130,6 +130,9 @@ namespace AutoX.Activities.AutoActivities
                         return;
                     }
                 }
+                //set variables value ((AutomationActivity)nextChild).Name to _runningResult
+                AddVariable(((AutomationActivity)lastChild).DisplayName.Replace(" ", "_").Replace(":","_"), _runningResult.ToString());
+                SetVariableValueByContext(context, ((AutomationActivity)lastChild).DisplayName.Replace(" ", "_").Replace(":", "_"), _runningResult.ToString());
             }
             if (currentActivityIndex == children.Count)
             {

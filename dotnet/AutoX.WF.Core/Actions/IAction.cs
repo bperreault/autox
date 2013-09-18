@@ -38,6 +38,7 @@ namespace AutoX.WF.Core.Actions
     {
         public XElement Do(XElement action)
         {
+            //This one always can return something, even an empty list
             return ClientInstancesManager.GetInstance().ToXElement();
         }
     }
@@ -46,6 +47,7 @@ namespace AutoX.WF.Core.Actions
     {
         public XElement Do(XElement action)
         {
+            //This one always can return something, even an empty list
             return InstanceManager.GetInstance().GetInstances();
         }
     }
@@ -54,8 +56,7 @@ namespace AutoX.WF.Core.Actions
     {
         public XElement Do(XElement action)
         {
-            ClientInstancesManager.GetInstance().Register(action);
-            return XElement.Parse("<Result Result='Success' />");
+            return ClientInstancesManager.GetInstance().Register(action);            
         }
     }
 
