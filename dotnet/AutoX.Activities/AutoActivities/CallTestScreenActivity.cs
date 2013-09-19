@@ -131,11 +131,11 @@ namespace AutoX.Activities.AutoActivities
                 {
                     if (ErrorLevel == OnError.AlwaysReturnTrue)
                         _runningResult = true;
-                    //if (ErrorLevel == OnError.Terminate)
-                    //{
-                    //    //TODO terminate the instance (send a status to instance)
-                    //    Host.Stop();
-                    //}
+                    if (ErrorLevel == OnError.Terminate)
+                    {
+                        Log.Fatal("Workflow terminated according OnError.Terminate");
+                        context.Abort();
+                    }
                     if (ErrorLevel == OnError.Continue)
                     {
                         //do nothing, just continue
@@ -196,8 +196,7 @@ namespace AutoX.Activities.AutoActivities
             //add some steps, update some steps (new and mark enabled, also add the un-enabled items, they would not work anyway)
             //set command to instance, then get the result
             var data = Utilities.GetActualUserData(UserData, Host);
-            var screenObj = Host.GetDataObject(TestSreenId);
-            var screen = XElement.Parse(screenObj.GetAttributeValue("Content"));
+            
             //Utilities.PrintDictionary(data);
             //update the Steps into the format we want
             var steps = CreateStepsHeader();
@@ -248,20 +247,22 @@ namespace AutoX.Activities.AutoActivities
                         }
                         if (!found)
                         {
-                            {
+                            
+                                var foundAgain = false;
+                                var screenObj = Host.GetDataObject(TestSreenId);
+                                var screen = XElement.Parse(screenObj.GetAttributeValue("Content"));
                                 XNamespace p = "http://schemas.microsoft.com/netfx/2009/xaml/activities";
                                 foreach (var v in screen.Descendants(p + "Variable"))
                                 {
                                     if (!v.GetAttributeValue("Name").Equals(dataref)) continue;
                                     if (string.IsNullOrEmpty(v.GetAttributeValue("Default"))) continue;
-                                    found = true;
+                                    foundAgain = true;
                                     step.SetAttributeValue(Constants.DATA, v.GetAttributeValue("Default"));
                                     break;
                                 }
-                            }
-                            if (!found)
-                                step.SetAttributeValue(Constants.DATA,
-                                    !string.IsNullOrEmpty(defaultData) ? defaultData : "");
+                            
+                            if (!foundAgain)
+                                step.SetAttributeValue(Constants.DATA, !string.IsNullOrEmpty(defaultData) ? defaultData : "");
                         }
                     }
                 }

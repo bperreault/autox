@@ -150,10 +150,11 @@ namespace AutoX.Activities.AutoActivities
                 {
                     if (ErrorLevel == OnError.AlwaysReturnTrue)
                         _runningResult = true;
-                    //if (ErrorLevel == OnError.Terminate)
-                    //{
-                    //    //TODO terminate the instance (send a status to instance)
-                    //}
+                    if (ErrorLevel == OnError.Terminate)
+                    {
+                        Log.Fatal("Workflow terminated according OnError.Terminate");
+                        context.Abort();
+                    }
                     if (ErrorLevel == OnError.Continue)
                     {
                         //do nothing, just continue

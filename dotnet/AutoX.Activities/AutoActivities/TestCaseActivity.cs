@@ -111,10 +111,11 @@ namespace AutoX.Activities.AutoActivities
                 {
                     if (ErrorLevel == OnError.AlwaysReturnTrue)
                         _runningResult = true;
-                    //if (ErrorLevel == OnError.Terminate)
-                    //{
-                    //    //TODO terminate the instance (send a status to instance)
-                    //}
+                    if (ErrorLevel == OnError.Terminate)
+                    {
+                        Log.Fatal("Workflow terminated according OnError.Terminate");
+                        context.Abort();
+                    }
                     if (ErrorLevel == OnError.Continue)
                     {
                         //do nothing, just continue
@@ -159,7 +160,7 @@ namespace AutoX.Activities.AutoActivities
             }
             context.ScheduleActivity(nextChild, _onChildComplete);
             
-            ////Get result here, it is sync or async????
+            ////Get result here, it is sync or async???? not important, this is a template, should not calculate the result
             
             //_runningResult = _runningResult && ((IPassData)nextChild).GetResult();
             //if (!_runningResult)
@@ -168,7 +169,7 @@ namespace AutoX.Activities.AutoActivities
             //        _runningResult = true;
             //    //if (ErrorLevel == OnError.Terminate)
             //    //{
-            //    //    //TODO terminate the instance (send a status to instance)
+            //    //    //terminate the instance (send a status to instance)
             //    //}
             //    if (ErrorLevel == OnError.Continue)
             //    {

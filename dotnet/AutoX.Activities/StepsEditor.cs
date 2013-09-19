@@ -50,18 +50,13 @@ namespace AutoX.Activities
             var converter = new ModelPropertyEntryToOwnerActivityConverter();
             var modelItem = (ModelItem) converter.Convert(propertyValue.ParentProperty, typeof (ModelItem), false, null);
             if (modelItem == null) return;
-            //var property = modelItem.Properties["UserData"];
-            //if (property == null) return;
-            //var userData = "";
-            //if (property.Value != null) userData = property.Value.ToString();
+           
             var stepId = modelItem.Properties["TestSreenId"];
-
+            
             var stepsDialog = new StepsDialog();
             if (stepId != null)
                 if (stepId.Value != null) stepsDialog.Set(stepId.Value.ToString());
             stepsDialog.Set(propertyValue.Value.ToString(), "");
-            //if (!string.IsNullOrEmpty(steps))
-            //    stepsDialog.Set(steps);
             stepsDialog.ShowDialog();
 
             if (stepsDialog.DialogResult == true)

@@ -37,9 +37,9 @@ namespace AutoX.Activities
 
         [Description("Mark Error in Result, but Continue Next Step")] Continue,
 
-        [Description("Stop Current Script, Mark it Error")] StopCurrentScript
+        [Description("Stop Current Script, Mark it Error")] StopCurrentScript,
 
-        //[Description("Terminate this Test Instance")] Terminate
+        [Description("Terminate this Test Instance")] Terminate
     }
 
     public static class Utilities
@@ -135,14 +135,22 @@ namespace AutoX.Activities
                         Authors = Environment.UserName,
                         TestCaseId = data.GetAttributeValue(Constants._ID),
                         TestCaseName = data.GetAttributeValue(Constants.NAME),
+                        Name = data.GetAttributeValue(Constants.NAME),
                         DisplayName = "Call Test Case: " + data.GetAttributeValue(Constants.NAME)
                     };
-                    
+                    var tsContent = data.GetAttributeValue("Content");
+                    var a = GetActivityFromContentString(tsContent) as TestCaseActivity;
+                    if (a != null)
+                        foreach (var v in a.Variables)
+                            activity.Variables.Add(v);
                     activity.SetHost(host);
                     return activity;
                 }
                 if (scriptType.Equals("TestScreen"))
                 {
+                    var ss = XElement.Parse(data.GetAttributeValue(Constants.CONTENT)).GetAttributeValue("Steps");
+                    var sx = XElement.Parse(ss);
+                    sx.SetAttributeValue(Constants._ID,data.GetAttributeValue(Constants._ID));
                     var activity = new CallTestScreenActivity
                     {
                         Authors = Environment.UserName,
@@ -151,9 +159,16 @@ namespace AutoX.Activities
                         ErrorLevel = OnError.Continue,
                         GUID = Guid.NewGuid().ToString(),
                         UserData = "",
+                        Name = data.GetAttributeValue(Constants.NAME),
                         DisplayName = "Call Test Screen: " + data.GetAttributeValue(Constants.NAME),
-                        Steps = XElement.Parse(data.GetAttributeValue(Constants.CONTENT)).GetAttributeValue("Steps")
+                        Steps = sx.ToString()
                     };
+                    var tsContent = data.GetAttributeValue("Content");
+                    var a = GetActivityFromContentString(tsContent) as TestScreenActivity;
+                
+                    if (a != null)
+                        foreach (var v in a.Variables)
+                            activity.Variables.Add(v);
                     activity.SetHost(host);
                     return activity;
                 }
@@ -164,9 +179,15 @@ namespace AutoX.Activities
                         Authors = Environment.UserName,
                         TestSuiteId = data.GetAttributeValue(Constants._ID),
                         TestSuiteName = data.GetAttributeValue(Constants.NAME),
+                        Name = data.GetAttributeValue(Constants.NAME),
                         Description = data.GetAttributeValue("Description"),
                         DisplayName = "Call Test Suite: " + data.GetAttributeValue(Constants.NAME)
                     };
+                    var tsContent = data.GetAttributeValue("Content");
+                    var a = GetActivityFromContentString(tsContent) as TestSuiteActivity;
+                    if (a != null)
+                        foreach (var v in a.Variables)
+                            activity.Variables.Add(v);
                     activity.SetHost(host);
                     return activity;
                 }

@@ -325,6 +325,40 @@ namespace AutoX
             //configService.LoadingFromUntrustedSourceEnabled = true;
             //configService.TargetFrameworkName = new FrameworkName(".NETFramework,Version=v4.5");
 
+            //before load activity, if it is CallTestScreen, check if it has some new steps
+//            var ts = activity as CallTestScreenActivity;
+//            if (ts != null)
+//            {
+//                var tsx = XElement.Parse(ts.Steps);
+//                var screenId = tsx.GetAttributeValue(Constants._ID);
+//                if (!string.IsNullOrEmpty(screenId))
+//                {
+//                    var screenContent = DBFactory.GetData().Read(screenId);
+//                    if (screenContent!=null)
+//                    {
+//                        var a = Utilities.GetActivityFromContentString(screenContent.ToString()) as TestScreenActivity;
+//                        if (a != null)
+//                        {
+//                            bool updated = false;
+//                            foreach (var step in XElement.Parse(a.Steps).Descendants("Step"))
+//                            {
+//                                var id = step.GetAttributeValue(Constants._ID);
+//                                if (tsx.GetSubElement(Constants._ID, id) == null)
+//                                {
+//                                    tsx.Add(step);
+//                                    updated = true;
+//                                }
+//                            }
+//                            if (updated)
+//                            {
+//                                ts.Steps = tsx.ToString();
+////TODO update it in db right now???
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+            
             _workflowDesigner.Load(activity);
             // Flush the workflow when the model changes
             _workflowDesigner.ModelChanged += (s, e) => WorkflowSourceChanged(treeViewItem);

@@ -1919,10 +1919,7 @@
 		<row><td>sequence.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>sequence.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\sequence.bmp</td><td>1</td><td/></row>
 		<row><td>snapshot.png</td><td>ISX_DEFAULTCOMPONENT</td><td>Snapshot.png</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\Snapshot.png</td><td>1</td><td/></row>
 		<row><td>startbrowser.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>STARTB~1.BMP|startbrowser.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\startbrowser.bmp</td><td>1</td><td/></row>
-		<row><td>testcase.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>TestCase.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\TestCase.bmp</td><td>1</td><td/></row>
-		<row><td>testscreen.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>TESTSC~1.BMP|TestScreen.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\TestScreen.bmp</td><td>1</td><td/></row>
 		<row><td>teststeps.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>TESTST~1.BMP|TestSteps.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\TestSteps.bmp</td><td>1</td><td/></row>
-		<row><td>testsuite.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>TESTSU~1.BMP|TestSuite.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\TestSuite.bmp</td><td>1</td><td/></row>
 		<row><td>text.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>text.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\text.bmp</td><td>1</td><td/></row>
 		<row><td>textbox.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>textbox.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\textbox.bmp</td><td>1</td><td/></row>
 		<row><td>textnode.bmp</td><td>ISX_DEFAULTCOMPONENT</td><td>textnode.bmp</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\AutoX\Resources\textnode.bmp</td><td>1</td><td/></row>
