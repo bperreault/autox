@@ -74,6 +74,33 @@ namespace AutoX.Activities.AutoActivities
             }
         }
 
+        protected override void CacheMetadata(NativeActivityMetadata metadata)
+        {
+            //call base.CacheMetadata to add the Activities and Variables to this activity's metadata
+            base.CacheMetadata(metadata);
+
+            string errorMessage = AutomationActivityValidation();
+            if (!string.IsNullOrEmpty(errorMessage))
+                metadata.AddValidationError(errorMessage);
+
+        }
+
+        public override string AutomationActivityValidation()
+        {
+            //add validation to this activity:every enabled steps must have action
+            var stepsX = XElement.Parse(_steps);
+            foreach (var step in stepsX.Descendants("Step"))
+            {
+                var enabled = step.GetAttributeValue("Enable");
+                if (string.IsNullOrEmpty(enabled))
+                    continue;
+                var action = step.GetAttributeValue("Action");
+                if (string.IsNullOrEmpty(action))
+                    return "Enabled step must has an action";
+            }
+            return null;
+        }
+
         #region IPassData Members
 
         public void PassData(string instanceId, string outerData)

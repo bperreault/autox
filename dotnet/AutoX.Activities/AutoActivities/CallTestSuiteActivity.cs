@@ -40,7 +40,23 @@ namespace AutoX.Activities.AutoActivities
         [Browsable(false)]
         public string TestSuiteId { get; set; }
 
-        
+        protected override void CacheMetadata(NativeActivityMetadata metadata)
+        {
+            //call base.CacheMetadata to add the Activities and Variables to this activity's metadata
+            base.CacheMetadata(metadata);
+
+            string errorMessage = AutomationActivityValidation();
+            if (!string.IsNullOrEmpty(errorMessage))
+                metadata.AddValidationError(errorMessage);
+
+        }
+
+        public override string AutomationActivityValidation()
+        {
+            //add validation to this activity: but we don't know what to verify for this activity now.
+
+            return null;
+        }
 
         #region IPassData Members
 
