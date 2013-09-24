@@ -29,6 +29,23 @@ namespace AutoX.Activities.AutoActivities
             Enabled = true;
         }
 
+        protected override void CacheMetadata(NativeActivityMetadata metadata)
+        {
+            //call base.CacheMetadata to add the Activities and Variables to this activity's metadata
+            base.CacheMetadata(metadata);
+
+            string errorMessage = AutomationActivityValidation();
+            if (!string.IsNullOrEmpty(errorMessage))
+                metadata.AddValidationError(errorMessage);
+
+        }
+
+        public override string AutomationActivityValidation()
+        {
+            //TODO add validation to this activity:every enabled steps must have action
+            return null;
+        }
+
         [Browsable(false)]
         public string GUID { get; set; }
 

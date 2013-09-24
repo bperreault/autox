@@ -87,7 +87,7 @@ namespace AutoX.WF.Core
                 Log.Error(ExceptionHelper.FormatStackTrace("Register Failed! ",ex));
                 return XElement.Parse("<Result Result='Error' Reason='"+ex.Message+"' />");
             }
-            return XElement.Parse("<Result Result='Error' Reason='Unknown Reason.' />");
+            //return XElement.Parse("<Result Result='Error' Reason='Unknown Reason.' />");
         }
 
         public static ClientInstancesManager GetInstance()

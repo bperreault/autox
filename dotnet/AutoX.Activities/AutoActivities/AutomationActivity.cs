@@ -225,5 +225,11 @@ namespace AutoX.Activities.AutoActivities
             if (PropertyChanged != null)
                 PropertyChanged.Invoke(this, new PropertyChangedEventArgs(p));
         }
+
+        public virtual string AutomationActivityValidation()
+        {
+            return null;
+        }
+        
     }
 }

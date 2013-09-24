@@ -84,6 +84,10 @@
       <Project>{BB39BDB6-D9A0-4B29-98C5-977069B8D575}</Project>
       <Name>AutoX.Basic</Name>
     </ProjectReference>
+    <ProjectReference Include="..\AutoX.Client.Core\AutoX.Client.Core.csproj">
+      <Project>{4c838b4a-f1c7-4b78-b6c4-eb65ead3fbe0}</Project>
+      <Name>AutoX.Client.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AutoX.DB\AutoX.DB.csproj">
       <Project>{7d09a7d8-2a35-49cb-936e-58919bb4a5f9}</Project>
       <Name>AutoX.DB</Name>

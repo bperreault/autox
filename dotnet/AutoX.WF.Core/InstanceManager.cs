@@ -60,7 +60,7 @@ namespace AutoX.WF.Core
             return _instance ?? (_instance = new InstanceManager());
         }
 
-        public bool UpdateInstance(XElement instanceInfo)
+        public XElement UpdateInstance(XElement instanceInfo)
         {
             var _1StNode = ((XElement) instanceInfo.FirstNode);
             //var name = instanceInfo.GetAttributeValue("TestName");
@@ -71,20 +71,32 @@ namespace AutoX.WF.Core
             //var status = instanceInfo.GetAttributeValue("Status");
             //var language = instanceInfo.GetAttributeValue("Language");
             //var suiteName = instanceInfo.GetAttributeValue("SuiteName");
+            
+            WorkflowInstance instance;
             if (_instanceList.ContainsKey(guid))
             {
-                var instance = _instanceList[guid];
-                instance.Variables = ((XElement) instanceInfo.FirstNode).GetAttributeList();
-                return instance.Status == null || !instance.Status.Equals("Invalid");
+                //instance already existed
+                instance = _instanceList[guid];                        
             }
             else
             {
-                var instance = new WorkflowInstance(guid, scriptGuid,
+                //instance not existed, create one
+                instance = new WorkflowInstance(guid, scriptGuid,
                     ((XElement) instanceInfo.FirstNode).GetAttributeList());
                 //new WorkflowInstance(guid, scriptGuid, name, computer, suiteName, language);
-                _instanceList.Add(guid, instance);
-                return instance.Status == null || !instance.Status.Equals("Invalid");
+                _instanceList.Add(guid, instance);               
             }
+            
+            if(instance==null)
+                return XElement.Parse("<Result Result='Error' Reason='Instance is null' />");
+
+            instance.Variables = ((XElement)instanceInfo.FirstNode).GetAttributeList();
+            var status = instance.Status;
+            var instanceId = instance._id;
+            if(string.IsNullOrEmpty(status) || !status.Equals("Invalid"))
+                return XElement.Parse("<Result Result='Success' InstanceId ='"+instanceId+"' />");
+            else
+                return XElement.Parse("<Result Result='Error' Reason='" + status + "' InstanceId ='" + instanceId + "' />");
         }
 
         public WorkflowInstance GetTestInstance(string guid)

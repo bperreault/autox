@@ -85,6 +85,27 @@ namespace AutoX.Activities.AutoActivities
             base.CacheMetadata(metadata);
             //add the private implementation variable: currentIndex 
             metadata.AddImplementationVariable(_currentIndex);
+            string errorMessage = AutomationActivityValidation();
+            if (!string.IsNullOrEmpty(errorMessage))
+                metadata.AddValidationError(errorMessage);
+
+        }
+
+        public override string AutomationActivityValidation()
+        {
+            if (children.Count <= 0)
+                return "No child activity, this test case is useless";
+            foreach (var child in children)
+            {
+                var ac = child as AutomationActivity;
+                if (ac != null)
+                {
+                    var message = ac.AutomationActivityValidation();
+                    if (!string.IsNullOrEmpty(message))
+                        return message;
+                }
+            }
+            return base.AutomationActivityValidation();
         }
 
         protected override void Execute(NativeActivityContext context)

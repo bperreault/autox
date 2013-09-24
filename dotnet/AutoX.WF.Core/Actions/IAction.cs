@@ -80,9 +80,7 @@ namespace AutoX.WF.Core.Actions
     {
         public XElement Do(XElement action)
         {
-            if (InstanceManager.GetInstance().UpdateInstance(action))
-                return XElement.Parse("<Result Result='Success' />");
-            return XElement.Parse("<Result Result='Error' />");
+            return InstanceManager.GetInstance().UpdateInstance(action);                
         }
     }
 
