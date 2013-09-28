@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Enyim.Caching">
+      <HintPath>..\packages\EnyimMemcached.2.12\lib\net35\Enyim.Caching.dll</HintPath>
+    </Reference>
     <Reference Include="JasonRoberts.FeatureToggle">
       <HintPath>..\packages\FeatureToggle.1.2.0\lib\net40\JasonRoberts.FeatureToggle.dll</HintPath>
     </Reference>
@@ -37,7 +40,13 @@
       <HintPath>..\packages\FeatureToggle.WPFExtensions.1.1.1\lib\net40\JasonRoberts.FeatureToggle.WpfExtensions.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</HintPath>
+      <HintPath>..\packages\log4net.2.0.1\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Bson">
+      <HintPath>..\packages\mongocsharpdriver.1.8.2\lib\net35\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver">
+      <HintPath>..\packages\mongocsharpdriver.1.8.2\lib\net35\MongoDB.Driver.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -70,6 +79,7 @@
     <Compile Include="IAction.cs" />
     <Compile Include="NotExisted.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.log4net.cs" />
     <Compile Include="SauceDriver.cs" />
     <Compile Include="Select.cs" />
     <Compile Include="SetEnv.cs" />

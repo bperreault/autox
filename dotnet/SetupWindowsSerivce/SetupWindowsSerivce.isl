@@ -365,8 +365,6 @@
 		<row><td>ISO19770_SystemTag</td><td>{8630EAD7-9393-4C98-9F61-49DDA163414A}</td><td>CommonAppDataFolder</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT</td><td>{788B9C20-BA9E-4BAC-B456-DB399E477410}</td><td>AUTOX.WEB</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td>{BA3A8811-17F2-4BB4-A0DE-58D95CF1A014}</td><td>BIN</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>log4net.dll</td><td>{3F0F30DE-90D7-4D2C-9E7D-15C13ADF0569}</td><td>INSTALLDIR</td><td>2</td><td/><td>log4net.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>log4net.dll2</td><td>{958ECB2A-775E-4549-9C0D-48982CE4A44B}</td><td>BIN</td><td>2</td><td/><td>log4net.dll2</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
 
 	<table name="Condition">
@@ -1921,8 +1919,6 @@
 		<row><td>AlwaysInstall</td><td>ISO19770_SystemTag</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT1</td></row>
-		<row><td>AlwaysInstall</td><td>log4net.dll</td></row>
-		<row><td>AlwaysInstall</td><td>log4net.dll2</td></row>
 	</table>
 
 	<table name="File">
@@ -1957,8 +1953,6 @@
 		<row><td>autox.windowsservice.primary1</td><td>AutoX.WindowsService.Primary_output1</td><td>AutoX.WindowsService.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;AutoX.WindowsService&gt;|Built</td><td>3</td><td/></row>
 		<row><td>autox.windowsservice.primary2</td><td>AutoX.WindowsService.Primary_output2</td><td>AutoX.WindowsService.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;AutoX.WindowsService&gt;|Built</td><td>3</td><td/></row>
 		<row><td>autox.windowsservice.primary3</td><td>AutoX.WindowsService.Primary_output3</td><td>AutoX.WindowsService.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;AutoX.WindowsService&gt;|Built</td><td>3</td><td/></row>
-		<row><td>log4net.dll</td><td>log4net.dll</td><td>log4net.dll</td><td>0</td><td/><td/><td>0</td><td>1</td><td>&lt;ISProjectFolder&gt;..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</td><td>1</td><td/></row>
-		<row><td>log4net.dll2</td><td>log4net.dll2</td><td>log4net.dll</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;ISProjectFolder&gt;..\packages\log4net.2.0.0\lib\net40-full\log4net.dll</td><td>1</td><td/></row>
 	</table>
 
 	<table name="FileSFPCatalog">
@@ -2126,8 +2120,6 @@
 		<row><td>ISO19770_SystemTag</td><td/><td/><td>_990468C3_D1B1_42C5_A1F8_C1618F1C10F9_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT</td><td/><td/><td>_0FF984C1_AE3D_42AD_B346_DAA64B969859_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td/><td/><td>_9CC9DFDB_C3E1_4744_92CB_A969FFB6E752_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>log4net.dll</td><td/><td/><td>_CFD5755D_D693_4920_9D2B_B213D5F180AB_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>log4net.dll2</td><td/><td/><td>_A85A58E5_5CDD_4544_BA3C_85790691D26B_FILTER</td><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="ISCustomActionReference">
@@ -4105,7 +4097,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>ISTheme</td><td>InstallShield Blue.theme</td></row>
 		<row><td>ISUSLock</td><td>{C8BDFF89-E8CD-43C8-83ED-75388999D0E3}</td></row>
 		<row><td>ISUSSignature</td><td>{6DFF2F50-9937-409B-9B7B-C4099C6BCAE2}</td></row>
-		<row><td>ISVisitedViews</td><td>viewAssistant,viewSetupTypes,viewServices,viewProject,viewRealSetupDesign,viewAppFiles,viewSetupDesign,viewUI</td></row>
+		<row><td>ISVisitedViews</td><td>viewAssistant,viewSetupTypes,viewServices,viewProject,viewRealSetupDesign,viewAppFiles,viewSetupDesign,viewUI,viewSystemSearch</td></row>
 		<row><td>Limited</td><td>1</td></row>
 		<row><td>LockPermissionMode</td><td>1</td></row>
 		<row><td>MsiExecCmdLineOptions</td><td/></row>

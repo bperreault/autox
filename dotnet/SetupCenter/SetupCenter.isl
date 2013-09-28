@@ -345,6 +345,7 @@
 		<col def="S0">ISDotNetInstallerArgsCommit</col>
 		<col def="S0">ISDotNetInstallerArgsUninstall</col>
 		<col def="S0">ISDotNetInstallerArgsRollback</col>
+		<row><td>AutoX.Web.Content_Files</td><td>{6FD206B0-21BA-4D0F-A784-4DD250171980}</td><td>AUTOX.WEB</td><td>2</td><td/><td>autox.web.content_files</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>AutoX.Web.Primary_output1</td><td>{52597B35-54E6-4116-98F1-8E7AB8562105}</td><td>BIN</td><td>2</td><td/><td>autox.web.primary_output1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISO19770_LocalTag</td><td>{978A4418-2378-4F06-8103-E74EE506F75A}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISO19770_SystemTag</td><td>{597E7C5C-059C-4687-A1D2-9515D0BD4BFD}</td><td>CommonAppDataFolder</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
@@ -1059,6 +1060,7 @@
 	<table name="CreateFolder">
 		<col key="yes" def="s72">Directory_</col>
 		<col key="yes" def="s72">Component_</col>
+		<row><td>AUTOX.WEB</td><td>ISX_DEFAULTCOMPONENT</td></row>
 		<row><td>BIN</td><td>ISX_DEFAULTCOMPONENT1</td></row>
 		<row><td>CommonAppDataFolder</td><td>ISO19770_SystemTag</td></row>
 		<row><td>INSTALLDIR</td><td>ISO19770_LocalTag</td></row>
@@ -1881,6 +1883,7 @@
 	<table name="FeatureComponents">
 		<col key="yes" def="s38">Feature_</col>
 		<col key="yes" def="s72">Component_</col>
+		<row><td>AlwaysInstall</td><td>AutoX.Web.Content_Files</td></row>
 		<row><td>AlwaysInstall</td><td>AutoX.Web.Primary_output1</td></row>
 		<row><td>AlwaysInstall</td><td>ISO19770_LocalTag</td></row>
 		<row><td>AlwaysInstall</td><td>ISO19770_SystemTag</td></row>
@@ -1901,15 +1904,8 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I4">ISAttributes</col>
 		<col def="S72">ISComponentSubFolder_</col>
+		<row><td>autox.web.content_files</td><td>AutoX.Web.Content_Files</td><td>AutoX.Web.Content Files</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;AutoX.Web&gt;|ContentFiles</td><td>3</td><td/></row>
 		<row><td>autox.web.primary_output1</td><td>AutoX.Web.Primary_output1</td><td>AutoX.Web.Primary output</td><td>0</td><td/><td/><td/><td>1</td><td>&lt;AutoX.Web&gt;|Built</td><td>3</td><td/></row>
-		<row><td>default.html</td><td>ISX_DEFAULTCOMPONENT</td><td>DEFAUL~1.HTM|Default.html</td><td>0</td><td/><td/><td/><td>1</td><td>C:\dev\autox\dotnet\AutoX.Web\Default.html</td><td>1</td><td/></row>
-		<row><td>favicon.ico</td><td>ISX_DEFAULTCOMPONENT</td><td>favicon.ico</td><td>0</td><td/><td/><td/><td>1</td><td>C:\dev\autox\dotnet\AutoX.Web\favicon.ico</td><td>1</td><td/></row>
-		<row><td>global.asax</td><td>ISX_DEFAULTCOMPONENT</td><td>GLOBAL~1.ASA|Global.asax</td><td>0</td><td/><td/><td/><td>1</td><td>C:\dev\autox\dotnet\AutoX.Web\Global.asax</td><td>1</td><td/></row>
-		<row><td>global.asax.cs</td><td>ISX_DEFAULTCOMPONENT</td><td>GLOBAL~1.CS|Global.asax.cs</td><td>0</td><td/><td/><td/><td>1</td><td>C:\dev\autox\dotnet\AutoX.Web\Global.asax.cs</td><td>1</td><td/></row>
-		<row><td>packages.config</td><td>ISX_DEFAULTCOMPONENT</td><td>PACKAG~1.CON|packages.config</td><td>0</td><td/><td/><td/><td>1</td><td>C:\dev\autox\dotnet\AutoX.Web\packages.config</td><td>1</td><td/></row>
-		<row><td>service.asmx</td><td>ISX_DEFAULTCOMPONENT</td><td>SERVIC~1.ASM|Service.asmx</td><td>0</td><td/><td/><td/><td>1</td><td>C:\dev\autox\dotnet\AutoX.Web\Service.asmx</td><td>1</td><td/></row>
-		<row><td>startserver.bat</td><td>ISX_DEFAULTCOMPONENT</td><td>STARTS~1.BAT|startServer.bat</td><td>0</td><td/><td/><td/><td>1</td><td>C:\dev\autox\dotnet\AutoX.Web\startServer.bat</td><td>1</td><td/></row>
-		<row><td>web.config</td><td>ISX_DEFAULTCOMPONENT</td><td>WEB~1.CON|Web.config</td><td>0</td><td/><td/><td/><td>1</td><td>C:\dev\autox\dotnet\AutoX.Web\Web.config</td><td>1</td><td/></row>
 	</table>
 
 	<table name="FileSFPCatalog">
@@ -2053,6 +2049,7 @@
 		<col def="S0">FTPLocation</col>
 		<col def="S0">HTTPLocation</col>
 		<col def="S0">Miscellaneous</col>
+		<row><td>AutoX.Web.Content_Files</td><td/><td/><td>_AC567341_8445_4F5D_A3EC_08F8D24EEB40_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>AutoX.Web.Primary_output1</td><td/><td/><td>_ED1866C6_DE14_4F55_BB38_5D3D7C723EAD_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISO19770_LocalTag</td><td/><td/><td>_7B73CEEF_4F6F_41B6_BB4F_2DA71C74CA0E_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISO19770_SystemTag</td><td/><td/><td>_ED99C4E9_B7C4_4A7D_B1F9_89E6AAD52655_FILTER</td><td/><td/><td/><td/></row>
@@ -4066,7 +4063,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>ISTheme</td><td>InstallShield Blue.theme</td></row>
 		<row><td>ISUSLock</td><td>{57BC8A71-876B-43E2-B524-E7B18303AFB5}</td></row>
 		<row><td>ISUSSignature</td><td>{9F717EBC-A712-42F1-9A69-61675EB1640E}</td></row>
-		<row><td>ISVisitedViews</td><td>viewAssistant,viewISToday,viewAppV,viewIniFiles,viewTextFiles,viewShortcuts,viewVRoots,viewProject,viewSystemSearch,viewAppFiles,viewObjects,viewFeatureFiles,viewTextMessages</td></row>
+		<row><td>ISVisitedViews</td><td>viewAssistant,viewISToday,viewAppV,viewIniFiles,viewTextFiles,viewShortcuts,viewVRoots,viewProject,viewSystemSearch,viewAppFiles,viewObjects,viewFeatureFiles,viewTextMessages,viewSetupDesign,viewUpgradePaths</td></row>
 		<row><td>Limited</td><td>1</td></row>
 		<row><td>LockPermissionMode</td><td>1</td></row>
 		<row><td>MsiExecCmdLineOptions</td><td/></row>
