@@ -42,6 +42,11 @@ namespace AutoX.Client.Core
             CloseBrowser();
         }
 
+        public void ExecuteJavaScript(string script)
+        {
+            ((IJavaScriptExecutor)_browser).ExecuteScript(script);
+        }
+
         #endregion
 
         public IWebDriver GetCurrentBrowser()

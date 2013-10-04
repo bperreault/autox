@@ -25,6 +25,7 @@ using AutoX.Comm;
 using AutoX.DB;
 using AutoX.WF.Core;
 using Microsoft.Win32;
+using System.Windows.Controls.Primitives;
 
 #endregion
 
@@ -482,10 +483,18 @@ namespace AutoX
             var dialogResult = dialog.ShowDialog(this);
             if (dialogResult == true)
             {
-                var content = File.ReadAllText(dialog.FileName);
-                var page = XElement.Parse(content);
-                var newItem = GetItemFromXElement(page, xParent.GetAttributeValue(Constants._ID));
-                if (newItem != null) selected.Items.Add(newItem);
+                try
+                {
+                    var content = File.ReadAllText(dialog.FileName);
+                    var page = XElement.Parse(content);
+                    var newItem = GetItemFromXElement(page, xParent.GetAttributeValue(Constants._ID));
+                    if (newItem != null) selected.Items.Add(newItem);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ExceptionHelper.FormatStackTrace("Load UI Elements failed.",ex));
+                    MessageBox.Show("Cannot load UI Elements. "+ex.Message);
+                }
             }
         }
 

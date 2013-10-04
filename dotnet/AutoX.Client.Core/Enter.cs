@@ -1,5 +1,6 @@
 #region
 
+using System;
 using System.Xml.Linq;
 
 #endregion
@@ -18,9 +19,22 @@ namespace AutoX.Client.Core
             else
             {
                 var text = UIObject[0];
-                text.Clear();
+                try
+                {
+                    text.Clear();
+                }
+                catch (Exception ex)
+                {
+                    //some objects cannot be cleared, like hidden, file.upload, so ignore this error
+                    if (!string.IsNullOrEmpty(XPath) && !string.IsNullOrEmpty(Data))
+                    {
+                        Browser.ExecuteJavaScript("document.evaluate('" + XPath.Replace("'", "\\\"") + "',document,null,9,null).singleNodeValue.value = '" + Data + "';");
+                        return sr.GetResult();
+                    }
+                }
                 if (!string.IsNullOrEmpty(Data))
                 {
+                    
                     text.SendKeys(Data);
                 }
             }

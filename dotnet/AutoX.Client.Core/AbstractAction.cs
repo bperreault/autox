@@ -15,6 +15,8 @@ namespace AutoX.Client.Core
 
         public string Data { get; set; }
 
+        public string XPath { get; set; }
+
         //public string _id { get; set; }
 
         public Browser Browser { set; get; }
@@ -36,7 +38,7 @@ namespace AutoX.Client.Core
         {
             if (uiObj == null)
                 return;
-            
+            XPath = uiObj.GetAttributeValue("XPath");
             UIObject = Browser.GetWebElement(uiObj);
         }
 

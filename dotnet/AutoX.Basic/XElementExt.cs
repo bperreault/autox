@@ -54,6 +54,21 @@ namespace AutoX.Basic
                 return original;
             var tag = "//*";
             var xTag = xUi.Attribute("tag");
+            var xType = xUi.Attribute("type");
+            if (xType != null)
+            {
+                if (xType.Value.Equals("a"))
+                {
+                    tag = "//a";
+                    xType.Remove();
+                }
+                if(xType.Value.Equals("table")||xType.Value.Equals("div"))
+                {
+                    var textAttr = xUi.Attribute("text");
+                    if(textAttr!=null) textAttr.Remove();
+                }
+                   
+            }
             if (xTag != null)
             {
                 tag = "//" + xTag.Value;
