@@ -28,6 +28,8 @@ namespace AutoX.Basic
         public const string SET_ENV = "SetEnv";
         public const string SUCCESS = "Success";
         public const string ERROR = "Error";
+
+        public const string XPATH = "XPath";
     }
 
     public enum MaturityLevel

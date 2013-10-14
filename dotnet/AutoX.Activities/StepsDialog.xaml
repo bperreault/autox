@@ -10,10 +10,17 @@
         <DataGrid Grid.Row="0" AutoGenerateColumns="False" CanUserAddRows="False" Name="StepsTable"
                   RowDetailsVisibilityMode="VisibleWhenSelected" SelectionMode="Extended" SelectionUnit="FullRow"
                   CanUserSortColumns="False" ScrollViewer.VerticalScrollBarVisibility="Visible" IsEnabled="True" CanUserDeleteRows="True">
+            
             <DataGrid.Columns>
-                <DataGridTextColumn Width="2*" Binding="{Binding _id}" Header="ID" IsReadOnly="True" />
+                <DataGridTextColumn Width="2*" Binding="{Binding _id}" Header="ID" IsReadOnly="True" Visibility="Collapsed" />
 
-                <DataGridTextColumn Width="2*" Binding="{Binding UIObject}" Header="UI Object" IsReadOnly="True" />
+                <DataGridTextColumn Width="2*" Binding="{Binding UIObject}" Header="UI Object" IsReadOnly="True" >
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="ToolTip" Value="{Binding XPath}" />
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
                 <DataGridComboBoxColumn Width="1*" SelectedItemBinding="{Binding Action}" Header="Action">
                     <DataGridComboBoxColumn.ElementStyle>
                         <Style TargetType="ComboBox">
@@ -29,11 +36,11 @@
                     </DataGridComboBoxColumn.EditingElementStyle>
 
                 </DataGridComboBoxColumn>
-                <DataGridTemplateColumn Width="2*" Header="Data Name" ToolTipService.ToolTip="Data's Name">
+                <DataGridTemplateColumn Width="2*" Header="Data Name" >
 
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Data}" />
+                            <TextBlock Text="{Binding Data}" ToolTipService.ToolTip="Data's Name"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
@@ -62,6 +69,13 @@
                                     ToolTipService.ToolTip="When Data is not provided, use this as default input data." />
                 <DataGridCheckBoxColumn Width="0.7*" Binding="{Binding Enable}" Header="Enable" />
             </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Extract All Items To Data" Click="ExtractAll" />
+                    <MenuItem Header="Extract All Enabled To Data" Click="ExtractEnabled" />
+                    <MenuItem Header="Extract Default Data To Data" Click="ExtractDefault"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
       </DataGrid>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>

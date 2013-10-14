@@ -14,6 +14,7 @@ using System.Windows;
 using System.Xml.Linq;
 using AutoX.Basic;
 using AutoX.DB;
+using System.Globalization;
 
 #endregion
 
@@ -170,6 +171,65 @@ namespace AutoX.Activities
                 step.PossibleData = UserData;
             }
             StepsTable.ItemsSource = steps;
+        }
+
+        private void ExtractAll(object sender, RoutedEventArgs e)
+        {
+            var xData = initDataXElement();
+            foreach (Step row in StepsTable.Items)
+            {
+                ExtractOneRow(xData, row);
+            }
+            Clipboard.SetText(xData.ToString(SaveOptions.None));
+            MessageBox.Show("Extracted data has been put to the clipboard, you can paste it to proper editor and update them");
+        }
+
+        private static void ExtractOneRow(XElement xData, Step row)
+        {
+            if ("Click;Close;Start;Existed,NotExisted".Contains(row.Action))
+                return;
+            var key = row.Data;
+            if (string.IsNullOrEmpty(key))
+                key = row.Action + row.UIObject;
+            xData.SetAttributeValue(key, row.DefaultData);
+        }
+
+        private static XElement initDataXElement()
+        {
+            XElement data = new XElement("Datum");
+            data.SetAttributeValue("Name", "New Data");
+            data.SetAttributeValue("_type", "Datum");
+            data.SetAttributeValue("Description", "Extracted Data");
+            data.SetAttributeValue("_id", Guid.NewGuid().ToString());
+            data.SetAttributeValue("Created", DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
+            data.SetAttributeValue("Updated", DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
+            data.SetAttributeValue("_parentId", Configuration.Settings("DataRoot"));
+            return data;
+        }
+
+        private void ExtractEnabled(object sender, RoutedEventArgs e)
+        {
+            var xData = initDataXElement();
+            foreach (Step row in StepsTable.Items)
+            {
+                if(row.Enable)
+                    ExtractOneRow(xData, row);
+
+            }
+            Clipboard.SetText(xData.ToString(SaveOptions.None));
+            MessageBox.Show("Extracted data has been put to the clipboard, you can paste it to proper editor and update them");
+        }
+
+        private void ExtractDefault(object sender, RoutedEventArgs e)
+        {
+            var xData = initDataXElement();
+            foreach (Step row in StepsTable.Items)
+            {
+                if(!string.IsNullOrEmpty(row.DefaultData))
+                    ExtractOneRow(xData, row);
+            }
+            Clipboard.SetText(xData.ToString(SaveOptions.None));
+            MessageBox.Show("Extracted data has been put to the clipboard, you can paste it to proper editor and update them");
         }
     }
 }

@@ -89,6 +89,8 @@ namespace AutoX.Activities
                 xStep.SetAttributeValue(Constants.DATA, "");
                 xStep.SetAttributeValue(Constants.DEFAULT_DATA, "");
                 xStep.SetAttributeValue(Constants.ACTION, "");
+                xStep.SetAttributeValue(Constants.XPATH, data.GetAttributeValue(Constants.XPATH));
+                
                 xSteps.Add(xStep);
                 userData = xSteps.ToString();
                 AddVariable(navtiveModelItem, name);
@@ -307,6 +309,8 @@ namespace AutoX.Activities
                     var dataName = element.GetAttributeValue(Constants.DATA);
                     var stepId = element.GetAttributeValue(Constants._ID);
                     var action = element.GetAttributeValue(Constants.ACTION) ?? "";
+                    var xpath = "";
+                    xpath = getXPath(element);
                     var step = new Step
                     {
                         _id = stepId,
@@ -316,12 +320,28 @@ namespace AutoX.Activities
                         Enable = enable,
                         DefaultData = defaultDataValue,
                         Data = dataName,
+                        XPath = xpath,
                         PossibleAction = possibleAction
                     };
                     ret.Add(step);
                 }
             }
             return ret;
+        }
+
+        private static string getXPath(XElement element)
+        {
+            if (element.HasElements)
+            {
+                var uiObject = element.Element(Constants.UI_OBJECT);
+                if (uiObject != null)
+                {
+                    return uiObject.GetAttributeValue(Constants.XPATH);
+
+                }
+            }
+            var xpath = element.GetAttributeValue(Constants.XPATH);
+            return xpath;
         }
 
         public static string PassData(string outerData, string userData, bool ownDataFirst)
