@@ -52,10 +52,10 @@ namespace AutoX.Client.Core
 
         public static bool VerifyWebElement(String value, IWebElement webElement)
         {
-            String valueOnScreen = "";
+            String valueOnScreen;
 
             // if the object is a drop-down list we need to use getText()
-            String objectTagName = webElement.TagName;
+            var objectTagName = webElement.TagName;
 
             switch (objectTagName)
             {

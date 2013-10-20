@@ -25,7 +25,6 @@ using AutoX.Comm;
 using AutoX.DB;
 using AutoX.WF.Core;
 using Microsoft.Win32;
-using System.Windows.Controls.Primitives;
 
 #endregion
 
@@ -179,28 +178,28 @@ namespace AutoX
         }
 
         
-        private WorkflowInstance workflowInstance;
+        private WorkflowInstance _workflowInstance;
         private void RunWorkflowById(string workflowId)
         {
-            workflowInstance = new WorkflowInstance(Guid.NewGuid().ToString(), workflowId, _config.GetList())
+            _workflowInstance = new WorkflowInstance(Guid.NewGuid().ToString(), workflowId, _config.GetList())
             {
                 ClientId = _config.Get(Constants._ID, Guid.NewGuid().ToString())
             };
             //Mapping between the Object and Line No.
        
-            Log.Debug(workflowInstance.ToXElement().ToString());
+            Log.Debug(_workflowInstance.ToXElement().ToString());
             //do we need to register client at controller debugging? Yes, we need it to maintain the status of this only client
             ClientInstancesManager.GetInstance().Register(_config.SetRegisterBody(XElement.Parse("<Register />")));
             //TODO add visual trace here
             //if workflow is loaded, we can track it.
             //workflowInstance.Tracker.Tracking = this;
             
-            workflowInstance.Start();
+            _workflowInstance.Start();
             
             var debugMode = _config.Get("ModeDebug", "True").Equals("True", StringComparison.CurrentCultureIgnoreCase);
             while (true)
             {
-                var xCommand = workflowInstance.GetCommand();
+                var xCommand = _workflowInstance.GetCommand();
                 if (debugMode)
                     MessageBox.Show(xCommand.ToString());
                 Log.Info(xCommand.ToString());
@@ -209,10 +208,10 @@ namespace AutoX
                 if (debugMode)
                     MessageBox.Show(xResult.ToString());
                 Log.Info(xResult.ToString());
-                workflowInstance.SetResult(xResult);
+                _workflowInstance.SetResult(xResult);
                 Thread.Sleep(1000);
 
-                if (workflowInstance.IsFinished())
+                if (_workflowInstance.IsFinished())
                     break;
             }
 /*

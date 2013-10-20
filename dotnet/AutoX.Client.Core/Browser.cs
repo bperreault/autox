@@ -64,7 +64,7 @@ namespace AutoX.Client.Core
                     var bs = _browser.WindowHandles;
                     _browser.SwitchTo().Window(bs.Count == 1 ? bs[0] : bs[bs.Count - 1]);
                 }
-
+                DismissUnexpectedAlert();
                 return _browser;
             }
             catch (Exception ex)

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using AutoX.Basic;
 using System.Threading.Tasks;
-using System;
 using System.Threading;
 
 #endregion
@@ -33,16 +32,13 @@ namespace AutoX.WF.Core
                             var clientId = ClientInstancesManager.GetInstance().GetAReadyClientInstance();
                             if(string.IsNullOrEmpty(clientId))
                                 continue;
-                            else
-                                instance.ClientId = clientId;
+                            instance.ClientId = clientId;
                         }
                         var clientStatus = ClientInstancesManager.GetInstance().GetComputer(instance.ClientId).Status;
                         if (clientStatus.Equals("Running"))
                             continue;
-                        else{
-                            toRemove = _waitingList.IndexOf(instance);
-                            break;
-                        }
+                        toRemove = _waitingList.IndexOf(instance);
+                        break;
                     }
                         if(toRemove>-1){
                             _waitingList[toRemove].RealStart();
@@ -65,7 +61,7 @@ namespace AutoX.WF.Core
             var _1StNode = ((XElement) instanceInfo.FirstNode);
             //var name = instanceInfo.GetAttributeValue("TestName");
             var scriptGuid = _1StNode.GetAttributeValue("ScriptGUID");
-            var defaultURL = _1StNode.GetAttributeValue("DefaultURL");
+            //var defaultURL = _1StNode.GetAttributeValue("DefaultURL");
             //var clientId = _1StNode.GetAttributeValue("ClientId");
             var guid = _1StNode.GetAttributeValue(Constants._ID);
             //var status = instanceInfo.GetAttributeValue("Status");
@@ -95,8 +91,7 @@ namespace AutoX.WF.Core
             var instanceId = instance._id;
             if(string.IsNullOrEmpty(status) || !status.Equals("Invalid"))
                 return XElement.Parse("<Result Result='Success' InstanceId ='"+instanceId+"' />");
-            else
-                return XElement.Parse("<Result Result='Error' Reason='" + status + "' InstanceId ='" + instanceId + "' />");
+            return XElement.Parse("<Result Result='Error' Reason='" + status + "' InstanceId ='" + instanceId + "' />");
         }
 
         public WorkflowInstance GetTestInstance(string guid)

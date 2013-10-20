@@ -196,7 +196,7 @@ namespace AutoX.Activities
 
         private static XElement initDataXElement()
         {
-            XElement data = new XElement("Datum");
+            var data = new XElement("Datum");
             data.SetAttributeValue("Name", "New Data");
             data.SetAttributeValue("_type", "Datum");
             data.SetAttributeValue("Description", "Extracted Data");

@@ -4,6 +4,8 @@
 // Created @2012 09 18 14:34
 // Last Updated  by Huang, Jien @2012 09 18 14:34
 
+using System.Linq;
+
 #region
 
 using System.Activities;
@@ -89,16 +91,7 @@ namespace AutoX.Activities.AutoActivities
         {
             //add validation to this activity:every enabled steps must have action
             var stepsX = XElement.Parse(_steps);
-            foreach (var step in stepsX.Descendants("Step"))
-            {
-                var enabled = step.GetAttributeValue("Enable");
-                if (string.IsNullOrEmpty(enabled))
-                    continue;
-                var action = step.GetAttributeValue("Action");
-                if (string.IsNullOrEmpty(action))
-                    return "Enabled step must has an action";
-            }
-            return null;
+            return (from step in stepsX.Descendants("Step") let enabled = step.GetAttributeValue("Enable") where !string.IsNullOrEmpty(enabled) select step.GetAttributeValue("Action")).Any(action => string.IsNullOrEmpty(action)) ? "Enabled step must has an action" : null;
         }
 
         #region IPassData Members
@@ -189,7 +182,7 @@ namespace AutoX.Activities.AutoActivities
                         var pos = data.IndexOf("=>", StringComparison.Ordinal);
                         try
                         {
-                            var attr = data.Substring(0, pos);
+                            //var attr = data.Substring(0, pos);
                             var variable = data.Substring(pos + 2);
                             if (!string.IsNullOrEmpty(variable))
                             {
@@ -330,8 +323,8 @@ namespace AutoX.Activities.AutoActivities
             {
                 if (!data.Contains("$("))
                     return data;
-                int start = data.IndexOf("$(");
-                int end = data.IndexOf(")", start + 2);
+                int start = data.IndexOf("$(", StringComparison.Ordinal);
+                int end = data.IndexOf(")", start + 2, StringComparison.Ordinal);
                 string variable = data.Substring(start + 2, end - start - 2).Trim();
                 string value = GetVariableValueByContext(context, variable);
                 string ret = data.Substring(0, start) + value + data.Substring(end+1);

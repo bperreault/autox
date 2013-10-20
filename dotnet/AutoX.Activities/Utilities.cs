@@ -6,7 +6,6 @@
 
 using System.CodeDom.Compiler;
 using System.Text;
-using Microsoft.CSharp;
 
 #region
 
@@ -309,7 +308,7 @@ namespace AutoX.Activities
                     var dataName = element.GetAttributeValue(Constants.DATA);
                     var stepId = element.GetAttributeValue(Constants._ID);
                     var action = element.GetAttributeValue(Constants.ACTION) ?? "";
-                    var xpath = "";
+                    string xpath;
                     xpath = getXPath(element);
                     var step = new Step
                     {
@@ -454,12 +453,9 @@ namespace AutoX.Activities
                             //Status = "Canceled";
                             break;
 
-                        default:
-
                             //Logger.GetInstance().Log().Info("workflow " + scriptGuid +
                             //                                " Completed.");
                             //Status = "Completed";
-                            break;
                     }
                 },
                 Aborted = delegate

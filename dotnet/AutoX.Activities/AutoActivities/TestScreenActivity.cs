@@ -4,6 +4,8 @@
 // Created @2012 09 18 14:34
 // Last Updated  by Huang, Jien @2012 09 18 14:34
 
+using System.Linq;
+
 #region
 
 using System.Activities;
@@ -45,16 +47,7 @@ namespace AutoX.Activities.AutoActivities
         {
             //add validation to this activity:every enabled steps must have action
             var stepsX = XElement.Parse(_steps);
-            foreach(var step in stepsX.Descendants("Step"))
-            {
-                var enabled = step.GetAttributeValue("Enable");
-                if (string.IsNullOrEmpty(enabled))
-                    continue;
-                var action = step.GetAttributeValue("Action");
-                if (string.IsNullOrEmpty(action))
-                    return "Enabled step must has an action";
-            }
-            return null;
+            return (from step in stepsX.Descendants("Step") let enabled = step.GetAttributeValue("Enable") where !string.IsNullOrEmpty(enabled) select step.GetAttributeValue("Action")).Any(action => string.IsNullOrEmpty(action)) ? "Enabled step must has an action" : null;
         }
 
         [Browsable(false)]

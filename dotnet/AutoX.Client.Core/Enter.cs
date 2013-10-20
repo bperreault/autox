@@ -23,7 +23,7 @@ namespace AutoX.Client.Core
                 {
                     text.Clear();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     //some objects cannot be cleared, like hidden, file.upload, so ignore this error
                     if (!string.IsNullOrEmpty(XPath) && !string.IsNullOrEmpty(Data))

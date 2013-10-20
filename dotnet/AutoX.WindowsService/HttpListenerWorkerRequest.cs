@@ -7,7 +7,7 @@ namespace AutoX.WindowsService
 {
     public class HttpListenerWorkerRequest : HttpWorkerRequest
     {
-        private readonly HttpListenerContext _context = null;
+        private readonly HttpListenerContext _context;
         private readonly string _virtualDir;
         private readonly string _physicalDir;
 
@@ -82,7 +82,7 @@ namespace AutoX.WindowsService
         public override void SendKnownResponseHeader(int index, string value)
         {
             _context.Response.Headers[
-                HttpWorkerRequest.GetKnownResponseHeaderName(index)] = value;
+                GetKnownResponseHeaderName(index)] = value;
         }
         public override void SendResponseFromMemory(byte[] data, int length)
         {
@@ -133,7 +133,7 @@ namespace AutoX.WindowsService
                 var headerName = headers.GetKey(i);
                 if (GetKnownRequestHeaderIndex(headerName) != -1) continue;
                 var headerValue = headers.Get(i);
-                headerPairs.Add(new string[] { headerName, headerValue });
+                headerPairs.Add(new[] { headerName, headerValue });
             }
             var unknownRequestHeaders = headerPairs.ToArray();
             return unknownRequestHeaders;

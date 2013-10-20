@@ -153,8 +153,8 @@ namespace AutoX.Activities.AutoActivities
                     }
                 }
                 //set variables value ((AutomationActivity)nextChild).Name to _runningResult
-                AddVariable(((AutomationActivity)lastChild).DisplayName.Replace(" ", "_").Replace(":","_"), _runningResult.ToString());
-                SetVariableValueByContext(context, ((AutomationActivity)lastChild).DisplayName.Replace(" ", "_").Replace(":", "_"), _runningResult.ToString());
+                AddVariable(lastChild.DisplayName.Replace(" ", "_").Replace(":","_"), _runningResult.ToString());
+                SetVariableValueByContext(context, lastChild.DisplayName.Replace(" ", "_").Replace(":", "_"), _runningResult.ToString());
             }
             if (currentActivityIndex == children.Count)
             {

@@ -27,7 +27,6 @@ using AutoX.WF.Core;
 using DesignerView = System.Activities.Presentation.View.DesignerView;
 using Image = System.Drawing.Image;
 using UndoEngine = System.Activities.Presentation.UndoEngine;
-using System.Runtime.Versioning;
 
 #endregion
 

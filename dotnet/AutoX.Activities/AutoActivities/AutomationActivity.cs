@@ -75,7 +75,7 @@ namespace AutoX.Activities.AutoActivities
         public bool OwnDataFirst { get; set; }
 
         [DisplayName(@"Description")]
-        [Editor(typeof(System.Activities.Presentation.PropertyEditing.ExtendedPropertyValueEditor),typeof(ExtendedPropertyValueEditor))]
+        [Editor(typeof(ExtendedPropertyValueEditor),typeof(ExtendedPropertyValueEditor))]
         public string Description { get; set; }
 
         #region INotifyPropertyChanged Members
