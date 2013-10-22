@@ -30,12 +30,12 @@ namespace AutoX.WF.Core
             if (xAttribute != null) _id = xAttribute.Value;
             xAttribute = info.Attribute("Version");
             if (xAttribute != null) Version = xAttribute.Value;
-            Created = DateTime.Now;
-            Updated = DateTime.Now;
+            Created = DateTime.UtcNow;
+            Updated = DateTime.UtcNow;
             Status = "Ready";
             _element.SetAttributeValue("Status", Status);
-            _element.SetAttributeValue("Created", Created.ToString(CultureInfo.InvariantCulture));
-            _element.SetAttributeValue("Updated", Updated.ToString(CultureInfo.InvariantCulture));
+            _element.SetAttributeValue("Created", Created.ToString(Constants.DATE_TIME_FORMAT));
+            _element.SetAttributeValue("Updated", Updated.ToString(Constants.DATE_TIME_FORMAT));
             Log.Debug("A new Client Instance created:\n"+_element.ToString(SaveOptions.None));
         }
 
@@ -83,8 +83,8 @@ namespace AutoX.WF.Core
 
                 //Monitor.Wait(CommandList);
                 _commandList.Add(command);
-                Updated = DateTime.Now;
-                _element.SetAttributeValue("Updated", Updated.ToString(CultureInfo.InvariantCulture));
+                Updated = DateTime.UtcNow;
+                _element.SetAttributeValue("Updated", Updated.ToString(Constants.DATE_TIME_FORMAT));
                 Monitor.Pulse(_commandList);
             }
         }
@@ -106,8 +106,8 @@ namespace AutoX.WF.Core
                     retCommand = _commandList[0].ToString();
                     _commandList.RemoveAt(0);
                 }
-                Updated = DateTime.Now;
-                _element.SetAttributeValue("Updated", Updated.ToString(CultureInfo.InvariantCulture));
+                Updated = DateTime.UtcNow;
+                _element.SetAttributeValue("Updated", Updated.ToString(Constants.DATE_TIME_FORMAT));
                 Monitor.Pulse(_commandList);
             }
             return XElement.Parse(retCommand);

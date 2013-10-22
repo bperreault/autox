@@ -51,8 +51,8 @@ namespace AutoX.DB
             xElement.SetAttributeValue(Constants.PARENT_ID, parentId);
             xElement.SetAttributeValue(Constants._TYPE, type);
             xElement.SetAttributeValue(Constants.NAME, name);
-            xElement.SetAttributeValue("Created", DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
-            xElement.SetAttributeValue("Updated", DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
+            xElement.SetAttributeValue("Created", DateTime.UtcNow.ToString(Constants.DATE_TIME_FORMAT));
+            xElement.SetAttributeValue("Updated", DateTime.UtcNow.ToString(Constants.DATE_TIME_FORMAT));
             CreateContent(id, xElement.ToString());
             CreateRelationship(parentId, "Parent-Kid", id);
         }

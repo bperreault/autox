@@ -37,7 +37,7 @@ namespace AutoX.WF.Core
                 while (true)
                 {
                     var cancelled = token.WaitHandle.WaitOne(5*60*1000);
-                    var now = DateTime.Now;
+                    var now = DateTime.UtcNow;
                     foreach (var nameOfComputer in _computerList.Keys)
                     {
                         var computer = _computerList[nameOfComputer];

@@ -4,6 +4,8 @@
 // Created @2012 09 18 15:26
 // Last Updated  by Huang, Jien @2012 09 18 15:26
 
+using System.Globalization;
+
 #region
 
 using System;
@@ -167,7 +169,7 @@ namespace AutoX.Activities.AutoActivities
             Result.SetAttributeValue(Constants._ID, ResultId);
             Result.SetAttributeValue(Constants.INSTANCE_ID, InstanceId);
             Result.SetAttributeValue(Constants._TYPE, Constants.RESULT);
-            Result.SetAttributeValue(Constants.NAME, DisplayName + " " + DateTime.Now.ToUniversalTime());
+            Result.SetAttributeValue(Constants.NAME, DisplayName + " " + DateTime.UtcNow.ToString(Constants.DATE_TIME_FORMAT));
             Result.SetAttributeValue(SCRIPT_ID, Id);
             Result.SetAttributeValue("Authors",Authors);
             Result.SetAttributeValue("Description",Description);

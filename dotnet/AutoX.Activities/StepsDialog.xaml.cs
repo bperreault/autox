@@ -201,8 +201,8 @@ namespace AutoX.Activities
             data.SetAttributeValue("_type", "Datum");
             data.SetAttributeValue("Description", "Extracted Data");
             data.SetAttributeValue("_id", Guid.NewGuid().ToString());
-            data.SetAttributeValue("Created", DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
-            data.SetAttributeValue("Updated", DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
+            data.SetAttributeValue("Created", DateTime.UtcNow.ToString(Constants.DATE_TIME_FORMAT));
+            data.SetAttributeValue("Updated", DateTime.UtcNow.ToString(Constants.DATE_TIME_FORMAT));
             data.SetAttributeValue("_parentId", Configuration.Settings("DataRoot"));
             return data;
         }

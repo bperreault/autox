@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Globalization;
 
 namespace AutoX.Basic
 {
@@ -30,6 +31,7 @@ namespace AutoX.Basic
         public const string ERROR = "Error";
 
         public const string XPATH = "XPath";
+        public const string DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
     }
 
     public enum MaturityLevel

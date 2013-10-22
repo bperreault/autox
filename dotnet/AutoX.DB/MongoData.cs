@@ -3,6 +3,7 @@
 using System;
 using System.Globalization;
 using System.Xml.Linq;
+using AutoX.Basic;
 using MongoDB.Bson;
 
 #endregion
@@ -14,8 +15,8 @@ namespace AutoX.DB
         public bool Save(XElement xElement)
         {
             if (xElement.Attribute("Created") == null)
-                xElement.SetAttributeValue("Created", DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
-            xElement.SetAttributeValue("Updated", DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
+                xElement.SetAttributeValue("Created", DateTime.UtcNow.ToString(Constants.DATE_TIME_FORMAT));
+            xElement.SetAttributeValue("Updated", DateTime.UtcNow.ToString(Constants.DATE_TIME_FORMAT));
             return MongoDBManager.GetInstance().Save(xElement.ToBsonDocument());
         }
 

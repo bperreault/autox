@@ -17,7 +17,7 @@ namespace AutoX.Client.Core
         public static XElement Execute(XElement steps, Browser browser, Config config)
         {
             var ret = new XElement(Constants.RESULT);
-            ret.SetAttributeValue("Created", DateTime.Now.ToString(CultureInfo.InvariantCulture));
+            ret.SetAttributeValue("Created", DateTime.UtcNow.ToString(Constants.DATE_TIME_FORMAT));
             ret.SetAttributeValue(Constants.RESULT, Constants.SUCCESS);
             ret.SetAttributeValue(Constants._ID, Guid.NewGuid().ToString());
             var instanceId = steps.GetAttributeValue(Constants.INSTANCE_ID);
@@ -75,12 +75,12 @@ namespace AutoX.Client.Core
             {
                 uiObj = step.Elements().First();
             }
-            var startTime = DateTime.Now;
+            var startTime = DateTime.UtcNow;
             var result = CallAction(action, data, uiObj, browser, config);
-            var endTime = DateTime.Now;
+            var endTime = DateTime.UtcNow;
 
-            result.SetAttributeValue("StartTime", startTime);
-            result.SetAttributeValue("EndTime", endTime);
+            result.SetAttributeValue("StartTime", startTime.ToString(Constants.DATE_TIME_FORMAT));
+            result.SetAttributeValue("EndTime", endTime.ToString(Constants.DATE_TIME_FORMAT));
             result.SetAttributeValue("Duration",
                 string.Format("{0:0.000}", (endTime.Ticks - startTime.Ticks)/10000000.00));
             result.SetAttributeValue(Constants.INSTANCE_ID, instanceId);

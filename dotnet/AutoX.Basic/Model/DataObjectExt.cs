@@ -83,11 +83,11 @@ namespace AutoX.Basic.Model
                         {
                             if (prop.PropertyType.Name.Equals("DateTime"))
                             {
-                                prop.SetValue(entity, DateTime.Parse(xa.Value.ToString(CultureInfo.InvariantCulture)),
+                                prop.SetValue(entity, DateTime.Parse(xa.Value.ToString()),
                                     null);
                             }
                             else if (prop.PropertyType.Name.Equals("TimeSpan"))
-                                prop.SetValue(entity, TimeSpan.Parse(xa.Value.ToString(CultureInfo.InvariantCulture)),
+                                prop.SetValue(entity, TimeSpan.Parse(xa.Value.ToString()),
                                     null);
                             else
                                 prop.SetValue(entity, xa.Value, null);

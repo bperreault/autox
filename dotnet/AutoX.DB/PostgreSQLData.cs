@@ -9,11 +9,11 @@ namespace AutoX.DB
     {
         public bool Save(XElement xElement)
         {
-            xElement.SetAttributeValue("Updated", DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
+            xElement.SetAttributeValue("Updated", DateTime.UtcNow.ToString(Constants.DATE_TIME_FORMAT));
             var id = xElement.GetAttributeValue(Constants._ID);
             var parentId = xElement.GetAttributeValue(Constants.PARENT_ID);
             var updated = xElement.GetAttributeValue("Updated");
-            var created = DateTime.UtcNow.ToString(CultureInfo.InvariantCulture);
+            var created = DateTime.UtcNow.ToString(Constants.DATE_TIME_FORMAT);
             if (PostgreSQLDBManager.GetInstance().Find(id) == null)
             {
                 xElement.SetAttributeValue("Created", created);
@@ -24,8 +24,9 @@ namespace AutoX.DB
             else
             {
                 var existed_created = xElement.GetAttributeValue("Created");
-                if (!string.IsNullOrEmpty(existed_created))
-                    created = existed_created;
+                DateTime eDateTime = DateTime.Parse(existed_created);
+                if (!string.IsNullOrEmpty(existed_created)) 
+                    created = eDateTime.ToString(Constants.DATE_TIME_FORMAT);
                 PostgreSQLDBManager.GetInstance().UpdateContent(id, xElement.ToString(),updated);
                 PostgreSQLDBManager.GetInstance().RemoveRelationship(id);
             }

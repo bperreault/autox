@@ -219,8 +219,8 @@ namespace AutoX.WF.Core
                     .Save(
                         XElement.Parse("<Result Name='" + versionName + "' _id='" + versionId + "' _parentId='" +
                                        resultId + "' _type='Folder' Created='" +
-                                       DateTime.Now.ToString(CultureInfo.InvariantCulture) + "' Updated='" +
-                                       DateTime.Now.ToString(CultureInfo.InvariantCulture) + "' />"));
+                                       DateTime.UtcNow.ToString(Constants.DATE_TIME_FORMAT) + "' Updated='" +
+                                       DateTime.UtcNow.ToString(Constants.DATE_TIME_FORMAT) + "' />"));
             }
             return versionId;
         }

@@ -186,7 +186,7 @@ namespace AutoX
             var i = 1;
             while (_content.Attribute(newAttrName) != null)
             {
-                newAttrName = "NewAttribute" + i.ToString(CultureInfo.InvariantCulture).Trim();
+                newAttrName = "NewAttribute" + i.ToString(Constants.DATE_TIME_FORMAT).Trim();
                 i++;
             }
             var iDlg = new InfoDialog {InfoContent = newAttrName};

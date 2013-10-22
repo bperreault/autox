@@ -54,10 +54,11 @@ namespace AutoX.DB
             xElement.SetAttributeValue(Constants.PARENT_ID, parentId);
             xElement.SetAttributeValue(Constants._TYPE, type);
             xElement.SetAttributeValue(Constants.NAME, name);
-            xElement.SetAttributeValue("Created", DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
-            xElement.SetAttributeValue("Updated", DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
-            CreateContent(id, xElement.ToString(), type, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture), DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
-            CreateRelationship(parentId, "Parent-Kid", id, DateTime.UtcNow.ToString(CultureInfo.InvariantCulture), DateTime.UtcNow.ToString(CultureInfo.InvariantCulture));
+            xElement.SetAttributeValue("Created", DateTime.UtcNow.ToString(Constants.DATE_TIME_FORMAT));
+            xElement.SetAttributeValue("Updated", DateTime.UtcNow.ToString(Constants.DATE_TIME_FORMAT));
+            CreateContent(id, xElement.ToString(), type, DateTime.UtcNow.ToString(Constants.DATE_TIME_FORMAT), DateTime.UtcNow.ToString(Constants.DATE_TIME_FORMAT));
+            
+            CreateRelationship(parentId, "Parent-Kid", id, DateTime.UtcNow.ToString(Constants.DATE_TIME_FORMAT), DateTime.UtcNow.ToString(Constants.DATE_TIME_FORMAT));
         }
 
         public static PostgreSQLDBManager GetInstance()
