@@ -191,6 +191,7 @@ namespace AutoX.Activities
             var key = row.Data;
             if (string.IsNullOrEmpty(key))
                 key = row.Action + row.UIObject;
+            key = key.Replace("[", "_").Replace("]", "_");
             xData.SetAttributeValue(key, row.DefaultData);
         }
 
