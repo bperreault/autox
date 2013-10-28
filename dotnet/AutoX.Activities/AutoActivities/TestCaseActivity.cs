@@ -126,12 +126,12 @@ namespace AutoX.Activities.AutoActivities
             {
                 var lastChild = children[currentActivityIndex - 1];
                 //Get result here, it is sync or async????
-                _runningResult = _runningResult && ((IPassData)lastChild).GetResult();
+                RunningResult = RunningResult && ((IPassData)lastChild).GetResult();
                 
-                if (!_runningResult)
+                if (!RunningResult)
                 {
                     if (ErrorLevel == OnError.AlwaysReturnTrue)
-                        _runningResult = true;
+                        RunningResult = true;
                     if (ErrorLevel == OnError.Terminate)
                     {
                         Log.Fatal("Workflow terminated according OnError.Terminate");
@@ -144,7 +144,7 @@ namespace AutoX.Activities.AutoActivities
                     if (ErrorLevel == OnError.JustShowWarning)
                     {
                         Log.Warn("Warning:\n" + lastChild.DisplayName + " Error happened, but we ignore it");
-                        _runningResult = true;
+                        RunningResult = true;
                     }
                     if (ErrorLevel == OnError.StopCurrentScript)
                     {
@@ -153,8 +153,8 @@ namespace AutoX.Activities.AutoActivities
                     }
                 }
                 //set variables value ((AutomationActivity)nextChild).Name to _runningResult
-                AddVariable(lastChild.DisplayName.Replace(" ", "_").Replace(":","_"), _runningResult.ToString());
-                SetVariableValueByContext(context, lastChild.DisplayName.Replace(" ", "_").Replace(":", "_"), _runningResult.ToString());
+                AddVariable(lastChild.DisplayName.Replace(" ", "_").Replace(":","_"), RunningResult.ToString());
+                SetVariableValueByContext(context, lastChild.DisplayName.Replace(" ", "_").Replace(":", "_"), RunningResult.ToString());
             }
             if (currentActivityIndex == children.Count)
             {

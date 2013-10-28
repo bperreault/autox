@@ -143,14 +143,14 @@ namespace AutoX.Activities.AutoActivities
                 {
                     stepElement.SetAttributeValue("Original", ret);
                     stepElement.SetAttributeValue("Final", ret);
-                    _runningResult = ret.Equals(Constants.SUCCESS) && _runningResult;
+                    RunningResult = ret.Equals(Constants.SUCCESS) && RunningResult;
                 }
                 else
-                    _runningResult = false;
-                if (!_runningResult)
+                    RunningResult = false;
+                if (!RunningResult)
                 {
                     if (ErrorLevel == OnError.AlwaysReturnTrue)
-                        _runningResult = true;
+                        RunningResult = true;
                     if (ErrorLevel == OnError.Terminate)
                     {
                         Log.Fatal("Workflow terminated according OnError.Terminate");
@@ -163,7 +163,7 @@ namespace AutoX.Activities.AutoActivities
                     if (ErrorLevel == OnError.JustShowWarning)
                     {
                         Log.Warn("Warning:\n" + DisplayName + " Error happened, but we ignore it");
-                        _runningResult = true;
+                        RunningResult = true;
                     }
                     if (ErrorLevel == OnError.StopCurrentScript)
                     {

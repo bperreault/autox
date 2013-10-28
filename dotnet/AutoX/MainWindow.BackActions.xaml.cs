@@ -238,7 +238,7 @@ namespace AutoX
             await HandleDoubleClick(selected, treeViewName, xRoot);
         }
 
-        private async Task HandleDoubleClick(TreeViewItem selected, string treeViewName, XElement xRoot)
+        private async Task HandleDoubleClick(ItemsControl selected, string treeViewName, XElement xRoot)
         {
             selected.Items.Clear();
             foreach (var kid in xRoot.Descendants())

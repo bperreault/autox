@@ -4,8 +4,6 @@
 // Created @2012 09 18 15:26
 // Last Updated  by Huang, Jien @2012 09 18 15:26
 
-using System.Globalization;
-
 #region
 
 using System;
@@ -26,16 +24,16 @@ namespace AutoX.Activities.AutoActivities
 {
     public abstract class AutomationActivity : NativeActivity, INotifyPropertyChanged
     {
-        private const string SCRIPT_ID = "ScriptId";
+        private const string ScriptId = "ScriptId";
         private readonly Collection<Variable> _variables = new Collection<Variable>();
         protected IHost Host = null;
 
         protected string ParentResultId;
         protected string ResultId;
         private bool _enabled = true;
-        protected bool _runningResult = true;
+        protected bool RunningResult = true;
         
-        protected Dictionary<string, string> _upperVariables = new Dictionary<string, string>();
+        protected Dictionary<string, string> UpperVariables = new Dictionary<string, string>();
         protected XElement Result;
 
         [Browsable(false)]
@@ -49,15 +47,15 @@ namespace AutoX.Activities.AutoActivities
             get { return _variables; }
         }
 
-        protected string _author;
+        protected string Author;
         [DisplayName(@"Authors")]
         public string Authors
         {
-            get { return _author; }
+            get { return Author; }
             set
             {
-                if (string.IsNullOrEmpty(_author)) _author = value;
-                else if(!_author.Contains(value)) _author = _author +","+ value ;
+                if (string.IsNullOrEmpty(Author)) Author = value;
+                else if(!Author.Contains(value)) Author = Author +","+ value ;
             }
         }
 
@@ -102,31 +100,31 @@ namespace AutoX.Activities.AutoActivities
             foreach (string key in vars.Keys)
             {
                 var value = vars[key];
-                if (_upperVariables.ContainsKey(key))
+                if (UpperVariables.ContainsKey(key))
                 {
                     if (!OwnDataFirst)
-                        _upperVariables[key] = value;
+                        UpperVariables[key] = value;
                 }
                 else
                 {
-                    _upperVariables.Add(key, value);
+                    UpperVariables.Add(key, value);
                 }
             }
         }
 
         public void AddVariable(string key, string value)
         {
-            if (_upperVariables.ContainsKey(key))
-                _upperVariables[key] = value;
+            if (UpperVariables.ContainsKey(key))
+                UpperVariables[key] = value;
             else
-                _upperVariables.Add(key, value);
+                UpperVariables.Add(key, value);
         }
 
         protected void SetVariablesBeforeRunning(NativeActivityContext context)
         {
-            foreach (var key in _upperVariables.Keys)
+            foreach (var key in UpperVariables.Keys)
             {
-                var value = _upperVariables[key];
+                var value = UpperVariables[key];
                 if (ContainsVariableByContext(context, key))
                 {
                     if (!OwnDataFirst)
@@ -170,7 +168,7 @@ namespace AutoX.Activities.AutoActivities
             Result.SetAttributeValue(Constants.INSTANCE_ID, InstanceId);
             Result.SetAttributeValue(Constants._TYPE, Constants.RESULT);
             Result.SetAttributeValue(Constants.NAME, DisplayName + " " + DateTime.UtcNow.ToString(Constants.DATE_TIME_FORMAT));
-            Result.SetAttributeValue(SCRIPT_ID, Id);
+            Result.SetAttributeValue(ScriptId, Id);
             Result.SetAttributeValue("Authors",Authors);
             Result.SetAttributeValue("Description",Description);
             
@@ -190,7 +188,7 @@ namespace AutoX.Activities.AutoActivities
         protected void SetFinalResult()
         {
             var ret = Constants.SUCCESS;
-            if (!_runningResult)
+            if (!RunningResult)
                 ret = Constants.ERROR;
             Result.SetAttributeValue("Original", ret);
             Result.SetAttributeValue("Final", ret);
@@ -219,7 +217,7 @@ namespace AutoX.Activities.AutoActivities
         /// <returns> </returns>
         public bool GetResult()
         {
-            return _runningResult;
+            return RunningResult;
         }
 
         protected void NotifyPropertyChanged(string p)

@@ -97,7 +97,7 @@ namespace AutoX.Activities.AutoActivities
                 automationActivity.SetParentResultId(ParentResultId);
             }
             WorkflowInvoker.Invoke(activity);
-            _runningResult = ((IPassData) activity).GetResult();
+            RunningResult = ((IPassData) activity).GetResult();
         }
     }
 }

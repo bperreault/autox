@@ -90,7 +90,7 @@ namespace AutoX.Activities.AutoActivities
             }
             WorkflowInvoker.Invoke(activity);
             //calculate result here? no, the caller will calculate it.
-            _runningResult = ((IPassData) activity).GetResult();
+            RunningResult = ((IPassData) activity).GetResult();
         }
     }
 }
