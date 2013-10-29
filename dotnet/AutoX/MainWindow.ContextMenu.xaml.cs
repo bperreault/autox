@@ -200,6 +200,7 @@ namespace AutoX
             while (true)
             {
                 var xCommand = _workflowInstance.GetCommand();
+                if (xCommand == null) break;
                 if (debugMode)
                     MessageBox.Show(xCommand.ToString());
                 Log.Info(xCommand.ToString());
