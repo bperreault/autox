@@ -1,5 +1,6 @@
 #region
 
+using System.Threading;
 using System.Xml.Linq;
 
 #endregion
@@ -18,6 +19,8 @@ namespace AutoX.Client.Core
             else
             {
                 UIObject[0].Click();
+                Thread.Sleep(500);
+                Browser.DismissUnexpectedAlert();
             }
             return sr.GetResult();
         }

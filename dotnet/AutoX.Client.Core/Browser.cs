@@ -297,7 +297,8 @@ namespace AutoX.Client.Core
             var alert = GetAlert();
             if (alert != null)
             {
-                alert.Dismiss();
+                alert.Accept();
+                //alert.Dismiss();
                 Log.Warn("Close an unexpected dialog, please check.");
             }
         }
@@ -445,6 +446,7 @@ namespace AutoX.Client.Core
         {
             if (_browser != null)
             {
+                DismissUnexpectedAlert();
                 _browser.Quit();
             }
 
