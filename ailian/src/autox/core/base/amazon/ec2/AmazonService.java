@@ -3,6 +3,8 @@ package autox.core.base.amazon.ec2;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.jcs.JCS;
+import org.apache.jcs.access.exception.CacheException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,11 +35,34 @@ public class AmazonService {
 	private AmazonEC2Client amazonClient;
 	Configuration configuration = new ClasspathConfiguration();
 	private static AmazonService instance = new AmazonService();
+	private static JCS instances;
+	private static JCS amis;
 	
 	private AmazonService(){
 		AWSCredentials credentials = new BasicAWSCredentials(configuration.requiredOption("amazon.access.key"),configuration.requiredOption("amazon.secret.key"));
 		amazonClient = new AmazonEC2Client(credentials);
 		amazonClient.setEndpoint(configuration.requiredOption("amazon.endpoint"));
+		//start a thread, update the JCS every x minutes
+	}
+	
+	public void putCache() throws CacheException{
+		if(instances==null)
+			instances = JCS.getInstance("Instances");
+		instances.clear();
+		DescribeInstancesResult result = amazonClient.describeInstances();
+		for(Reservation r : result.getReservations()){
+			for(Instance i : r.getInstances()){
+				instances.put(i.getInstanceId(), i);
+			}
+		}
+		if(amis==null)
+			amis = JCS.getInstance("AMIs");
+		amis.clear();
+		DescribeImagesRequest ir = new DescribeImagesRequest().withOwners("self");
+		DescribeImagesResult images = amazonClient.describeImages(ir);
+		for(Image r : images.getImages()){
+			amis.put(r.getImageId(), r);
+		}
 	}
 	
 	public static AmazonService getInstance(){
