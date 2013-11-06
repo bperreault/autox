@@ -10,8 +10,7 @@ public class TestEC2 {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-	
+		
 		String ami = "ami-d1c123a6";
 		String ec2id = "i-9353f9dc";
 		String amiName = "newName";

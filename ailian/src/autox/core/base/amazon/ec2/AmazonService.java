@@ -1,5 +1,8 @@
 package autox.core.base.amazon.ec2;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,6 +62,29 @@ public class AmazonService {
 			ret+=(r.getImageId()+" "+r.getDescription()+" "+r.getState())+"\n";
 		}
 		return ret;
+	}
+	
+	public List<Instance> getInstances(){
+		List<Instance> list = new ArrayList<Instance>();
+		DescribeInstancesResult result = amazonClient.describeInstances();
+		for(Reservation r : result.getReservations()){
+			for(Instance i : r.getInstances()){
+				list.add(i);
+			}
+		}
+		
+		return list;
+	}
+	
+	public List<Image> getImages(){
+		List<Image> list = new ArrayList<Image>();
+		DescribeImagesRequest ir = new DescribeImagesRequest().withOwners("self");
+		DescribeImagesResult images = amazonClient.describeImages(ir);
+		for(Image r : images.getImages()){
+			list.add(r);
+		}
+		
+		return list;
 	}
 	
 	public void startEC2(String... ec2id){		
