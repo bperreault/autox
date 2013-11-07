@@ -29,6 +29,10 @@ public class ClasspathConfiguration extends TrimmingConfiguration {
     public ClasspathConfiguration(String... resourceNames) {
         super(configurationFromResources(resourceNames));
     }
+    
+    public ClasspathConfiguration() {
+        super(configurationFromResources("/my.properties","/default.properties","/auto.properties.default"));
+    }
 
     private static Configuration configurationFromResources(String... resourceNames) {
         Properties properties = new Properties();

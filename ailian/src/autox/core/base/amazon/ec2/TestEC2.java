@@ -11,9 +11,9 @@ public class TestEC2 {
 	 */
 	public static void main(String[] args) {
 		
-		String ami = "ami-d1c123a6";
-		String ec2id = "i-9353f9dc";
-		String amiName = "newName";
+		String ami = "ami-a3c123d4";
+		String ec2id = "i-0c899f40";
+		String amiName = "new1Name";
 		Logger log = LoggerFactory.getLogger("main");
 		//connect to amazon(handled by AmazonService
 		log.debug(AmazonService.getInstance().toString());
@@ -37,6 +37,7 @@ public class TestEC2 {
 		AmazonService.getInstance().terminateEC2(ec2id);
 		sleep(60);
 		log.debug(AmazonService.getInstance().toString());
+		AmazonService.getInstance().close();
 	}
 
 	private static void sleep(int i) {
